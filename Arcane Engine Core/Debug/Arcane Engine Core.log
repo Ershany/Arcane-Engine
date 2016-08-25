@@ -1,0 +1,22 @@
+﻿Build started 8/25/2016 12:05:59 AM.
+     1>Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt src\graphics\Shader.cpp src\graphics\camera\FPSCamera.cpp
+         FPSCamera.cpp
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         Shader.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.exe" /INCREMENTAL /NOLOGO glfw3.lib opengl32.lib glew32s.lib SOIL.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.lib" /MACHINE:X86 Debug\FPSCamera.obj
+         Debug\Shader.obj
+         Debug\Window.obj
+         Debug\main.obj
+     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>FPSCamera.obj : error LNK2019: unresolved external symbol "private: void __thiscall arcane::graphics::FPSCamera::updateCameraVectors(void)" (?updateCameraVectors@FPSCamera@graphics@arcane@@AAEXXZ) referenced in function "public: __thiscall arcane::graphics::FPSCamera::FPSCamera(float,float,float,float,float,float,float,float)" (??0FPSCamera@graphics@arcane@@QAE@MMMMMMMM@Z)
+     1>C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.exe : fatal error LNK1120: 1 unresolved externals
+     1>Done Building Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.39
