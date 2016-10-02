@@ -1,22 +1,33 @@
-﻿Build started 8/25/2016 12:05:59 AM.
+﻿Build started 8/28/2016 5:42:06 PM.
      1>Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt src\graphics\Shader.cpp src\graphics\camera\FPSCamera.cpp
-         FPSCamera.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt src\graphics\Window.cpp src\main.cpp
+         main.cpp
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(15): warning C4244: 'initializing' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(16): warning C4244: 'initializing' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(131): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(132): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(145): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(146): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(147): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(150): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(152): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(154): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(156): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(158): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(99): warning C4101: 'EBO' : unreferenced local variable
+         Window.cpp
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\graphics\window.cpp(94): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
          Generating Code...
-         Skipping... (no relevant changes detected)
-         Shader.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.exe" /INCREMENTAL /NOLOGO glfw3.lib opengl32.lib glew32s.lib SOIL.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.lib" /MACHINE:X86 Debug\FPSCamera.obj
          Debug\Shader.obj
          Debug\Window.obj
          Debug\main.obj
-     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-     1>FPSCamera.obj : error LNK2019: unresolved external symbol "private: void __thiscall arcane::graphics::FPSCamera::updateCameraVectors(void)" (?updateCameraVectors@FPSCamera@graphics@arcane@@AAEXXZ) referenced in function "public: __thiscall arcane::graphics::FPSCamera::FPSCamera(float,float,float,float,float,float,float,float)" (??0FPSCamera@graphics@arcane@@QAE@MMMMMMMM@Z)
-     1>C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.exe : fatal error LNK1120: 1 unresolved externals
-     1>Done Building Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" (Build target(s)) -- FAILED.
+         Debug\Time.obj
+         Arcane Engine Core.vcxproj -> C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.exe
+     1>Done Building Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:00.39
+Time Elapsed 00:00:00.88
