@@ -21,7 +21,7 @@ namespace arcane { namespace graphics {
 	const GLfloat FOV = 45.0f;
 
 	class FPSCamera {
-	private:
+	public:
 		// Camera Attributes
 		glm::vec3 m_Position, m_Front, m_Up, m_Right, m_WorldUp;
 		// Euler Angles
@@ -31,22 +31,16 @@ namespace arcane { namespace graphics {
 		GLfloat m_MovementSpeed;
 		GLfloat m_MouseSensitivity;
 		GLfloat m_FOV;
-	public:
+
 		// Vector Constuctor
-		FPSCamera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch);
+		FPSCamera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH);
 		// Scalar Constructor
 		FPSCamera(GLfloat xPos, GLfloat yPos, GLfloat zPos, GLfloat xUp, GLfloat yUp, GLfloat zUp, GLfloat yaw, GLfloat pitch);
 		
 		glm::mat4 getViewMatrix();
 		void processKeyboard(Camera_Movement direction, GLfloat deltaTime);
-		void processMouseMovement(GLfloat xOffset, GLfloat yOffset, GLboolean constrainPitch);
+		void processMouseMovement(GLfloat xOffset, GLfloat yOffset, GLboolean constrainPitch = true);
 		void processMouseScroll(GLfloat yOffset);
-
-		inline GLfloat getYaw() { return m_Yaw; }
-		inline GLfloat getPitch() { return m_Pitch; }
-		inline GLfloat getMovementSpeed() { return m_MovementSpeed; }
-		inline GLfloat getMouseSensitivity() { return m_MouseSensitivity; }
-		inline GLfloat getFOV() { return m_FOV; }
 	private:
 		void updateCameraVectors();
 	};
