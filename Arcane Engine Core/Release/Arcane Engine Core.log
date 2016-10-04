@@ -1,0 +1,45 @@
+﻿Build started 8/28/2016 5:41:57 PM.
+     1>Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt src\graphics\camera\FPSCamera.cpp src\graphics\Shader.cpp src\graphics\Window.cpp src\main.cpp src\utils\Time.cpp
+         FPSCamera.cpp
+         Shader.cpp
+         Window.cpp
+     1>src\graphics\Window.cpp(94): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+         main.cpp
+     1>src\main.cpp(15): warning C4244: 'initializing' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>src\main.cpp(16): warning C4244: 'initializing' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>src\main.cpp(131): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>src\main.cpp(132): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>src\main.cpp(145): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>src\main.cpp(146): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>src\main.cpp(147): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>src\main.cpp(150): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>src\main.cpp(152): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>src\main.cpp(154): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>src\main.cpp(156): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>src\main.cpp(158): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>src\main.cpp(99): warning C4101: 'EBO' : unreferenced local variable
+         Time.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Release\Arcane Engine Core.exe" /NOLOGO glfw3.lib opengl32.lib glew32s.lib SOIL.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Release\Arcane Engine Core.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Release\Arcane Engine Core.lib" /MACHINE:X86 /SAFESEH Release\FPSCamera.obj
+         Release\Shader.obj
+         Release\Window.obj
+         Release\main.obj
+         Release\Time.obj
+     1>SOIL.lib(SOIL.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:ICF' specification
+     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+         Generating code
+         Finished generating code
+     1>glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Release\vc120.pdb'; linking object as if no debug info
+     1>SOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(image_DXT.obj)' or at 'C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Release\SOIL.pdb'; linking object as if no debug info
+     1>SOIL.lib(image_helper.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(image_helper.obj)' or at 'C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Release\SOIL.pdb'; linking object as if no debug info
+     1>SOIL.lib(SOIL.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(SOIL.obj)' or at 'C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Release\SOIL.pdb'; linking object as if no debug info
+     1>SOIL.lib(stb_image_aug.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(stb_image_aug.obj)' or at 'C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Release\SOIL.pdb'; linking object as if no debug info
+         Arcane Engine Core.vcxproj -> C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Release\Arcane Engine Core.exe
+     1>Done Building Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.56

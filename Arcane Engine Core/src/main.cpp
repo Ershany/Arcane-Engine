@@ -7,11 +7,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "utils\Time.h"
+#include "graphics\camera\FPSCamera.h"
 
-void move();
-void checkZoom(float &fov);
-
-glm::vec3 cameraPos(0.0f, 0.0f, 5.0f); glm::vec3 cameraFront(0.0f, 0.0f, -1.0f); glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
+arcane::graphics::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f); 
 arcane::graphics::Window window("Arcane Engine", 1366, 768);
 GLfloat lastX = window.getWidth();
 GLfloat lastY = window.getHeight();
@@ -127,30 +126,13 @@ int main() {
 	// Temp Rotation Timer
 	arcane::Timer count;
 	
-	float fov = 45.0f;
+	arcane::Time time;
+
 	lastX = window.getMouseX();
 	lastY = window.getMouseY();
 	while (!window.closed()) {
 		window.clear();
-		
-		GLfloat xOffset = window.getMouseX() - lastX;
-		GLfloat yOffset = lastY - window.getMouseY(); // Reversed since y is top to bottom
-		lastX = window.getMouseX();
-		lastY = window.getMouseY();
-		GLfloat sensitivity = 0.05f;
-		xOffset *= sensitivity;
-		yOffset *= sensitivity;
-		yaw += xOffset;
-		pitch += yOffset;
-		if (pitch > 89.0f)
-			pitch = 89.0f;
-		if (pitch < -89.0f)
-			pitch = -89.0f;
-		glm::vec3 front;
-		front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-		front.y = sin(glm::radians(pitch));
-		front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-		cameraFront = glm::normalize(front);
+		time.update();
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
@@ -159,18 +141,32 @@ int main() {
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		glUniform1i(glGetUniformLocation(shader.getShaderID(), "ourTexture1"), 1);
 
-		checkZoom(fov);
-		move();
+
+		camera.processMouseMovement(window.getMouseX() - lastX, lastY - window.getMouseY(), true);
+		lastX = window.getMouseX();
+		lastY = window.getMouseY();
+
+		if (window.isKeyPressed(GLFW_KEY_W)) 
+			camera.processKeyboard(arcane::graphics::FORWARD, time.delta);
+		if (window.isKeyPressed(GLFW_KEY_S))
+			camera.processKeyboard(arcane::graphics::BACKWARD, time.delta);
+		if (window.isKeyPressed(GLFW_KEY_A))
+			camera.processKeyboard(arcane::graphics::LEFT, time.delta);
+		if (window.isKeyPressed(GLFW_KEY_D))
+			camera.processKeyboard(arcane::graphics::RIGHT, time.delta);
+		
+		camera.processMouseScroll(window.getScrollY());
+		
 
 		glm::mat4 model(1);
 		//model = model.rotation(count.elapsed() * 15, vec3(1.0f, 0.0f, 0.0f));
 		//model = model * model.rotation(count.elapsed() * 15, vec3(0.0f, 1.0f, 0.0f));
 		
 		glm::mat4 view;
-		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp); 
+		view = camera.getViewMatrix();
 
 		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(fov), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(camera.getFOV()), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 100.0f);
 
 		shader.setUniformMat4("model", model);
 		shader.setUniformMat4("view", view);
@@ -192,44 +188,4 @@ int main() {
 	}
 	
 	return 0;
-}
-
-GLfloat deltaTime = 0.0f;
-GLfloat lastFrame = 0.0f;
-void move() {
-	GLfloat currentFrame = glfwGetTime();
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
-
-	GLfloat cameraSpeed = 2.0f * deltaTime;
-	if (window.isKeyPressed(GLFW_KEY_W)) {
-		cameraPos += cameraFront * cameraSpeed;
-	}
-	if (window.isKeyPressed(GLFW_KEY_S)) {
-		cameraPos -= cameraFront* cameraSpeed;
-	}
-	if (window.isKeyPressed(GLFW_KEY_A)) {
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	}
-	if (window.isKeyPressed(GLFW_KEY_D)) {
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	}
-}
-
-float origFov;
-bool first = true;
-void checkZoom(float &fov) {
-	if (first) {
-		origFov = fov;
-		first = false;
-	}
-	
-	if (window.getScrollY() == 1 && fov > 1.0f) {
-		fov--;
-		window.resetScroll();
-	}
-	if (window.getScrollY() == -1 && fov < origFov) {
-		fov++;
-		window.resetScroll();
-	}
 }
