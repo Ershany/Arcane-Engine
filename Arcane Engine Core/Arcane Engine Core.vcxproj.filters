@@ -60,6 +60,7 @@
   <ItemGroup>
     <None Include="src\shaders\basic.frag" />
     <None Include="src\shaders\basic.vert" />
+    <None Include="src\shaders\lightCube.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
