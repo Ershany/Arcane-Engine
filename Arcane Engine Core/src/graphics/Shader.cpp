@@ -19,8 +19,8 @@ namespace arcane { namespace graphics {
 		GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
 
 		// Variables need to be declared or the character pointers will become dangling pointers
-		std::string vertSourceString = FileUtils::read_file(m_VertPath);
-		std::string fragSourceString = FileUtils::read_file(m_FragPath);
+		std::string vertSourceString = FileUtils::readFile(m_VertPath);
+		std::string fragSourceString = FileUtils::readFile(m_FragPath);
 		const char *vertSource = vertSourceString.c_str();
 		const char *fragSource = fragSourceString.c_str();
 

@@ -81,7 +81,9 @@
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\utils\FileUtils.cpp" />
     <ClCompile Include="src\utils\Time.cpp" />
+    <ClCompile Include="src\utils\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\camera\FPSCamera.h" />

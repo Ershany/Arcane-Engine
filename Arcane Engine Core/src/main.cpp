@@ -141,7 +141,7 @@ int main() {
 		glBindTexture(GL_TEXTURE_2D, texture2);
 		glUniform1i(glGetUniformLocation(shader.getShaderID(), "ourTexture1"), 1);
 
-
+		std::cout << window.getMouseX() << "   " << lastX << std::endl;
 		camera.processMouseMovement(window.getMouseX() - lastX, lastY - window.getMouseY(), true);
 		lastX = window.getMouseX();
 		lastY = window.getMouseY();
@@ -155,12 +155,12 @@ int main() {
 		if (window.isKeyPressed(GLFW_KEY_D))
 			camera.processKeyboard(arcane::graphics::RIGHT, time.delta);
 		
-		camera.processMouseScroll(window.getScrollY());
+		camera.processMouseScroll(window.getScrollY() * 6);
+		window.resetScroll();
 		
 
 		glm::mat4 model(1);
-		//model = model.rotation(count.elapsed() * 15, vec3(1.0f, 0.0f, 0.0f));
-		//model = model * model.rotation(count.elapsed() * 15, vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, (GLfloat)count.elapsed(), glm::vec3(1.0f, 0.3f, 0.6f));
 		
 		glm::mat4 view;
 		view = camera.getViewMatrix();
