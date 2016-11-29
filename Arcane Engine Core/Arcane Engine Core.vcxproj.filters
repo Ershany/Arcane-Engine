@@ -69,5 +69,8 @@
     <Image Include="res\awesomeface.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\container2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
