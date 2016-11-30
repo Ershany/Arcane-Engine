@@ -1,37 +1,9 @@
-﻿Build started 11/28/2016 6:50:31 PM.
+﻿Build started 11/29/2016 8:00:58 PM.
      1>Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt src\main.cpp
-         main.cpp
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(15): warning C4244: 'initializing' : conversion from 'int' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(16): warning C4244: 'initializing' : conversion from 'int' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(107): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(108): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(114): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(115): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(116): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(119): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(121): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(123): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(125): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(127): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(135): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(136): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-     1>c:\users\brady\documents\visual studio 2013\projects\arcane engine\arcane engine core\src\main.cpp(137): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.exe" /INCREMENTAL /NOLOGO glfw3.lib opengl32.lib glew32s.lib SOIL.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.lib" /MACHINE:X86 Debug\FPSCamera.obj
-         Debug\Shader.obj
-         Debug\Window.obj
-         Debug\main.obj
-         Debug\FileUtils.obj
-         Debug\Time.obj
-         Debug\Timer.obj
-     1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-     1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-     1>glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\vc120.pdb'; linking object as if no debug info
+     1>Link:
          Arcane Engine Core.vcxproj -> C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.exe
      1>Done Building Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.73
+Time Elapsed 00:00:00.03

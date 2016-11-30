@@ -72,5 +72,8 @@
     <Image Include="res\container2.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\container2_specular.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
