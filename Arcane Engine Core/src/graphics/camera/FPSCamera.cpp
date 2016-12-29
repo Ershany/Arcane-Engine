@@ -13,7 +13,7 @@ namespace arcane {	namespace graphics {
 		updateCameraVectors();
 	}
 
-	FPSCamera::FPSCamera(GLfloat xPos, GLfloat yPos, GLfloat zPos, GLfloat xUp, GLfloat yUp, GLfloat zUp, GLfloat yaw, GLfloat pitch)
+	FPSCamera::FPSCamera(GLfloat xPos, GLfloat yPos, GLfloat zPos, GLfloat xUp, GLfloat yUp, GLfloat zUp, GLfloat yaw = YAW, GLfloat pitch = PITCH)
 		: m_Front(glm::vec3(0.0f, 0.0f, -1.0f)), m_MovementSpeed(SPEED), m_MouseSensitivity(SENSITIVITY), m_FOV(FOV)
 	{
 		m_Position = glm::vec3(xPos, yPos, zPos);
@@ -63,9 +63,9 @@ namespace arcane {	namespace graphics {
 		updateCameraVectors();
 	}
 
-	void FPSCamera::processMouseScroll(GLfloat yOffset) {
+	void FPSCamera::processMouseScroll(GLfloat offset) {
 		if (m_FOV >= 1.0f && m_FOV <= FOV) {
-			m_FOV -= yOffset;
+			m_FOV -= offset;
 		}
 		if (m_FOV < 1.0f) {
 			m_FOV = 1.0f;

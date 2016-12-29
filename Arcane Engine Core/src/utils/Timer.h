@@ -9,9 +9,18 @@ namespace arcane {
 	private:
 		double startTime;
 	public:
+		/**
+		* Constructs an object that acts as a timer
+		*/
 		Timer();
+
+		/**
+		* Resets the timers starting time
+		*/
 		void reset();
-		double elapsed();
+
+		// Getter
+		inline double elapsed() { return glfwGetTime() - startTime; }
 	};
 
 } 

@@ -160,13 +160,13 @@ int main() {
 		lastY = window.getMouseY();
 
 		if (window.isKeyPressed(GLFW_KEY_W))
-			camera.processKeyboard(arcane::graphics::FORWARD, time.delta);
+			camera.processKeyboard(arcane::graphics::FORWARD, time.getDeltaTime());
 		if (window.isKeyPressed(GLFW_KEY_S))
-			camera.processKeyboard(arcane::graphics::BACKWARD, time.delta);
+			camera.processKeyboard(arcane::graphics::BACKWARD, time.getDeltaTime());
 		if (window.isKeyPressed(GLFW_KEY_A))
-			camera.processKeyboard(arcane::graphics::LEFT, time.delta);
+			camera.processKeyboard(arcane::graphics::LEFT, time.getDeltaTime());
 		if (window.isKeyPressed(GLFW_KEY_D))
-			camera.processKeyboard(arcane::graphics::RIGHT, time.delta);
+			camera.processKeyboard(arcane::graphics::RIGHT, time.getDeltaTime());
 
 		camera.processMouseScroll(window.getScrollY() * 6);
 		window.resetScroll();
@@ -182,7 +182,6 @@ int main() {
 
 		glm::vec3 cameraPosition = camera.getPosition();
 		shader.setUniform3f("viewPos", glm::vec3(cameraPosition.x, cameraPosition.y, cameraPosition.z));
-		shader.setUniform3f("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
 		shader.setUniform1f("material.shininess", 32.0f);
 
 		shader.setUniform3f("light.position", glm::vec3(lightPos.x, lightPos.y, lightPos.z));

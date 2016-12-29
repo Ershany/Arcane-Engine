@@ -1,9 +1,44 @@
-﻿Build started 11/29/2016 8:00:58 PM.
-     1>Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" on node 2 (Build target(s)).
-     1>Link:
-         Arcane Engine Core.vcxproj -> C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Debug\Arcane Engine Core.exe
-     1>Done Building Project "C:\Users\Brady\documents\visual studio 2013\Projects\Arcane Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" (Build target(s)).
+﻿Build started 2016-12-29 12:42:34 PM.
+     1>Project "C:\Users\Brady\Documents\Visual Studio 2013\Projects\Arcane-Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D GLEW_STATIC /D _CRT_SECURE_NO_WARNINGS /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt src\graphics\Shader.cpp src\graphics\Window.cpp src\main.cpp src\utils\Timer.cpp
+         Shader.cpp
+         Generating Code...
+         Compiling...
+         Window.cpp
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\graphics\window.cpp(95): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+         Generating Code...
+         Compiling...
+         main.cpp
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(143): warning C4244: 'initializing' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(144): warning C4244: 'initializing' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(152): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(153): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(158): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(159): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(160): warning C4244: '=' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(163): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(165): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(167): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(169): warning C4244: 'argument' : conversion from 'GLdouble' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(171): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(179): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(180): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\brady\documents\visual studio 2013\projects\arcane-engine\arcane engine core\src\main.cpp(181): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         Timer.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Brady\Documents\Visual Studio 2013\Projects\Arcane-Engine\Debug\Arcane Engine Core.exe" /INCREMENTAL /NOLOGO glfw3.lib opengl32.lib glew32s.lib SOIL.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Brady\Documents\Visual Studio 2013\Projects\Arcane-Engine\Debug\Arcane Engine Core.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Brady\Documents\Visual Studio 2013\Projects\Arcane-Engine\Debug\Arcane Engine Core.lib" /MACHINE:X86 Debug\FPSCamera.obj
+         Debug\Shader.obj
+         Debug\Window.obj
+         Debug\main.obj
+         Debug\FileUtils.obj
+         Debug\Time.obj
+         Debug\Timer.obj
+         Arcane Engine Core.vcxproj -> C:\Users\Brady\Documents\Visual Studio 2013\Projects\Arcane-Engine\Debug\Arcane Engine Core.exe
+     1>Done Building Project "C:\Users\Brady\Documents\Visual Studio 2013\Projects\Arcane-Engine\Arcane Engine Core\Arcane Engine Core.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.03
+Time Elapsed 00:00:02.20
