@@ -17,9 +17,6 @@ GLfloat yaw = -90.0f;
 GLfloat pitch = 0.0f;
 
 int main() {
-	arcane::Logger log;
-	log.info("Shader Initialization", "Shader successfully initialized");
-
 	glEnable(GL_DEPTH_TEST);
 
 	arcane::graphics::Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");

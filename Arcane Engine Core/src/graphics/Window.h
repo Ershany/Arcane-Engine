@@ -4,6 +4,8 @@
 #include <GLFW\glfw3.h>
 #include <iostream>
 
+#include "..\utils\Logger.h"
+
 namespace arcane { namespace graphics {
 
 #define MAX_KEYS 1024
@@ -14,6 +16,7 @@ namespace arcane { namespace graphics {
 		const char *m_Title;
 		int m_Width, m_Height;
 		GLFWwindow *m_Window;
+		arcane::Logger m_log;
 		
 		bool m_Keys[MAX_KEYS];
 		bool m_Buttons[MAX_BUTTONS];

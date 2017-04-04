@@ -10,9 +10,11 @@ namespace arcane { namespace graphics {
 		m_Title = title;
 		m_Width = width;
 		m_Height = height;
+		m_log.setOutputFile("logged_files/window_creation.txt");
+		m_log.clearFileContents();
 
 		if (!init()) {
-			//TODO: LOG THIS
+			m_log.error("Window Initialization", "Could not initialize window class");
 			glfwDestroyWindow(m_Window);
 			glfwTerminate();
 		}
@@ -26,6 +28,7 @@ namespace arcane { namespace graphics {
 	bool Window::init() {
 		if (!glfwInit()) {
 			std::cout << "GLFW Failed To Initialize" << std::endl;
+			m_log.error("Window Initialization", "Could not initialize the GLFW window");
 		}
 		
 
@@ -39,6 +42,7 @@ namespace arcane { namespace graphics {
 		}
 		
 		if (!m_Window) {
+			m_log.error("Window Initialization", "Could not create the GLFW window");
 			std::cout << "GLFW Window Couldn't Be Created" << std::endl;
 		}
 
@@ -69,6 +73,7 @@ namespace arcane { namespace graphics {
 		// Initialize GLEW (allows us to use newer versions of OpenGL)
 		if (glewInit() != GLEW_OK) {
 			std::cout << "Could not Initialize GLEW" << std::endl;
+			m_log.error("Window Initialization", "Could not initialize the GLEW");
 			return 0;
 		}
 		std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
