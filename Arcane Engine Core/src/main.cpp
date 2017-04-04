@@ -9,6 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "utils\Time.h"
 #include "graphics\camera\FPSCamera.h"
+#include "utils\Logger.h"
 
 arcane::graphics::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f); 
 arcane::graphics::Window window("Arcane Engine", 1366, 768);
@@ -16,6 +17,9 @@ GLfloat yaw = -90.0f;
 GLfloat pitch = 0.0f;
 
 int main() {
+	arcane::Logger log;
+	log.info("Shader Initialization", "Shader successfully initialized");
+
 	glEnable(GL_DEPTH_TEST);
 
 	arcane::graphics::Shader shader("src/shaders/basic.vert", "src/shaders/basic.frag");
@@ -23,7 +27,7 @@ int main() {
 
 	// Set up vertex data (and buffer(s)) and attribute pointers
 	GLfloat vertices[] = {
-		 // Positions         // Normals           // Texture Coords
+		 // Positions         // Normals           // Texture Coords (UV Mapping)
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
 	 	 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
 		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
@@ -67,6 +71,7 @@ int main() {
 		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 	};
 
+	// Note: When calling glVertexAttribPointer, it uses whatever GL_ARRAY_BUFFER is set to at the time to read its data from
 	GLuint VBO, VAO, lightVAO;
 	glGenVertexArrays(1, &VAO);
 	glGenVertexArrays(1, &lightVAO);
@@ -76,22 +81,22 @@ int main() {
 	
 	glBindVertexArray(VAO);
 	// Position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0); // Position
+	glEnableVertexAttribArray(0); // Enable them so they are used when drawing
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat))); // Normals
+	glEnableVertexAttribArray(1); // Enable them so they are used when drawing
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat))); // TexCoords (UV Mapping)
+	glEnableVertexAttribArray(2); // Enable them so they are used when drawing
 	glBindVertexArray(0); // Unbind VAO
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind VBO
 
 	// Light Cube
 	glBindVertexArray(lightVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-	glBindVertexArray(0); //unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glEnableVertexAttribArray(0); // Enable them so they are used when drawing
+	glBindVertexArray(0); // Unbind VAO
+	glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind VBO
 
 	// Light position
 	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
@@ -106,8 +111,8 @@ int main() {
 	// Diffuse map
 	image = SOIL_load_image("res//container2.png", &width, &height, 0, SOIL_LOAD_RGB);
 	glBindTexture(GL_TEXTURE_2D, diffuseMap);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	glGenerateMipmap(GL_TEXTURE_2D);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image); // Load our diffuse map
+	glGenerateMipmap(GL_TEXTURE_2D); // Generate mip maps for what is currently bounded to GL_TEXTURE_2D
 	SOIL_free_image_data(image);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -119,7 +124,7 @@ int main() {
 	image = SOIL_load_image("res//container2_specular.png", &width, &height, 0, SOIL_LOAD_RGB);
 	glBindTexture(GL_TEXTURE_2D, specularMap);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-	glGenerateMipmap(GL_TEXTURE_2D);
+	glGenerateMipmap(GL_TEXTURE_2D); // Generate mip maps for what is currently bounded to GL_TEXTURE_2D
 	SOIL_free_image_data(image);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -143,7 +148,7 @@ int main() {
 	GLfloat lastX = window.getMouseX();
 	GLfloat lastY = window.getMouseY();
 	while (!window.closed()) {
-		glClearColor(0.0f, 0.05f, 0.15f, 1.0f); // Scene background colour
+		glClearColor(0.2f, 0.0f, 0.0f, 1.0f); // Scene background colour
 		window.clear();
 		time.update();
 
@@ -175,22 +180,18 @@ int main() {
 
 		// Cube
 		shader.enable();
-		glm::vec3 lightColour;
-		lightColour.x = sin(count.elapsed() * 2.0f);
-		lightColour.y = sin(count.elapsed() * 0.7f);
-		lightColour.z = sin(count.elapsed() * 1.3f);
-
 		glm::vec3 cameraPosition = camera.getPosition();
 		shader.setUniform3f("viewPos", glm::vec3(cameraPosition.x, cameraPosition.y, cameraPosition.z));
 		shader.setUniform1f("material.shininess", 32.0f);
 
 		shader.setUniform3f("light.position", glm::vec3(lightPos.x, lightPos.y, lightPos.z));
-		shader.setUniform3f("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+		shader.setUniform3f("light.ambient", glm::vec3(0.15f, 0.15f, 0.15f));
 		shader.setUniform3f("light.diffuse", glm::vec3(0.6f, 0.6f, 0.6f));
 		shader.setUniform3f("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 		glm::mat4 model(1);
-		//model = glm::rotate(model, (GLfloat)count.elapsed(), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, (GLfloat)count.elapsed(), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(2, 2, 2));
 		glm::mat4 view;
 		view = camera.getViewMatrix();
 		glm::mat4 projection;
@@ -206,7 +207,7 @@ int main() {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, specularMap);
 
-
+		
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		glBindVertexArray(0);

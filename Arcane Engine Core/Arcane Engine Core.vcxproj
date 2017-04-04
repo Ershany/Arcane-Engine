@@ -82,6 +82,7 @@
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\utils\FileUtils.cpp" />
+    <ClCompile Include="src\utils\Logger.cpp" />
     <ClCompile Include="src\utils\Time.cpp" />
     <ClCompile Include="src\utils\Timer.cpp" />
   </ItemGroup>
@@ -90,6 +91,7 @@
     <ClInclude Include="src\graphics\Shader.h" />
     <ClInclude Include="src\graphics\Window.h" />
     <ClInclude Include="src\utils\FileUtils.h" />
+    <ClInclude Include="src\utils\Logger.h" />
     <ClInclude Include="src\utils\Time.h" />
     <ClInclude Include="src\utils\Timer.h" />
   </ItemGroup>
