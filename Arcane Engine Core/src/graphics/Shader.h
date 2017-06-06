@@ -33,7 +33,7 @@ namespace arcane { namespace graphics {
 		void setUniform1f(const GLchar* name, float value);
 
 		/**
-		* Assigns a new value to a uniform integer in the shader
+		* Assigns a new value to a uniform integer(or location value) in the shader
 		*
 		* @param name Name of the uniform integer that is being modified
 		* @param value The new value that gets assigned to the uniform integer

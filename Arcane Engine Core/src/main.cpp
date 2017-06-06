@@ -110,28 +110,28 @@ int main() {
 	glBindTexture(GL_TEXTURE_2D, diffuseMap);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image); // Load our diffuse map
 	glGenerateMipmap(GL_TEXTURE_2D); // Generate mip maps for what is currently bounded to GL_TEXTURE_2D
-	SOIL_free_image_data(image);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	SOIL_free_image_data(image);
 
 	// Specular map
 	image = SOIL_load_image("res//container2_specular.png", &width, &height, 0, SOIL_LOAD_RGB);
 	glBindTexture(GL_TEXTURE_2D, specularMap);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D); // Generate mip maps for what is currently bounded to GL_TEXTURE_2D
-	SOIL_free_image_data(image);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	SOIL_free_image_data(image);
 
 	shader.enable();
-	shader.setUniform1i("material.diffuse", 0);
-	shader.setUniform1i("material.specular", 1);
+	shader.setUniform1i("material.diffuse", 0); // Set material.diffuse's texture unit to 0
+	shader.setUniform1i("material.specular", 1); // Set material.specular's texture unit to 1
 
 	// Prepare the fps counter right before the first tick
 	arcane::Timer timer;
@@ -169,10 +169,18 @@ int main() {
 			camera.processKeyboard(arcane::graphics::LEFT, time.getDeltaTime());
 		if (window.isKeyPressed(GLFW_KEY_D))
 			camera.processKeyboard(arcane::graphics::RIGHT, time.getDeltaTime());
+		if (window.isKeyPressed(GLFW_KEY_SPACE))
+			camera.processKeyboard(arcane::graphics::UPWARDS, time.getDeltaTime());
+		if (window.isKeyPressed(GLFW_KEY_LEFT_CONTROL))
+			camera.processKeyboard(arcane::graphics::DOWNWARDS, time.getDeltaTime());
 
 		camera.processMouseScroll(window.getScrollY() * 6);
 		window.resetScroll();
-
+		
+		// Change lightPos
+		lightPos.x = sin(glfwGetTime()) * 2.0f;
+		lightPos.y = cos(glfwGetTime()) * 1.5f;
+		lightPos.z = -2.0f;
 
 
 		// Cube
@@ -180,14 +188,14 @@ int main() {
 		glm::vec3 cameraPosition = camera.getPosition();
 		shader.setUniform3f("viewPos", glm::vec3(cameraPosition.x, cameraPosition.y, cameraPosition.z));
 		shader.setUniform1f("material.shininess", 32.0f);
-
 		shader.setUniform3f("light.position", glm::vec3(lightPos.x, lightPos.y, lightPos.z));
 		shader.setUniform3f("light.ambient", glm::vec3(0.15f, 0.15f, 0.15f));
 		shader.setUniform3f("light.diffuse", glm::vec3(0.6f, 0.6f, 0.6f));
 		shader.setUniform3f("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 		glm::mat4 model(1);
-		model = glm::rotate(model, (GLfloat)count.elapsed(), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -7.0f));
+		model = glm::rotate(model, (GLfloat)count.elapsed(), glm::vec3(1.0f, 0.5f, 0.2f));
 		model = glm::scale(model, glm::vec3(2, 2, 2));
 		glm::mat4 view;
 		view = camera.getViewMatrix();
@@ -214,6 +222,7 @@ int main() {
 		model = glm::mat4();
 		model = glm::translate(model, lightPos);
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		
 
 		lampShader.enable();
 		lampShader.setUniformMat4("model", model);

@@ -11,7 +11,9 @@ namespace arcane { namespace graphics {
 		FORWARD,
 		BACKWARD,
 		LEFT,
-		RIGHT
+		RIGHT,
+		UPWARDS,
+		DOWNWARDS
 	};
 
 	// Default Camera Values
