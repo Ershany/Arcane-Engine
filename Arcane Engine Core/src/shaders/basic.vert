@@ -18,5 +18,6 @@ void main() {
 	TexCoords = texCoords;
 
 	// Inverse is a very costly function, maybe do it on the cpu then send it to the gpu as a uniform
+	// Also this saves how many times this costly calculation is done, since right now it is happening every vertex, instead of once per triangle
 	Normal = mat3(transpose(inverse(model))) * normal;
 }
