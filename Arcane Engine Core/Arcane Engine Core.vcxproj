@@ -96,7 +96,9 @@
     <ClInclude Include="src\utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\basic.frag" />
+    <None Include="src\shaders\directionalLight.frag" />
+    <None Include="src\shaders\pointlight.frag" />
+    <None Include="src\shaders\spotlight.frag" />
     <None Include="src\shaders\basic.vert" />
     <None Include="src\shaders\lightCube.frag" />
   </ItemGroup>
@@ -104,6 +106,7 @@
     <Image Include="res\awesomeface.png" />
     <Image Include="res\container.jpg" />
     <Image Include="res\container2.png" />
+    <Image Include="res\container2_emission.png" />
     <Image Include="res\container2_specular.png" />
     <Image Include="res\matrix.jpg" />
   </ItemGroup>

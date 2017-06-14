@@ -64,9 +64,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\basic.frag" />
     <None Include="src\shaders\basic.vert" />
     <None Include="src\shaders\lightCube.frag" />
+    <None Include="src\shaders\spotlight.frag" />
+    <None Include="src\shaders\pointlight.frag" />
+    <None Include="src\shaders\directionalLight.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
@@ -82,6 +84,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\matrix.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\container2_emission.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
