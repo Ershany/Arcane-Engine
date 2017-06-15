@@ -9,6 +9,7 @@ Arcane Engine uses:
 - GLEW (Allows me to use modern versions of OpenGL)
 - GLM (Math library for OpenGL)
 - SOIL (Image loader)
+- Assimp (Model loader)
 
 
 This README will be updated in the future with more information.
