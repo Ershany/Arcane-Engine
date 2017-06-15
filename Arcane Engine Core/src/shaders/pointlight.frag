@@ -51,7 +51,7 @@ void main() {
 	vec3 specular = light.specular * spec * texture(material.specular, TexCoords).rgb;
 
 	// Emission
-	vec3 emission = vec3(texture(material.emission, TexCoords)) + abs(sin(time));
+	vec3 emission = vec3(texture(material.emission, TexCoords)) * clamp((sin(time) * 2) - 1, 0, 1);
 
 	// Point light attenuation calculations
 	float distance = length(light.position - FragPos);
