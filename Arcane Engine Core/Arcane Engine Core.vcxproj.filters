@@ -69,6 +69,7 @@
     <None Include="src\shaders\spotlight.frag" />
     <None Include="src\shaders\pointlight.frag" />
     <None Include="src\shaders\directionalLight.frag" />
+    <None Include="src\shaders\multipleLight.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
