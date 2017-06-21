@@ -17,8 +17,9 @@ namespace arcane { namespace graphics {
 		
 		void Draw(Shader &shader) const;
 	private:
-		std::vector<Mesh> meshes;
-		std::string directory;
+		std::vector<Texture> m_LoadedTextures; // Used so the same texture doesn't get loaded into memory twice
+		std::vector<Mesh> m_Meshes;
+		std::string m_Directory;
 
 
 		void loadModel(const std::string &path);

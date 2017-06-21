@@ -23,15 +23,21 @@ namespace arcane { namespace graphics {
 
 	class Mesh {
 	public:
-		// Mesh Data
-		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
-		std::vector<Texture> textures;
-
 		Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<Texture> textures);
 		void Draw(Shader &shader) const;
+
+		// Getters
+		inline std::vector<Vertex> const &getVertices() const { return m_Vertices; }
+		inline std::vector<unsigned int> const &getIndices() const { return m_Indices; }
+		inline std::vector<Texture> const &getTextures() const { return m_Textures; }
 	private:
 		unsigned int m_VAO, m_VBO, m_EBO;
+
+		// Mesh Data
+		std::vector<Vertex> m_Vertices;
+		std::vector<unsigned int> m_Indices;
+		std::vector<Texture> m_Textures;
+
 
 		void setupMesh();
 	};

@@ -10,8 +10,8 @@ namespace arcane { namespace graphics {
 	}
 
 	void Model::Draw(Shader &shader) const {
-		for (unsigned int i = 0; i < meshes.size(); ++i) {
-			meshes[i].Draw(shader);
+		for (unsigned int i = 0; i < m_Meshes.size(); ++i) {
+			m_Meshes[i].Draw(shader);
 		}
 	}
 
@@ -24,7 +24,7 @@ namespace arcane { namespace graphics {
 			return;
 		}
 
-		directory = path.substr(0, path.find_last_of('/'));
+		m_Directory = path.substr(0, path.find_last_of('/'));
 
 		processNode(scene->mRootNode, scene);
 	}
@@ -34,7 +34,7 @@ namespace arcane { namespace graphics {
 		for (unsigned int i = 0; i < node->mNumMeshes; ++i) {
 			// Each node has an array of mesh indices, use these indices to get the meshes from the scene
 			aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-			meshes.push_back(processMesh(mesh, scene));
+			m_Meshes.push_back(processMesh(mesh, scene));
 		}
 		// Process all of the node's children
 		for (unsigned int i = 0; i < node->mNumChildren; ++i) {
@@ -111,12 +111,24 @@ namespace arcane { namespace graphics {
 		for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i) {
 			aiString str;
 			mat->GetTexture(type, i, &str);
+			bool skip = false;
 			
-			Texture texture;
-			texture.id = TextureFromFile(str.C_Str(), directory); // Assumption made: material stuff is located in the same directory as the model object
-			texture.type = typeName;
-			texture.path = str;
-			textures.push_back(texture);
+			for (unsigned int j = 0; j < m_LoadedTextures.size(); ++j) {
+				if (std::strcmp(str.C_Str(), m_LoadedTextures[j].path.C_Str()) == 0) {
+					textures.push_back(m_LoadedTextures[j]);
+					skip = true;
+					break;
+				}
+			}
+
+			if (!skip) {
+				Texture texture;
+				texture.id = TextureFromFile(str.C_Str(), m_Directory); // Assumption made: material stuff is located in the same directory as the model object
+				texture.type = typeName;
+				texture.path = str;
+				textures.push_back(texture);
+				m_LoadedTextures.push_back(texture); // Add to loaded textures, so no duplicate texture gets loaded
+			}
 		}
 		return textures;
 	}
