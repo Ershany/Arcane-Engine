@@ -1,8 +1,10 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <assimp\Importer.hpp>
 #include <string>
 #include <vector>
+
 #include "Shader.h"
 
 namespace arcane { namespace graphics {
@@ -16,6 +18,7 @@ namespace arcane { namespace graphics {
 	struct Texture {
 		unsigned int id;
 		std::string type;
+		aiString path; // Allows us to compare with other textures so no duplicate textures are generated
 	};
 
 	class Mesh {
