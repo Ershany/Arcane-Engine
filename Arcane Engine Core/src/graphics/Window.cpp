@@ -1,4 +1,4 @@
-#define V_SYNC 1
+#define V_SYNC 0
 #define FULLSCREEN_MODE 0
 #define SHOW_MOUSE 0
 

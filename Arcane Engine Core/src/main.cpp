@@ -10,6 +10,7 @@
 #include "utils\Time.h"
 #include "graphics\camera\FPSCamera.h"
 #include "utils\Logger.h"
+#include "graphics\Model.h"
 
 arcane::graphics::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 arcane::graphics::Window window("Arcane Engine", 1366, 768);
@@ -82,7 +83,7 @@ int main() {
 	};
 
 	glm::vec3 pointLightPositions[] = {
-		glm::vec3(0.7f,  0.2f,  2.0f),
+		glm::vec3(3.0f,  0.2f,  -1.0f),
 		glm::vec3(2.3f, -3.3f, -4.0f),
 		glm::vec3(-4.0f,  2.0f, -12.0f),
 		glm::vec3(0.0f,  0.0f, -3.0f)
@@ -97,7 +98,7 @@ int main() {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	glBindVertexArray(VAO); // Will fill it with data from the bounded Array_Buffer
-	// Position attribute
+							// Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)0); // Position
 	glEnableVertexAttribArray(0); // Enable them so they are used when drawing
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat))); // Normals
@@ -160,19 +161,13 @@ int main() {
 	SOIL_free_image_data(image);
 
 	shader.enable();
-	shader.setUniform1i("material.diffuse", 0); // Set material.diffuse's texture unit to 0
-	shader.setUniform1i("material.specular", 1); // Set material.specular's texture unit to 1
-	shader.setUniform1i("material.emission", 2); // Set the material.emission's texture unit to 2
 
-	// Activate a bind to texture unit 0 with our diffuse map
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, diffuseMap);
-	// Activate a bind to texture unit 1 with our specular map
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, specularMap);
-	// Activate a bind to texture unit 2 with our emission map
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, emissionMap);
+
+	// Load model
+	//std::string test = "res/3D_Models/Crysis/nanosuit.obj";
+	std::string test = "res/3D_Models/Sponza/sponza.obj";
+	//std::string test = "res/3D_Models/Town/Buildings.obj";
+	arcane::graphics::Model nanosuitModel(test.c_str());
 
 
 	// Prepare the fps counter right before the first tick
@@ -187,7 +182,7 @@ int main() {
 	GLfloat lastX = window.getMouseX();
 	GLfloat lastY = window.getMouseY();
 	while (!window.closed()) {
-		glClearColor(0.2f, 0.0f, 0.0f, 1.0f); // Scene background colour
+		glClearColor(0.0f, 0.0f, 0.2f, 1.0f); // Scene background colour
 		window.clear();
 		time.update();
 
@@ -239,7 +234,7 @@ int main() {
 		shader.setUniform1f("pointLights[0].constant", 1.0f);
 		shader.setUniform1f("pointLights[0].linear", 0.09);
 		shader.setUniform1f("pointLights[0].quadratic", 0.032);
-		
+
 		shader.setUniform3f("pointLights[0].position", pointLightPositions[0]);
 		shader.setUniform3f("pointLights[0].ambient", glm::vec3(0.05f, 0.05f, 0.05f));
 		shader.setUniform3f("pointLights[0].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
@@ -291,16 +286,12 @@ int main() {
 		shader.setUniformMat4("projection", projection);
 		shader.setUniform1f("time", glfwGetTime());
 
-		// Draw boxes
-		glBindVertexArray(VAO);
-		for (unsigned int i = 0; i < 10; i++) {
-			glm::mat4 model;
-			model = glm::translate(model, cubePositions[i]);
-			model = glm::rotate(model, glm::radians(20.0f * (i + (float)glfwGetTime())), glm::vec3(0.3f, 0.5f, 1.0f));
-			shader.setUniformMat4("model", model);
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-		glBindVertexArray(0);
+		// Draw model
+		glm::mat4 model;
+		model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
+		model = glm::translate(model, glm::vec3(0.0f, -11.0f, 0.0f));
+		shader.setUniformMat4("model", model);
+		nanosuitModel.Draw(shader);
 
 
 		glBindVertexArray(lightVAO);
@@ -308,7 +299,7 @@ int main() {
 		lampShader.setUniformMat4("view", view);
 		lampShader.setUniformMat4("projection", projection);
 		// LightCube
-		for (unsigned int i = 0; i < 4; ++i) {
+		for (unsigned int i = 0; i < 1; ++i) {
 			glm::mat4 model = glm::mat4();
 			model = glm::translate(model, pointLightPositions[i]);
 			model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
@@ -316,9 +307,8 @@ int main() {
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
 		glBindVertexArray(0);
-		
 
-		
+
 
 		window.update();
 		if (timer.elapsed() >= 1) {

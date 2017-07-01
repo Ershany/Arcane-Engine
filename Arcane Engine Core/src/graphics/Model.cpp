@@ -2,10 +2,11 @@
 
 #include <iostream>
 #include <stb_image_aug.h>
+#include <iostream>
 
 namespace arcane { namespace graphics {
 
-	Model::Model(char *path) {
+	Model::Model(const char *path) {
 		loadModel(path);
 	}
 
