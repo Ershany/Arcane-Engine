@@ -23,7 +23,7 @@ namespace arcane { namespace graphics {
 
 	class Mesh {
 	public:
-		Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<Texture> textures);
+		Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<Texture> &textures);
 		void Draw(Shader &shader) const;
 
 		// Getters
@@ -37,7 +37,6 @@ namespace arcane { namespace graphics {
 		std::vector<Vertex> m_Vertices;
 		std::vector<unsigned int> m_Indices;
 		std::vector<Texture> m_Textures;
-
 
 		void setupMesh();
 	};

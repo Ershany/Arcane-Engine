@@ -4,11 +4,11 @@
 
 namespace arcane { namespace graphics {
 
-	Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<Texture> textures) {
+	Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<Texture> &textures) {
 		this->m_Vertices = vertices;
 		this->m_Indices = indices;
 		this->m_Textures = textures;
-
+		
 		setupMesh();
 	}
 
@@ -64,7 +64,9 @@ namespace arcane { namespace graphics {
 
 		// Draw
 		glBindVertexArray(m_VAO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 		glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
 

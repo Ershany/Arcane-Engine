@@ -104,7 +104,6 @@ namespace arcane { namespace graphics {
 		}
 
 		return Mesh(vertices, indices, textures);
-
 	}
 
 	std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {

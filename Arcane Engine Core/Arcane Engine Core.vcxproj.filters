@@ -45,6 +45,9 @@
     <ClCompile Include="src\graphics\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\terrain\Terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\Window.h">
@@ -74,6 +77,9 @@
     <ClInclude Include="src\graphics\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\terrain\Terrain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\basic.vert" />
@@ -82,6 +88,9 @@
     <None Include="src\shaders\pointlight.frag" />
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\multipleLight.frag" />
+    <None Include="src\shaders\terrain.frag" />
+    <None Include="res\3D_Models\Crysis\nanosuit.blend" />
+    <None Include="res\3D_Models\Crysis\nanosuit.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
@@ -102,5 +111,74 @@
     <Image Include="res\container2_emission.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\terrain\blendMap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\terrain\dirt.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\terrain\grass.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\terrain\sand.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\terrain\stone.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\helmet_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\helmet_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\leg_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\leg_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\leg_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\helmet_diff.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\hand_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\hand_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\hand_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\glass_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\glass_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\body_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\body_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\body_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\arm_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\arm_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\3D_Models\Crysis\arm_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="res\3D_Models\Crysis\nanosuit.obj" />
   </ItemGroup>
 </Project>
