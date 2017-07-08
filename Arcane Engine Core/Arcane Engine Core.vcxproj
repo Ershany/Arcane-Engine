@@ -83,6 +83,9 @@
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\platform\OpenGL\Buffer.cpp" />
+    <ClCompile Include="src\platform\OpenGL\IndexBuffer.cpp" />
+    <ClCompile Include="src\platform\OpenGL\VertexArray.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
     <ClCompile Include="src\utils\FileUtils.cpp" />
     <ClCompile Include="src\utils\Logger.cpp" />
@@ -95,6 +98,9 @@
     <ClInclude Include="src\graphics\Model.h" />
     <ClInclude Include="src\graphics\Shader.h" />
     <ClInclude Include="src\graphics\Window.h" />
+    <ClInclude Include="src\platform\OpenGL\Buffer.h" />
+    <ClInclude Include="src\platform\OpenGL\IndexBuffer.h" />
+    <ClInclude Include="src\platform\OpenGL\VertexArray.h" />
     <ClInclude Include="src\terrain\Terrain.h" />
     <ClInclude Include="src\utils\FileUtils.h" />
     <ClInclude Include="src\utils\Logger.h" />
@@ -102,8 +108,6 @@
     <ClInclude Include="src\utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\3D_Models\Crysis\nanosuit.blend" />
-    <None Include="res\3D_Models\Crysis\nanosuit.mtl" />
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\multipleLight.frag" />
     <None Include="src\shaders\pointlight.frag" />
@@ -113,23 +117,6 @@
     <None Include="src\shaders\terrain.frag" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\3D_Models\Crysis\arm_dif.png" />
-    <Image Include="res\3D_Models\Crysis\arm_showroom_ddn.png" />
-    <Image Include="res\3D_Models\Crysis\arm_showroom_spec.png" />
-    <Image Include="res\3D_Models\Crysis\body_dif.png" />
-    <Image Include="res\3D_Models\Crysis\body_showroom_ddn.png" />
-    <Image Include="res\3D_Models\Crysis\body_showroom_spec.png" />
-    <Image Include="res\3D_Models\Crysis\glass_ddn.png" />
-    <Image Include="res\3D_Models\Crysis\glass_dif.png" />
-    <Image Include="res\3D_Models\Crysis\hand_dif.png" />
-    <Image Include="res\3D_Models\Crysis\hand_showroom_ddn.png" />
-    <Image Include="res\3D_Models\Crysis\hand_showroom_spec.png" />
-    <Image Include="res\3D_Models\Crysis\helmet_diff.png" />
-    <Image Include="res\3D_Models\Crysis\helmet_showroom_ddn.png" />
-    <Image Include="res\3D_Models\Crysis\helmet_showroom_spec.png" />
-    <Image Include="res\3D_Models\Crysis\leg_dif.png" />
-    <Image Include="res\3D_Models\Crysis\leg_showroom_ddn.png" />
-    <Image Include="res\3D_Models\Crysis\leg_showroom_spec.png" />
     <Image Include="res\awesomeface.png" />
     <Image Include="res\container.jpg" />
     <Image Include="res\container2.png" />
@@ -141,9 +128,6 @@
     <Image Include="res\terrain\grass.png" />
     <Image Include="res\terrain\sand.png" />
     <Image Include="res\terrain\stone.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="res\3D_Models\Crysis\nanosuit.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
