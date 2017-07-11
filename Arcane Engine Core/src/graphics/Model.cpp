@@ -4,6 +4,8 @@
 #include <stb_image_aug.h>
 #include <iostream>
 
+#include "../platform/OpenGL/Utility.h"
+
 namespace arcane { namespace graphics {
 
 	Model::Model(const char *path) {
@@ -106,7 +108,7 @@ namespace arcane { namespace graphics {
 		return Mesh(vertices, indices, textures);
 	}
 
-	std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName) {
+	std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, const char *typeName) {
 		std::vector<Texture> textures;
 		for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i) {
 			aiString str;
@@ -123,7 +125,8 @@ namespace arcane { namespace graphics {
 
 			if (!skip) {
 				Texture texture;
-				texture.id = TextureFromFile(str.C_Str(), m_Directory); // Assumption made: material stuff is located in the same directory as the model object
+				
+				texture.id = opengl::Utility::loadTextureFromFile((m_Directory + "/" + std::string(str.C_Str())).c_str()); // Assumption made: material stuff is located in the same directory as the model object
 				texture.type = typeName;
 				texture.path = str;
 				textures.push_back(texture);
@@ -132,44 +135,4 @@ namespace arcane { namespace graphics {
 		}
 		return textures;
 	}
-
-	unsigned int Model::TextureFromFile(const char *path, const std::string &directory) {
-		std::string filename = std::string(path);
-		filename = directory + '/' + filename;
-
-		unsigned int textureID;
-		glGenTextures(1, &textureID);
-
-		int width, height, nrComponents;
-		unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-		if (data) {
-			GLenum format;
-			switch (nrComponents) {
-			case 1: format = GL_RED;  break;
-			case 3: format = GL_RGB;  break;
-			case 4: format = GL_RGBA; break;
-			}
-
-			glBindTexture(GL_TEXTURE_2D, textureID);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			// Texture wrapping
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-			// Texture filtering
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			stbi_image_free(data);
-		}
-		else {
-			std::cout << "Texture failed to load at path: " << path << std::endl; // TODO log this
-			stbi_image_free(data);
-		}
-
-		return textureID;
-	}
-
 } }

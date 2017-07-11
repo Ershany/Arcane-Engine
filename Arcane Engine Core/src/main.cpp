@@ -167,12 +167,12 @@ int main() {
 
 
 	// Load model
-	//std::string test = "res/3D_Models/Crysis/nanosuit.obj";
+	std::string test = "res/3D_Models/Crysis/nanosuit.obj";
 	//std::string test = "res/3D_Models/Sponza/sponza.obj";
 	//std::string test = "res/3D_Models/Town/Buildings.obj";
 	//arcane::graphics::Model nanosuitModel(test.c_str());
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	/*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);*/
 
 	// Prepare the fps counter right before the first tick
 	arcane::Timer timer;
@@ -218,11 +218,10 @@ int main() {
 		camera.processMouseScroll(window.getScrollY() * 6);
 		window.resetScroll();
 
-		// Cube
-		/*shader.enable();
-		glm::vec3 cameraPosition = camera.getPosition();
-		shader.setUniform3f("viewPos", glm::vec3(cameraPosition.x, cameraPosition.y, cameraPosition.z));
-		shader.setUniform1f("material.shininess", 32.0f);*/
+		//shader.enable();
+		//glm::vec3 cameraPosition = camera.getPosition();
+		//shader.setUniform3f("viewPos", glm::vec3(cameraPosition.x, cameraPosition.y, cameraPosition.z));
+		//shader.setUniform1f("material.shininess", 32.0f);
 
 		//// directional light
 		//shader.setUniform3f("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
@@ -285,7 +284,7 @@ int main() {
 		glm::mat4 view;
 		view = camera.getViewMatrix();
 		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(camera.getFOV()), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(camera.getFOV()), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 500.0f);
 		shader.setUniformMat4("view", view);
 		shader.setUniformMat4("projection", projection);
 		shader.setUniform1f("time", glfwGetTime());
@@ -293,7 +292,7 @@ int main() {
 		//// Draw model
 		glm::mat4 model;
 		//model = glm::scale(model, glm::vec3(0.01f, 0.01f, 0.01f));
-		//model = glm::translate(model, glm::vec3(0.0f, -11.0f, 0.0f));
+		//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 10.0f));
 		shader.setUniformMat4("model", model);
 		//nanosuitModel.Draw(shader);
 

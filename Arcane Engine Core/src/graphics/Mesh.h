@@ -18,7 +18,7 @@ namespace arcane { namespace graphics {
 	struct Texture {
 		unsigned int id;
 		std::string type;
-		aiString path; // Allows us to compare with other textures so no duplicate textures are generated
+		aiString path; // Allows us to compare with other textures so no duplicate textures are generated. TODO change to String
 	};
 
 	class Mesh {
