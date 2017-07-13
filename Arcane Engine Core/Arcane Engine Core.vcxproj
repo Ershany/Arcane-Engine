@@ -128,6 +128,7 @@
     <Image Include="res\terrain\blendMap.png" />
     <Image Include="res\terrain\dirt.png" />
     <Image Include="res\terrain\grass.png" />
+    <Image Include="res\terrain\heightMap.png" />
     <Image Include="res\terrain\sand.png" />
     <Image Include="res\terrain\stone.png" />
   </ItemGroup>

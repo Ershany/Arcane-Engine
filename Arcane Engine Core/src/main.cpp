@@ -172,7 +172,7 @@ int main() {
 	//std::string test = "res/3D_Models/Town/Buildings.obj";
 	//arcane::graphics::Model nanosuitModel(test.c_str());
 
-	/*glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);*/
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	// Prepare the fps counter right before the first tick
 	arcane::Timer timer;
@@ -284,7 +284,7 @@ int main() {
 		glm::mat4 view;
 		view = camera.getViewMatrix();
 		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(camera.getFOV()), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 500.0f);
+		projection = glm::perspective(glm::radians(camera.getFOV()), (float)window.getWidth() / (float)window.getHeight(), 0.1f, 1000.0f);
 		shader.setUniformMat4("view", view);
 		shader.setUniformMat4("projection", projection);
 		shader.setUniform1f("time", glfwGetTime());

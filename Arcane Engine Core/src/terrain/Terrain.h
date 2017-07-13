@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include "..\graphics\Mesh.h"
 #include "..\graphics\Shader.h"
+#include <SOIL.h>
+#include <stb_image_aug.h>
 
 namespace arcane { namespace terrain {
 
@@ -12,6 +14,7 @@ namespace arcane { namespace terrain {
 	private:
 		GLfloat m_TerrainSize;
 		GLuint m_VertexSideCount;
+		GLushort m_HeightMapScale;
 
 		glm::vec3 m_Position;
 		graphics::Mesh *m_Mesh;

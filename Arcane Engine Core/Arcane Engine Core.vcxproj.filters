@@ -148,5 +148,8 @@
     <Image Include="res\terrain\stone.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\terrain\heightMap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

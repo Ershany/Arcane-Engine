@@ -7,26 +7,41 @@ namespace arcane { namespace terrain {
 	Terrain::Terrain(glm::vec3 &worldPosition)
 	{
 		m_Position = worldPosition;
-		m_VertexSideCount = 15;
-		m_TerrainSize = 5;
+		m_VertexSideCount = 1024;
+		m_TerrainSize = 2;
+		m_HeightMapScale = 100;
 
 		std::vector<graphics::Vertex> vertices;
 		std::vector<unsigned int> indices;
 		std::vector<graphics::Texture> textures;
-		for (unsigned int z = 0; z < m_VertexSideCount; z++) {
-			for (unsigned int x = 0; x < m_VertexSideCount; x++) {
+
+		// Vertex generation
+		for (GLuint z = 0; z < m_VertexSideCount; z++) {
+			for (GLuint x = 0; x < m_VertexSideCount; x++) {
 				graphics::Vertex vertex;
 
 				vertex.Position = glm::vec3(x * m_TerrainSize, 0, z * m_TerrainSize);
 				vertex.Normal = glm::vec3(0, 1, 0);
-				vertex.TexCoords = glm::vec2(m_VertexSideCount * (GLfloat)x / ((GLfloat)m_VertexSideCount - 1.0f), m_VertexSideCount * (GLfloat)z / ((GLfloat)m_VertexSideCount - 1.0f));
-				//vertex.TexCoords = glm::vec2((GLfloat)x / ((GLfloat)m_VertexSideCount - 1.0f), (GLfloat)z / ((GLfloat)m_VertexSideCount - 1.0f)); // ugly and stretched
+				vertex.TexCoords = glm::vec2((GLfloat)x / ((GLfloat)m_VertexSideCount - 1.0f), (GLfloat)z / ((GLfloat)m_VertexSideCount - 1.0f));
 
 				vertices.push_back(vertex);
 			}
 		}
 
-		// Loop through the squares and break them up into triangles
+		// Height map
+		GLint mapWidth, mapHeight;
+		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, SOIL_LOAD_L);
+		for (GLuint height = 0; height < mapHeight; ++height) {
+			for (GLuint width = 0; width < mapWidth; ++width) {
+				// Normalize height to [-1, 1]
+				GLfloat temp = (heightMapImage[width + (height * mapWidth)] / 127.5f) - 1;
+
+				vertices[width + (height * mapWidth)].Position.y = temp * m_HeightMapScale;
+			}
+		}
+		stbi_image_free(heightMapImage);
+
+		// Loop through the squares and break them up into triangles to assign indices
 		for (GLuint height = 0; height < m_VertexSideCount - 1; ++height) {
 			for (GLuint width = 0; width < m_VertexSideCount - 1; ++width) {
 				// Triangle 1
@@ -41,14 +56,31 @@ namespace arcane { namespace terrain {
 			}
 		}
 
+		// Textures
 		graphics::Texture texture;
 		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/grass.png");
 		texture.type = "texture_diffuse";
 		textures.push_back(texture);
 
+		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/dirt.png");
+		texture.type = "texture_diffuse";
+		textures.push_back(texture);
+
+		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/sand.png");
+		texture.type = "texture_diffuse";
+		textures.push_back(texture);
+
+		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/stone.png");
+		texture.type = "texture_diffuse";
+		textures.push_back(texture);
+
+		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/blendMap.png");
+		texture.type = "texture_diffuse";
+		textures.push_back(texture);
 
 
 		m_Mesh = new graphics::Mesh(vertices, indices, textures);
+		
 	}
 
 	Terrain::~Terrain() {

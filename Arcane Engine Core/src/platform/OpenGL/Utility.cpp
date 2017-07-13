@@ -35,7 +35,6 @@ namespace arcane { namespace opengl {
 			std::cout << "Texture failed to load at path: " << path << std::endl; // TODO log this
 			stbi_image_free(data);
 		}
-
 		return textureID;
 	}
 
