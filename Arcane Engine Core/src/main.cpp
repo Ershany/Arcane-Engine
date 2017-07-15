@@ -219,15 +219,15 @@ int main() {
 		window.resetScroll();
 
 		//shader.enable();
-		//glm::vec3 cameraPosition = camera.getPosition();
-		//shader.setUniform3f("viewPos", glm::vec3(cameraPosition.x, cameraPosition.y, cameraPosition.z));
-		//shader.setUniform1f("material.shininess", 32.0f);
+		glm::vec3 cameraPosition = camera.getPosition();
+		shader.setUniform3f("viewPos", glm::vec3(cameraPosition.x, cameraPosition.y, cameraPosition.z));
+		shader.setUniform1f("material.shininess", 32.0f);
 
 		//// directional light
-		//shader.setUniform3f("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
-		//shader.setUniform3f("dirLight.ambient", glm::vec3(0.05f, 0.05f, 0.05f));
-		//shader.setUniform3f("dirLight.diffuse", glm::vec3(0.4f, 0.4f, 0.4f));
-		//shader.setUniform3f("dirLight.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+		shader.setUniform3f("dirLight.direction", glm::vec3(0.0f, -1.0f, 0.0f));
+		shader.setUniform3f("dirLight.ambient", glm::vec3(0.05f, 0.05f, 0.05f));
+		shader.setUniform3f("dirLight.diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
+		shader.setUniform3f("dirLight.specular", glm::vec3(0.5f, 0.5f, 0.5f));
 
 		//// point lights
 		//shader.setUniform3f("pointLights[0].position", pointLightPositions[0]);

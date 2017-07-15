@@ -27,6 +27,7 @@ namespace arcane { namespace opengl {
 			// Texture filtering
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f); //If you want to sample the mipmap 0.4 levels larger then you openGL does by default
 
 			// Free now that the memory is 
 			stbi_image_free(data);
