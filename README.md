@@ -11,5 +11,8 @@ Arcane Engine uses:
 - SOIL (Image loader)
 - Assimp (Model/Scene loader)
 
+Below are images showcasing the current state of the engine:
+![terrain](https://user-images.githubusercontent.com/11170417/28281737-0aaabc26-6af6-11e7-9c3c-a9240b9ce0d2.png)
+![model](https://user-images.githubusercontent.com/11170417/28281633-c62d0d06-6af5-11e7-8cf3-1da3330c2d8f.png)
 
 This README will be updated in the future with more information.
