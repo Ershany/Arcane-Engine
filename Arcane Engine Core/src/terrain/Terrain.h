@@ -3,6 +3,7 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "..\graphics\Mesh.h"
 #include "..\graphics\Shader.h"
 #include <SOIL.h>
@@ -16,6 +17,7 @@ namespace arcane { namespace terrain {
 		GLuint m_VertexSideCount;
 		GLushort m_HeightMapScale;
 
+		glm::mat4 m_ModelMatrix;
 		glm::vec3 m_Position;
 		graphics::Mesh *m_Mesh;
 	public:

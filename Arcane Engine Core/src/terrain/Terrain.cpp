@@ -1,11 +1,14 @@
 #include "Terrain.h"
 
 #include "../platform/OpenGL/Utility.h"
+#include "../utils/Logger.h"
 
 namespace arcane { namespace terrain {
 
 	Terrain::Terrain(glm::vec3 &worldPosition) : m_Position(worldPosition)
 	{
+		m_ModelMatrix = glm::translate(m_ModelMatrix, worldPosition);
+
 		// Requirements to generate a mesh
 		std::vector<graphics::Vertex> vertices;
 		std::vector<unsigned int> indices;
@@ -14,9 +17,9 @@ namespace arcane { namespace terrain {
 		// Height map
 		GLint mapWidth, mapHeight;
 		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, SOIL_LOAD_L);
-		if (mapWidth != mapHeight) {
+		if (mapWidth != mapHeight + 1) {
 			std::cout << "ERROR: Can't use a heightmap with a different width and height" << std::endl;
-			// TODO: Log this
+			utils::Logger::getInstance().error("logged_files/terrain_creation.txt", "terrain initialization", "Can't use a heightmap with a different width and height");
 			return;
 		}
 
@@ -85,6 +88,7 @@ namespace arcane { namespace terrain {
 	}
 
 	void Terrain::Draw(graphics::Shader &shader) const {
+		shader.setUniformMat4("model", m_ModelMatrix);
 		m_Mesh->Draw(shader);
 	}
 

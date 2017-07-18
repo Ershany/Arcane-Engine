@@ -106,6 +106,7 @@
     <ClInclude Include="src\terrain\Terrain.h" />
     <ClInclude Include="src\utils\FileUtils.h" />
     <ClInclude Include="src\utils\Logger.h" />
+    <ClInclude Include="src\utils\Singleton.h" />
     <ClInclude Include="src\utils\Time.h" />
     <ClInclude Include="src\utils\Timer.h" />
   </ItemGroup>

@@ -1,5 +1,7 @@
 #include "Shader.h"
 
+#include "../utils/Logger.h"
+
 namespace arcane { namespace graphics {
 
 	Shader::Shader(const char *vertPath, const char *fragPath)
@@ -37,6 +39,7 @@ namespace arcane { namespace graphics {
 			std::vector<char> error(length);
 			glGetShaderInfoLog(vertex, length, &length, &error[0]);
 			std::cout << "Failed to Compile Vertex Shader" << std::endl << &error[0] << std::endl;
+			utils::Logger::getInstance().error("logged_files/shader_creation.txt", "shader initialization", "failed to compile vertex shader " + error[0]);
 			glDeleteShader(vertex);
 			return 0;
 		}
@@ -53,6 +56,7 @@ namespace arcane { namespace graphics {
 			std::vector<char> error(length);
 			glGetShaderInfoLog(fragment, length, &length, &error[0]);
 			std::cout << "Failed to Compile Fragment Shader" << std::endl << &error[0] << std::endl;
+			utils::Logger::getInstance().error("logged_files/shader_creation.txt", "shader initialization", "failed to compile fragment shader " + error[0]);
 			glDeleteShader(fragment);
 			return 0;
 		}

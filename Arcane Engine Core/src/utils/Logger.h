@@ -2,33 +2,16 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include "Singleton.h"
 
-namespace arcane {
+namespace arcane { namespace utils {
 
-	class Logger {
+	class Logger : public Singleton {
 	private:
-		enum {
-			DEBUG, INFO, WARNING, ERROR
-		};
-
-		std::ofstream filestream;
-		std::string file; // Default value set to: "logged_files/log.txt"
+		Logger();
 	public:
-		Logger(const std::string &filePath = "logged_files/log.txt");
-
-		/**
-		* Sets the output file
-		*
-		* @param filename The file that you want to set the logger to output to
-		*/
-		inline void setOutputFile(const std::string &filename) {
-			file = filename;
-		}
-
-		/**
-		* Clears out the contents in the file
-		*/
-		void clearFileContents();
+		static Logger& getInstance();
 
 		/**
 		* Logs an debug message
@@ -36,9 +19,7 @@ namespace arcane {
 		* @param module The module the debug information is assosciated with
 		* @param message The debug message that will be logged
 		*/
-		inline void debug(const std::string &module, const std::string &message) {
-			logMessage(DEBUG, module, message);
-		}
+		void debug(const std::string &filePath, std::string &module, const std::string &message);
 
 		/**
 		* Logs an information message
@@ -46,9 +27,7 @@ namespace arcane {
 		* @param module The module the info is assosciated with
 		* @param message The info message that will be logged
 		*/
-		inline void info(const std::string &module, const std::string &message) {
-			logMessage(INFO, module, message);
-		}
+		void info(const std::string &filePath, const std::string &module, const std::string &message);
 
 		/**
 		* Logs an warning message
@@ -56,9 +35,7 @@ namespace arcane {
 		* @param module The module the warning is assosciated with
 		* @param message The warning message that will be logged
 		*/
-		inline void warning(const std::string &module, const std::string &message) {
-			logMessage(WARNING, module, message);
-		}
+		void warning(const std::string &filePath, const std::string &module, const std::string &message);
 
 		/**
 		* Logs an error message
@@ -66,9 +43,7 @@ namespace arcane {
 		* @param module The module the error is assosciated with
 		* @param message The error message that will be logged
 		*/
-		inline void error(const std::string &module, const std::string &message) {
-			logMessage(ERROR, module, message);
-		}
+		void error(const std::string &filePath, const std::string &module, const std::string &message);
 	private:
 		/**
 		* Logs a message
@@ -78,6 +53,26 @@ namespace arcane {
 		* @param message The message that will be logged
 		*/
 		void logMessage(const int &priority, const std::string &module, const std::string &message);
+
+		/**
+		* Clears out the contents all of the different files that have been assigned to
+		*/
+		void clearFileContents();
+
+		/**
+		* Sets the output file
+		*
+		* @param filename The file that you want to set the logger to output to
+		*/
+		void setOutputFile(const std::string &filename);
+
+		enum {
+			DEBUG, INFO, WARNING, ERROR
+		};
+		std::vector<const std::string> filePaths;
+
+		std::ofstream filestream;
+		std::string file; // Default value set to: "logged_files/log.txt"
 	};
 
-}
+} }

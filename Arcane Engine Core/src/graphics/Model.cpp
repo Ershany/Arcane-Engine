@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "../platform/OpenGL/Utility.h"
+#include "../utils/Logger.h"
 
 namespace arcane { namespace graphics {
 
@@ -23,7 +24,8 @@ namespace arcane { namespace graphics {
 		const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-			std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl; // TODO Log this
+			std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
+			utils::Logger::getInstance().error("logged_files/model_loading.txt", "model initialization", import.GetErrorString());
 			return;
 		}
 

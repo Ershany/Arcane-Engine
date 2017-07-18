@@ -18,8 +18,8 @@ namespace arcane { namespace graphics {
 		glGenBuffers(1, &m_EBO);
 
 		glBindVertexArray(m_VAO);
+
 		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-		
 		glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(Vertex), &m_Vertices[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
