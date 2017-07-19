@@ -17,7 +17,7 @@ namespace arcane { namespace terrain {
 		// Height map
 		GLint mapWidth, mapHeight;
 		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, SOIL_LOAD_L);
-		if (mapWidth != mapHeight + 1) {
+		if (mapWidth != mapHeight) {
 			std::cout << "ERROR: Can't use a heightmap with a different width and height" << std::endl;
 			utils::Logger::getInstance().error("logged_files/terrain_creation.txt", "terrain initialization", "Can't use a heightmap with a different width and height");
 			return;

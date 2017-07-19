@@ -1,0 +1,2 @@
+Freetype 2.8 MultiThreaded Library
+Win32

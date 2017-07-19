@@ -10,6 +10,7 @@ Arcane Engine uses:
 - GLM (Math library for OpenGL)
 - SOIL (Image loader)
 - Assimp (Model/Scene loader)
+- FreeType and FreeType-GL (Text Rendering)
 
 Below are images showcasing the current state of the engine:
 ![terrain](https://user-images.githubusercontent.com/11170417/28281737-0aaabc26-6af6-11e7-9c3c-a9240b9ce0d2.png)

@@ -12,6 +12,7 @@
 #include "utils\Logger.h"
 #include "graphics\Model.h"
 #include "terrain\Terrain.h"
+#include <ft2build.h>
 
 arcane::graphics::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 arcane::graphics::Window window("Arcane Engine", 1366, 768);
