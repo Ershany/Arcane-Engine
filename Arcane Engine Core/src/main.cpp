@@ -18,8 +18,6 @@
 
 arcane::graphics::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 arcane::graphics::Window window("Arcane Engine", 1366, 768);
-GLfloat yaw = -90.0f;
-GLfloat pitch = 0.0f;
 
 int main() {
 	glEnable(GL_DEPTH_TEST);
