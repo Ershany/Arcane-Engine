@@ -1,5 +1,5 @@
 #define V_SYNC 1
-#define FULLSCREEN_MODE 0
+#define FULLSCREEN_MODE 1
 #define SHOW_MOUSE 0
 
 #include "Window.h"
@@ -16,6 +16,9 @@ namespace arcane { namespace graphics {
 			glfwDestroyWindow(m_Window);
 			glfwTerminate();
 		}
+		
+		memset(m_Keys, 0, sizeof(bool) * MAX_KEYS);
+		memset(m_Buttons, 0, sizeof(bool) * MAX_BUTTONS);
 	}
 
 	Window::~Window() {
@@ -109,6 +112,7 @@ namespace arcane { namespace graphics {
 	bool Window::isKeyPressed(unsigned int keycode) const {
 		if (keycode >= MAX_KEYS) {
 			//TODO: LOG THIS
+			std::cout << "Max key overflow in window" << std::endl;
 			return false;
 		}
 		else {
@@ -119,6 +123,7 @@ namespace arcane { namespace graphics {
 	bool Window::isMouseButtonPressed(unsigned int code) const {
 		if (code >= MAX_BUTTONS) {
 			//TODO: LOG THIS
+			std::cout << "Max mouse button overflow in window" << std::endl;
 			return false;
 		}
 		else {
