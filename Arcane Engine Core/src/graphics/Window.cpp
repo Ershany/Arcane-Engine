@@ -1,5 +1,5 @@
 #define V_SYNC 1
-#define FULLSCREEN_MODE 1
+#define FULLSCREEN_MODE 0
 #define SHOW_MOUSE 0
 
 #include "Window.h"
@@ -111,8 +111,7 @@ namespace arcane { namespace graphics {
 	/*                   Getters                    */
 	bool Window::isKeyPressed(unsigned int keycode) const {
 		if (keycode >= MAX_KEYS) {
-			//TODO: LOG THIS
-			std::cout << "Max key overflow in window" << std::endl;
+			utils::Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
 			return false;
 		}
 		else {
@@ -122,8 +121,7 @@ namespace arcane { namespace graphics {
 
 	bool Window::isMouseButtonPressed(unsigned int code) const {
 		if (code >= MAX_BUTTONS) {
-			//TODO: LOG THIS
-			std::cout << "Max mouse button overflow in window" << std::endl;
+			utils::Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
 			return false;
 		}
 		else {
