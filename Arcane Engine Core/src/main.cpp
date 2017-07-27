@@ -14,9 +14,6 @@
 #include "terrain\Terrain.h"
 #include "Scene3D.h"
 
-#include <ft2build.h>
-#include <freetype-gl.h>
-
 
 
 int main() {

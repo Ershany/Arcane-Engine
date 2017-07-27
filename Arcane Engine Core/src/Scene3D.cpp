@@ -24,10 +24,11 @@ namespace arcane {
 	void Scene3D::init() {
 		// Load models
 		Add(new graphics::Renderable3D(glm::vec3(30.0f, -10.0f, 30.0f), glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Crysis/nanosuit.obj")));
+		Add(new graphics::Renderable3D(glm::vec3(200.0f, 200.0f, 100.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 0.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Sponza/sponza.obj")));
 
 		// Terrain shader
 		terrainShader.enable();
-		terrainShader.setUniform1f("material.shininess", 32.0f);
+		terrainShader.setUniform1f("material.shininess", 128.0f);
 		terrainShader.setUniform3f("dirLight.direction", glm::vec3(-0.3f, -1.0f, -0.3f));
 		terrainShader.setUniform3f("dirLight.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
 		terrainShader.setUniform3f("dirLight.diffuse", glm::vec3(0.4f, 0.4f, 0.4f));
@@ -49,7 +50,7 @@ namespace arcane {
 
 		// Model shader
 		modelShader.enable();
-		modelShader.setUniform1f("material.shininess", 32.0f);
+		modelShader.setUniform1f("material.shininess", 128.0f);
 		modelShader.setUniform3f("dirLight.direction", glm::vec3(-0.3f, -1.0f, -0.3f));
 		modelShader.setUniform3f("dirLight.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
 		modelShader.setUniform3f("dirLight.diffuse", glm::vec3(0.4f, 0.4f, 0.4f));

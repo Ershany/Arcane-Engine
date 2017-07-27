@@ -94,7 +94,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCamera) {
 
 	vec3 ambient = light.ambient;
 	vec3 diffuse = light.diffuse * diff;
-
+	
 	return ambient + diffuse;
 }
 
