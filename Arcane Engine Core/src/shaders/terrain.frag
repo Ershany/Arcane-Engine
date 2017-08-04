@@ -1,4 +1,4 @@
-#version 450 core
+#version 430 core
 
 // Does AMD support sampler2D in a struct?
 struct Material {
@@ -85,6 +85,7 @@ void main() {
 	// Result
 	color = vec4(terrainColour, 1.0);
 	//color = vec4(Normal, 1.0);
+	//color = vec4(vec3(gl_FragCoord.z), 1.0); //depth buffer display
 }
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCamera) {

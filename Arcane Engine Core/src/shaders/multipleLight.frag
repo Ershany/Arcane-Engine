@@ -78,6 +78,7 @@ void main() {
 	
 	// Result
 	color = vec4(result, 1.0);
+	//color = vec4(vec3(gl_FragCoord.z), 1.0); //depth buffer display
 }
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {

@@ -7,8 +7,10 @@
 namespace arcane { namespace graphics {
 	class Renderer {
 	public:
+		Renderer();
+
 		void submit(Renderable3D *renderable);
-		void flush(Shader &shader);
+		void flush(Shader &shader, Shader &outlineShader);
 	private:
 		std::deque<Renderable3D*> m_RenderQueue;
 	};

@@ -21,8 +21,6 @@ int main() {
 	arcane::graphics::Window window("Arcane Engine", 1366, 768);
 	arcane::Scene3D scene(&camera, &window);
 
-	glEnable(GL_DEPTH_TEST);
-
 	arcane::Timer fpsTimer;
 	int frames = 0;
 
@@ -31,7 +29,7 @@ int main() {
 	GLfloat lastX = window.getMouseX();
 	GLfloat lastY = window.getMouseY();
 	while (!window.closed()) {
-		glClearColor(0.26f, 0.95f, 0.9f, 1.0f);
+		glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
 		window.clear();
 		deltaTime.update();
 

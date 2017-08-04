@@ -1,0 +1,6 @@
+(texture load (OpenGL) fail path:): res/3D_Models/Overwatch/McCree/Tex_1925_0.dds
+(texture load (OpenGL) fail path:): res/3D_Models/Overwatch/McCree/Tex_1953_0.dds
+(texture load (OpenGL) fail path:): res/3D_Models/Overwatch/McCree/Tex_1967_0.dds
+(texture load (OpenGL) fail path:): res/3D_Models/Overwatch/McCree/Tex_1981_0.dds
+(texture load (OpenGL) fail path:): res/3D_Models/Overwatch/McCree/Tex_2260_0.dds
+(texture load (OpenGL) fail path:): res/3D_Models/Overwatch/McCree/Tex_2346_0.dds
