@@ -4,7 +4,7 @@
 
 namespace arcane { namespace opengl {
 
-	GLuint Utility::loadTextureFromFile(const char *path) {
+	GLuint Utility::loadTextureFromFile(const char *path, bool containsTransparencyOnSides) {
 		GLuint textureID;
 		glGenTextures(1, &textureID);
 
@@ -23,8 +23,15 @@ namespace arcane { namespace opengl {
 			glGenerateMipmap(GL_TEXTURE_2D);
 
 			// Texture wrapping
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			if (containsTransparencyOnSides) {
+				// Can't use GL_REPEAT or interpolation will mess with the transparency
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			}
+			else {
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			}
 
 			// Texture filtering
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

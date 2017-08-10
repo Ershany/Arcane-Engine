@@ -1,1 +1,1 @@
-(shader initialization): d not initialize window class
+(shader initialization): s

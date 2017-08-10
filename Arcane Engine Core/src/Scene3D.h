@@ -5,6 +5,7 @@
 #include "graphics\renderer\Renderer.h"
 #include "terrain\Terrain.h"
 #include "graphics\Window.h"
+#include "graphics\MeshFactory.h"
 
 namespace arcane {
 	
@@ -14,6 +15,7 @@ namespace arcane {
 		graphics::FPSCamera *m_Camera;
 		graphics::Renderer *m_Renderer;
 		terrain::Terrain *m_Terrain;
+		graphics::MeshFactory m_meshFactory;
 
 		// Some sort of list of entities (tied to models that are in the Renderer (Renderable3D) (should this name be changed to Renderer3D?))
 		//std::vector<Entity*> m_Entities;

@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClCompile Include="src\graphics\camera\FPSCamera.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
+    <ClCompile Include="src\graphics\MeshFactory.cpp" />
     <ClCompile Include="src\graphics\Model.cpp" />
     <ClCompile Include="src\graphics\renderer\Renderable3D.cpp" />
     <ClCompile Include="src\graphics\renderer\Renderer.cpp" />
@@ -99,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="src\graphics\camera\FPSCamera.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
+    <ClInclude Include="src\graphics\MeshFactory.h" />
     <ClInclude Include="src\graphics\Model.h" />
     <ClInclude Include="src\graphics\renderer\Renderable3D.h" />
     <ClInclude Include="src\graphics\renderer\Renderer.h" />
@@ -118,7 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\directionalLight.frag" />
-    <None Include="src\shaders\multipleLight.frag" />
+    <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\pointlight.frag" />
     <None Include="src\shaders\spotlight.frag" />
     <None Include="src\shaders\basic.vert" />

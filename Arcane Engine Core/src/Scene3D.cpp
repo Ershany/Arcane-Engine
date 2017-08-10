@@ -4,12 +4,10 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
-
-
 namespace arcane {
 
 	Scene3D::Scene3D(graphics::FPSCamera *camera, graphics::Window *window)
-		: terrainShader("src/shaders/basic.vert", "src/shaders/terrain.frag"), modelShader("src/shaders/basic.vert", "src/shaders/multipleLight.frag"), m_Camera(camera), m_Window(window),
+		: terrainShader("src/shaders/basic.vert", "src/shaders/terrain.frag"), modelShader("src/shaders/basic.vert", "src/shaders/model.frag"), m_Camera(camera), m_Window(window),
 		  outlineShader("src/shaders/basic.vert", "src/shaders/basic.frag")
 	{
 		m_Renderer = new graphics::Renderer();
@@ -27,10 +25,15 @@ namespace arcane {
 		glEnable(GL_STENCIL_TEST);
 
 		// Load models
-		//Add(new graphics::Renderable3D(glm::vec3(30.0f, -10.0f, 30.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/Reaper/Reaper.obj")));
-		//Add(new graphics::Renderable3D(glm::vec3(60.0f, -10.0f, 60.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/McCree/McCree.obj")));
-		Add(new graphics::Renderable3D(glm::vec3(90.0f, -10.0f, 90.0f), glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Crysis/nanosuit.obj"), true));
+		std::vector<graphics::Mesh> meshes;
+		meshes.push_back(*m_meshFactory.CreateQuad("res/textures/window.png", false));
+
+		Add(new graphics::Renderable3D(glm::vec3(30.0f, -10.0f, 30.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/Reaper/Reaper.obj"), false));
+		Add(new graphics::Renderable3D(glm::vec3(60.0f, -10.0f, 60.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/McCree/McCree.obj"), false));
+		//Add(new graphics::Renderable3D(glm::vec3(90.0f, -10.0f, 90.0f), glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Crysis/nanosuit.obj"), false));
 		//Add(new graphics::Renderable3D(glm::vec3(200.0f, 200.0f, 100.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 0.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Sponza/sponza.obj"), true));
+		Add(new graphics::Renderable3D(glm::vec3(40, 10, 40), glm::vec3(10, 10, 10), glm::vec3(1.0, 0.0, 0.0), glm::radians(90.0f), new graphics::Model(meshes), false, true));
+
 
 		// Terrain shader
 		terrainShader.enable();
@@ -87,24 +90,6 @@ namespace arcane {
 		outlineShader.setUniformMat4("view", m_Camera->getViewMatrix());
 		outlineShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
 
-		
-
-		// Models
-		modelShader.enable();
-		modelShader.setUniform3f("pointLights[0].position", glm::vec3(200.0f, 215.0f, 100.0f));
-		modelShader.setUniform3f("spotLight.position", m_Camera->getPosition());
-		modelShader.setUniform3f("spotLight.direction", m_Camera->getFront());
-		modelShader.setUniform3f("viewPos", m_Camera->getPosition());
-		modelShader.setUniformMat4("view", m_Camera->getViewMatrix());
-		modelShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
-		
-		std::vector<graphics::Renderable3D*>::iterator iter = m_Renderables.begin();
-		while (iter != m_Renderables.end()) {
-			m_Renderer->submit((*iter));
-			iter++;
-		}
-		m_Renderer->flush(modelShader, outlineShader);
-
 		// Terrain
 		glStencilMask(0x00); // Don't update the stencil buffer
 		terrainShader.enable();
@@ -118,6 +103,29 @@ namespace arcane {
 		terrainShader.setUniformMat4("view", m_Camera->getViewMatrix());
 		terrainShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
 		m_Terrain->Draw(terrainShader);
+
+		// Models
+		modelShader.enable();
+		modelShader.setUniform3f("pointLights[0].position", glm::vec3(200.0f, 215.0f, 100.0f));
+		modelShader.setUniform3f("spotLight.position", m_Camera->getPosition());
+		modelShader.setUniform3f("spotLight.direction", m_Camera->getFront());
+		modelShader.setUniform3f("viewPos", m_Camera->getPosition());
+		modelShader.setUniformMat4("view", m_Camera->getViewMatrix());
+		modelShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
+		
+		std::vector<graphics::Renderable3D*>::iterator iter = m_Renderables.begin();
+		while (iter != m_Renderables.end()) {
+			graphics::Renderable3D *curr = *iter;
+			if (curr->getTransparent()) {
+				m_Renderer->submitTransparent(curr);
+			}
+			else {
+				m_Renderer->submitOpaque(curr);
+			}
+			
+			iter++;
+		}
+		m_Renderer->flush(modelShader, outlineShader);
 	}
 
 	void Scene3D::Add(graphics::Renderable3D *renderable) {

@@ -67,6 +67,10 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main() {
+	// Check if the fragment is too transparent, and if so just discard it
+	float textureAlpha = texture(material.texture_diffuse1, TexCoords).w;
+	if(textureAlpha < 0.1) discard;
+
 	vec3 norm = normalize(Normal);
 	vec3 viewDir = normalize(viewPos - FragPos);
 	
@@ -77,8 +81,8 @@ void main() {
 	result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
 	
 	// Result
-	color = vec4(result, 1.0);
-	//color = vec4(vec3(gl_FragCoord.z), 1.0); //depth buffer display
+	color = vec4(result, textureAlpha); // Use the diffuse texture for transparency
+	//color = vec4(vec3(gl_FragCoord.z), 0.25); //depth buffer display
 }
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {
