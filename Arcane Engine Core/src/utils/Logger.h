@@ -69,7 +69,7 @@ namespace arcane { namespace utils {
 		enum {
 			DEBUG, INFO, WARNING, ERROR
 		};
-		std::vector<const std::string> filePaths;
+		std::vector<std::string> filePaths;
 
 		std::ofstream filestream;
 		std::string file; // Default value set to: "logged_files/log.txt"

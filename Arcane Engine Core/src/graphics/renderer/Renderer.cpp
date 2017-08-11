@@ -2,8 +2,8 @@
 
 namespace arcane { namespace graphics {
 
-	Renderer::Renderer()
-	{
+	Renderer::Renderer(FPSCamera *camera) : m_Camera(camera)
+	{ 
 	}
 
 	void Renderer::submitOpaque(Renderable3D *renderable) {
@@ -60,7 +60,12 @@ namespace arcane { namespace graphics {
 			m_OpaqueRenderQueue.pop_front();
 		}
 
-		// Sort then render transparent objects
+		// Sort then render transparent objects (from back to front)
+		std::sort(m_TransparentRenderQueue.begin(), m_TransparentRenderQueue.end(), 
+			[this](Renderable3D *a, Renderable3D *b) -> bool 
+		{
+			return glm::length2(m_Camera->getPosition() - a->getPosition()) > glm::length2(m_Camera->getPosition() - b->getPosition());
+		});
 		while (!m_TransparentRenderQueue.empty()) {
 			Renderable3D *current = m_TransparentRenderQueue.front();
 

@@ -32,9 +32,9 @@ namespace arcane { namespace graphics {
 		void Draw(Shader &shader) const;
 
 		// Getters
-		inline std::vector<Vertex> const &getVertices() const { return m_Vertices; }
-		inline std::vector<unsigned int> const &getIndices() const { return m_Indices; }
-		inline std::vector<Texture> const &getTextures() const { return m_Textures; }
+		inline const std::vector<Vertex>& getVertices() const { return m_Vertices; }
+		inline const std::vector<unsigned int>& getIndices() const { return m_Indices; }
+		inline const std::vector<Texture>& getTextures() const { return m_Textures; }
 	private:
 		unsigned int m_VAO, m_VBO, m_EBO;
 

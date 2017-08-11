@@ -13,12 +13,12 @@ namespace arcane { namespace graphics {
 		void draw(Shader &shader) const;
 
 
-		inline glm::vec3 getPosition() { return m_Position; }
-		inline glm::vec3 getScale() { return m_Scale; }
-		inline glm::vec3 getRotationAxis() { return m_RotationAxis; }
-		inline float getRadianRotation() { return m_RadianRotation; }
-		inline bool getShouldOutline() { return m_ShouldOutline; }
-		inline bool getTransparent() { return m_Transparent; }
+		inline const glm::vec3& getPosition() const { return m_Position; }
+		inline const glm::vec3& getScale() const { return m_Scale; }
+		inline const glm::vec3& getRotationAxis() const { return m_RotationAxis; }
+		inline float getRadianRotation() const { return m_RadianRotation; }
+		inline bool getShouldOutline() const { return m_ShouldOutline; }
+		inline bool getTransparent() const { return m_Transparent; }
 
 		inline void setPosition(glm::vec3 &other) { m_Position = other; }
 		inline void setScale(glm::vec3 &other) { m_Scale = other; }

@@ -23,7 +23,7 @@ namespace arcane {
 
 
 		// Getters
-		inline GLdouble getDeltaTime() { return delta; }
+		inline GLdouble getDeltaTime() const { return delta; }
 	};
 
 }

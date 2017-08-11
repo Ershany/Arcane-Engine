@@ -26,7 +26,7 @@ namespace arcane { namespace terrain {
 
 		void Draw(graphics::Shader &shader) const;
 
-		inline glm::vec3 getPosition() { return m_Position; }
+		inline const glm::vec3& getPosition() const { return m_Position; }
 	private:
 		glm::vec3 calculateNormal(int x, int z, unsigned char *heightMapData);
 		GLfloat getVertexHeight(int x, int y, unsigned char *heightMapData);
