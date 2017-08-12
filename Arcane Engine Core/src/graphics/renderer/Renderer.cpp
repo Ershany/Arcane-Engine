@@ -60,7 +60,7 @@ namespace arcane { namespace graphics {
 			m_OpaqueRenderQueue.pop_front();
 		}
 
-		// Sort then render transparent objects (from back to front)
+		// Sort then render transparent objects (from back to front, does not account for rotations or scaling)
 		std::sort(m_TransparentRenderQueue.begin(), m_TransparentRenderQueue.end(), 
 			[this](Renderable3D *a, Renderable3D *b) -> bool 
 		{

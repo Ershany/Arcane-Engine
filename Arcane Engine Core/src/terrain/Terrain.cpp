@@ -42,14 +42,14 @@ namespace arcane { namespace terrain {
 		}
 		stbi_image_free(heightMapImage);
 
-		// Indices generation
+		// Indices generation (ccw winding order for consistency which will allow back face culling)
 		for (GLuint height = 0; height < m_VertexSideCount - 1; ++height) {
 			for (GLuint width = 0; width < m_VertexSideCount - 1; ++width) {
 				// Triangle 1
 				indices.push_back(width + (height * m_VertexSideCount));
-				indices.push_back(1 + width + (height * m_VertexSideCount));
 				indices.push_back(1 + m_VertexSideCount + width + (height * m_VertexSideCount));
-
+				indices.push_back(1 + width + (height * m_VertexSideCount));
+				
 				// Triangle 2
 				indices.push_back(width + (height * m_VertexSideCount));
 				indices.push_back(m_VertexSideCount + width + (height * m_VertexSideCount));
