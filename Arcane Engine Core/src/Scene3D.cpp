@@ -23,7 +23,7 @@ namespace arcane {
 	void Scene3D::init() {
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_STENCIL_TEST);
-		//glEnable(GL_CULL_FACE);
+		glEnable(GL_CULL_FACE);
 
 		// Load models
 		std::vector<graphics::Mesh> meshes;
@@ -94,6 +94,7 @@ namespace arcane {
 
 		// Terrain
 		glStencilMask(0x00); // Don't update the stencil buffer
+		glEnable(GL_CULL_FACE);
 		terrainShader.enable();
 		terrainShader.setUniform3f("pointLight.position", glm::vec3(200.0f, 200.0f, 100.0f));
 		terrainShader.setUniform3f("spotLight.position", m_Camera->getPosition());
