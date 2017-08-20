@@ -8,10 +8,14 @@ namespace arcane { namespace opengl {
 		bind();
 		
 		// Depth and Stencil
-		glGenRenderbuffers(1, &m_RBO);
-		glBindRenderbuffer(GL_RENDERBUFFER, m_RBO);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+		glGenTextures(1, &m_DepthStencilTexture);
+		glBindTexture(GL_TEXTURE_2D, m_DepthStencilTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, nullptr);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Both need to clamp to edge or you might see strange colours around the
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // border due to interpolation and how it works with GL_REPEAT
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 		// Colour
 		glGenTextures(1, &m_ColourTexture);
@@ -25,7 +29,7 @@ namespace arcane { namespace opengl {
 
 		// Add Attachments (ie colour, depth, and stencil buffer)
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColourTexture, 0);
-		glFramebufferRenderbuffer(GL_RENDERBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RBO);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_DepthStencilTexture, 0);
 		
 
 		// Check if the creation failed

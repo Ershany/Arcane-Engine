@@ -66,7 +66,7 @@ int main() {
 		window.resetScroll();
 		 
 		// Draw the scene to our custom framebuffer
-		//framebuffer.bind();
+		framebuffer.bind();
 		window.clear();
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
@@ -74,13 +74,13 @@ int main() {
 		scene.onRender();
 
 		// Draw to the default scene buffer
-		/*framebuffer.unbind();
+		framebuffer.unbind();
 		glDisable(GL_BLEND);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		framebufferShader.enable();
 		colourBufferMesh->Draw(framebufferShader);
-		framebufferShader.disable();*/
+		framebufferShader.disable();
 		
 
 		window.update();

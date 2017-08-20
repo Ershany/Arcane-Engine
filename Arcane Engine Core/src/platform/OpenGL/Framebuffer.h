@@ -14,8 +14,9 @@ namespace arcane { namespace opengl {
 		void unbind();
 
 		inline GLuint getColourBufferTexture() { return m_ColourTexture; }
+		inline GLuint getDepthStencilBufferTexture() { return m_DepthStencilTexture; }
 	private:
-		GLuint m_FBO, m_RBO, m_ColourTexture;
+		GLuint m_FBO, m_DepthStencilTexture, m_ColourTexture;
 		
 		unsigned int m_Width, m_Height;
 	};

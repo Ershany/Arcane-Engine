@@ -1,0 +1,1 @@
+(Framebuffer initialization): Could not initialize the framebuffer
