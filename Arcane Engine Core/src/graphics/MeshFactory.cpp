@@ -34,5 +34,29 @@ namespace arcane { namespace graphics {
 
 		return new Mesh(vertices, indices, textures);
 	}
+	
+	Mesh* MeshFactory::CreateScreenQuad(int colourBufferId) {
+		std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
+		std::vector<Texture> textures;
+
+		vertices.push_back(Vertex(glm::vec3(-1, 1, 0), glm::vec3(0, 0, 0), glm::vec2(0, 1)));
+		vertices.push_back(Vertex(glm::vec3(1, 1, 0), glm::vec3(0, 0, 0), glm::vec2(1, 1)));
+		vertices.push_back(Vertex(glm::vec3(-1, -1, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0)));
+		vertices.push_back(Vertex(glm::vec3(1, -1, 0), glm::vec3(0, 0, 0), glm::vec2(1, 0)));
+
+		// Load indices
+		indices.push_back(1); indices.push_back(0); indices.push_back(2);
+		indices.push_back(3); indices.push_back(1); indices.push_back(2);
+
+		// Load texture
+		Texture texture;
+		texture.id = colourBufferId;
+		texture.type = "texture_diffuse";
+		textures.push_back(texture);
+
+
+		return new Mesh(vertices, indices, textures);
+	}
 
 } }

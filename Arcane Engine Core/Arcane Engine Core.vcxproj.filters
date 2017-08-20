@@ -146,6 +146,8 @@
     <None Include="src\shaders\terrain.frag" />
     <None Include="src\shaders\basic.frag" />
     <None Include="src\shaders\model.frag" />
+    <None Include="src\shaders\framebufferColourBuffer.vert" />
+    <None Include="src\shaders\framebufferColourBuffer.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

@@ -13,6 +13,8 @@
 #include "graphics\Model.h"
 #include "terrain\Terrain.h"
 #include "Scene3D.h"
+#include "platform\OpenGL\Framebuffer.h"
+#include "graphics\MeshFactory.h"
 
 
 
@@ -20,6 +22,10 @@ int main() {
 	arcane::graphics::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 	arcane::graphics::Window window("Arcane Engine", 1366, 768);
 	arcane::Scene3D scene(&camera, &window);
+	arcane::opengl::Framebuffer framebuffer(window.getWidth(), window.getHeight());
+	arcane::graphics::Shader framebufferShader("src/shaders/framebufferColourBuffer.vert", "src/shaders/framebufferColourBuffer.frag");
+	arcane::graphics::MeshFactory meshFactory;
+	arcane::graphics::Mesh *colourBufferMesh = meshFactory.CreateScreenQuad(framebuffer.getColourBufferTexture());
 
 	arcane::Timer fpsTimer;
 	int frames = 0;
@@ -58,9 +64,24 @@ int main() {
 			camera.processKeyboard(arcane::graphics::DOWNWARDS, deltaTime.getDeltaTime());
 		camera.processMouseScroll(window.getScrollY() * 6);
 		window.resetScroll();
-
+		 
+		// Draw the scene to our custom framebuffer
+		//framebuffer.bind();
+		window.clear();
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
 		scene.onUpdate(deltaTime.getDeltaTime());
 		scene.onRender();
+
+		// Draw to the default scene buffer
+		/*framebuffer.unbind();
+		glDisable(GL_BLEND);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		framebufferShader.enable();
+		colourBufferMesh->Draw(framebufferShader);
+		framebufferShader.disable();*/
+		
 
 		window.update();
 		if (fpsTimer.elapsed() >= 1) {

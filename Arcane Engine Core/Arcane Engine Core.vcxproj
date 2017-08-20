@@ -123,6 +123,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\directionalLight.frag" />
+    <None Include="src\shaders\framebufferColourBuffer.frag" />
+    <None Include="src\shaders\framebufferColourBuffer.vert" />
     <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\pointlight.frag" />
     <None Include="src\shaders\spotlight.frag" />
