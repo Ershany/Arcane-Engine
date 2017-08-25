@@ -85,6 +85,7 @@
     <ClCompile Include="src\graphics\renderer\Renderable3D.cpp" />
     <ClCompile Include="src\graphics\renderer\Renderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
+    <ClCompile Include="src\graphics\Skybox.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\platform\OpenGL\Buffer.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="src\graphics\renderer\Renderable3D.h" />
     <ClInclude Include="src\graphics\renderer\Renderer.h" />
     <ClInclude Include="src\graphics\Shader.h" />
+    <ClInclude Include="src\graphics\Skybox.h" />
     <ClInclude Include="src\graphics\Window.h" />
     <ClInclude Include="src\platform\OpenGL\Buffer.h" />
     <ClInclude Include="src\platform\OpenGL\Framebuffer.h" />
@@ -127,6 +129,8 @@
     <None Include="src\shaders\framebufferColourBuffer.vert" />
     <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\pointlight.frag" />
+    <None Include="src\shaders\skybox.frag" />
+    <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\spotlight.frag" />
     <None Include="src\shaders\basic.vert" />
     <None Include="src\shaders\basic.frag" />

@@ -1,0 +1,2 @@
+(Logger Dtor): Could not empty the contents of file: logged_files / error.txt
+(Cubemap initialization): Couldn't load cubemap filepath

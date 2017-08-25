@@ -6,6 +6,7 @@
 #include "terrain\Terrain.h"
 #include "graphics\Window.h"
 #include "graphics\MeshFactory.h"
+#include "graphics\Skybox.h"
 
 namespace arcane {
 	
@@ -16,12 +17,13 @@ namespace arcane {
 		graphics::Renderer *m_Renderer;
 		terrain::Terrain *m_Terrain;
 		graphics::MeshFactory m_meshFactory;
+		graphics::Skybox *m_Skybox;
 
 		// Some sort of list of entities (tied to models that are in the Renderer (Renderable3D) (should this name be changed to Renderer3D?))
 		//std::vector<Entity*> m_Entities;
 		std::vector<graphics::Renderable3D*> m_Renderables;
 
-		graphics::Shader terrainShader, modelShader, outlineShader;
+		graphics::Shader m_TerrainShader, m_ModelShader, m_OutlineShader;
 	public:
 		Scene3D(graphics::FPSCamera *camera, graphics::Window *window);
 		~Scene3D();

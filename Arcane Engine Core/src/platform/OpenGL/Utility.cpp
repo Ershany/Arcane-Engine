@@ -49,4 +49,41 @@ namespace arcane { namespace opengl {
 		return textureID;
 	}
 
+	GLuint Utility::loadCubemapFromFiles(const std::vector<const char*> &filePaths) {
+		// Size check
+		if (filePaths.size() != 6) {
+			utils::Logger::getInstance().error("logged_files / error.txt", "Cubemap initialization", "Could not initialize the cubemap since 6 faces were not provided");
+			return -1;
+		}
+
+		GLuint cubemapID;
+		glGenTextures(1, &cubemapID);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapID);
+
+		int width, height, nrComponents;
+		for (unsigned int i = 0; i < 6; ++i) {
+			unsigned char *data = stbi_load(filePaths[i], &width, &height, &nrComponents, 0);
+			if (data) {
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+				stbi_image_free(data);
+			}
+			else {
+				utils::Logger::getInstance().error("logged_files / error.txt", "Cubemap initialization", "Couldn't load cubemap filepath");
+				stbi_image_free(data);
+				return -1;
+			}
+		}
+		
+		// Texture filtering
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		// Texture wrapping
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+		return cubemapID;
+	}
+
 } }

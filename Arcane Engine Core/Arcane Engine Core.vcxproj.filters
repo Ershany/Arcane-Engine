@@ -75,6 +75,9 @@
     <ClCompile Include="src\platform\OpenGL\Framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\Window.h">
@@ -137,6 +140,9 @@
     <ClInclude Include="src\platform\OpenGL\Framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\basic.vert" />
@@ -148,6 +154,8 @@
     <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\framebufferColourBuffer.vert" />
     <None Include="src\shaders\framebufferColourBuffer.frag" />
+    <None Include="src\shaders\skybox.frag" />
+    <None Include="src\shaders\skybox.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
