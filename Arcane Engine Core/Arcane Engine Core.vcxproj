@@ -124,6 +124,10 @@
     <ClInclude Include="src\utils\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\3D_Models\Overwatch\McCree\McCree.FBX" />
+    <None Include="res\3D_Models\Overwatch\McCree\McCree.obj.mtl" />
+    <None Include="res\3D_Models\Overwatch\Reaper\Reaper.FBX" />
+    <None Include="res\3D_Models\Overwatch\Reaper\Reaper.obj.mtl" />
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\framebufferColourBuffer.frag" />
     <None Include="src\shaders\framebufferColourBuffer.vert" />
@@ -137,18 +141,50 @@
     <None Include="src\shaders\terrain.frag" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\3D_Models\Overwatch\McCree\Tex_1925_0.png" />
+    <Image Include="res\3D_Models\Overwatch\McCree\Tex_1953_0.png" />
+    <Image Include="res\3D_Models\Overwatch\McCree\Tex_1954_1.png" />
+    <Image Include="res\3D_Models\Overwatch\McCree\Tex_1955_2.png" />
+    <Image Include="res\3D_Models\Overwatch\McCree\Tex_1956_3.png" />
+    <Image Include="res\3D_Models\Overwatch\McCree\Tex_1967_0.png" />
+    <Image Include="res\3D_Models\Overwatch\McCree\Tex_1981_0.png" />
+    <Image Include="res\3D_Models\Overwatch\McCree\Tex_2260_0.png" />
+    <Image Include="res\3D_Models\Overwatch\McCree\Tex_2346_0.png" />
+    <Image Include="res\3D_Models\Overwatch\Reaper\Tex_1874_0.png" />
+    <Image Include="res\3D_Models\Overwatch\Reaper\Tex_1875_1.png" />
+    <Image Include="res\3D_Models\Overwatch\Reaper\Tex_1876_2.png" />
+    <Image Include="res\3D_Models\Overwatch\Reaper\Tex_1877_3.png" />
+    <Image Include="res\3D_Models\Overwatch\Reaper\Tex_1879_6.png" />
+    <Image Include="res\3D_Models\Overwatch\Reaper\Tex_1886_0.png" />
+    <Image Include="res\3D_Models\Overwatch\Reaper\Tex_1887_1.png" />
+    <Image Include="res\3D_Models\Overwatch\Reaper\Tex_1888_2.png" />
+    <Image Include="res\3D_Models\Overwatch\Reaper\Tex_1889_3.png" />
     <Image Include="res\awesomeface.png" />
     <Image Include="res\container.jpg" />
     <Image Include="res\container2.png" />
     <Image Include="res\container2_emission.png" />
     <Image Include="res\container2_specular.png" />
     <Image Include="res\matrix.jpg" />
+    <Image Include="res\skybox\back.png" />
+    <Image Include="res\skybox\bottom.png" />
+    <Image Include="res\skybox\front.png" />
+    <Image Include="res\skybox\left.png" />
+    <Image Include="res\skybox\right.png" />
+    <Image Include="res\skybox\top.png" />
     <Image Include="res\terrain\blendMap.png" />
     <Image Include="res\terrain\dirt.png" />
     <Image Include="res\terrain\grass.png" />
     <Image Include="res\terrain\heightMap.png" />
     <Image Include="res\terrain\sand.png" />
     <Image Include="res\terrain\stone.png" />
+    <Image Include="res\textures\fullSpec.png" />
+    <Image Include="res\textures\grass.png" />
+    <Image Include="res\textures\noSpec.png" />
+    <Image Include="res\textures\window.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="res\3D_Models\Overwatch\McCree\McCree.obj" />
+    <Object Include="res\3D_Models\Overwatch\Reaper\Reaper.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
