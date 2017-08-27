@@ -14,18 +14,19 @@ namespace arcane { namespace graphics {
 		m_TransparentRenderQueue.push_back(renderable);
 	}
 
-	void Renderer::flush(Shader &shader, Shader &outlineShader) {
-		// Render opaque objects
+	void Renderer::flushOpaque(Shader &shader, Shader &outlineShader) {
 		glEnable(GL_CULL_FACE);
-		while (!m_OpaqueRenderQueue.empty()) {
-			Renderable3D *current = m_OpaqueRenderQueue.front();
 
+		// Render opaque objects
+		while (!m_OpaqueRenderQueue.empty()) {
 			// Drawing prepration
 			glEnable(GL_DEPTH_TEST);
 			glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 			glStencilFunc(GL_ALWAYS, 1, 0xFF);
 			glStencilMask(0xFF);
+
+			Renderable3D *current = m_OpaqueRenderQueue.front();
 
 			// Draw the renderable 3d
 			glm::mat4 model(1);
@@ -60,19 +61,19 @@ namespace arcane { namespace graphics {
 
 			m_OpaqueRenderQueue.pop_front();
 		}
+	}
+
+	void Renderer::flushTransparent(Shader &shader, Shader &outlineShader) {
+		glDisable(GL_CULL_FACE); // Don't backface cull transparent objects
 
 		// Sort then render transparent objects (from back to front, does not account for rotations or scaling)
-		glDisable(GL_CULL_FACE); // Don't backface cull transparent objects
-		std::sort(m_TransparentRenderQueue.begin(), m_TransparentRenderQueue.end(), 
-			[this](Renderable3D *a, Renderable3D *b) -> bool 
+		std::sort(m_TransparentRenderQueue.begin(), m_TransparentRenderQueue.end(),
+			[this](Renderable3D *a, Renderable3D *b) -> bool
 		{
 			return glm::length2(m_Camera->getPosition() - a->getPosition()) > glm::length2(m_Camera->getPosition() - b->getPosition());
 		});
 		while (!m_TransparentRenderQueue.empty()) {
-			Renderable3D *current = m_TransparentRenderQueue.front();
-
 			// Drawing prepration
-			glEnable(GL_DEPTH_TEST);
 			glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 			glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -82,6 +83,8 @@ namespace arcane { namespace graphics {
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Tell OpenGL how to blend, in this case make the new object have the transparency of its alpha and the object in the back is 1-alpha
 
+			Renderable3D *current = m_TransparentRenderQueue.front();
+			
 			// Draw the renderable 3d
 			glm::mat4 model(1);
 			model = glm::translate(model, current->getPosition());

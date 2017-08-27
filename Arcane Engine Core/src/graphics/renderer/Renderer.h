@@ -14,7 +14,8 @@ namespace arcane { namespace graphics {
 		void submitOpaque(Renderable3D *renderable);
 		void submitTransparent(Renderable3D *renderable);
 		
-		void flush(Shader &shader, Shader &outlineShader);
+		void flushOpaque(Shader &shader, Shader &outlineShader);
+		void flushTransparent(Shader &shader, Shader &outlineShader);
 	private:
 		std::deque<Renderable3D*> m_OpaqueRenderQueue;
 		std::deque<Renderable3D*> m_TransparentRenderQueue;
