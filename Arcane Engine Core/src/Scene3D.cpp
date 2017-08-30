@@ -8,7 +8,7 @@ namespace arcane {
 
 	Scene3D::Scene3D(graphics::FPSCamera *camera, graphics::Window *window)
 		: m_TerrainShader("src/shaders/basic.vert", "src/shaders/terrain.frag"), m_ModelShader("src/shaders/basic.vert", "src/shaders/model.frag"), m_Camera(camera), m_Window(window),
-		  m_OutlineShader("src/shaders/basic.vert", "src/shaders/basic.frag")
+		  m_OutlineShader("src/shaders/basic.vert", "src/shaders/basic.frag"), m_ModelReflectionShader("src/shaders/basic.vert", "src/shaders/modelReflection.frag")
 	{
 		m_Renderer = new graphics::Renderer(camera);
 		m_Terrain = new terrain::Terrain(glm::vec3(0.0f, -20.0f, 0.0f));
@@ -29,8 +29,8 @@ namespace arcane {
 		std::vector<graphics::Mesh> meshes;
 		meshes.push_back(*m_meshFactory.CreateQuad("res/textures/window.png", false));
 
-		//Add(new graphics::Renderable3D(glm::vec3(30.0f, -10.0f, 30.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/Reaper/Reaper.obj"), false));
-		//Add(new graphics::Renderable3D(glm::vec3(60.0f, -10.0f, 60.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/McCree/McCree.obj"), false));
+		Add(new graphics::Renderable3D(glm::vec3(30.0f, -10.0f, 30.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/Reaper/Reaper.obj"), false));
+		Add(new graphics::Renderable3D(glm::vec3(60.0f, -10.0f, 60.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/McCree/McCree.obj"), false));
 		//Add(new graphics::Renderable3D(glm::vec3(90.0f, -10.0f, 90.0f), glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Crysis/nanosuit.obj"), true));
 		//Add(new graphics::Renderable3D(glm::vec3(200.0f, 200.0f, 100.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 0.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Sponza/sponza.obj"), true));
 		Add(new graphics::Renderable3D(glm::vec3(40, 20, 40), glm::vec3(15, 15, 15), glm::vec3(1.0, 0.0, 0.0), glm::radians(90.0f), new graphics::Model(meshes), false, true));
@@ -102,6 +102,12 @@ namespace arcane {
 		m_OutlineShader.setUniformMat4("view", m_Camera->getViewMatrix());
 		m_OutlineShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
 
+		// Reflection Shader
+		m_ModelReflectionShader.enable();
+		m_ModelReflectionShader.setUniform3f("cameraPos", m_Camera->getPosition());
+		m_ModelReflectionShader.setUniformMat4("view", m_Camera->getViewMatrix());
+		m_ModelReflectionShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
+		
 		// Terrain
 		glStencilMask(0x00); // Don't update the stencil buffer
 		glEnable(GL_CULL_FACE);
@@ -125,7 +131,7 @@ namespace arcane {
 		m_ModelShader.setUniform3f("viewPos", m_Camera->getPosition());
 		m_ModelShader.setUniformMat4("view", m_Camera->getViewMatrix());
 		m_ModelShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
-		
+
 		std::vector<graphics::Renderable3D*>::iterator iter = m_Renderables.begin();
 		while (iter != m_Renderables.end()) {
 			graphics::Renderable3D *curr = *iter;
@@ -138,6 +144,11 @@ namespace arcane {
 			
 			iter++;
 		}
+
+		/*m_ModelReflectionShader.enable();
+		m_ModelReflectionShader.setUniform1i("environmentMap", 0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, m_Skybox->getSkyboxCubemap());
+		m_Renderer->flushOpaque(m_ModelReflectionShader, m_OutlineShader);*/
 		m_Renderer->flushOpaque(m_ModelShader, m_OutlineShader);
 
 		m_Skybox->Draw();

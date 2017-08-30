@@ -16,6 +16,8 @@ namespace arcane { namespace graphics {
 		Skybox(const std::vector<const char*> &filePaths, FPSCamera *camera, Window *window);
 
 		void Draw();
+
+		inline unsigned int getSkyboxCubemap() { return m_SkyboxCubemap; }
 	private:
 		FPSCamera *m_Camera;
 		Window *m_Window;
@@ -24,7 +26,7 @@ namespace arcane { namespace graphics {
 		opengl::VertexArray m_SkyboxVAO;
 		opengl::IndexBuffer m_SkyboxIBO;
 		opengl::Buffer  m_SkyboxVBO;
-		unsigned int m_SkyboxCubemap; // Cubemap texture
+		unsigned int m_SkyboxCubemap; // Cubemap 
 	};
 
 } }
