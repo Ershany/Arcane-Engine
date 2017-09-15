@@ -23,12 +23,16 @@ int main() {
 	arcane::graphics::Window window("Arcane Engine", 1366, 768);
 	arcane::Scene3D scene(&camera, &window);
 	arcane::opengl::Framebuffer framebuffer(window.getWidth(), window.getHeight());
-	arcane::graphics::Shader framebufferShader("src/shaders/framebufferColourBuffer.vert", "src/shaders/framebufferColourBuffer.frag");
+	arcane::graphics::Shader fxaaShader("src/shaders/fxaa.vert", "src/shaders/fxaa.frag");
 	arcane::graphics::MeshFactory meshFactory;
 	arcane::graphics::Mesh *colourBufferMesh = meshFactory.CreateScreenQuad(framebuffer.getColourBufferTexture());
 
 	arcane::Timer fpsTimer;
 	int frames = 0;
+
+	fxaaShader.enable();
+	fxaaShader.setUniform2f("sampleOffset", glm::vec2(1.0f / window.getWidth(), 1.0f / window.getHeight()));
+	fxaaShader.disable();
 
 	arcane::Time deltaTime;
 	bool firstMove = true;
@@ -64,7 +68,7 @@ int main() {
 			camera.processKeyboard(arcane::graphics::DOWNWARDS, deltaTime.getDeltaTime());
 		camera.processMouseScroll(window.getScrollY() * 6);
 		window.resetScroll();
-		 
+		
 		// Draw the scene to our custom framebuffer
 		framebuffer.bind();
 		window.clear();
@@ -74,9 +78,9 @@ int main() {
 		// Draw to the default scene buffer
 		framebuffer.unbind();
 		glClear(GL_COLOR_BUFFER_BIT);
-		framebufferShader.enable();
-		colourBufferMesh->Draw(framebufferShader);
-		framebufferShader.disable();
+		fxaaShader.enable();
+		colourBufferMesh->Draw(fxaaShader);
+		fxaaShader.disable();
 		
 
 		window.update();

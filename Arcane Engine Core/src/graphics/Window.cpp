@@ -30,8 +30,8 @@ namespace arcane { namespace graphics {
 		if (!glfwInit()) {
 			std::cout << "GLFW Failed To Initialize" << std::endl;
 			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLFW window");
+			return false;
 		}
-		
 
 		// Create the window
 		if (FULLSCREEN_MODE) {
@@ -45,6 +45,7 @@ namespace arcane { namespace graphics {
 		if (!m_Window) {
 			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not create the GLFW window");
 			std::cout << "GLFW Window Couldn't Be Created" << std::endl;
+			return false;
 		}
 
 		// Setup the mouse settings

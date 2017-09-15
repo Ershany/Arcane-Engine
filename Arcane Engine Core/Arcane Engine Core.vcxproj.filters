@@ -158,6 +158,8 @@
     <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\modelReflection.frag" />
     <None Include="src\shaders\modelRefraction.frag" />
+    <None Include="src\shaders\fxaa.frag" />
+    <None Include="src\shaders\fxaa.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

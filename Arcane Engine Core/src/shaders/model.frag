@@ -62,35 +62,33 @@ uniform SpotLight spotLight;
 uniform float time;
 
 // function prototypes
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
-vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
-vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam);
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 fragToCam);
+vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 fragToCam);
 
 void main() {
 	// Check if the fragment is too transparent, and if so just discard it
 	float textureAlpha = texture(material.texture_diffuse1, TexCoords).w;
-	if(textureAlpha < 0.1) discard;
 
 	vec3 norm = normalize(Normal);
-	vec3 viewDir = normalize(viewPos - FragPos);
+	vec3 fragToCam = normalize(viewPos - FragPos);
 	
-	vec3 result = CalcDirLight(dirLight, norm, viewDir);
+	vec3 result = CalcDirLight(dirLight, norm, fragToCam);
 	for(uint i = 0; i < NR_POINT_LIGHTS; ++i) {
-		result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+		result += CalcPointLight(pointLights[i], norm, FragPos, fragToCam);
 	}
-	result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
+	result += CalcSpotLight(spotLight, norm, FragPos, fragToCam);
 	
 	// Result
 	color = vec4(result, textureAlpha); // Use the diffuse texture for transparency
-	//color = vec4(vec3(gl_FragCoord.z), 0.25); //depth buffer display
 }
 
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam) {
 	vec3 lightDirection = normalize(-light.direction);
 
 	float diff = max(dot(lightDirection, normal), 0.0);
 
-	vec3 halfwayDir = normalize(viewDir + lightDirection);
+	vec3 halfwayDir = normalize(fragToCam + lightDirection);
 	float spec = pow(max(dot(halfwayDir, normal), 0.0), material.shininess);
 
 	vec3 ambient = light.ambient * texture(material.texture_diffuse1, TexCoords).rgb;
@@ -101,12 +99,12 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {
 	return (ambient + diffuse + specular);
 }
 
-vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 fragToCam) {
 	vec3 lightDirection = normalize(light.position - fragPos);
 
 	float diff = max(dot(lightDirection, normal), 0.0);
 
-	vec3 halfwayDir = normalize(lightDirection + viewDir);
+	vec3 halfwayDir = normalize(lightDirection + fragToCam);
 	float spec = pow(max(dot(halfwayDir, normal), 0.0), material.shininess);
 
 	// Attenuation calculation
@@ -126,12 +124,12 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
 	return (ambient + diffuse + specular);
 }
 
-vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
+vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 fragToCam) {
 	vec3 lightDirection = normalize(light.position - fragPos);
 
 	float diff = max(dot(lightDirection, normal), 0.0);
 
-	vec3 halfwayDir = normalize(lightDirection + viewDir);
+	vec3 halfwayDir = normalize(lightDirection + fragToCam);
 	float spec = pow(max(dot(halfwayDir, normal), 0.0), material.shininess);
 
 	// Attenuation calculation
@@ -139,7 +137,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
 	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * distance * distance);
 
 	// Check if it is in the spotlight's circle
-	float theta = dot(normalize(light.direction), -viewDir);
+	float theta = dot(normalize(light.direction), -fragToCam);
 	float difference = light.cutOff - light.outerCutOff;
 	float intensity = clamp((theta - light.outerCutOff) / difference, 0.0, 1.0);
 

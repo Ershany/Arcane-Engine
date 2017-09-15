@@ -1,1 +1,1 @@
-(shader initialization): itialize window class
+(shader initialization): skybox.frag

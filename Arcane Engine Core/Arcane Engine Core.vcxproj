@@ -127,6 +127,8 @@
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\framebufferColourBuffer.frag" />
     <None Include="src\shaders\framebufferColourBuffer.vert" />
+    <None Include="src\shaders\fxaa.frag" />
+    <None Include="src\shaders\fxaa.vert" />
     <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\modelReflection.frag" />
     <None Include="src\shaders\modelRefraction.frag" />

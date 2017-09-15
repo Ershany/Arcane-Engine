@@ -60,13 +60,13 @@ uniform Material material;
 uniform vec3 viewPos;
 
 // Functions
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCamera);
-vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 fragToCamera);
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam);
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 fragToCam);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos);
 
 void main() {
 	vec3 norm = normalize(Normal);
-	vec3 fragToCamera = normalize(viewPos - FragPos);
+	vec3 fragToCam = normalize(viewPos - FragPos);
 
 	vec4 blendMapColour = texture(material.texture_diffuse5, TexCoords);
 	
@@ -79,7 +79,7 @@ void main() {
 	vec3 bTextureColour = texture(material.texture_diffuse4, tiledCoords).rgb * blendMapColour.b;
 	
 	vec3 terrainColour = (backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour) * 
-						 (CalcDirLight(dirLight, norm, fragToCamera) + CalcSpotLight(spotLight, norm, FragPos) + CalcPointLight(pointLight, norm, FragPos, fragToCamera));
+						 (CalcDirLight(dirLight, norm, fragToCam) + CalcSpotLight(spotLight, norm, FragPos) + CalcPointLight(pointLight, norm, FragPos, fragToCam));
 	
 	
 	// Result
@@ -88,7 +88,7 @@ void main() {
 	//color = vec4(vec3(gl_FragCoord.z), 1.0); //depth buffer display
 }
 
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCamera) {
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam) {
 	vec3 lightDirection = normalize(light.direction);
 
 	float diff = max(dot(-lightDirection, normal), 0.0);
@@ -99,7 +99,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCamera) {
 	return ambient + diffuse;
 }
 
-vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 fragToCamera) {
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 fragToCam) {
 	vec3 fragToLight = normalize(light.position - fragPos);
 
 	float diff = max(dot(fragToLight, normal), 0.0);
