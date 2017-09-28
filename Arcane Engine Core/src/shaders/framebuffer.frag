@@ -23,6 +23,8 @@ void main() {
 		vec2(readOffset, -readOffset)
 	);
 	
+	// Note: Post processing may cause aliasing since it uses the blitted framebuffer (A non-multisampled buffer)
+
 	// Blur kernel
 	//float kernel[9] = float[] (
 	//	1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0,

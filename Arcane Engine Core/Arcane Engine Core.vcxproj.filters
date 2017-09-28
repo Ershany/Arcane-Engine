@@ -143,6 +143,9 @@
     <ClInclude Include="src\graphics\Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\basic.vert" />
@@ -152,14 +155,12 @@
     <None Include="src\shaders\terrain.frag" />
     <None Include="src\shaders\basic.frag" />
     <None Include="src\shaders\model.frag" />
-    <None Include="src\shaders\framebufferColourBuffer.vert" />
-    <None Include="src\shaders\framebufferColourBuffer.frag" />
     <None Include="src\shaders\skybox.frag" />
     <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\modelReflection.frag" />
     <None Include="src\shaders\modelRefraction.frag" />
-    <None Include="src\shaders\fxaa.frag" />
-    <None Include="src\shaders\fxaa.vert" />
+    <None Include="src\shaders\framebuffer.frag" />
+    <None Include="src\shaders\framebuffer.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

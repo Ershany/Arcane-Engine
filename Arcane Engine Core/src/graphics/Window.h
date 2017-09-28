@@ -4,6 +4,7 @@
 #include <GLFW\glfw3.h>
 #include <iostream>
 
+#include "../Defs.h"
 #include "..\utils\Logger.h"
 
 namespace arcane { namespace graphics {

@@ -23,16 +23,13 @@ int main() {
 	arcane::graphics::Window window("Arcane Engine", 1366, 768);
 	arcane::Scene3D scene(&camera, &window);
 	arcane::opengl::Framebuffer framebuffer(window.getWidth(), window.getHeight());
-	arcane::graphics::Shader fxaaShader("src/shaders/fxaa.vert", "src/shaders/fxaa.frag");
+	arcane::opengl::Framebuffer blitFramebuffer(window.getWidth(), window.getHeight(), false);
+	arcane::graphics::Shader framebufferShader("src/shaders/framebuffer.vert", "src/shaders/framebuffer.frag");
 	arcane::graphics::MeshFactory meshFactory;
-	arcane::graphics::Mesh *colourBufferMesh = meshFactory.CreateScreenQuad(framebuffer.getColourBufferTexture());
+	arcane::graphics::Mesh *colourBufferMesh = meshFactory.CreateScreenQuad(blitFramebuffer.getColourBufferTexture());
 
 	arcane::Timer fpsTimer;
 	int frames = 0;
-
-	fxaaShader.enable();
-	fxaaShader.setUniform2f("sampleOffset", glm::vec2(1.0f / window.getWidth(), 1.0f / window.getHeight()));
-	fxaaShader.disable();
 
 	arcane::Time deltaTime;
 	bool firstMove = true;
@@ -69,18 +66,23 @@ int main() {
 		camera.processMouseScroll(window.getScrollY() * 6);
 		window.resetScroll();
 		
-		// Draw the scene to our custom framebuffer
+		// Draw the scene to our custom multisampled framebuffer
 		framebuffer.bind();
 		window.clear();
 		scene.onUpdate(deltaTime.getDeltaTime());
 		scene.onRender();
 
-		// Draw to the default scene buffer
+		// Blit the multisampled framebuffer over to a non-multisampled buffer
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer.getFramebuffer());
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, blitFramebuffer.getFramebuffer());
+		glBlitFramebuffer(0, 0, window.getWidth(), window.getHeight(), 0, 0, window.getWidth(), window.getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+
+		// Draw to the default framebuffer buffer
 		framebuffer.unbind();
-		glClear(GL_COLOR_BUFFER_BIT);
-		fxaaShader.enable();
-		colourBufferMesh->Draw(fxaaShader);
-		fxaaShader.disable();
+		window.clear();
+		framebufferShader.enable();
+		colourBufferMesh->Draw(framebufferShader);
+		framebufferShader.disable();
 		
 
 		window.update();
