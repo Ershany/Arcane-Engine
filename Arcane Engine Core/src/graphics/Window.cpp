@@ -1,7 +1,3 @@
-#define V_SYNC 1
-#define FULLSCREEN_MODE 0
-#define SHOW_MOUSE 0
-
 #include "Window.h"
 
 namespace arcane { namespace graphics {

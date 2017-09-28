@@ -5,7 +5,8 @@
 #include <iostream>
 
 #include "../Defs.h"
-#include "..\utils\Logger.h"
+#include "../utils/Logger.h"
+#include "../Defs.h"
 
 namespace arcane { namespace graphics {
 
