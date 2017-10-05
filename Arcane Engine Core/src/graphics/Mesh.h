@@ -18,6 +18,11 @@ namespace arcane { namespace graphics {
 		Vertex(glm::vec3 &pos, glm::vec3 &normal, glm::vec2 &texCoords) {
 			Position = pos; Normal = normal; TexCoords = texCoords;
 		}
+		Vertex(float xPos, float yPos, float zPos, float xNorm, float yNorm, float zNorm, float xTexCoord, float yTexCoord) {
+			Position.x = xPos; Position.y = yPos; Position.z = zPos;
+			Normal.x = xNorm; Normal.y = yNorm; Normal.z = zNorm;
+			TexCoords.x = xTexCoord; TexCoords.y = yTexCoord;
+		}
 	};
 
 	struct Texture {

@@ -56,37 +56,25 @@ namespace arcane { namespace graphics {
 		std::vector<unsigned int> indices;
 		std::vector<Texture> textures;
 
+		vertices.reserve(mesh->mNumVertices);
+		indices.reserve(mesh->mNumFaces * 3); // Assume triangles. If not it will still load, it just won't be optimized
+
 		// Process vertices
 		for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
-			Vertex vertex;
-			glm::vec3 vector; // placeholder vector since assimp uses its own vector class and it isn't compatible with glm's vec3
-
-			// Positions
-			vector.x = mesh->mVertices[i].x;
-			vector.y = mesh->mVertices[i].y;
-			vector.z = mesh->mVertices[i].z;
-			vertex.Position = vector;
-
-			// Normals
-			vector.x = mesh->mNormals[i].x;
-			vector.y = mesh->mNormals[i].y;
-			vector.z = mesh->mNormals[i].z;
-			vertex.Normal = vector;
-
+			glm::vec2 vec;
 			// Texture Coordinates (check if there is texture coordinates)
 			if (mesh->mTextureCoords[0]) {
-				glm::vec2 vec;
 				// A vertex can contain up to 8 different texture coordinates. We are just going to use one set of TexCoords per vertex so grab the first one
 				vec.x = mesh->mTextureCoords[0][i].x;
 				vec.y = mesh->mTextureCoords[0][i].y;
-				vertex.TexCoords = vec;
 			}
 			else {
-				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+				vec.x = 0.0f;
+				vec.y = 0.0f;
 			}
 
-			// Finally add the vertex to our vertices list for the mesh
-			vertices.push_back(vertex);
+			// Construct the vertex object in the vector
+			vertices.emplace_back(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z, mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z, vec.x, vec.y);
 		}
 
 		// Process Indices
@@ -116,6 +104,7 @@ namespace arcane { namespace graphics {
 
 	std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, const char *typeName) {
 		std::vector<Texture> textures;
+		textures.reserve(mat->GetTextureCount(type));
 		for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i) {
 			aiString str;
 			mat->GetTexture(type, i, &str);
