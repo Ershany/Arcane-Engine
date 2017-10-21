@@ -7,7 +7,9 @@
 #include <iostream>
 #include <stb_image_aug.h>
 #include <vector>
+#include <glm\common.hpp>
 #include "../../utils/Logger.h"
+#include "../../Defs.h"
 
 namespace arcane { namespace opengl {
 
