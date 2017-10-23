@@ -2,7 +2,7 @@
 
 namespace arcane { namespace graphics {
 
-	Renderer::Renderer(FPSCamera *camera) : m_Camera(camera)
+	Renderer::Renderer(Camera *camera) : m_Camera(camera)
 	{ 
 	}
 

@@ -23,7 +23,7 @@ namespace arcane { namespace graphics {
 	const GLfloat SENSITIVITY = 0.10f;
 	const GLfloat FOV = 80.0f;
 
-	class FPSCamera {
+	class Camera {
 	private:
 		// Camera Attributes
 		glm::vec3 m_Position, m_Front, m_Up, m_Right, m_WorldUp;
@@ -43,10 +43,10 @@ namespace arcane { namespace graphics {
 		*
 		* @param position Optional. The initial position of the camera. Default is 0
 		* @param up Optional. Represents the up position of the camera. Default is 0
-		* @param yaw Optional. Initial yaw of the camera. Default is determined by the FPSCamera class
-		* @param pitch Optional. Initial pitch of the camera. Default is determined by the FPSCamera class
+		* @param yaw Optional. Initial yaw of the camera. Default is determined by the Camera class
+		* @param pitch Optional. Initial pitch of the camera. Default is determined by the Camera class
 		*/
-		FPSCamera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch);
+		Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch);
 
 		/**
 		* Constructs a camera using floats to represent the position and up vectors of the camera
@@ -58,10 +58,10 @@ namespace arcane { namespace graphics {
 		* @param xUp X-Coordinate that represents the camera's up position
 		* @param yUp Y-Coordinate that represents the camera's up position
 		* @param zUp Z-Coordinate that represents the camera's up position
-		* @param yaw Optional. Initial yaw of the camera. Default is determined by the FPSCamera class
-		* @param pitch Optional. Initial pitch of the camera. Default is determined by the FPSCamera class
+		* @param yaw Optional. Initial yaw of the camera. Default is determined by the Camera class
+		* @param pitch Optional. Initial pitch of the camera. Default is determined by the Camera class
 		*/
-		FPSCamera(GLfloat xPos, GLfloat yPos, GLfloat zPos, GLfloat xUp, GLfloat yUp, GLfloat zUp, GLfloat yaw, GLfloat pitch);
+		Camera(GLfloat xPos, GLfloat yPos, GLfloat zPos, GLfloat xUp, GLfloat yUp, GLfloat zUp, GLfloat yaw, GLfloat pitch);
 		
 
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "graphics\renderer\Renderable3D.h"
-#include "graphics\camera\FPSCamera.h"
+#include "graphics\camera\Camera.h"
 #include "graphics\renderer\Renderer.h"
 #include "terrain\Terrain.h"
 #include "graphics\Window.h"
@@ -13,7 +13,7 @@ namespace arcane {
 	class Scene3D {
 	private:
 		graphics::Window *m_Window;
-		graphics::FPSCamera *m_Camera;
+		graphics::Camera *m_Camera;
 		graphics::Renderer *m_Renderer;
 		terrain::Terrain *m_Terrain;
 		graphics::MeshFactory m_meshFactory;
@@ -25,7 +25,7 @@ namespace arcane {
 
 		graphics::Shader m_TerrainShader, m_ModelShader, m_OutlineShader, m_ModelReflectionShader;
 	public:
-		Scene3D(graphics::FPSCamera *camera, graphics::Window *window);
+		Scene3D(graphics::Camera *camera, graphics::Window *window);
 		~Scene3D();
 		
 		void Add(graphics::Renderable3D *renderable);
@@ -34,7 +34,7 @@ namespace arcane {
 		void onRender();
 
 		inline graphics::Renderer* getRenderer() const { return m_Renderer; }
-		inline graphics::FPSCamera* getCamera() const { return m_Camera; }
+		inline graphics::Camera* getCamera() const { return m_Camera; }
 	private:
 		void init();
 	};
