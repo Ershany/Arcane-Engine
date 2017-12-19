@@ -1,7 +1,6 @@
 #include "Renderer.h"
 
-namespace arcane {
-	namespace graphics {
+namespace arcane { namespace graphics {
 
 		Renderer::Renderer(Camera *camera) : m_Camera(camera)
 		{
@@ -114,5 +113,4 @@ namespace arcane {
 			shader.setUniformMat4("model", model);
 		}
 
-	}
-}
+} }
