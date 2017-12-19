@@ -8,7 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "utils\Time.h"
-#include "graphics\camera\FPSCamera.h"
+#include "graphics\camera\Camera.h"
 #include "utils\Logger.h"
 #include "graphics\Model.h"
 #include "terrain\Terrain.h"
@@ -19,7 +19,7 @@
 
 
 int main() {
-	arcane::graphics::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+	arcane::graphics::Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 	arcane::graphics::Window window("Arcane Engine", 1366, 768);
 	arcane::Scene3D scene(&camera, &window);
 	arcane::opengl::Framebuffer framebuffer(window.getWidth(), window.getHeight());
@@ -30,6 +30,9 @@ int main() {
 
 	arcane::Timer fpsTimer;
 	int frames = 0;
+
+	framebufferShader.enable();
+	framebufferShader.setUniform2f("readOffset", glm::vec2(1.0f / window.getWidth(), 1.0f / window.getHeight()));
 
 	arcane::Time deltaTime;
 	bool firstMove = true;

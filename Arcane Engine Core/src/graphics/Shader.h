@@ -12,7 +12,7 @@ namespace arcane { namespace graphics {
 	class Shader {
 	private:
 		GLuint m_ShaderID;
-		const char *m_VertPath, *m_FragPath;
+		const char *m_VertPath, *m_FragPath, *m_GeomPath;
 	public:
 		/**
 		* Loads the shader by calling the load function and stores its shader ID
@@ -21,6 +21,7 @@ namespace arcane { namespace graphics {
 		* @param fragPath The path of the fragment/pixel shader. ie src/shaders/someShader.frag
 		*/
 		Shader(const char *vertPath, const char *fragPath);
+		Shader(const char *vertPath, const char *fragPath, const char *geoPath);
 		~Shader();
 
 

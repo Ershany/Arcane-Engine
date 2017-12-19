@@ -6,21 +6,20 @@ in vec2 TexCoord;
 
 uniform sampler2D texture_diffuse1;
 
-
-const float readOffset = 1.0 / 400.0; // Smaller value => Samples closer to the current fragment
+uniform vec2 readOffset;
 
 void main() {
 	// Sample the fragments around the current fragment for post processing using kernels (convulution matrices)
 	vec2 readOffsets[9] = vec2[] (
-		vec2(-readOffset, readOffset),
-		vec2(0.0, readOffset),
-		vec2(readOffset, readOffset),
-		vec2(-readOffset, 0.0),
+		vec2(-readOffset.x, readOffset.y),
+		vec2(0.0, readOffset.y),
+		vec2(readOffset.x, readOffset.y),
+		vec2(-readOffset.x, 0.0),
 		vec2(0.0, 0.0),
-		vec2(readOffset, 0.0),
-		vec2(-readOffset, -readOffset),
-		vec2(0.0, -readOffset),
-		vec2(readOffset, -readOffset)
+		vec2(readOffset.x, 0.0),
+		vec2(-readOffset.x, -readOffset.y),
+		vec2(0.0, -readOffset.y),
+		vec2(readOffset.x, -readOffset.y)
 	);
 	
 	// Note: Post processing may cause aliasing since it uses the blitted framebuffer (A non-multisampled buffer)
@@ -59,9 +58,5 @@ void main() {
 	for(int i = 0; i < 9; ++i) {
 		colour += texture(texture_diffuse1, TexCoord + readOffsets[i]).rgb * kernel[i];
 	}
-	
 	FragColour = vec4(colour, 1.0);
-	// Finally apply the gamma correction
-	//float gamma = 2.2f;
-	//FragColour = vec4(pow(colour, vec3(1.0 / gamma)), 1.0);
 }
