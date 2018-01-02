@@ -8,7 +8,8 @@ namespace arcane {
 
 	Scene3D::Scene3D(graphics::Camera *camera, graphics::Window *window)
 		: m_TerrainShader("src/shaders/basic.vert", "src/shaders/terrain.frag"), m_ModelShader("src/shaders/basic.vert", "src/shaders/model.frag"), m_Camera(camera), m_Window(window),
-		  m_OutlineShader("src/shaders/basic.vert", "src/shaders/basic.frag"), m_ModelReflectionShader("src/shaders/basic.vert", "src/shaders/modelReflection.frag")
+		  m_OutlineShader("src/shaders/basic.vert", "src/shaders/basic.frag"), m_ModelReflectionShader("src/shaders/basic.vert", "src/shaders/modelReflection.frag"),
+	      m_DynamicLightManager()
 	{
 		m_Renderer = new graphics::Renderer(camera);
 		m_Terrain = new terrain::Terrain(glm::vec3(0.0f, -20.0f, 0.0f));

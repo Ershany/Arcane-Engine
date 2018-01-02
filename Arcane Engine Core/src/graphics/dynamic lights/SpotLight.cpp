@@ -2,21 +2,24 @@
 
 namespace arcane { namespace graphics {
 
-	SpotLight::SpotLight(glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, glm::vec3 &position, glm::vec3 &direction, float cutOff, float outerCutOff, float constant, float linear, float quadratic) 
-		: DynamicLight(ambient, diffuse, specular), m_Position(position), m_Direction(direction), m_CutOff(cutOff), m_OuterCutOff(outerCutOff), m_Constant(constant), m_Linear(linear), m_Quadratic(quadratic) {}
+	SpotLight::SpotLight(glm::vec3 &amb, glm::vec3 &diff, glm::vec3 &spec, glm::vec3 &pos, glm::vec3 &dir, float cutOffAngle, float outerCutOffAngle, float cons, float lin, float quad)
+		: DynamicLight(amb, diff, spec), position(pos), direction(dir), cutOff(cutOffAngle), outerCutOff(outerCutOffAngle), constant(cons), linear(lin), quadratic(quad) {}
 
 	// TODO: Add in multiple spotlight support
+	// TODO: Assert that the shader is bound in debug
 	void SpotLight::setupUniforms(Shader &shader, int currentLightIndex) {
-		shader.setUniform3f("spotLight.ambient", m_Ambient);
-		shader.setUniform3f("spotLight.diffuse", m_Diffuse);
-		shader.setUniform3f("spotLight.specular", m_Specular);
-		shader.setUniform3f("spotLight.position", m_Position);
-		shader.setUniform3f("spotLight.direction", m_Direction);
-		shader.setUniform1f("spotLight.cutOff", m_CutOff);
-		shader.setUniform1f("spotLight.outerCutOff", m_OuterCutOff);
-		shader.setUniform1f("spotLight.constant", m_Constant);
-		shader.setUniform1f("spotLight.linear", m_Linear);
-		shader.setUniform1f("spotLight.quadratic", m_Quadratic);
+		if (isActive) {
+			shader.setUniform3f("spotLight.ambient", ambient);
+			shader.setUniform3f("spotLight.diffuse", diffuse);
+			shader.setUniform3f("spotLight.specular", specular);
+			shader.setUniform3f("spotLight.position", position);
+			shader.setUniform3f("spotLight.direction", direction);
+			shader.setUniform1f("spotLight.cutOff", cutOff);
+			shader.setUniform1f("spotLight.outerCutOff", outerCutOff);
+			shader.setUniform1f("spotLight.constant", constant);
+			shader.setUniform1f("spotLight.linear", linear);
+			shader.setUniform1f("spotLight.quadratic", quadratic);
+		}
 	}
 
 } }

@@ -2,7 +2,7 @@
 
 namespace arcane { namespace graphics {
 
-	DynamicLight::DynamicLight(glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular) 
-		: m_Ambient(ambient), m_Diffuse(diffuse), m_Specular(specular) {}
+	DynamicLight::DynamicLight(glm::vec3 &amb, glm::vec3 &diff, glm::vec3 &spec) 
+		: ambient(amb), diffuse(diff), specular(spec), isActive(false) {}
 
 } }

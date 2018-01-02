@@ -6,13 +6,15 @@
 
 namespace arcane { namespace graphics {
 
-	class DynamicLight {
-	protected:
-		DynamicLight(glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular);
-	public:
+	// TODO: Add functionality so it can update with an entitie's position and orientation
+	struct DynamicLight {
+		DynamicLight(glm::vec3 &amb, glm::vec3 &diff, glm::vec3 &spec);
+
 		virtual void setupUniforms(Shader &shader, int currentLightIndex) = 0;
-	protected:
-		glm::vec3 m_Ambient, m_Diffuse, m_Specular;
+
+
+		glm::vec3 ambient, diffuse, specular;
+		bool isActive;
 	};
 
 } }

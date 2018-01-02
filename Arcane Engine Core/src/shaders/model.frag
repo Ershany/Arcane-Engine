@@ -46,7 +46,7 @@ struct SpotLight {
 	vec3 specular;
 };
 
-#define NR_POINT_LIGHTS 1
+#define MAX_POINT_LIGHTS 5
 
 in vec2 TexCoords;
 in vec3 Normal;
@@ -54,10 +54,11 @@ in vec3 FragPos;
 
 out vec4 color;
 
+uniform int numPointLights = 1;
 uniform Material material;
 uniform vec3 viewPos;
 uniform DirLight dirLight;
-uniform PointLight pointLights[NR_POINT_LIGHTS];
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLight;
 uniform float time;
 
@@ -74,7 +75,7 @@ void main() {
 	vec3 fragToCam = normalize(viewPos - FragPos);
 	
 	vec3 result = CalcDirLight(dirLight, norm, fragToCam);
-	for(uint i = 0; i < NR_POINT_LIGHTS; ++i) {
+	for(uint i = 0; i < numPointLights; ++i) {
 		result += CalcPointLight(pointLights[i], norm, FragPos, fragToCam);
 	}
 	result += CalcSpotLight(spotLight, norm, FragPos, fragToCam);

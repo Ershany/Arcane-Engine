@@ -2,17 +2,20 @@
 
 namespace arcane { namespace graphics {
 
-	PointLight::PointLight(glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, glm::vec3 &position, float constant, float linear, float quadratic)
-		: DynamicLight(ambient, diffuse, specular), m_Position(position), m_Constant(constant), m_Linear(linear), m_Quadratic(quadratic) {}
+	PointLight::PointLight(glm::vec3 &amb, glm::vec3 &diff, glm::vec3 &spec, glm::vec3 &pos, float cons, float lin, float quad)
+		: DynamicLight(amb, diff, spec), position(pos), constant(cons), linear(lin), quadratic(quad) {}
 
+	// TODO: Assert that the shader is bound in debug
 	void PointLight::setupUniforms(Shader &shader, int currentLightIndex) {
-		shader.setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].ambient").c_str(), m_Ambient);
-		shader.setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].diffuse").c_str(), m_Diffuse);
-		shader.setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].specular").c_str(), m_Specular);
-		shader.setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].position").c_str(), m_Position);
-		shader.setUniform1f(("pointLights[" + std::to_string(currentLightIndex) + "].constant").c_str(), m_Constant);
-		shader.setUniform1f(("pointLights[" + std::to_string(currentLightIndex) + "].linear").c_str(), m_Linear);
-		shader.setUniform1f(("pointLights[" + std::to_string(currentLightIndex) + "].quadratic").c_str(), m_Quadratic);
+		if (isActive) {
+			shader.setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].ambient").c_str(), ambient);
+			shader.setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].diffuse").c_str(), diffuse);
+			shader.setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].specular").c_str(), specular);
+			shader.setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].position").c_str(), position);
+			shader.setUniform1f(("pointLights[" + std::to_string(currentLightIndex) + "].constant").c_str(), constant);
+			shader.setUniform1f(("pointLights[" + std::to_string(currentLightIndex) + "].linear").c_str(), linear);
+			shader.setUniform1f(("pointLights[" + std::to_string(currentLightIndex) + "].quadratic").c_str(), quadratic);
+		}
 	}
 
 } }

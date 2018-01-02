@@ -2,15 +2,18 @@
 
 namespace arcane { namespace graphics {
 
-	DirectionalLight::DirectionalLight(glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, glm::vec3 &direction)
-		: DynamicLight(ambient, diffuse, specular), m_Direction(direction) {}
+	DirectionalLight::DirectionalLight(glm::vec3 &amb, glm::vec3 &diff, glm::vec3 &spec, glm::vec3 &dir)
+		: DynamicLight(amb, diff, spec), direction(dir) {}
 
 	// TODO: Add in multiple directional light support
+	// TODO: Assert that the shader is bound in debug
 	void DirectionalLight::setupUniforms(Shader &shader, int currentLightIndex) {
-		shader.setUniform3f("dirLight.ambient", m_Ambient);
-		shader.setUniform3f("dirLight.diffuse", m_Diffuse);
-		shader.setUniform3f("dirLight.specular", m_Specular);
-		shader.setUniform3f("dirLight.direction", m_Direction);
+		if (isActive) {
+			shader.setUniform3f("dirLight.ambient", ambient);
+			shader.setUniform3f("dirLight.diffuse", diffuse);
+			shader.setUniform3f("dirLight.specular", specular);
+			shader.setUniform3f("dirLight.direction", direction);
+		}
 	}
 
 } }

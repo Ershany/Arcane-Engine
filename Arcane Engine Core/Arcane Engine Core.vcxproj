@@ -79,6 +79,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
+    <ClCompile Include="src\graphics\dynamic lights\DirectionalLight.cpp" />
+    <ClCompile Include="src\graphics\dynamic lights\DynamicLight.cpp" />
+    <ClCompile Include="src\graphics\dynamic lights\DynamicLightManager.cpp" />
+    <ClCompile Include="src\graphics\dynamic lights\PointLight.cpp" />
+    <ClCompile Include="src\graphics\dynamic lights\SpotLight.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
     <ClCompile Include="src\graphics\MeshFactory.cpp" />
     <ClCompile Include="src\graphics\Model.cpp" />
@@ -103,6 +108,11 @@
   <ItemGroup>
     <ClInclude Include="src\Defs.h" />
     <ClInclude Include="src\graphics\camera\Camera.h" />
+    <ClInclude Include="src\graphics\dynamic lights\DirectionalLight.h" />
+    <ClInclude Include="src\graphics\dynamic lights\DynamicLight.h" />
+    <ClInclude Include="src\graphics\dynamic lights\DynamicLightManager.h" />
+    <ClInclude Include="src\graphics\dynamic lights\PointLight.h" />
+    <ClInclude Include="src\graphics\dynamic lights\SpotLight.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
     <ClInclude Include="src\graphics\MeshFactory.h" />
     <ClInclude Include="src\graphics\Model.h" />

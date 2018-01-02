@@ -4,13 +4,13 @@
 
 namespace arcane { namespace graphics {
 
-	class DirectionalLight : public DynamicLight {
-	public:
-		DirectionalLight(glm::vec3 &ambient, glm::vec3 &diffuse, glm::vec3 &specular, glm::vec3 &direction);
+	struct DirectionalLight : public DynamicLight {
+		DirectionalLight(glm::vec3 &amb, glm::vec3 &diff, glm::vec3 &spec, glm::vec3 &dir);
 
 		virtual void setupUniforms(Shader &shader, int currentLightIndex) override;
-	private:
-		glm::vec3 m_Direction;
+
+
+		glm::vec3 direction;
 	};
 
 } }
