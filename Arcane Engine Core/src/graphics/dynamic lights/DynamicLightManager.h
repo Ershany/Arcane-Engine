@@ -16,8 +16,8 @@ namespace arcane { namespace graphics {
 		void addPointLight(PointLight &pointLight);
 
 		// Control functions
-		inline void setSpotLightPosition(glm::vec3 &pos) { m_SpotLight.position = pos; }
-		inline void setSpotLightDirection(glm::vec3 &dir) { m_SpotLight.direction = dir; }
+		inline void setSpotLightPosition(const glm::vec3 &pos) { m_SpotLight.position = pos; }
+		inline void setSpotLightDirection(const glm::vec3 &dir) { m_SpotLight.direction = dir; }
 	private:
 		void init();
 		

@@ -54,13 +54,15 @@ in vec3 FragPos;
 
 out vec4 color;
 
-uniform int numPointLights = 1;
-uniform Material material;
-uniform vec3 viewPos;
+
+uniform int numPointLights;
 uniform DirLight dirLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLight;
 uniform float time;
+
+uniform Material material;
+uniform vec3 viewPos;
 
 // function prototypes
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam);

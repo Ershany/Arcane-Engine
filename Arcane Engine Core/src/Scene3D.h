@@ -25,7 +25,7 @@ namespace arcane {
 		//std::vector<Entity*> m_Entities;
 		std::vector<graphics::Renderable3D*> m_Renderables;
 
-		graphics::Shader m_TerrainShader, m_ModelShader, m_OutlineShader, m_ModelReflectionShader;
+		graphics::Shader m_TerrainShader, m_ModelShader, m_OutlineShader;
 	public:
 		Scene3D(graphics::Camera *camera, graphics::Window *window);
 		~Scene3D();
