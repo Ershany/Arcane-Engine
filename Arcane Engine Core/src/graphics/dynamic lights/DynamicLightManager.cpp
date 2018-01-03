@@ -15,7 +15,7 @@ namespace arcane { namespace graphics {
 		// Setup lighting configurations
 		m_DirectionalLight.isActive = true;
 		m_DirectionalLight.direction = glm::vec3(-0.3f, -1.0f, -0.3f);
-		m_DirectionalLight.ambient = glm::vec3(0.1f, 0.1f, 0.1f);
+		m_DirectionalLight.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
 		m_DirectionalLight.diffuse = glm::vec3(0.6f, 0.6f, 0.6f);
 		m_DirectionalLight.specular = glm::vec3(0.5f, 0.5f, 0.5f);
 
@@ -31,10 +31,10 @@ namespace arcane { namespace graphics {
 		m_SpotLight.cutOff = glm::cos(glm::radians(12.5f));
 		m_SpotLight.outerCutOff = glm::cos(glm::radians(15.0f));
 
-		PointLight pointLight(glm::vec3(0.05f, 0.05f, 0.05f), 
-			glm::vec3(0.85f, 0.85f, 0.85f), 
+		PointLight pointLight(glm::vec3(0.2f, 0.2f, 0.2f), 
 			glm::vec3(1.0f, 1.0f, 1.0f), 
-			glm::vec3(200.0f, 215.0f, 100.0f),
+			glm::vec3(1.0f, 1.0f, 1.0f), 
+			glm::vec3(30.0f, -10.0f, 30.0f),
 			1.0f, 
 			0.007f, 
 			0.0002f);

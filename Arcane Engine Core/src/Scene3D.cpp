@@ -41,24 +41,7 @@ namespace arcane {
 		// Terrain shader
 		m_TerrainShader.enable();
 		m_TerrainShader.setUniform1f("material.shininess", 128.0f);
-		m_TerrainShader.setUniform3f("dirLight.direction", glm::vec3(-0.3f, -1.0f, -0.3f));
-		m_TerrainShader.setUniform3f("dirLight.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
-		m_TerrainShader.setUniform3f("dirLight.diffuse", glm::vec3(0.6f, 0.6f, 0.6f));
-		m_TerrainShader.setUniform3f("dirLight.specular", glm::vec3(0.5f, 0.5f, 0.5f));
-		m_TerrainShader.setUniform3f("spotLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-		m_TerrainShader.setUniform3f("spotLight.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
-		m_TerrainShader.setUniform3f("spotLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		m_TerrainShader.setUniform1f("spotLight.constant", 1.0f);
-		m_TerrainShader.setUniform1f("spotLight.linear", 0.022);
-		m_TerrainShader.setUniform1f("spotLight.quadratic", 0.0019);
-		m_TerrainShader.setUniform1f("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-		m_TerrainShader.setUniform1f("spotLight.outerCutOff", glm::cos(glm::radians(15.0f)));
-		m_TerrainShader.setUniform3f("pointLights[0].ambient", glm::vec3(0.05f, 0.05f, 0.05f));
-		m_TerrainShader.setUniform3f("pointLights[0].diffuse", glm::vec3(0.85f, 0.85f, 0.85f));
-		m_TerrainShader.setUniform3f("pointLights[0].specular", glm::vec3(1.0f, 1.0f, 1.0f));
-		m_TerrainShader.setUniform1f("pointLights[0].constant", 1.0f);
-		m_TerrainShader.setUniform1f("pointLights[0].linear", 0.007);
-		m_TerrainShader.setUniform1f("pointLights[0].quadratic", 0.0002);
+		m_DynamicLightManager.setupLightingUniforms(m_TerrainShader);
 
 		// Model shader
 		m_ModelShader.enable();
@@ -115,9 +98,7 @@ namespace arcane {
 		glStencilMask(0x00); // Don't update the stencil buffer
 		glEnable(GL_CULL_FACE);
 		m_TerrainShader.enable();
-		m_TerrainShader.setUniform3f("pointLights[0].position", glm::vec3(200.0f, 200.0f, 100.0f));
-		m_TerrainShader.setUniform3f("spotLight.position", m_Camera->getPosition());
-		m_TerrainShader.setUniform3f("spotLight.direction", m_Camera->getFront());
+		m_DynamicLightManager.setupLightingUniforms(m_TerrainShader);
 		m_TerrainShader.setUniform3f("viewPos", m_Camera->getPosition());
 		glm::mat4 modelMatrix(1);
 		modelMatrix = glm::translate(modelMatrix, m_Terrain->getPosition());
