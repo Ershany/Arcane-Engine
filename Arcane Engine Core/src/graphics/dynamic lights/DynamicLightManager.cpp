@@ -38,12 +38,13 @@ namespace arcane { namespace graphics {
 			1.0f, 
 			0.007f, 
 			0.0002f);
+		pointLight.isActive = true;
 		addPointLight(pointLight);
 	}
 
 	// TODO: Dynamically change the size of the lights (LIMIT OF 5 CURRENTLY FOR POINTLIGHTS)
 	void DynamicLightManager::setupLightingUniforms(Shader &shader) {
-		shader.setUniform1f("numPointLights", m_PointLights.size());
+		shader.setUniform1i("numPointLights", m_PointLights.size());
 
 		m_DirectionalLight.setupUniforms(shader, 0);
 		m_SpotLight.setupUniforms(shader, 0);
