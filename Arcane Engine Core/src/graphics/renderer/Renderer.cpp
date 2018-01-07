@@ -38,7 +38,6 @@ namespace arcane { namespace graphics {
 					current->draw(outlineShader);
 					outlineShader.disable();
 
-					glEnable(GL_DEPTH_TEST);
 					glStencilMask(0xFF);
 
 					shader.enable();

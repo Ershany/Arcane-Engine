@@ -41,12 +41,10 @@ namespace arcane {
 		// Terrain shader
 		m_TerrainShader.enable();
 		m_TerrainShader.setUniform1f("material.shininess", 128.0f);
-		m_DynamicLightManager.setupLightingUniforms(m_TerrainShader);
 
 		// Model shader
 		m_ModelShader.enable();
 		m_ModelShader.setUniform1f("material.shininess", 128.0f);
-		m_DynamicLightManager.setupLightingUniforms(m_ModelShader);
 
 		// Skybox
 		std::vector<const char*> skyboxFilePaths;
@@ -96,7 +94,6 @@ namespace arcane {
 
 		// Terrain
 		glStencilMask(0x00); // Don't update the stencil buffer
-		glEnable(GL_CULL_FACE);
 		m_TerrainShader.enable();
 		m_DynamicLightManager.setupLightingUniforms(m_TerrainShader);
 		m_TerrainShader.setUniform3f("viewPos", m_Camera->getPosition());
