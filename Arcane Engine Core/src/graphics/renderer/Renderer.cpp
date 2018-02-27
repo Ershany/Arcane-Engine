@@ -16,10 +16,10 @@ namespace arcane { namespace graphics {
 
 		void Renderer::flushOpaque(Shader &shader, Shader &outlineShader) {
 			glEnable(GL_CULL_FACE);
+			glEnable(GL_DEPTH_TEST);
 
 			// Render opaque objects
 			while (!m_OpaqueRenderQueue.empty()) {
-				glEnable(GL_DEPTH_TEST);
 				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 
 				glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -30,19 +30,8 @@ namespace arcane { namespace graphics {
 				current->draw(shader);
 
 				if (current->getShouldOutline()) {
-					glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-
-					outlineShader.enable();
-					setupModelMatrix(current, outlineShader, 1.05f);
-
-					current->draw(outlineShader);
-					outlineShader.disable();
-
-					glStencilMask(0xFF);
-
+					drawOutline(outlineShader, current);
 					shader.enable();
-
-					glClear(GL_STENCIL_BUFFER_BIT);
 				}
 
 				m_OpaqueRenderQueue.pop_front();
@@ -72,20 +61,8 @@ namespace arcane { namespace graphics {
 				current->draw(shader);
 
 				if (current->getShouldOutline()) {
-					glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-
-					outlineShader.enable();
-					setupModelMatrix(current, outlineShader, 1.05f);
-
-					current->draw(outlineShader);
-					outlineShader.disable();
-
-					glEnable(GL_DEPTH_TEST);
-					glStencilMask(0xFF);
-
+					drawOutline(outlineShader, current);
 					shader.enable();
-
-					glClear(GL_STENCIL_BUFFER_BIT);
 				}
 
 				glDisable(GL_BLEND);
@@ -94,7 +71,8 @@ namespace arcane { namespace graphics {
 			}
 		}
 
-		// TODO: Currently only support two levels in a hierarchical scene graph
+		// TODO: Currently only supports two levels in a hierarchical scene graph
+		// Make it work with any number of levels
 		void Renderer::setupModelMatrix(Renderable3D *renderable, Shader &shader, float scaleFactor) {
 			glm::mat4 model(1);
 			glm::mat4 translate = glm::translate(glm::mat4(1.0f), renderable->getPosition());
@@ -110,6 +88,21 @@ namespace arcane { namespace graphics {
 			}
 
 			shader.setUniformMat4("model", model);
+		}
+
+		void Renderer::drawOutline(Shader &outlineShader, Renderable3D *renderable) {
+			glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+
+			outlineShader.enable();
+			setupModelMatrix(renderable, outlineShader, 1.05f);
+
+			renderable->draw(outlineShader);
+			outlineShader.disable();
+
+			glEnable(GL_DEPTH_TEST);
+			glStencilMask(0xFF);
+
+			glClear(GL_STENCIL_BUFFER_BIT);
 		}
 
 } }

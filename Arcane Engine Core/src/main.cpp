@@ -13,17 +13,24 @@
 #include "graphics\Model.h"
 #include "terrain\Terrain.h"
 #include "Scene3D.h"
-#include "platform\OpenGL\Framebuffer.h"
+#include "platform\OpenGL\Framebuffers\Framebuffer.h"
 #include "graphics\MeshFactory.h"
 
 
 
 int main() {
+	// Prepare the game
 	arcane::graphics::Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 	arcane::graphics::Window window("Arcane Engine", 1366, 768);
 	arcane::Scene3D scene(&camera, &window);
+
+	// Construct framebuffers
 	arcane::opengl::Framebuffer framebuffer(window.getWidth(), window.getHeight());
-	arcane::opengl::Framebuffer blitFramebuffer(window.getWidth(), window.getHeight(), false);
+	framebuffer.addColorAttachment(true).addDepthStencilRBO(true).createFramebuffer();
+	arcane::opengl::Framebuffer blitFramebuffer(window.getWidth(), window.getHeight());
+	blitFramebuffer.addColorAttachment(false).addDepthStencilRBO(false).createFramebuffer();
+
+	// Instantiate the shaders and mesh factories
 	arcane::graphics::Shader framebufferShader("src/shaders/framebuffer.vert", "src/shaders/framebuffer.frag");
 	arcane::graphics::MeshFactory meshFactory;
 	arcane::graphics::Mesh *colourBufferMesh = meshFactory.CreateScreenQuad(blitFramebuffer.getColourBufferTexture());

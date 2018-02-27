@@ -18,6 +18,7 @@ namespace arcane { namespace graphics {
 		void flushTransparent(Shader &shader, Shader &outlineShader);
 	private:
 		void Renderer::setupModelMatrix(Renderable3D *renderable, Shader &shader, float scaleFactor = 1.0f);
+		void drawOutline(Shader &outlineShader, Renderable3D *renderable);
 
 		std::deque<Renderable3D*> m_OpaqueRenderQueue;
 		std::deque<Renderable3D*> m_TransparentRenderQueue;
