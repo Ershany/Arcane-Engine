@@ -1,6 +1,7 @@
 #pragma once
 
 #include "graphics\renderer\Renderable3D.h"
+#include "Defs.h"
 #include "graphics\camera\Camera.h"
 #include "graphics\renderer\Renderer.h"
 #include "terrain\Terrain.h"

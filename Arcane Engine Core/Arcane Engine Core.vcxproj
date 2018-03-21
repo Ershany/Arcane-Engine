@@ -88,6 +88,7 @@
     <ClCompile Include="src\graphics\Mesh.cpp" />
     <ClCompile Include="src\graphics\MeshFactory.cpp" />
     <ClCompile Include="src\graphics\Model.cpp" />
+    <ClCompile Include="src\graphics\renderer\GLCache.cpp" />
     <ClCompile Include="src\graphics\renderer\Renderable3D.cpp" />
     <ClCompile Include="src\graphics\renderer\Renderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
@@ -119,6 +120,7 @@
     <ClInclude Include="src\graphics\Mesh.h" />
     <ClInclude Include="src\graphics\MeshFactory.h" />
     <ClInclude Include="src\graphics\Model.h" />
+    <ClInclude Include="src\graphics\renderer\GLCache.h" />
     <ClInclude Include="src\graphics\renderer\Renderable3D.h" />
     <ClInclude Include="src\graphics\renderer\Renderer.h" />
     <ClInclude Include="src\graphics\Shader.h" />

@@ -63,19 +63,20 @@ namespace arcane {
 
 	void Scene3D::onRender() {
 		// Setup
+		glm::mat4 projectionMatrix = glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), NEAR_PLANE, FAR_PLANE);
 		m_DynamicLightManager.setSpotLightDirection(m_Camera->getFront());
 		m_DynamicLightManager.setSpotLightPosition(m_Camera->getPosition());
 
 		m_OutlineShader.enable();
 		m_OutlineShader.setUniformMat4("view", m_Camera->getViewMatrix());
-		m_OutlineShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
+		m_OutlineShader.setUniformMat4("projection", projectionMatrix);
 
 		// Models
 		m_ModelShader.enable();
 		m_DynamicLightManager.setupLightingUniforms(m_ModelShader);
 		m_ModelShader.setUniform3f("viewPos", m_Camera->getPosition());
 		m_ModelShader.setUniformMat4("view", m_Camera->getViewMatrix());
-		m_ModelShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
+		m_ModelShader.setUniformMat4("projection", projectionMatrix);
 
 		std::vector<graphics::Renderable3D*>::iterator iter = m_Renderables.begin();
 		while (iter != m_Renderables.end()) {
@@ -101,7 +102,7 @@ namespace arcane {
 		modelMatrix = glm::translate(modelMatrix, m_Terrain->getPosition());
 		m_TerrainShader.setUniformMat4("model", modelMatrix);
 		m_TerrainShader.setUniformMat4("view", m_Camera->getViewMatrix());
-		m_TerrainShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
+		m_TerrainShader.setUniformMat4("projection", projectionMatrix);
 		m_Terrain->Draw(m_TerrainShader);
 
 		// Skybox

@@ -19,9 +19,9 @@ namespace arcane { namespace graphics {
 	// Default Camera Values
 	const GLfloat YAW = -90.0f;
 	const GLfloat PITCH = 0.0f;
-	const GLfloat SPEED = 40.0f; // Should be like 9
+	const GLfloat SPEED = 40.0f;
 	const GLfloat SENSITIVITY = 0.10f;
-	const GLfloat FOV = 80.0f;
+	const GLfloat FOV = 100.0f;
 
 	class Camera {
 	private:

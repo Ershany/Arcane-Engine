@@ -4,6 +4,11 @@ namespace arcane { namespace graphics {
 
 		Renderer::Renderer(Camera *camera) : m_Camera(camera)
 		{
+			// Configure and cache OpenGL state
+			m_GLCache = GLCache::getInstance();
+			m_GLCache->setDepthTest(true);
+			m_GLCache->setBlend(false);
+			m_GLCache->setCull(true);
 		}
 
 		void Renderer::submitOpaque(Renderable3D *renderable) {
@@ -15,13 +20,13 @@ namespace arcane { namespace graphics {
 		}
 
 		void Renderer::flushOpaque(Shader &shader, Shader &outlineShader) {
-			glEnable(GL_CULL_FACE);
-			glEnable(GL_DEPTH_TEST);
+			m_GLCache->setCull(true);
+			m_GLCache->setDepthTest(true);
+			m_GLCache->setBlend(false);
 
 			// Render opaque objects
 			while (!m_OpaqueRenderQueue.empty()) {
 				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
 				glStencilFunc(GL_ALWAYS, 1, 0xFF);
 				glStencilMask(0xFF);
 
@@ -39,7 +44,7 @@ namespace arcane { namespace graphics {
 		}
 
 		void Renderer::flushTransparent(Shader &shader, Shader &outlineShader) {
-			glDisable(GL_CULL_FACE);
+			m_GLCache->setCull(false);
 
 			// Sort then render transparent objects (from back to front, does not account for rotations or scaling)
 			std::sort(m_TransparentRenderQueue.begin(), m_TransparentRenderQueue.end(),
@@ -49,12 +54,11 @@ namespace arcane { namespace graphics {
 			});
 			while (!m_TransparentRenderQueue.empty()) {
 				glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-
 				glStencilFunc(GL_ALWAYS, 1, 0xFF);
 				glStencilMask(0xFF);
 
-				glEnable(GL_BLEND);
-				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+				m_GLCache->setBlend(true);
+				m_GLCache->setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 				Renderable3D *current = m_TransparentRenderQueue.front();
 				setupModelMatrix(current, shader);
@@ -64,8 +68,6 @@ namespace arcane { namespace graphics {
 					drawOutline(outlineShader, current);
 					shader.enable();
 				}
-
-				glDisable(GL_BLEND);
 
 				m_TransparentRenderQueue.pop_front();
 			}
@@ -99,7 +101,7 @@ namespace arcane { namespace graphics {
 			renderable->draw(outlineShader);
 			outlineShader.disable();
 
-			glEnable(GL_DEPTH_TEST);
+			m_GLCache->setDepthTest(true);
 			glStencilMask(0xFF);
 
 			glClear(GL_STENCIL_BUFFER_BIT);

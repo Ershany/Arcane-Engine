@@ -3,6 +3,7 @@
 #include "../Model.h"
 #include "../camera/Camera.h"
 #include "Renderable3D.h"
+#include "GLCache.h"
 #include <deque>
 #include <glm\gtx\norm.hpp>
 
@@ -24,5 +25,6 @@ namespace arcane { namespace graphics {
 		std::deque<Renderable3D*> m_TransparentRenderQueue;
 
 		Camera *m_Camera;
+		GLCache *m_GLCache;
 	};
 } }
