@@ -2,7 +2,7 @@
 
 namespace arcane { namespace graphics {
 
-	GLCache::GLCache() {
+	GLCache::GLCache() : m_ActiveShaderID(0) {
 
 	}
 
@@ -22,6 +22,16 @@ namespace arcane { namespace graphics {
 				glEnable(GL_DEPTH_TEST);
 			else
 				glDisable(GL_DEPTH_TEST);
+		}
+	}
+
+	void GLCache::setStencilTest(bool choice) {
+		if (m_StencilTest != choice) {
+			m_StencilTest = choice;
+			if (m_StencilTest)
+				glEnable(GL_STENCIL_TEST);
+			else
+				glDisable(GL_STENCIL_TEST);
 		}
 	}
 
@@ -45,18 +55,45 @@ namespace arcane { namespace graphics {
 		}
 	}
 
+	void GLCache::setDepthFunc(GLenum depthFunc) {
+		if (m_DepthFunc != depthFunc) {
+			m_DepthFunc = depthFunc;
+			glDepthFunc(m_DepthFunc);
+		}
+	}
+
+	void GLCache::setStencilFunc(GLenum testFunc, GLint stencilFragValue, GLuint stencilBitmask) {
+		if (m_StencilTestFunc != testFunc || m_StencilFragValue != stencilFragValue || m_StencilFuncBitmask != stencilBitmask) {
+			m_StencilTestFunc = testFunc; 
+			m_StencilFragValue = stencilFragValue; 
+			m_StencilFuncBitmask = stencilBitmask;
+
+			glStencilFuncSeparate(GL_FRONT_AND_BACK, m_StencilTestFunc, m_StencilFragValue, m_StencilFuncBitmask);
+		}
+	}
+
+	void GLCache::setStencilOp(GLenum stencilFailOperation, GLenum depthFailOperation, GLenum depthPassOperation) {
+		if (m_StencilFailOperation != stencilFailOperation || m_DepthFailOperation != depthFailOperation || m_DepthPassOperation != depthPassOperation) {
+			m_StencilFailOperation = stencilFailOperation;
+			m_DepthFailOperation = depthFailOperation;
+			m_DepthPassOperation = depthPassOperation;
+
+			glStencilOpSeparate(GL_FRONT_AND_BACK, m_StencilFailOperation, m_DepthFailOperation, m_DepthPassOperation);
+		}
+	}
+
+	void GLCache::setStencilWriteMask(GLuint bitmask) {
+		if (m_StencilWriteBitmask != bitmask) {
+			m_StencilWriteBitmask = bitmask;
+			glStencilMaskSeparate(GL_FRONT_AND_BACK, m_StencilWriteBitmask);
+		}
+	}
+
 	void GLCache::setBlendFunc(GLenum src, GLenum dst) {
 		if (m_BlendSrc != src || m_BlendDst != dst) {
 			m_BlendSrc = src;
 			m_BlendDst = dst;
 			glBlendFunc(m_BlendSrc, m_BlendDst);
-		}
-	}
-
-	void GLCache::setDepthFunc(GLenum depthFunc) {
-		if (m_DepthFunc != depthFunc) {
-			m_DepthFunc = depthFunc;
-			glDepthFunc(m_DepthFunc);
 		}
 	}
 

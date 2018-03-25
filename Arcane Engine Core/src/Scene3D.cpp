@@ -11,6 +11,7 @@ namespace arcane {
 		  m_OutlineShader("src/shaders/basic.vert", "src/shaders/basic.frag"), m_DynamicLightManager()
 	{
 		m_Renderer = new graphics::Renderer(camera);
+		m_GLCache = graphics::GLCache::getInstance();
 		m_Terrain = new terrain::Terrain(glm::vec3(0.0f, -20.0f, 0.0f));
 
 		init();
@@ -39,11 +40,11 @@ namespace arcane {
 		Add(new graphics::Renderable3D(glm::vec3(120, 20, 120), glm::vec3(15, 15, 15), glm::vec3(1.0, 0.0, 0.0), glm::radians(90.0f), new graphics::Model(meshes), nullptr, false, true));
 
 		// Terrain shader
-		m_TerrainShader.enable();
+		m_GLCache->switchShader(m_TerrainShader.getShaderID());
 		m_TerrainShader.setUniform1f("material.shininess", 128.0f);
 
 		// Model shader
-		m_ModelShader.enable();
+		m_GLCache->switchShader(m_ModelShader.getShaderID());
 		m_ModelShader.setUniform1f("material.shininess", 128.0f);
 
 		// Skybox
@@ -67,12 +68,12 @@ namespace arcane {
 		m_DynamicLightManager.setSpotLightDirection(m_Camera->getFront());
 		m_DynamicLightManager.setSpotLightPosition(m_Camera->getPosition());
 
-		m_OutlineShader.enable();
+		m_GLCache->switchShader(m_OutlineShader.getShaderID());
 		m_OutlineShader.setUniformMat4("view", m_Camera->getViewMatrix());
 		m_OutlineShader.setUniformMat4("projection", projectionMatrix);
 
 		// Models
-		m_ModelShader.enable();
+		m_GLCache->switchShader(m_ModelShader.getShaderID());
 		m_DynamicLightManager.setupLightingUniforms(m_ModelShader);
 		m_ModelShader.setUniform3f("viewPos", m_Camera->getPosition());
 		m_ModelShader.setUniformMat4("view", m_Camera->getViewMatrix());
@@ -94,8 +95,8 @@ namespace arcane {
 		m_Renderer->flushOpaque(m_ModelShader, m_OutlineShader);
 
 		// Terrain
-		glStencilMask(0x00); // Don't update the stencil buffer
-		m_TerrainShader.enable();
+		m_GLCache->setStencilWriteMask(0x00); // Don't update the stencil buffer
+		m_GLCache->switchShader(m_TerrainShader.getShaderID());
 		m_DynamicLightManager.setupLightingUniforms(m_TerrainShader);
 		m_TerrainShader.setUniform3f("viewPos", m_Camera->getPosition());
 		glm::mat4 modelMatrix(1);
@@ -109,7 +110,7 @@ namespace arcane {
 		m_Skybox->Draw();
 
 		// Transparent objects
-		m_ModelShader.enable();
+		m_GLCache->switchShader(m_ModelShader.getShaderID());
 		m_Renderer->flushTransparent(m_ModelShader, m_OutlineShader);
 	}
 

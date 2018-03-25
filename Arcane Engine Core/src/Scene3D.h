@@ -4,6 +4,7 @@
 #include "Defs.h"
 #include "graphics\camera\Camera.h"
 #include "graphics\renderer\Renderer.h"
+#include "graphics\renderer\GLCache.h"
 #include "terrain\Terrain.h"
 #include "graphics\Window.h"
 #include "graphics\MeshFactory.h"
@@ -21,6 +22,7 @@ namespace arcane {
 		graphics::MeshFactory m_meshFactory;
 		graphics::Skybox *m_Skybox;
 		graphics::DynamicLightManager m_DynamicLightManager;
+		graphics::GLCache *m_GLCache;
 
 		// Some sort of list of entities (tied to models that are in the Renderer (Renderable3D) (should this name be changed to Renderer3D?))
 		//std::vector<Entity*> m_Entities;
