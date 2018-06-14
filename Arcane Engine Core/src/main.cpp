@@ -21,7 +21,7 @@
 int main() {
 	// Prepare the game
 	arcane::graphics::Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
-	arcane::graphics::Window window("Arcane Engine", 1366, 768);
+	arcane::graphics::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
 	arcane::Scene3D scene(&camera, &window);
 
 	// Construct framebuffers
@@ -97,7 +97,8 @@ int main() {
 
 		window.update();
 		if (fpsTimer.elapsed() >= 1) {
-			std::cout << "FPS: " << frames << std::endl;
+			std::cout << "FPS: " << frames << "\n";
+			std::cout << "AVG Frame Time: " << (1.0 / frames) * 1000.0 << "ms \n";
 			frames = 0;
 			fpsTimer.reset();
 		}
