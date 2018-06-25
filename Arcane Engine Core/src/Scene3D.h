@@ -15,7 +15,6 @@ namespace arcane {
 	
 	class Scene3D {
 	private:
-		graphics::Window *m_Window;
 		graphics::Camera *m_Camera;
 		graphics::Renderer *m_Renderer;
 		terrain::Terrain *m_Terrain;

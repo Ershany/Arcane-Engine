@@ -29,6 +29,28 @@ namespace arcane {	namespace graphics {
 		return glm::lookAt(m_Position, m_Position + m_Front, m_Up);
 	}
 
+	void Camera::processInput(GLfloat deltaTime) {
+		// Keyboard input
+		if (Window::isKeyPressed(GLFW_KEY_W))
+			processKeyboard(arcane::graphics::FORWARD, deltaTime);
+		if (Window::isKeyPressed(GLFW_KEY_S))
+			processKeyboard(arcane::graphics::BACKWARD, deltaTime);
+		if (Window::isKeyPressed(GLFW_KEY_A))
+			processKeyboard(arcane::graphics::LEFT, deltaTime);
+		if (Window::isKeyPressed(GLFW_KEY_D))
+			processKeyboard(arcane::graphics::RIGHT, deltaTime);
+		if (Window::isKeyPressed(GLFW_KEY_SPACE))
+			processKeyboard(arcane::graphics::UPWARDS, deltaTime);
+		if (Window::isKeyPressed(GLFW_KEY_LEFT_CONTROL))
+			processKeyboard(arcane::graphics::DOWNWARDS, deltaTime);
+
+		// Mouse scrolling
+		processMouseScroll(Window::getScrollY() * 6);
+
+		// Mouse movement
+		processMouseMovement(Window::getMouseXDelta(), -Window::getMouseYDelta(), true);
+	}
+
 	void Camera::processKeyboard(Camera_Movement direction, GLfloat deltaTime) {
 		GLfloat velocity = m_MovementSpeed * deltaTime;
 		switch (direction) {

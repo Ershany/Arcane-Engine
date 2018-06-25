@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "../Window.h"
+
 namespace arcane { namespace graphics {
 
 	enum Camera_Movement {
@@ -62,7 +64,6 @@ namespace arcane { namespace graphics {
 		* @param pitch Optional. Initial pitch of the camera. Default is determined by the Camera class
 		*/
 		Camera(GLfloat xPos, GLfloat yPos, GLfloat zPos, GLfloat xUp, GLfloat yUp, GLfloat zUp, GLfloat yaw, GLfloat pitch);
-		
 
 
 		/**
@@ -71,6 +72,23 @@ namespace arcane { namespace graphics {
 		* @return returns the view matrix for the camera
 		*/
 		glm::mat4 getViewMatrix();
+
+		void processInput(GLfloat deltaTime);
+
+		// Getters
+		inline GLfloat getYaw() const { return m_Yaw; }
+		inline GLfloat getPitch() const { return m_Pitch; }
+		inline GLfloat getMovementSpeed() const { return m_MovementSpeed; }
+		inline GLfloat getMouseSensitivity() const { return m_MouseSensitivity; }
+		inline GLfloat getFOV() const { return m_FOV; }
+		inline const glm::vec3& getFront() const { return m_Front; }
+		inline const glm::vec3& getPosition() const { return m_Position; }
+	private:
+		/**
+		* Updates the front, right, and up vectors for the camera
+		* These vectors are reliant on the yaw and pitch of the camera
+		*/
+		void updateCameraVectors();
 
 		/**
 		* Translates the position of the camera
@@ -97,22 +115,6 @@ namespace arcane { namespace graphics {
 		* @param offset The value that is added to the Field of View
 		*/
 		void processMouseScroll(GLfloat yOffset);
-
-
-		// Getters
-		inline GLfloat getYaw() const { return m_Yaw; }
-		inline GLfloat getPitch() const { return m_Pitch; }
-		inline GLfloat getMovementSpeed() const { return m_MovementSpeed; }
-		inline GLfloat getMouseSensitivity() const { return m_MouseSensitivity; }
-		inline GLfloat getFOV() const { return m_FOV; }
-		inline const glm::vec3& getFront() const { return m_Front; }
-		inline const glm::vec3& getPosition() const { return m_Position; }
-	private:
-		/**
-		* Updates the front, right, and up vectors for the camera
-		* These vectors are reliant on the yaw and pitch of the camera
-		*/
-		void updateCameraVectors();
 	};
 
 } }

@@ -13,14 +13,13 @@ namespace arcane { namespace graphics {
 
 	class Skybox {
 	public:
-		Skybox(const std::vector<const char*> &filePaths, Camera *camera, Window *window);
+		Skybox(const std::vector<const char*> &filePaths, Camera *camera);
 
 		void Draw();
 
 		inline unsigned int getSkyboxCubemap() { return m_SkyboxCubemap; }
 	private:
 		Camera *m_Camera;
-		Window *m_Window;
 		Shader m_SkyboxShader;
 		
 		opengl::VertexArray m_SkyboxVAO;

@@ -25,11 +25,11 @@ void main() {
 	// Note: Post processing may cause aliasing since it uses the blitted framebuffer (A non-multisampled buffer)
 
 	// Blur kernel
-	//float kernel[9] = float[] (
-	//	1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0,
-	//	2.0 / 16.0, 4.0 / 16.0, 2.0 / 16.0,
-	//	1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0
-	//);
+	float kernel[9] = float[] (
+		1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0,
+		2.0 / 16.0, 4.0 / 16.0, 2.0 / 16.0,
+		1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0
+	);
 	
 	// Sharpen kernel
 	//float kernel[9] = float[] (
@@ -46,11 +46,11 @@ void main() {
 	//);
 
 	// No Post Processing Kernel
-	float kernel[9] = float[] (
-		0, 0, 0,
-		0, 1, 0,
-		0, 0, 0
-	);
+	//float kernel[9] = float[] (
+	//	0, 0, 0,
+	//	0, 1, 0,
+	//	0, 0, 0
+	//);
 
 	vec3 colour = vec3(0.0);
 
