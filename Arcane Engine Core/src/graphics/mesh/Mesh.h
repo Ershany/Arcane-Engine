@@ -5,7 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "Shader.h"
+#include "../Shader.h"
+#include "Material.h"
 
 namespace arcane { namespace graphics {
 
@@ -37,11 +38,13 @@ namespace arcane { namespace graphics {
 		void Draw(Shader &shader) const;
 
 		// Getters
+		inline const Material& getMaterial() const { return m_Material; }
 		inline const std::vector<Vertex>& getVertices() const { return m_Vertices; }
 		inline const std::vector<unsigned int>& getIndices() const { return m_Indices; }
 		inline const std::vector<Texture>& getTextures() const { return m_Textures; }
 	private:
 		unsigned int m_VAO, m_VBO, m_EBO;
+		Material m_Material;
 
 		// Mesh Data
 		std::vector<Vertex> m_Vertices;

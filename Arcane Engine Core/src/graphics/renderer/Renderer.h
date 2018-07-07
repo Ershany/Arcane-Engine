@@ -1,11 +1,12 @@
 #pragma once
 
-#include "../Model.h"
+#include <deque>
+#include <glm\gtx\norm.hpp>
+
+#include "../mesh/Model.h"
 #include "../camera/Camera.h"
 #include "Renderable3D.h"
 #include "GLCache.h"
-#include <deque>
-#include <glm\gtx\norm.hpp>
 
 namespace arcane { namespace graphics {
 	class Renderer {
@@ -23,6 +24,8 @@ namespace arcane { namespace graphics {
 
 		std::deque<Renderable3D*> m_OpaqueRenderQueue;
 		std::deque<Renderable3D*> m_TransparentRenderQueue;
+
+		// TODO: ADD QUAD TYPE - GOES HERE CALLE m_NDCPLane
 
 		Camera *m_Camera;
 		GLCache *m_GLCache;

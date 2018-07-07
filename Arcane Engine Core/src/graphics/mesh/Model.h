@@ -6,7 +6,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "Shader.h"
+#include "../Shader.h"
 #include "Mesh.h"
 
 namespace arcane { namespace graphics {
@@ -18,7 +18,7 @@ namespace arcane { namespace graphics {
 		
 		void Draw(Shader &shader) const;
 	private:
-		std::vector<Texture> m_LoadedTextures; // Used so the same texture doesn't get loaded into memory twice
+		static std::vector<Texture> m_LoadedTextures; // Used so the same texture doesn't get loaded into memory twice
 		std::vector<Mesh> m_Meshes;
 		std::string m_Directory;
 

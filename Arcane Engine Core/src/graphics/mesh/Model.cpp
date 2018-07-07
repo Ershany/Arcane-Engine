@@ -4,10 +4,12 @@
 #include <stb_image_aug.h>
 #include <iostream>
 
-#include "../platform/OpenGL/Utility.h"
-#include "../utils/Logger.h"
+#include "../../platform/OpenGL/Utility.h"
+#include "../../utils/Logger.h"
 
 namespace arcane { namespace graphics {
+
+	std::vector<Texture> Model::m_LoadedTextures;
 
 	Model::Model(const char *path) {
 		loadModel(path);
@@ -110,9 +112,9 @@ namespace arcane { namespace graphics {
 			mat->GetTexture(type, i, &str);
 			bool skip = false;
 			
-			for (unsigned int j = 0; j < m_LoadedTextures.size(); ++j) {
-				if (std::strcmp(str.C_Str(), m_LoadedTextures[j].path.C_Str()) == 0) {
-					textures.push_back(m_LoadedTextures[j]);
+			for (unsigned int j = 0; j < Model::m_LoadedTextures.size(); ++j) {
+				if (std::strcmp(str.C_Str(), Model::m_LoadedTextures[j].path.C_Str()) == 0) {
+					textures.push_back(Model::m_LoadedTextures[j]);
 					skip = true;
 					break;
 				}
@@ -125,7 +127,7 @@ namespace arcane { namespace graphics {
 				texture.type = typeName;
 				texture.path = str;
 				textures.push_back(texture);
-				m_LoadedTextures.push_back(texture); // Add to loaded textures, so no duplicate texture gets loaded
+				Model::m_LoadedTextures.push_back(texture); // Add to loaded textures, so no duplicate texture gets loaded
 			}
 		}
 		return textures;
