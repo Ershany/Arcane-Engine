@@ -6,7 +6,7 @@ namespace arcane { namespace opengl {
 		glGenBuffers(1, &m_BufferID);
 	}
 
-	Buffer::Buffer(GLfloat *data, GLsizei amount, GLuint componentCount) {
+	Buffer::Buffer(float *data, int amount, unsigned int componentCount) {
 		glGenBuffers(1, &m_BufferID);
 		load(data, amount, componentCount);
 	}
@@ -15,7 +15,7 @@ namespace arcane { namespace opengl {
 		glDeleteBuffers(1, &m_BufferID);
 	}
 
-	void Buffer::load(GLfloat *data, GLsizei amount, GLuint componentCount) {
+	void Buffer::load(float *data, int amount, unsigned int componentCount) {
 		m_ComponentCount = componentCount;
 
 		bind();

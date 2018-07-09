@@ -6,7 +6,7 @@ namespace arcane { namespace graphics {
 	{
 		m_SkyboxCubemap = opengl::Utility::loadCubemapFromFiles(filePaths);
 		
-		GLfloat skyboxVertices[] = {
+		float skyboxVertices[] = {
 			// Front
 			-1.0, -1.0,  1.0,
 			1.0, -1.0,  1.0,
@@ -18,7 +18,7 @@ namespace arcane { namespace graphics {
 			1.0,  1.0, -1.0,
 			-1.0,  1.0, -1.0,
 		};
-		GLuint skyboxIndices[] = {
+		unsigned int skyboxIndices[] = {
 			// front
 			2, 1, 0,
 			0, 3, 2,

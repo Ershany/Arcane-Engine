@@ -3,7 +3,7 @@
 // (GL3W is a helper library to access OpenGL functions since there is no standard header to access modern OpenGL functions easily. Alternatives are GLEW, Glad, etc.)
 
 // Implemented features:
-//  [X] User texture binding. Cast 'GLuint' OpenGL texture identifier as void*/ImTextureID. Read the FAQ about ImTextureID in imgui.cpp.
+//  [X] User texture binding. Cast 'unsigned int' OpenGL texture identifier as void*/ImTextureID. Read the FAQ about ImTextureID in imgui.cpp.
 //  [X] Gamepad navigation mapping. Enable with 'io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad'.
 
 // You can copy and use unmodified imgui_impl_* files in your project. See main.cpp for an example of using this.
@@ -58,7 +58,7 @@ static GLFWcursor*  g_MouseCursors[ImGuiMouseCursor_COUNT] = { 0 };
 
 // OpenGL3 data
 static char         g_GlslVersion[32] = "#version 150";
-static GLuint       g_FontTexture = 0;
+static unsigned int       g_FontTexture = 0;
 static int          g_ShaderHandle = 0, g_VertHandle = 0, g_FragHandle = 0;
 static int          g_AttribLocationTex = 0, g_AttribLocationProjMtx = 0;
 static int          g_AttribLocationPosition = 0, g_AttribLocationUV = 0, g_AttribLocationColor = 0;
@@ -78,23 +78,23 @@ void ImGui_ImplGlfwGL3_RenderDrawData(ImDrawData* draw_data)
     draw_data->ScaleClipRects(io.DisplayFramebufferScale);
 
     // Backup GL state
-    GLenum last_active_texture; glGetIntegerv(GL_ACTIVE_TEXTURE, (GLint*)&last_active_texture);
+    GLenum last_active_texture; glGetIntegerv(GL_ACTIVE_TEXTURE, (int*)&last_active_texture);
     glActiveTexture(GL_TEXTURE0);
-    GLint last_program; glGetIntegerv(GL_CURRENT_PROGRAM, &last_program);
-    GLint last_texture; glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
-    GLint last_sampler; glGetIntegerv(GL_SAMPLER_BINDING, &last_sampler);
-    GLint last_array_buffer; glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &last_array_buffer);
-    GLint last_element_array_buffer; glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &last_element_array_buffer);
-    GLint last_vertex_array; glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &last_vertex_array);
-    GLint last_polygon_mode[2]; glGetIntegerv(GL_POLYGON_MODE, last_polygon_mode);
-    GLint last_viewport[4]; glGetIntegerv(GL_VIEWPORT, last_viewport);
-    GLint last_scissor_box[4]; glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box);
-    GLenum last_blend_src_rgb; glGetIntegerv(GL_BLEND_SRC_RGB, (GLint*)&last_blend_src_rgb);
-    GLenum last_blend_dst_rgb; glGetIntegerv(GL_BLEND_DST_RGB, (GLint*)&last_blend_dst_rgb);
-    GLenum last_blend_src_alpha; glGetIntegerv(GL_BLEND_SRC_ALPHA, (GLint*)&last_blend_src_alpha);
-    GLenum last_blend_dst_alpha; glGetIntegerv(GL_BLEND_DST_ALPHA, (GLint*)&last_blend_dst_alpha);
-    GLenum last_blend_equation_rgb; glGetIntegerv(GL_BLEND_EQUATION_RGB, (GLint*)&last_blend_equation_rgb);
-    GLenum last_blend_equation_alpha; glGetIntegerv(GL_BLEND_EQUATION_ALPHA, (GLint*)&last_blend_equation_alpha);
+    int last_program; glGetIntegerv(GL_CURRENT_PROGRAM, &last_program);
+    int last_texture; glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
+    int last_sampler; glGetIntegerv(GL_SAMPLER_BINDING, &last_sampler);
+    int last_array_buffer; glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &last_array_buffer);
+    int last_element_array_buffer; glGetIntegerv(GL_ELEMENT_ARRAY_BUFFER_BINDING, &last_element_array_buffer);
+    int last_vertex_array; glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &last_vertex_array);
+    int last_polygon_mode[2]; glGetIntegerv(GL_POLYGON_MODE, last_polygon_mode);
+    int last_viewport[4]; glGetIntegerv(GL_VIEWPORT, last_viewport);
+    int last_scissor_box[4]; glGetIntegerv(GL_SCISSOR_BOX, last_scissor_box);
+    GLenum last_blend_src_rgb; glGetIntegerv(GL_BLEND_SRC_RGB, (int*)&last_blend_src_rgb);
+    GLenum last_blend_dst_rgb; glGetIntegerv(GL_BLEND_DST_RGB, (int*)&last_blend_dst_rgb);
+    GLenum last_blend_src_alpha; glGetIntegerv(GL_BLEND_SRC_ALPHA, (int*)&last_blend_src_alpha);
+    GLenum last_blend_dst_alpha; glGetIntegerv(GL_BLEND_DST_ALPHA, (int*)&last_blend_dst_alpha);
+    GLenum last_blend_equation_rgb; glGetIntegerv(GL_BLEND_EQUATION_RGB, (int*)&last_blend_equation_rgb);
+    GLenum last_blend_equation_alpha; glGetIntegerv(GL_BLEND_EQUATION_ALPHA, (int*)&last_blend_equation_alpha);
     GLboolean last_enable_blend = glIsEnabled(GL_BLEND);
     GLboolean last_enable_cull_face = glIsEnabled(GL_CULL_FACE);
     GLboolean last_enable_depth_test = glIsEnabled(GL_DEPTH_TEST);
@@ -110,7 +110,7 @@ void ImGui_ImplGlfwGL3_RenderDrawData(ImDrawData* draw_data)
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // Setup viewport, orthographic projection matrix
-    glViewport(0, 0, (GLsizei)fb_width, (GLsizei)fb_height);
+    glViewport(0, 0, (int)fb_width, (int)fb_height);
     const float ortho_projection[4][4] =
     {
         { 2.0f/io.DisplaySize.x, 0.0f,                   0.0f, 0.0f },
@@ -125,7 +125,7 @@ void ImGui_ImplGlfwGL3_RenderDrawData(ImDrawData* draw_data)
 
     // Recreate the VAO every time 
     // (This is to easily allow multiple GL contexts. VAO are not shared among GL contexts, and we don't track creation/deletion of windows so we don't have an obvious key to use to cache them.)
-    GLuint vao_handle = 0;
+    unsigned int vao_handle = 0;
     glGenVertexArrays(1, &vao_handle);
     glBindVertexArray(vao_handle);
     glBindBuffer(GL_ARRAY_BUFFER, g_VboHandle);
@@ -157,9 +157,9 @@ void ImGui_ImplGlfwGL3_RenderDrawData(ImDrawData* draw_data)
             }
             else
             {
-                glBindTexture(GL_TEXTURE_2D, (GLuint)(intptr_t)pcmd->TextureId);
+                glBindTexture(GL_TEXTURE_2D, (unsigned int)(intptr_t)pcmd->TextureId);
                 glScissor((int)pcmd->ClipRect.x, (int)(fb_height - pcmd->ClipRect.w), (int)(pcmd->ClipRect.z - pcmd->ClipRect.x), (int)(pcmd->ClipRect.w - pcmd->ClipRect.y));
-                glDrawElements(GL_TRIANGLES, (GLsizei)pcmd->ElemCount, sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT, idx_buffer_offset);
+                glDrawElements(GL_TRIANGLES, (int)pcmd->ElemCount, sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT, idx_buffer_offset);
             }
             idx_buffer_offset += pcmd->ElemCount;
         }
@@ -181,8 +181,8 @@ void ImGui_ImplGlfwGL3_RenderDrawData(ImDrawData* draw_data)
     if (last_enable_depth_test) glEnable(GL_DEPTH_TEST); else glDisable(GL_DEPTH_TEST);
     if (last_enable_scissor_test) glEnable(GL_SCISSOR_TEST); else glDisable(GL_SCISSOR_TEST);
     glPolygonMode(GL_FRONT_AND_BACK, (GLenum)last_polygon_mode[0]);
-    glViewport(last_viewport[0], last_viewport[1], (GLsizei)last_viewport[2], (GLsizei)last_viewport[3]);
-    glScissor(last_scissor_box[0], last_scissor_box[1], (GLsizei)last_scissor_box[2], (GLsizei)last_scissor_box[3]);
+    glViewport(last_viewport[0], last_viewport[1], (int)last_viewport[2], (int)last_viewport[3]);
+    glScissor(last_scissor_box[0], last_scissor_box[1], (int)last_scissor_box[2], (int)last_scissor_box[3]);
 }
 
 static const char* ImGui_ImplGlfwGL3_GetClipboardText(void* user_data)
@@ -239,7 +239,7 @@ bool ImGui_ImplGlfwGL3_CreateFontsTexture()
     io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);   // Load as RGBA 32-bits (75% of the memory is wasted, but default font is so small) because it is more likely to be compatible with user's existing shaders. If your ImTextureId represent a higher-level concept than just a GL texture id, consider calling GetTexDataAsAlpha8() instead to save on GPU memory.
 
     // Upload texture to graphics system
-    GLint last_texture;
+    int last_texture;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
     glGenTextures(1, &g_FontTexture);
     glBindTexture(GL_TEXTURE_2D, g_FontTexture);
@@ -260,7 +260,7 @@ bool ImGui_ImplGlfwGL3_CreateFontsTexture()
 bool ImGui_ImplGlfwGL3_CreateDeviceObjects()
 {
     // Backup GL state
-    GLint last_texture, last_array_buffer, last_vertex_array;
+    int last_texture, last_array_buffer, last_vertex_array;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, &last_texture);
     glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &last_array_buffer);
     glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &last_vertex_array);

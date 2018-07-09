@@ -58,7 +58,7 @@ namespace arcane { namespace graphics {
 			}
 			number = ss.str();
 
-			shader.setUniform1i(("material." + name + number).c_str(), i);
+			shader.setUniform1i(("material." + name).c_str(), i);
 			glBindTexture(GL_TEXTURE_2D, m_Textures[i].id);
 		}
 

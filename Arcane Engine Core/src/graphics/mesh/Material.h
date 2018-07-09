@@ -7,15 +7,28 @@
 
 namespace arcane { namespace graphics {
 
-	// TODO: Move to a PBR system
+	// TODO: Move to a PBR material system
 	class Material {
 	public:
-		Material(Shader *shader = nullptr, GLuint diffuseMap = 0, GLuint specularMap = 0, GLuint emissionMap = 0, GLuint normalMap = 0, float shininess = 32) 
-			: m_Shader(shader), m_DiffuseMap(diffuseMap), m_SpecularMap(specularMap), m_EmissionMap(emissionMap), m_NormalMap(normalMap), m_Shininess(shininess)
-		{
-		}
+		Material(Shader *shader = nullptr, unsigned int diffuseMap = 0, unsigned int specularMap = 0, unsigned int normalMap = 0, unsigned int emissionMap = 0, float shininess = 32);
+
+		// Assumes the shader is already bound
+		void BindMaterialInformation();
+
+		inline unsigned int getDiffuseMapId() { return m_DiffuseMap; }
+		inline unsigned int getSpecularMapId() { return m_SpecularMap; }
+		inline unsigned int getNormalMapId() { return m_NormalMap; }
+		inline unsigned int getEmissionMapId() { return m_EmissionMap; }
+		inline float getShininess() { return m_Shininess; }
+		inline unsigned int getShaderId() { return m_Shader->getShaderID(); }
+
+		inline void setDiffuseMapId(unsigned int id) { m_DiffuseMap = id; }
+		inline void setSpecularMapId(unsigned int id) { m_SpecularMap = id; }
+		inline void setNormalMapId(unsigned int id) { m_NormalMap = id; }
+		inline void setEmissionMapId(unsigned int id) { m_EmissionMap = id; }
+		inline void setShininess(float shininess) { m_Shininess = shininess; }
 	private:
-		GLuint m_DiffuseMap, m_SpecularMap, m_NormalMap, m_EmissionMap;
+		unsigned int m_DiffuseMap, m_SpecularMap, m_NormalMap, m_EmissionMap;
 		float m_Shininess;
 
 		Shader *m_Shader;

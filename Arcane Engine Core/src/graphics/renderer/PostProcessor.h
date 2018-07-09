@@ -8,7 +8,7 @@ namespace arcane { namespace graphic {
 	public:
 		PostProcessor();
 	public:
-		GLuint texture;
+		unsigned int texture;
 
 		// Post Processing Toggles
 		bool blur = false;

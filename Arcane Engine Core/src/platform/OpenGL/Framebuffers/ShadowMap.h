@@ -8,9 +8,9 @@ namespace arcane { namespace opengl {
 	public:
 		ShadowMap(int width, int height);
 
-		inline GLuint getDepthBufferTexture() { return m_DepthTexture; }
+		inline unsigned int getDepthBufferTexture() { return m_DepthTexture; }
 	private:
-		GLuint m_DepthTexture;
+		unsigned int m_DepthTexture;
 	};
 
 } }

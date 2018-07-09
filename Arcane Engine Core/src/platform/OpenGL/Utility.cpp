@@ -4,8 +4,8 @@
 
 namespace arcane { namespace opengl {
 
-	GLuint Utility::loadTextureFromFile(const char *path, bool containsTransparencyOnSides) {
-		GLuint textureID;
+	unsigned int Utility::loadTextureFromFile(const char *path, bool containsTransparencyOnSides) {
+		unsigned int textureID;
 		glGenTextures(1, &textureID);
 
 		int width, height, nrComponents;
@@ -41,9 +41,9 @@ namespace arcane { namespace opengl {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0);
 
 			// Anisotropic filtering
-			GLfloat maxAnisotropy;
+			float maxAnisotropy;
 			glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-			GLfloat anistropyAmount = glm::min(maxAnisotropy, ANISOTROPIC_FILTERING);
+			float anistropyAmount = glm::min(maxAnisotropy, ANISOTROPIC_FILTERING);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
 
 			// Free now that the memory is 
@@ -57,14 +57,14 @@ namespace arcane { namespace opengl {
 		return textureID;
 	}
 
-	GLuint Utility::loadCubemapFromFiles(const std::vector<const char*> &filePaths) {
+	unsigned int Utility::loadCubemapFromFiles(const std::vector<const char*> &filePaths) {
 		// Size check
 		if (filePaths.size() != 6) {
 			utils::Logger::getInstance().error("logged_files / error.txt", "Cubemap initialization", "Could not initialize the cubemap since 6 faces were not provided");
 			return -1;
 		}
 
-		GLuint cubemapID;
+		unsigned int cubemapID;
 		glGenTextures(1, &cubemapID);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapID);
 

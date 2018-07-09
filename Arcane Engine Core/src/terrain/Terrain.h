@@ -13,8 +13,8 @@ namespace arcane { namespace terrain {
 
 	class Terrain {
 	private:
-		GLfloat m_TerrainSize;
-		GLuint m_VertexSideCount;
+		float m_TerrainSize;
+		unsigned int m_VertexSideCount;
 		GLushort m_HeightMapScale;
 
 		glm::mat4 m_ModelMatrix;
@@ -29,7 +29,7 @@ namespace arcane { namespace terrain {
 		inline const glm::vec3& getPosition() const { return m_Position; }
 	private:
 		glm::vec3 calculateNormal(int x, int z, unsigned char *heightMapData);
-		GLfloat getVertexHeight(int x, int y, unsigned char *heightMapData);
+		float getVertexHeight(int x, int y, unsigned char *heightMapData);
 	};
 
 } }

@@ -15,7 +15,7 @@ namespace arcane { namespace terrain {
 		std::vector<graphics::Texture> textures;
 
 		// Height map
-		GLint mapWidth, mapHeight;
+		int mapWidth, mapHeight;
 		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, SOIL_LOAD_L);
 		if (mapWidth != mapHeight) {
 			std::cout << "ERROR: Can't use a heightmap with a different width and height" << std::endl;
@@ -29,13 +29,13 @@ namespace arcane { namespace terrain {
 		m_HeightMapScale = 150;
 
 		// Vertex generation
-		for (GLuint z = 0; z < m_VertexSideCount; z++) {
-			for (GLuint x = 0; x < m_VertexSideCount; x++) {
+		for (unsigned int z = 0; z < m_VertexSideCount; z++) {
+			for (unsigned int x = 0; x < m_VertexSideCount; x++) {
 				graphics::Vertex vertex;
 
 				vertex.Position = glm::vec3(x * m_TerrainSize, getVertexHeight(x, z, heightMapImage), z * m_TerrainSize);
 				vertex.Normal = calculateNormal(x, z, heightMapImage);
-				vertex.TexCoords = glm::vec2((GLfloat)x / ((GLfloat)m_VertexSideCount - 1.0f), (GLfloat)z / ((GLfloat)m_VertexSideCount - 1.0f));
+				vertex.TexCoords = glm::vec2((float)x / ((float)m_VertexSideCount - 1.0f), (float)z / ((float)m_VertexSideCount - 1.0f));
 
 				vertices.push_back(vertex);
 			}
@@ -43,8 +43,8 @@ namespace arcane { namespace terrain {
 		stbi_image_free(heightMapImage);
 
 		// Indices generation (ccw winding order for consistency which will allow back face culling)
-		for (GLuint height = 0; height < m_VertexSideCount - 1; ++height) {
-			for (GLuint width = 0; width < m_VertexSideCount - 1; ++width) {
+		for (unsigned int height = 0; height < m_VertexSideCount - 1; ++height) {
+			for (unsigned int width = 0; width < m_VertexSideCount - 1; ++width) {
 				// Triangle 1
 				indices.push_back(width + (height * m_VertexSideCount));
 				indices.push_back(1 + m_VertexSideCount + width + (height * m_VertexSideCount));
@@ -93,10 +93,10 @@ namespace arcane { namespace terrain {
 	}
 
 	glm::vec3 Terrain::calculateNormal(int x, int z, unsigned char *heightMapData) {
-		GLfloat heightR = getVertexHeight(x + 1, z    , heightMapData);
-		GLfloat heightL = getVertexHeight(x - 1, z    , heightMapData);
-		GLfloat heightU = getVertexHeight(x    , z + 1, heightMapData);
-		GLfloat heightD = getVertexHeight(x    , z - 1, heightMapData);
+		float heightR = getVertexHeight(x + 1, z    , heightMapData);
+		float heightL = getVertexHeight(x - 1, z    , heightMapData);
+		float heightU = getVertexHeight(x    , z + 1, heightMapData);
+		float heightD = getVertexHeight(x    , z - 1, heightMapData);
 		
 		glm::vec3 normal(heightL - heightR, 2.0f, heightD - heightU);
 		normal = glm::normalize(normal);
@@ -104,7 +104,7 @@ namespace arcane { namespace terrain {
 		return normal;
 	}
 
-	GLfloat Terrain::getVertexHeight(int x, int z, unsigned char *heightMapData) {
+	float Terrain::getVertexHeight(int x, int z, unsigned char *heightMapData) {
 		if (x < 0 || x >= m_VertexSideCount || z < 0 || z >= m_VertexSideCount) {
 			return 0.0f;
 		}

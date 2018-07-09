@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FDA7B389-08B8-4B2B-A0F9-1488FB7AAB92}</ProjectGuid>
     <RootNamespace>ArcaneEngineCore</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -84,10 +84,12 @@
     <ClCompile Include="src\graphics\dynamic lights\DynamicLightManager.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\PointLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\SpotLight.cpp" />
+    <ClCompile Include="src\graphics\mesh\Material.cpp" />
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\mesh\MeshFactory.cpp" />
     <ClCompile Include="src\graphics\mesh\MeshLoader.cpp" />
     <ClCompile Include="src\graphics\mesh\Model.cpp" />
+    <ClCompile Include="src\graphics\mesh\NewMesh.cpp" />
     <ClCompile Include="src\graphics\renderer\GLCache.cpp" />
     <ClCompile Include="src\graphics\renderer\PostProcessor.cpp" />
     <ClCompile Include="src\graphics\renderer\Renderable3D.cpp" />
@@ -126,6 +128,7 @@
     <ClInclude Include="src\graphics\mesh\MeshFactory.h" />
     <ClInclude Include="src\graphics\mesh\MeshLoader.h" />
     <ClInclude Include="src\graphics\mesh\Model.h" />
+    <ClInclude Include="src\graphics\mesh\NewMesh.h" />
     <ClInclude Include="src\graphics\renderer\GLCache.h" />
     <ClInclude Include="src\graphics\renderer\PostProcessor.h" />
     <ClInclude Include="src\graphics\renderer\Renderable3D.h" />
@@ -156,8 +159,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\directionalLight.frag" />
-    <None Include="src\shaders\framebuffer.frag" />
-    <None Include="src\shaders\framebuffer.vert" />
+    <None Include="src\shaders\postprocess.frag" />
+    <None Include="src\shaders\postprocess.vert" />
     <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\modelReflection.frag" />
     <None Include="src\shaders\modelRefraction.frag" />

@@ -20,10 +20,10 @@ namespace arcane { namespace opengl {
 		void bind();
 		void unbind();
 
-		inline GLuint getFramebuffer() { return m_FBO; }
-		inline GLuint getColourBufferTexture() { return m_ColourTexture; }
+		inline unsigned int getFramebuffer() { return m_FBO; }
+		inline unsigned int getColourBufferTexture() { return m_ColourTexture; }
 	private:
-		GLuint m_FBO, m_ColourTexture, m_DepthStencilRBO;
+		unsigned int m_FBO, m_ColourTexture, m_DepthStencilRBO;
 		
 		bool m_Created;
 		unsigned int m_Width, m_Height;

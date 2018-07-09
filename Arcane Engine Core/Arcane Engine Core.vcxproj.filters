@@ -117,6 +117,12 @@
     <ClCompile Include="src\graphics\mesh\MeshLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\mesh\NewMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\mesh\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\Window.h">
@@ -236,6 +242,9 @@
     <ClInclude Include="src\graphics\mesh\MeshLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\mesh\NewMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\basic.vert" />
@@ -244,15 +253,15 @@
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\terrain.frag" />
     <None Include="src\shaders\basic.frag" />
-    <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\skybox.frag" />
     <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\modelReflection.frag" />
     <None Include="src\shaders\modelRefraction.frag" />
-    <None Include="src\shaders\framebuffer.frag" />
-    <None Include="src\shaders\framebuffer.vert" />
     <None Include="src\shaders\shadowmap.vert" />
     <None Include="src\shaders\shadowmap.frag" />
+    <None Include="src\shaders\model.frag" />
+    <None Include="src\shaders\postprocess.vert" />
+    <None Include="src\shaders\postprocess.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

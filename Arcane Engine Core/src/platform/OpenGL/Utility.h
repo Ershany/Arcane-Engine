@@ -15,8 +15,8 @@ namespace arcane { namespace opengl {
 
 	class Utility {
 	public:
-		static GLuint loadTextureFromFile(const char *path, bool containsTransparencyOnSides = false);
-		static GLuint loadCubemapFromFiles(const std::vector<const char*> &vec);
+		static unsigned int loadTextureFromFile(const char *path, bool containsTransparencyOnSides = false);
+		static unsigned int loadCubemapFromFiles(const std::vector<const char*> &vec);
 	};
 
 } }

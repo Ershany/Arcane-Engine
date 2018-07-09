@@ -31,7 +31,7 @@ int main() {
 	blitFramebuffer.addColorAttachment(false).addDepthStencilRBO(false).createFramebuffer();
 
 	// Instantiate the shaders and mesh factories
-	arcane::graphics::Shader framebufferShader("src/shaders/framebuffer.vert", "src/shaders/framebuffer.frag");
+	arcane::graphics::Shader framebufferShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
 	arcane::graphics::MeshFactory meshFactory;
 	arcane::graphics::Mesh *colourBufferMesh = meshFactory.CreateScreenQuad(blitFramebuffer.getColourBufferTexture());
 

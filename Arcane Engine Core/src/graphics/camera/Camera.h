@@ -19,11 +19,11 @@ namespace arcane { namespace graphics {
 	};
 
 	// Default Camera Values
-	const GLfloat YAW = -90.0f;
-	const GLfloat PITCH = 0.0f;
-	const GLfloat SPEED = 40.0f;
-	const GLfloat SENSITIVITY = 0.10f;
-	const GLfloat FOV = 100.0f;
+	const float YAW = -90.0f;
+	const float PITCH = 0.0f;
+	const float SPEED = 40.0f;
+	const float SENSITIVITY = 0.10f;
+	const float FOV = 100.0f;
 
 	class Camera {
 	private:
@@ -31,13 +31,13 @@ namespace arcane { namespace graphics {
 		glm::vec3 m_Position, m_Front, m_Up, m_Right, m_WorldUp;
 
 		// Euler Angles
-		GLfloat m_Yaw;
-		GLfloat m_Pitch;
+		float m_Yaw;
+		float m_Pitch;
 
 		// Camera Options
-		GLfloat m_MovementSpeed;
-		GLfloat m_MouseSensitivity;
-		GLfloat m_FOV;
+		float m_MovementSpeed;
+		float m_MouseSensitivity;
+		float m_FOV;
 	public:
 		/**
 		* Constructs a camera using the position and up vectors
@@ -48,7 +48,7 @@ namespace arcane { namespace graphics {
 		* @param yaw Optional. Initial yaw of the camera. Default is determined by the Camera class
 		* @param pitch Optional. Initial pitch of the camera. Default is determined by the Camera class
 		*/
-		Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch);
+		Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch);
 
 		/**
 		* Constructs a camera using floats to represent the position and up vectors of the camera
@@ -63,7 +63,7 @@ namespace arcane { namespace graphics {
 		* @param yaw Optional. Initial yaw of the camera. Default is determined by the Camera class
 		* @param pitch Optional. Initial pitch of the camera. Default is determined by the Camera class
 		*/
-		Camera(GLfloat xPos, GLfloat yPos, GLfloat zPos, GLfloat xUp, GLfloat yUp, GLfloat zUp, GLfloat yaw, GLfloat pitch);
+		Camera(float xPos, float yPos, float zPos, float xUp, float yUp, float zUp, float yaw, float pitch);
 
 
 		/**
@@ -73,14 +73,14 @@ namespace arcane { namespace graphics {
 		*/
 		glm::mat4 getViewMatrix();
 
-		void processInput(GLfloat deltaTime);
+		void processInput(float deltaTime);
 
 		// Getters
-		inline GLfloat getYaw() const { return m_Yaw; }
-		inline GLfloat getPitch() const { return m_Pitch; }
-		inline GLfloat getMovementSpeed() const { return m_MovementSpeed; }
-		inline GLfloat getMouseSensitivity() const { return m_MouseSensitivity; }
-		inline GLfloat getFOV() const { return m_FOV; }
+		inline float getYaw() const { return m_Yaw; }
+		inline float getPitch() const { return m_Pitch; }
+		inline float getMovementSpeed() const { return m_MovementSpeed; }
+		inline float getMouseSensitivity() const { return m_MouseSensitivity; }
+		inline float getFOV() const { return m_FOV; }
 		inline const glm::vec3& getFront() const { return m_Front; }
 		inline const glm::vec3& getPosition() const { return m_Position; }
 	private:
@@ -96,7 +96,7 @@ namespace arcane { namespace graphics {
 		* @param direction Enumeration type for the direction to move the camera
 		* @param deltaTime Delta time since the last update
 		*/
-		void processKeyboard(Camera_Movement direction, GLfloat deltaTime);
+		void processKeyboard(Camera_Movement direction, float deltaTime);
 
 		/**
 		* Changes what the camera is looking at, by adding the offsets with a sensitivity setting
@@ -106,7 +106,7 @@ namespace arcane { namespace graphics {
 		* @param yOffset The value that is added to the y-offset
 		* @param constrainPitch Optional. Option to constrain the pitch. Default is true
 		*/
-		void processMouseMovement(GLfloat xOffset, GLfloat yOffset, GLboolean constrainPitch);
+		void processMouseMovement(float xOffset, float yOffset, GLboolean constrainPitch);
 
 		/**
 		* Changes the camera's Field of View
@@ -114,7 +114,7 @@ namespace arcane { namespace graphics {
 		*
 		* @param offset The value that is added to the Field of View
 		*/
-		void processMouseScroll(GLfloat yOffset);
+		void processMouseScroll(float yOffset);
 	};
 
 } }

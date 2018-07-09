@@ -8,25 +8,26 @@
 
 #include "../Shader.h"
 #include "Mesh.h"
+#include "NewMesh.h"
 
 namespace arcane { namespace graphics {
 
 	class Model {
 	public:
 		Model(const char *path);
-		Model(const std::vector<Mesh> &meshes);
+		Model(const std::vector<NewMesh> &meshes);
 		
-		void Draw(Shader &shader) const;
+		void Draw() const;
 	private:
 		static std::vector<Texture> m_LoadedTextures; // Used so the same texture doesn't get loaded into memory twice
-		std::vector<Mesh> m_Meshes;
+		std::vector<NewMesh> m_Meshes;
 		std::string m_Directory;
 
 
 		void loadModel(const std::string &path);
 		void processNode(aiNode *node, const aiScene *scene);
-		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
-		std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, const char *typeName);
+		NewMesh processMesh(aiMesh *mesh, const aiScene *scene);
+		Texture* loadMaterialTexture(aiMaterial *mat, aiTextureType type, const char *typeName);
 	};
 
 } }

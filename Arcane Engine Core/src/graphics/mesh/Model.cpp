@@ -6,6 +6,7 @@
 
 #include "../../platform/OpenGL/Utility.h"
 #include "../../utils/Logger.h"
+#include "NewMesh.h"
 
 namespace arcane { namespace graphics {
 
@@ -15,13 +16,13 @@ namespace arcane { namespace graphics {
 		loadModel(path);
 	}
 
-	Model::Model(const std::vector<Mesh> &meshes) {
+	Model::Model(const std::vector<NewMesh> &meshes) {
 		m_Meshes = meshes;
 	}
 
-	void Model::Draw(Shader &shader) const {
+	void Model::Draw() const {
 		for (unsigned int i = 0; i < m_Meshes.size(); ++i) {
-			m_Meshes[i].Draw(shader);
+			m_Meshes[i].Draw();
 		}
 	}
 
@@ -53,30 +54,32 @@ namespace arcane { namespace graphics {
 		}
 	}
 
-	Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
-		std::vector<Vertex> vertices;
+	NewMesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
+		std::vector<glm::vec3> positions;
+		std::vector<glm::vec2> uvs;
+		std::vector<glm::vec3> normals;
+		std::vector<glm::vec3> tangents;
+		std::vector<glm::vec3> bitangents;
 		std::vector<unsigned int> indices;
-		std::vector<Texture> textures;
-
-		vertices.reserve(mesh->mNumVertices);
-		indices.reserve(mesh->mNumFaces * 3); // Assume triangles. If not it will still load, it just won't be optimized
+		indices.reserve(mesh->mNumFaces * 3);
 
 		// Process vertices
 		for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
-			glm::vec2 vec;
+			glm::vec2 uvCoord;
 			// Texture Coordinates (check if there is texture coordinates)
 			if (mesh->mTextureCoords[0]) {
 				// A vertex can contain up to 8 different texture coordinates. We are just going to use one set of TexCoords per vertex so grab the first one
-				vec.x = mesh->mTextureCoords[0][i].x;
-				vec.y = mesh->mTextureCoords[0][i].y;
+				uvCoord.x = mesh->mTextureCoords[0][i].x;
+				uvCoord.y = mesh->mTextureCoords[0][i].y;
 			}
 			else {
-				vec.x = 0.0f;
-				vec.y = 0.0f;
+				uvCoord.x = 0.0f;
+				uvCoord.y = 0.0f;
 			}
 
-			// Construct the vertex object in the vector
-			vertices.emplace_back(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z, mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z, vec.x, vec.y);
+			positions.push_back(glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
+			uvs.push_back(glm::vec2(uvCoord.x, uvCoord.y));
+			normals.push_back(glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z));
 		}
 
 		// Process Indices
@@ -88,48 +91,47 @@ namespace arcane { namespace graphics {
 			}
 		}
 
+		NewMesh newMesh(positions, uvs, normals, indices);
+
 		// Process Materials (textures in this case)
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-			// grab all of the diffuse maps
-			std::vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-
-			// grab all of the specular maps
-			std::vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+			newMesh.getMaterial().setDiffuseMapId(loadMaterialTexture(material, aiTextureType_DIFFUSE, "texture_diffuse")->id);
+			newMesh.getMaterial().setSpecularMapId(loadMaterialTexture(material, aiTextureType_SPECULAR, "texture_specular")->id);
+			newMesh.getMaterial().setNormalMapId(loadMaterialTexture(material, aiTextureType_NORMALS, "texture_normal")->id);
+			newMesh.getMaterial().setEmissionMapId(loadMaterialTexture(material, aiTextureType_EMISSIVE, "texture_emission")->id);
 		}
 
-		return Mesh(vertices, indices, textures);
+		return newMesh;
 	}
 
-	std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, const char *typeName) {
-		std::vector<Texture> textures;
-		textures.reserve(mat->GetTextureCount(type));
-		for (unsigned int i = 0; i < mat->GetTextureCount(type); ++i) {
+	Texture* Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type, const char *typeName) {
+		// Log material constraints are being violated (1 texture per type for the standard shader)
+		if (mat->GetTextureCount(type) > 1)
+			utils::Logger::getInstance().error("logged_files/material_creation.txt", "Mesh Loading", "Mesh's default material contains more than 1 " + std::string(typeName) + " map, which currently isn't supported by the standard shader");
+
+		// Load the texture of a certain type, assuming there is one
+		if (mat->GetTextureCount(type) > 0) {
 			aiString str;
-			mat->GetTexture(type, i, &str);
-			bool skip = false;
-			
+			mat->GetTexture(type, 0, &str); // Grab only the first texture (standard shader only supports one texture of each type, it doesn't know how you want to do special blending)
+
+			// Attempt to fetch the texture from memory if it is already loaded
 			for (unsigned int j = 0; j < Model::m_LoadedTextures.size(); ++j) {
 				if (std::strcmp(str.C_Str(), Model::m_LoadedTextures[j].path.C_Str()) == 0) {
-					textures.push_back(Model::m_LoadedTextures[j]);
-					skip = true;
-					break;
+					return &Model::m_LoadedTextures[j];
 				}
 			}
 
-			if (!skip) {
-				Texture texture;
-				
-				texture.id = opengl::Utility::loadTextureFromFile((m_Directory + "/" + std::string(str.C_Str())).c_str()); // Assumption made: material stuff is located in the same directory as the model object
-				texture.type = typeName;
-				texture.path = str;
-				textures.push_back(texture);
-				Model::m_LoadedTextures.push_back(texture); // Add to loaded textures, so no duplicate texture gets loaded
-			}
+			// Since the texture hasn't been loaded yet, load the texture and cache it
+			Texture texture;
+			texture.id = opengl::Utility::loadTextureFromFile((m_Directory + "/" + std::string(str.C_Str())).c_str()); // Assumption made: material stuff is located in the same directory as the model object
+			texture.type = typeName;
+			texture.path = str;
+			Model::m_LoadedTextures.push_back(texture); // Add to loaded textures, so no duplicate texture gets loaded
+			return &Model::m_LoadedTextures[m_LoadedTextures.size() - 1];
 		}
-		return textures;
+
+		return nullptr;
 	}
 } }

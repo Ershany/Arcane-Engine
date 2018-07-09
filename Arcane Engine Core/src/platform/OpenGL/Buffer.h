@@ -7,19 +7,19 @@ namespace arcane { namespace opengl {
 
 	class Buffer {
 	private:
-		GLuint m_BufferID;
-		GLuint m_ComponentCount;
+		unsigned int m_BufferID;
+		unsigned int m_ComponentCount;
 	public:
 		Buffer();
-		Buffer(GLfloat *data, GLsizei amount, GLuint componentCount);
+		Buffer(float *data, int amount, unsigned int componentCount);
 		~Buffer();
 
-		void load(GLfloat *data, GLsizei amount, GLuint componentCount);
+		void load(float *data, int amount, unsigned int componentCount);
 
 		void bind() const;
 		void unbind() const;
 
-		inline GLuint getComponentCount() const { return m_ComponentCount; }
+		inline unsigned int getComponentCount() const { return m_ComponentCount; }
 	};
 
 } }

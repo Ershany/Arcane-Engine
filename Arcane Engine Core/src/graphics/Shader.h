@@ -11,7 +11,7 @@ namespace arcane { namespace graphics {
 
 	class Shader {
 	private:
-		GLuint m_ShaderID;
+		unsigned int m_ShaderID;
 		const char *m_VertPath, *m_FragPath, *m_GeomPath;
 	public:
 		/**
@@ -84,7 +84,7 @@ namespace arcane { namespace graphics {
 		*/
 		void disable() const;
 
-		inline GLuint getShaderID() { return m_ShaderID; }
+		inline unsigned int getShaderID() { return m_ShaderID; }
 	private:
 		/**
 		* Helper function to get the location of a uniform variable in the shader
@@ -92,12 +92,12 @@ namespace arcane { namespace graphics {
 		*
 		* @param name Name of the uniform variable that is being modified
 		*/
-		GLint getUniformLocation(const GLchar* name);
+		int getUniformLocation(const GLchar* name);
 
 		/**
 		* Creates the shader program and will display any errors to the console
 		*/
-		GLuint load();
+		unsigned int load();
 	};
 
 } }
