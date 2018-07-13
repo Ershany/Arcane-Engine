@@ -7,26 +7,31 @@
 #include <assimp/postprocess.h>
 
 #include "../Shader.h"
+#include "../renderer/Renderable3D.h"
 #include "Mesh.h"
-#include "NewMesh.h"
 
 namespace arcane { namespace graphics {
+
+	struct Texture {
+		unsigned int id;
+		std::string type;
+		aiString path; // Allows us to compare with other textures so no duplicate textures are generated. TODO: change to a proper texture loading system
+	};
 
 	class Model {
 	public:
 		Model(const char *path);
-		Model(const std::vector<NewMesh> &meshes);
+		Model(const std::vector<Mesh> &meshes);
 		
-		void Draw() const;
+		void Draw(Shader &shader) const;
 	private:
 		static std::vector<Texture> m_LoadedTextures; // Used so the same texture doesn't get loaded into memory twice
-		std::vector<NewMesh> m_Meshes;
+		std::vector<Mesh> m_Meshes;
 		std::string m_Directory;
-
 
 		void loadModel(const std::string &path);
 		void processNode(aiNode *node, const aiScene *scene);
-		NewMesh processMesh(aiMesh *mesh, const aiScene *scene);
+		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 		Texture* loadMaterialTexture(aiMaterial *mat, aiTextureType type, const char *typeName);
 	};
 

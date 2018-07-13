@@ -1,57 +1,48 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <assimp\Importer.hpp>
-#include <string>
 #include <vector>
+#include <glm\common.hpp>
 
-#include "../Shader.h"
+#include "../../platform/OpenGL/VertexArray.h"
+#include "../../platform/OpenGL/IndexBuffer.h"
 #include "Material.h"
+#include "../../utils/Logger.h"
 
 namespace arcane { namespace graphics {
 
-	struct Vertex {
-		glm::vec3 Position;
-		glm::vec3 Normal;
-		glm::vec2 TexCoords;
-
-		Vertex() {}
-		Vertex(glm::vec3 &pos, glm::vec3 &normal, glm::vec2 &texCoords) {
-			Position = pos; Normal = normal; TexCoords = texCoords;
-		}
-		Vertex(float xPos, float yPos, float zPos, float xNorm, float yNorm, float zNorm, float xTexCoord, float yTexCoord) {
-			Position.x = xPos; Position.y = yPos; Position.z = zPos;
-			Normal.x = xNorm; Normal.y = yNorm; Normal.z = zNorm;
-			TexCoords.x = xTexCoord; TexCoords.y = yTexCoord;
-		}
-	};
-
-	struct Texture {
-		unsigned int id;
-		std::string type;
-		aiString path; // Allows us to compare with other textures so no duplicate textures are generated. TODO change to String
-	};
-
 	class Mesh {
 	public:
-		Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<Texture> &textures);
-		void Draw(Shader &shader) const;
+		Mesh();
+		Mesh(std::vector<glm::vec3> positions, std::vector<unsigned int> indices);
+		Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<unsigned int> indices);
+		Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<unsigned int> indices);
+		Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> tangents, std::vector<glm::vec3> bitangents, std::vector<unsigned int> indices);
 
-		// Getters
-		inline const Material& getMaterial() const { return m_Material; }
-		inline const std::vector<Vertex>& getVertices() const { return m_Vertices; }
-		inline const std::vector<unsigned int>& getIndices() const { return m_Indices; }
-		inline const std::vector<Texture>& getTextures() const { return m_Textures; }
+		// Commits all of the buffers their attributes to the GPU driver
+		void LoadData(bool interleaved = true);
+
+		void Draw() const;
+
+		inline void setPositions(std::vector<glm::vec3> positions) { m_Positions = positions; }
+		inline void setUVs(std::vector<glm::vec2> uvs) { m_UVs = uvs; }
+		inline void setNormals(std::vector<glm::vec3> normals) { m_Normals = normals; }
+		inline void setTangents(std::vector<glm::vec3> tangents) { m_Tangents = tangents; }
+		inline void setBitangents(std::vector<glm::vec3> bitangents) { m_Bitangents = bitangents; }
+		inline void setIndices(std::vector<unsigned int> indices) { m_Indices = indices; }
+		inline Material& getMaterial() { return m_Material; }
 	private:
-		unsigned int m_VAO, m_VBO, m_EBO;
+		opengl::VertexArray m_VAO;
+		opengl::Buffer m_VBO;
+		opengl::IndexBuffer m_EBO;
 		Material m_Material;
 
-		// Mesh Data
-		std::vector<Vertex> m_Vertices;
-		std::vector<unsigned int> m_Indices;
-		std::vector<Texture> m_Textures;
+		std::vector<glm::vec3> m_Positions;
+		std::vector<glm::vec2> m_UVs;
+		std::vector<glm::vec3> m_Normals;
+		std::vector<glm::vec3> m_Tangents;
+		std::vector<glm::vec3> m_Bitangents;
 
-		void setupMesh();
+		std::vector<unsigned int> m_Indices;
 	};
 
 } }

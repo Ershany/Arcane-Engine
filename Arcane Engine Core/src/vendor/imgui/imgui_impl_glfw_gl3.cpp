@@ -265,7 +265,7 @@ bool ImGui_ImplGlfwGL3_CreateDeviceObjects()
     glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &last_array_buffer);
     glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &last_vertex_array);
 
-    const GLchar* vertex_shader =
+    const char* vertex_shader =
         "uniform mat4 ProjMtx;\n"
         "in vec2 Position;\n"
         "in vec2 UV;\n"
@@ -279,7 +279,7 @@ bool ImGui_ImplGlfwGL3_CreateDeviceObjects()
         "	gl_Position = ProjMtx * vec4(Position.xy,0,1);\n"
         "}\n";
 
-    const GLchar* fragment_shader =
+    const char* fragment_shader =
         "uniform sampler2D Texture;\n"
         "in vec2 Frag_UV;\n"
         "in vec4 Frag_Color;\n"
@@ -289,8 +289,8 @@ bool ImGui_ImplGlfwGL3_CreateDeviceObjects()
         "	Out_Color = Frag_Color * texture( Texture, Frag_UV.st);\n"
         "}\n";
 
-    const GLchar* vertex_shader_with_version[2] = { g_GlslVersion, vertex_shader };
-    const GLchar* fragment_shader_with_version[2] = { g_GlslVersion, fragment_shader };
+    const char* vertex_shader_with_version[2] = { g_GlslVersion, vertex_shader };
+    const char* fragment_shader_with_version[2] = { g_GlslVersion, fragment_shader };
 
     g_ShaderHandle = glCreateProgram();
     g_VertHandle = glCreateShader(GL_VERTEX_SHADER);

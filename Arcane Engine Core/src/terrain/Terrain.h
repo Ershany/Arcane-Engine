@@ -9,6 +9,8 @@
 #include <SOIL.h>
 #include <stb_image_aug.h>
 
+#include "../graphics/mesh/Mesh.h"
+
 namespace arcane { namespace terrain {
 
 	class Terrain {

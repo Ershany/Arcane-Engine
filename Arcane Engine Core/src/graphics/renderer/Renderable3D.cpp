@@ -12,6 +12,8 @@ namespace arcane { namespace graphics {
 	}
 
 	void Renderable3D::draw(Shader &shader) const {
+		// TODO: Add toggle in renderable that will skip the texture/material binding stage, which allows the renderer to have even more control
+		// Maybe do the binding here in order to easily make this work!
 		m_Model->Draw(shader);
 	}
 

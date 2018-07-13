@@ -105,9 +105,6 @@
     <ClCompile Include="src\graphics\renderer\PostProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\mesh\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\mesh\MeshFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,10 +114,10 @@
     <ClCompile Include="src\graphics\mesh\MeshLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\mesh\NewMesh.cpp">
+    <ClCompile Include="src\graphics\mesh\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\mesh\Material.cpp">
+    <ClCompile Include="src\graphics\mesh\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -227,9 +224,6 @@
     <ClInclude Include="src\graphics\renderer\PostProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\mesh\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\mesh\MeshFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -242,7 +236,7 @@
     <ClInclude Include="src\graphics\mesh\MeshLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\mesh\NewMesh.h">
+    <ClInclude Include="src\graphics\mesh\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

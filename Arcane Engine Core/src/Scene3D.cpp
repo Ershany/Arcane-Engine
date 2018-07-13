@@ -4,6 +4,8 @@
 #include <iostream>
 #include <glm/glm.hpp>
 
+#include "graphics/mesh/Mesh.h"
+
 namespace arcane {
 
 	Scene3D::Scene3D(graphics::Camera *camera, graphics::Window *window)

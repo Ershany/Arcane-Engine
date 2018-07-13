@@ -6,7 +6,7 @@
 
 #include "../../platform/OpenGL/Utility.h"
 #include "../../utils/Logger.h"
-#include "NewMesh.h"
+#include "Mesh.h"
 
 namespace arcane { namespace graphics {
 
@@ -16,12 +16,13 @@ namespace arcane { namespace graphics {
 		loadModel(path);
 	}
 
-	Model::Model(const std::vector<NewMesh> &meshes) {
+	Model::Model(const std::vector<Mesh> &meshes) {
 		m_Meshes = meshes;
 	}
 
-	void Model::Draw() const {
+	void Model::Draw(Shader &shader) const {
 		for (unsigned int i = 0; i < m_Meshes.size(); ++i) {
+			m_Meshes[i].getMaterial().BindMaterialInformation(shader);
 			m_Meshes[i].Draw();
 		}
 	}
@@ -31,7 +32,6 @@ namespace arcane { namespace graphics {
 		const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-			std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
 			utils::Logger::getInstance().error("logged_files/model_loading.txt", "model initialization", import.GetErrorString());
 			return;
 		}
@@ -54,7 +54,7 @@ namespace arcane { namespace graphics {
 		}
 	}
 
-	NewMesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
+	Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene) {
 		std::vector<glm::vec3> positions;
 		std::vector<glm::vec2> uvs;
 		std::vector<glm::vec3> normals;
@@ -91,7 +91,7 @@ namespace arcane { namespace graphics {
 			}
 		}
 
-		NewMesh newMesh(positions, uvs, normals, indices);
+		Mesh newMesh(positions, uvs, normals, indices);
 
 		// Process Materials (textures in this case)
 		if (mesh->mMaterialIndex >= 0) {
