@@ -4,8 +4,11 @@ out vec4 FragColour;
 
 in vec2 TexCoord;
 
-uniform sampler2D texture_diffuse1;
+struct Material {
+	sampler2D texture_diffuse;
+};
 
+uniform Material material;
 uniform vec2 readOffset;
 
 void main() {
@@ -56,7 +59,7 @@ void main() {
 
 	// Apply the kernel (post-processing effect)
 	for(int i = 0; i < 9; ++i) {
-		colour += texture(texture_diffuse1, TexCoord + readOffsets[i]).rgb * kernel[i];
+		colour += texture(material.texture_diffuse, TexCoord + readOffsets[i]).rgb * kernel[i];
 	}
 	FragColour = vec4(colour, 1.0);
 }

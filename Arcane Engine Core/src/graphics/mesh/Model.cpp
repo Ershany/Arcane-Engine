@@ -22,7 +22,7 @@ namespace arcane { namespace graphics {
 
 	void Model::Draw(Shader &shader) const {
 		for (unsigned int i = 0; i < m_Meshes.size(); ++i) {
-			m_Meshes[i].getMaterial().BindMaterialInformation(shader);
+			m_Meshes[i].m_Material.BindMaterialInformation(shader);
 			m_Meshes[i].Draw();
 		}
 	}
@@ -92,21 +92,25 @@ namespace arcane { namespace graphics {
 		}
 
 		Mesh newMesh(positions, uvs, normals, indices);
+		newMesh.LoadData();
 
 		// Process Materials (textures in this case)
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-			newMesh.getMaterial().setDiffuseMapId(loadMaterialTexture(material, aiTextureType_DIFFUSE, "texture_diffuse")->id);
-			newMesh.getMaterial().setSpecularMapId(loadMaterialTexture(material, aiTextureType_SPECULAR, "texture_specular")->id);
-			newMesh.getMaterial().setNormalMapId(loadMaterialTexture(material, aiTextureType_NORMALS, "texture_normal")->id);
-			newMesh.getMaterial().setEmissionMapId(loadMaterialTexture(material, aiTextureType_EMISSIVE, "texture_emission")->id);
+			newMesh.m_Material.setDiffuseMapId(loadMaterialTexture(material, aiTextureType_DIFFUSE, "texture_diffuse"));
+			newMesh.m_Material.setSpecularMapId(loadMaterialTexture(material, aiTextureType_SPECULAR, "texture_specular"));
+			newMesh.m_Material.setNormalMapId(loadMaterialTexture(material, aiTextureType_NORMALS, "texture_normal"));
+			newMesh.m_Material.setEmissionMapId(loadMaterialTexture(material, aiTextureType_EMISSIVE, "texture_emission"));
+			float shininess = 0.0f;
+			material->Get(AI_MATKEY_SHININESS, shininess); // Assimp scales specular exponent by 4 times since most renderers handle it that way. Value defaults to 0 if not specified (ie no specular highlights)
+			newMesh.m_Material.setShininess(shininess);
 		}
 
 		return newMesh;
 	}
 
-	Texture* Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type, const char *typeName) {
+	unsigned int Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type, const char *typeName) {
 		// Log material constraints are being violated (1 texture per type for the standard shader)
 		if (mat->GetTextureCount(type) > 1)
 			utils::Logger::getInstance().error("logged_files/material_creation.txt", "Mesh Loading", "Mesh's default material contains more than 1 " + std::string(typeName) + " map, which currently isn't supported by the standard shader");
@@ -119,7 +123,7 @@ namespace arcane { namespace graphics {
 			// Attempt to fetch the texture from memory if it is already loaded
 			for (unsigned int j = 0; j < Model::m_LoadedTextures.size(); ++j) {
 				if (std::strcmp(str.C_Str(), Model::m_LoadedTextures[j].path.C_Str()) == 0) {
-					return &Model::m_LoadedTextures[j];
+					return Model::m_LoadedTextures[j].id;
 				}
 			}
 
@@ -129,9 +133,9 @@ namespace arcane { namespace graphics {
 			texture.type = typeName;
 			texture.path = str;
 			Model::m_LoadedTextures.push_back(texture); // Add to loaded textures, so no duplicate texture gets loaded
-			return &Model::m_LoadedTextures[m_LoadedTextures.size() - 1];
+			return Model::m_LoadedTextures[m_LoadedTextures.size() - 1].id;
 		}
 
-		return nullptr;
+		return 0;
 	}
 } }

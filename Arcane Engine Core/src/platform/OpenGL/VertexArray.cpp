@@ -25,15 +25,6 @@ namespace arcane { namespace opengl {
 		unbind();
 	}
 
-	void VertexArray::addVertexAttribArrayPointer(int index, int componentCount, size_t stride, size_t offset) {
-		bind();
-
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, componentCount, GL_FLOAT, GL_FALSE, stride, (void*)offset);
-
-		unbind();
-	}
-
 	void VertexArray::bind() const {
 		glBindVertexArray(m_VertexArrayID);
 	}

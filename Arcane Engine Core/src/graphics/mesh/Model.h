@@ -7,7 +7,6 @@
 #include <assimp/postprocess.h>
 
 #include "../Shader.h"
-#include "../renderer/Renderable3D.h"
 #include "Mesh.h"
 
 namespace arcane { namespace graphics {
@@ -32,7 +31,7 @@ namespace arcane { namespace graphics {
 		void loadModel(const std::string &path);
 		void processNode(aiNode *node, const aiScene *scene);
 		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
-		Texture* loadMaterialTexture(aiMaterial *mat, aiTextureType type, const char *typeName);
+		unsigned int loadMaterialTexture(aiMaterial *mat, aiTextureType type, const char *typeName);
 	};
 
 } }

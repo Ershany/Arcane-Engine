@@ -10,10 +10,10 @@ namespace arcane { namespace graphics {
 	// TODO: Move to a PBR material system
 	class Material {
 	public:
-		Material(unsigned int diffuseMap = 0, unsigned int specularMap = 0, unsigned int normalMap = 0, unsigned int emissionMap = 0, float shininess = 32);
+		Material(unsigned int diffuseMap = 0, unsigned int specularMap = 0, unsigned int normalMap = 0, unsigned int emissionMap = 0, float shininess = 128.0f);
 
 		// Assumes the shader is already bound
-		void BindMaterialInformation(Shader &shader);
+		void BindMaterialInformation(Shader &shader) const;
 
 		inline unsigned int getDiffuseMapId() { return m_DiffuseMap; }
 		inline unsigned int getSpecularMapId() { return m_SpecularMap; }

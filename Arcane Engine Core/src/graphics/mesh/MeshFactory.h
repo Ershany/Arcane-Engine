@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Mesh.h"
+#include "Model.h"
 #include "../../platform/OpenGL/Utility.h"
 
 namespace arcane { namespace graphics {

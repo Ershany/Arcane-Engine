@@ -43,6 +43,10 @@ namespace arcane {	namespace graphics {
 			processKeyboard(arcane::graphics::UPWARDS, deltaTime);
 		if (Window::isKeyPressed(GLFW_KEY_LEFT_CONTROL))
 			processKeyboard(arcane::graphics::DOWNWARDS, deltaTime);
+		if (Window::isKeyPressed(GLFW_KEY_LEFT_SHIFT))
+			m_MovementSpeed = SPEED * 4.0f;
+		else
+			m_MovementSpeed = SPEED;
 
 		// Mouse scrolling
 		processMouseScroll(Window::getScrollY() * 6);

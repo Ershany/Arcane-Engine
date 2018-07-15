@@ -20,7 +20,6 @@ namespace arcane { namespace opengl {
 
 		bind();
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, amount * sizeof(unsigned int), data, GL_STATIC_DRAW);
-		unbind();
 	}
 
 	void IndexBuffer::bind() const {

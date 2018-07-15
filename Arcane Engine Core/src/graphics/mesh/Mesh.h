@@ -10,7 +10,10 @@
 
 namespace arcane { namespace graphics {
 
+	class Model;
+
 	class Mesh {
+		friend Model;
 	public:
 		Mesh();
 		Mesh(std::vector<glm::vec3> positions, std::vector<unsigned int> indices);
@@ -29,11 +32,13 @@ namespace arcane { namespace graphics {
 		inline void setTangents(std::vector<glm::vec3> tangents) { m_Tangents = tangents; }
 		inline void setBitangents(std::vector<glm::vec3> bitangents) { m_Bitangents = bitangents; }
 		inline void setIndices(std::vector<unsigned int> indices) { m_Indices = indices; }
+
 		inline Material& getMaterial() { return m_Material; }
 	private:
+		unsigned int vao, vbo, ebo;
 		opengl::VertexArray m_VAO;
+		opengl::IndexBuffer m_IBO;
 		opengl::Buffer m_VBO;
-		opengl::IndexBuffer m_EBO;
 		Material m_Material;
 
 		std::vector<glm::vec3> m_Positions;

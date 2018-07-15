@@ -19,8 +19,7 @@ namespace arcane { namespace opengl {
 		m_ComponentCount = componentCount;
 
 		bind();
-		glBufferData(GL_ARRAY_BUFFER, amount * sizeof(GL_FLOAT), data, GL_STATIC_DRAW);
-		unbind();
+		glBufferData(GL_ARRAY_BUFFER, amount * sizeof(float), data, GL_STATIC_DRAW);
 	}
 
 	void Buffer::bind() const {

@@ -71,7 +71,8 @@ int main() {
 		framebuffer.unbind();
 		window.clear();
 		framebufferShader.enable();
-		colourBufferMesh->Draw(framebufferShader);
+		colourBufferMesh->getMaterial().BindMaterialInformation(framebufferShader);
+		colourBufferMesh->Draw();
 		framebufferShader.disable();
 #if DEBUG_ENABLED
 		glFinish();

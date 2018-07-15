@@ -6,7 +6,7 @@ namespace arcane { namespace graphics {
 		: m_DiffuseMap(diffuseMap), m_SpecularMap(specularMap), m_NormalMap(normalMap), m_EmissionMap(emissionMap), m_Shininess(shininess) {}
 
 
-	void Material::BindMaterialInformation(Shader &shader) {
+	void Material::BindMaterialInformation(Shader &shader) const{
 		int currentTextureUnit = 0;
 
 		if (m_DiffuseMap > 0) {

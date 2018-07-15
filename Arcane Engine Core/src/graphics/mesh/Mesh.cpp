@@ -1,33 +1,36 @@
-#include "NewMesh.h"
+#include "Mesh.h"
 
 namespace arcane { namespace graphics {
 
-	NewMesh::NewMesh() {}
+	Mesh::Mesh() {}
 
-	NewMesh::NewMesh(std::vector<glm::vec3> positions, std::vector<unsigned int> indices)
+	Mesh::Mesh(std::vector<glm::vec3> positions, std::vector<unsigned int> indices)
 		: m_Positions(positions), m_Indices(indices) {}
 
-	NewMesh::NewMesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<unsigned int> indices)
+	Mesh::Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<unsigned int> indices)
 		: m_Positions(positions), m_UVs(uvs), m_Indices(indices) {}
 
-	NewMesh::NewMesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<unsigned int> indices)
+	Mesh::Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<unsigned int> indices)
 		: m_Positions(positions), m_UVs(uvs), m_Normals(normals), m_Indices(indices) {}
 
-	NewMesh::NewMesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> tangents, std::vector<glm::vec3> bitangents, std::vector<unsigned int> indices)
+	Mesh::Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> tangents, std::vector<glm::vec3> bitangents, std::vector<unsigned int> indices)
 		: m_Positions(positions), m_UVs(uvs), m_Normals(normals), m_Tangents(tangents), m_Bitangents(bitangents) {}
  
 
-	void NewMesh::Draw() const {
-		m_VAO.bind();
-		m_EBO.bind();
-		glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
-		m_EBO.unbind();
-		m_VAO.unbind();
+	void Mesh::Draw() const {
+		glBindVertexArray(vao);
+		if (m_Indices.size() > 0) {
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+			glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		}
+		else {
+			glDrawArrays(GL_TRIANGLES, 0, m_Positions.size());
+		}
+		glBindVertexArray(0);
 	}
 
-	void NewMesh::LoadData(bool interleaved) {
-		m_VAO.bind();
-
+	void Mesh::LoadData(bool interleaved) {
 		// Check for possible mesh initialization errors
 		{
 			unsigned int vertexCount = m_Positions.size();
@@ -52,14 +55,14 @@ namespace arcane { namespace graphics {
 				data.push_back(m_Positions[i].x);
 				data.push_back(m_Positions[i].y);
 				data.push_back(m_Positions[i].z);
-				if (m_UVs.size() > 0) {
-					data.push_back(m_UVs[i].x);
-					data.push_back(m_UVs[i].y);
-				}
 				if (m_Normals.size() > 0) {
 					data.push_back(m_Normals[i].x);
 					data.push_back(m_Normals[i].y);
 					data.push_back(m_Normals[i].z);
+				}
+				if (m_UVs.size() > 0) {
+					data.push_back(m_UVs[i].x);
+					data.push_back(m_UVs[i].y);
 				}
 				if (m_Tangents.size() > 0) {
 					data.push_back(m_Tangents[i].x);
@@ -79,14 +82,14 @@ namespace arcane { namespace graphics {
 				data.push_back(m_Positions[i].y);
 				data.push_back(m_Positions[i].z);
 			}
-			for (unsigned int i = 0; i < m_UVs.size(); i++) {
-				data.push_back(m_UVs[i].x);
-				data.push_back(m_UVs[i].y);
-			}
 			for (unsigned int i = 0; i < m_Normals.size(); i++) {
 				data.push_back(m_Normals[i].x);
 				data.push_back(m_Normals[i].y);
 				data.push_back(m_Normals[i].z);
+			}
+			for (unsigned int i = 0; i < m_UVs.size(); i++) {
+				data.push_back(m_UVs[i].x);
+				data.push_back(m_UVs[i].y);
 			}
 			for (unsigned int i = 0; i < m_Tangents.size(); i++) {
 				data.push_back(m_Tangents[i].x);
@@ -104,20 +107,27 @@ namespace arcane { namespace graphics {
 		unsigned int bufferComponentCount = 0;
 		if (m_Positions.size() > 0)
 			bufferComponentCount += 3;
-		if (m_UVs.size() > 0)
-			bufferComponentCount += 2;
 		if (m_Normals.size() > 0)
 			bufferComponentCount += 3;
+		if (m_UVs.size() > 0)
+			bufferComponentCount += 2;
 		if (m_Tangents.size() > 0)
 			bufferComponentCount += 3;
 		if (m_Bitangents.size() > 0)
 			bufferComponentCount += 3;
 
+		glGenVertexArrays(1, &vao);
+		glGenBuffers(1, &vbo);
+		glGenBuffers(1, &ebo);
+
 		// Load data into the index buffer and vertex buffer
-		m_VAO.bind();
-		m_VBO.load(&data[0], data.size(), bufferComponentCount);
-		if (m_Indices.size() > 0) {
-			m_EBO.load(&m_Indices[0], m_Indices.size());
+		glBindVertexArray(vao);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
+		if (m_Indices.size() > 0)
+		{
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Indices.size() * sizeof(unsigned int), &m_Indices[0], GL_STATIC_DRAW);
 		}
 
 		// Setup the format for the VAO
@@ -125,49 +135,59 @@ namespace arcane { namespace graphics {
 			size_t stride = bufferComponentCount * sizeof(float);
 			size_t offset = 0;
 
-			m_VAO.addVertexAttribArrayPointer(0, 3, stride, offset);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
 			offset += 3 * sizeof(float);
-			if (m_UVs.size() > 0) {
-				m_VAO.addVertexAttribArrayPointer(1, 2, stride, offset);
-				offset += 2 * sizeof(float);
-			}
 			if (m_Normals.size() > 0) {
-				m_VAO.addVertexAttribArrayPointer(2, 3, stride, offset);
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
 				offset += 3 * sizeof(float);
 			}
+			if (m_UVs.size() > 0) {
+				glEnableVertexAttribArray(2);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+				offset += 2 * sizeof(float);
+			}
 			if (m_Tangents.size() > 0) {
-				m_VAO.addVertexAttribArrayPointer(3, 3, stride, offset);
+				glEnableVertexAttribArray(3);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
 				offset += 3 * sizeof(float);
 			}
 			if (m_Bitangents.size() > 0) {
-				m_VAO.addVertexAttribArrayPointer(4, 3, stride, offset);
+				glEnableVertexAttribArray(4);
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
 				offset += 3 * sizeof(float);
 			}
 		}
 		else {
 			size_t offset = 0;
 
-			m_VAO.addVertexAttribArrayPointer(0, 3, 0, offset);
-			offset += m_Positions.size() * sizeof(float);
-			if (m_UVs.size() > 0) {
-				m_VAO.addVertexAttribArrayPointer(1, 2, 0, offset);
-				offset += m_UVs.size() * sizeof(float);
-			}
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)offset);
+			offset += m_Positions.size() * 3 * sizeof(float);
 			if (m_Normals.size() > 0) {
-				m_VAO.addVertexAttribArrayPointer(2, 3, 0, offset);
-				offset += m_Normals.size() * sizeof(float);
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)offset);
+				offset += m_Normals.size() * 3 * sizeof(float);
+			}
+			if (m_UVs.size() > 0) {
+				glEnableVertexAttribArray(2);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)offset);
+				offset += m_UVs.size() * 2 * sizeof(float);
 			}
 			if (m_Tangents.size() > 0) {
-				m_VAO.addVertexAttribArrayPointer(3, 3, 0, offset);
-				offset += m_Tangents.size() * sizeof(float);
+				glEnableVertexAttribArray(3);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)offset);
+				offset += m_Tangents.size() * 3 * sizeof(float);
 			}
 			if (m_Bitangents.size() > 0) {
-				m_VAO.addVertexAttribArrayPointer(4, 3, 0, offset);
-				offset += m_Bitangents.size() * sizeof(float);
+				glEnableVertexAttribArray(4);
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, (void*)offset);
+				offset += m_Bitangents.size() * 3 * sizeof(float);
 			}
 		}
 
-		m_VAO.unbind();
+		glBindVertexArray(0);
 	}
 
 } }
