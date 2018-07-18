@@ -34,11 +34,8 @@ namespace arcane { namespace graphics {
 		inline void setIndices(std::vector<unsigned int> indices) { m_Indices = indices; }
 
 		inline Material& getMaterial() { return m_Material; }
-	private:
-		unsigned int vao, vbo, ebo;
-		opengl::VertexArray m_VAO;
-		opengl::IndexBuffer m_IBO;
-		opengl::Buffer m_VBO;
+	protected:
+		unsigned int m_VAO, m_VBO, m_IBO;
 		Material m_Material;
 
 		std::vector<glm::vec3> m_Positions;

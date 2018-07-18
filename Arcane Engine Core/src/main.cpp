@@ -14,7 +14,8 @@
 #include "terrain\Terrain.h"
 #include "Scene3D.h"
 #include "platform\OpenGL\Framebuffers\Framebuffer.h"
-#include "graphics\mesh\MeshFactory.h"
+#include "graphics/mesh/common/Quad.h"
+#include "graphics/renderer/GLCache.h"
 
 
 
@@ -23,6 +24,7 @@ int main() {
 	arcane::graphics::Camera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 	arcane::graphics::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
 	arcane::Scene3D scene(&camera, &window);
+	arcane::graphics::GLCache *glCache = arcane::graphics::GLCache::getInstance();
 
 	// Construct framebuffers
 	arcane::opengl::Framebuffer framebuffer(window.getWidth(), window.getHeight());
@@ -30,19 +32,20 @@ int main() {
 	arcane::opengl::Framebuffer blitFramebuffer(window.getWidth(), window.getHeight());
 	blitFramebuffer.addColorAttachment(false).addDepthStencilRBO(false).createFramebuffer();
 
-	// Instantiate the shaders and mesh factories
+	// Instantiate the shaders and a screenspace quad
 	arcane::graphics::Shader framebufferShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
-	arcane::graphics::MeshFactory meshFactory;
-	arcane::graphics::Mesh *colourBufferMesh = meshFactory.CreateScreenQuad(blitFramebuffer.getColourBufferTexture());
+	arcane::graphics::Quad screenQuad;
+	screenQuad.getMaterial().setDiffuseMapId(blitFramebuffer.getColourBufferTexture());
+
+	// Setup post processing information
+	glCache->switchShader(framebufferShader.getShaderID());
+	framebufferShader.setUniform2f("readOffset", glm::vec2(1.0f / (float)window.getWidth(), 1.0f / (float)window.getHeight()));
 
 	// Debug timers
 #if DEBUG_ENABLED
 	arcane::Timer timer;
 	float postProcessTime = 0.0f;
 #endif
-
-	framebufferShader.enable();
-	framebufferShader.setUniform2f("readOffset", glm::vec2(1.0f / (float)window.getWidth(), 1.0f / (float)window.getHeight()));
 
 	arcane::Time deltaTime;
 	while (!window.closed()) {
@@ -70,10 +73,9 @@ int main() {
 		glBlitFramebuffer(0, 0, window.getWidth(), window.getHeight(), 0, 0, window.getWidth(), window.getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 		framebuffer.unbind();
 		window.clear();
-		framebufferShader.enable();
-		colourBufferMesh->getMaterial().BindMaterialInformation(framebufferShader);
-		colourBufferMesh->Draw();
-		framebufferShader.disable();
+		glCache->switchShader(framebufferShader.getShaderID());
+		screenQuad.getMaterial().BindMaterialInformation(framebufferShader);
+		screenQuad.Draw();
 #if DEBUG_ENABLED
 		glFinish();
 		postProcessTime = timer.elapsed();

@@ -16,6 +16,10 @@ namespace arcane { namespace graphics {
 		loadModel(path);
 	}
 
+	Model::Model(const Mesh &mesh) {
+		m_Meshes.push_back(mesh);
+	}
+
 	Model::Model(const std::vector<Mesh> &meshes) {
 		m_Meshes = meshes;
 	}
