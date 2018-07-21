@@ -43,7 +43,7 @@ namespace arcane { namespace opengl {
 			// Anisotropic filtering
 			float maxAnisotropy;
 			glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-			float anistropyAmount = glm::min(maxAnisotropy, ANISOTROPIC_FILTERING);
+			float anistropyAmount = glm::min(maxAnisotropy, ANISOTROPIC_FILTERING_LEVEL);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
 
 			// Free now that the memory is 

@@ -107,7 +107,7 @@ namespace arcane { namespace graphics {
 			newMesh.m_Material.setNormalMapId(loadMaterialTexture(material, aiTextureType_NORMALS, "texture_normal"));
 			newMesh.m_Material.setEmissionMapId(loadMaterialTexture(material, aiTextureType_EMISSIVE, "texture_emission"));
 			float shininess = 0.0f;
-			material->Get(AI_MATKEY_SHININESS, shininess); // Assimp scales specular exponent by 4 times since most renderers handle it that way. Value defaults to 0 if not specified (ie no specular highlights)
+			material->Get(AI_MATKEY_SHININESS, shininess); // Assimp scales specular exponent by 4 times since most renderers handle it that way. Value defaults to 0 if not specified
 			newMesh.m_Material.setShininess(shininess);
 		}
 
