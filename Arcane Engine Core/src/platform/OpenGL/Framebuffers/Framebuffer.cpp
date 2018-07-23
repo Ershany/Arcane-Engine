@@ -22,30 +22,26 @@ namespace arcane { namespace opengl {
 
 	Framebuffer& Framebuffer::addColorAttachment(bool multisampledBuffer) {
 		bind();
+		m_ColourTexture = new graphics::Texture();
 
 		// Generate colour texture attachment
-		glGenTextures(1, &m_ColourTexture);
 		if (multisampledBuffer) {
-			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_ColourTexture);
-			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, MSAA_SAMPLE_AMOUNT, GL_RGB, m_Width, m_Height, GL_TRUE);
-			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+			m_ColourTexture->Generate2DMultisampleTexture(m_Width, m_Height, GL_RGB, MSAA_SAMPLE_AMOUNT);
 		}
 		else {
-			glBindTexture(GL_TEXTURE_2D, m_ColourTexture);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Both need to clamp to edge or you might see strange colours around the
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // border due to interpolation and how it works with GL_REPEAT
-			glBindTexture(GL_TEXTURE_2D, 0);
+			m_ColourTexture->SetTextureMinFilter(GL_LINEAR);
+			m_ColourTexture->SetTextureMagFilter(GL_LINEAR);
+			m_ColourTexture->SetTextureWrapS(GL_CLAMP_TO_EDGE); // Both need to clamp to edge or you might see strange colours around the
+			m_ColourTexture->SetTextureWrapT(GL_CLAMP_TO_EDGE); // border due to interpolation and how it works with GL_REPEAT
+			m_ColourTexture->Generate2DTexture(m_Width, m_Height, GL_RGB, GL_RGB, nullptr);
 		}
 
 		// Attach colour attachment
 		if (multisampledBuffer) {
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_ColourTexture, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_ColourTexture->GetTextureId(), 0);
 		}
 		else {
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColourTexture, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColourTexture->GetTextureId(), 0);
 		}
 
 		unbind();

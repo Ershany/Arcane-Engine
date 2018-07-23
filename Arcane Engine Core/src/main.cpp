@@ -35,7 +35,7 @@ int main() {
 	// Instantiate the shaders and a screenspace quad
 	arcane::graphics::Shader framebufferShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
 	arcane::graphics::Quad screenQuad;
-	screenQuad.getMaterial().setDiffuseMapId(blitFramebuffer.getColourBufferTexture());
+	screenQuad.getMaterial().setDiffuseMap(blitFramebuffer.getColourBufferTexture());
 
 	// Setup post processing information
 	glCache->switchShader(framebufferShader.getShaderID());

@@ -9,6 +9,7 @@
 #include "graphics\Window.h"
 #include "graphics\Skybox.h"
 #include "graphics\dynamic lights\DynamicLightManager.h"
+#include "utils\loaders\TextureLoader.h"
 
 namespace arcane {
 	

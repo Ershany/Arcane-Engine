@@ -15,11 +15,12 @@ namespace arcane { namespace graphics {
 
 		// Generation functions
 		void Generate2DTexture(unsigned int width, unsigned int height, GLenum textureFormat, GLenum dataFormat, const void *data);
+		void Generate2DMultisampleTexture(unsigned int width, unsigned int height, GLenum textureFormat, int numSamples);
 
 		void Bind(int unit = -1);
 		void Unbind();
 
-		// Texture Tuning Functions
+		// Texture Tuning Functions (Works for pre-generation and post-generation)
 		void SetTextureWrapS(GLenum textureWrapMode, bool shouldBind = false);
 		void SetTextureWrapT(GLenum textureWrapMode, bool shouldBind = false);
 		void SetTextureMinFilter(GLenum textureFilterMode, bool shouldBind = false);
@@ -28,6 +29,9 @@ namespace arcane { namespace graphics {
 
 		// Pre-generation controls only
 		void SetMipMode(bool shouldGenMips, int mipBias);
+
+		// Don't use this to bind the texture and use it. Call the Bind() function instead
+		unsigned int GetTextureId() { return m_TextureId; }
 	private:
 		unsigned int m_TextureId;
 		GLenum m_TextureTarget;

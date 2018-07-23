@@ -10,8 +10,6 @@
 
 namespace arcane { namespace graphics {
 
-	std::vector<Texture> Model::m_LoadedTextures;
-
 	Model::Model(const char *path) {
 		loadModel(path);
 	}
@@ -102,10 +100,10 @@ namespace arcane { namespace graphics {
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-			newMesh.m_Material.setDiffuseMapId(loadMaterialTexture(material, aiTextureType_DIFFUSE, "texture_diffuse"));
-			newMesh.m_Material.setSpecularMapId(loadMaterialTexture(material, aiTextureType_SPECULAR, "texture_specular"));
-			newMesh.m_Material.setNormalMapId(loadMaterialTexture(material, aiTextureType_NORMALS, "texture_normal"));
-			newMesh.m_Material.setEmissionMapId(loadMaterialTexture(material, aiTextureType_EMISSIVE, "texture_emission"));
+			newMesh.m_Material.setDiffuseMap(loadMaterialTexture(material, aiTextureType_DIFFUSE));
+			newMesh.m_Material.setSpecularMap(loadMaterialTexture(material, aiTextureType_SPECULAR));
+			newMesh.m_Material.setNormalMap(loadMaterialTexture(material, aiTextureType_NORMALS));
+			newMesh.m_Material.setEmissionMap(loadMaterialTexture(material, aiTextureType_EMISSIVE));
 			float shininess = 0.0f;
 			material->Get(AI_MATKEY_SHININESS, shininess); // Assimp scales specular exponent by 4 times since most renderers handle it that way. Value defaults to 0 if not specified
 			newMesh.m_Material.setShininess(shininess);
@@ -114,32 +112,20 @@ namespace arcane { namespace graphics {
 		return newMesh;
 	}
 
-	unsigned int Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type, const char *typeName) {
+	Texture* Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type) {
 		// Log material constraints are being violated (1 texture per type for the standard shader)
 		if (mat->GetTextureCount(type) > 1)
-			utils::Logger::getInstance().error("logged_files/material_creation.txt", "Mesh Loading", "Mesh's default material contains more than 1 " + std::string(typeName) + " map, which currently isn't supported by the standard shader");
+			utils::Logger::getInstance().error("logged_files/material_creation.txt", "Mesh Loading", "Mesh's default material contains more than 1 texture for the same type, which currently isn't supported by the standard shader");
 
 		// Load the texture of a certain type, assuming there is one
 		if (mat->GetTextureCount(type) > 0) {
 			aiString str;
 			mat->GetTexture(type, 0, &str); // Grab only the first texture (standard shader only supports one texture of each type, it doesn't know how you want to do special blending)
 
-			// Attempt to fetch the texture from memory if it is already loaded
-			for (unsigned int j = 0; j < Model::m_LoadedTextures.size(); ++j) {
-				if (std::strcmp(str.C_Str(), Model::m_LoadedTextures[j].path.C_Str()) == 0) {
-					return Model::m_LoadedTextures[j].id;
-				}
-			}
-
-			// Since the texture hasn't been loaded yet, load the texture and cache it
-			Texture texture;
-			texture.id = opengl::Utility::loadTextureFromFile((m_Directory + "/" + std::string(str.C_Str())).c_str()); // Assumption made: material stuff is located in the same directory as the model object
-			texture.type = typeName;
-			texture.path = str;
-			Model::m_LoadedTextures.push_back(texture); // Add to loaded textures, so no duplicate texture gets loaded
-			return Model::m_LoadedTextures[m_LoadedTextures.size() - 1].id;
+			// Assumption made: material stuff is located in the same directory as the model object
+			return utils::TextureLoader::Load2DTexture((m_Directory + "/" + std::string(str.C_Str())).c_str());
 		}
 
-		return 0;
+		return nullptr;
 	}
 } }

@@ -4,6 +4,7 @@
 
 namespace arcane { namespace opengl {
 
+	/*
 	unsigned int Utility::loadTextureFromFile(const char *path, bool containsTransparencyOnSides) {
 		unsigned int textureID;
 		glGenTextures(1, &textureID);
@@ -56,6 +57,7 @@ namespace arcane { namespace opengl {
 		}
 		return textureID;
 	}
+	*/
 
 	unsigned int Utility::loadCubemapFromFiles(const std::vector<const char*> &filePaths) {
 		// Size check

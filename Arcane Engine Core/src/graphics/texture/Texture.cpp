@@ -3,7 +3,7 @@
 namespace arcane { namespace graphics {
 
 	Texture::Texture() {
-		// Constructon handled by the texture loader unless for some reason you don't want to go through the texture loading system
+		m_TextureTarget = 0;
 	}
 
 	Texture::~Texture() {
@@ -43,6 +43,19 @@ namespace arcane { namespace graphics {
 		Unbind();
 	}
 
+	void Texture::Generate2DMultisampleTexture(unsigned int width, unsigned int height, GLenum textureFormat, int numSamples) {
+		m_TextureTarget = GL_TEXTURE_2D_MULTISAMPLE;
+		m_Width = width;
+		m_Height = height;
+		m_TextureFormat = textureFormat;
+
+		glGenTextures(1, &m_TextureId);
+		Bind();
+		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, numSamples, textureFormat, m_Width, m_Height, GL_TRUE);
+
+		Unbind();
+	}
+
 	void Texture::Bind(int unit) {
 		if (unit >= 0)
 			glActiveTexture(GL_TEXTURE0 + unit);
@@ -62,7 +75,8 @@ namespace arcane { namespace graphics {
 		m_TextureWrapSMode = textureWrapMode;
 		if (shouldBind)
 			Bind();
-		glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_S, m_TextureWrapSMode);
+		if (m_TextureTarget)
+			glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_S, m_TextureWrapSMode);
 	}
 
 	void Texture::SetTextureWrapT(GLenum textureWrapMode, bool shouldBind) {
@@ -72,7 +86,8 @@ namespace arcane { namespace graphics {
 		m_TextureWrapTMode = textureWrapMode;
 		if (shouldBind)
 			Bind();
-		glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_T, m_TextureWrapTMode);
+		if (m_TextureTarget)
+			glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_T, m_TextureWrapTMode);
 	}
 
 	void Texture::SetTextureMinFilter(GLenum textureFilterMode, bool shouldBind) {
@@ -82,7 +97,8 @@ namespace arcane { namespace graphics {
 		m_TextureMinificationFilterMode = textureFilterMode;
 		if (shouldBind)
 			Bind();
-		glTexParameteri(m_TextureTarget, GL_TEXTURE_MIN_FILTER, m_TextureMinificationFilterMode);
+		if (m_TextureTarget)
+			glTexParameteri(m_TextureTarget, GL_TEXTURE_MIN_FILTER, m_TextureMinificationFilterMode);
 	}
 
 	void Texture::SetTextureMagFilter(GLenum textureFilterMode, bool shouldBind) {
@@ -96,7 +112,8 @@ namespace arcane { namespace graphics {
 		m_TextureMagnificationFilterMode = textureFilterMode;
 		if (shouldBind)
 			Bind();
-		glTexParameteri(m_TextureTarget, GL_TEXTURE_MAG_FILTER, m_TextureMagnificationFilterMode);
+		if (m_TextureTarget)
+			glTexParameteri(m_TextureTarget, GL_TEXTURE_MAG_FILTER, m_TextureMagnificationFilterMode);
 	}
 
 	void Texture::SetAnisotropicFilteringMode(float textureAnisotropyLevel, bool shouldBind) {
@@ -106,11 +123,12 @@ namespace arcane { namespace graphics {
 		m_TextureAnisotropyLevel = textureAnisotropyLevel;
 		if (shouldBind)
 			Bind();
-
-		float maxAnisotropy;
-		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-		float anistropyAmount = glm::min(maxAnisotropy, m_TextureAnisotropyLevel);
-		glTexParameterf(m_TextureTarget, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
+		if (m_TextureTarget) {
+			float maxAnisotropy;
+			glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
+			float anistropyAmount = glm::min(maxAnisotropy, m_TextureAnisotropyLevel);
+			glTexParameterf(m_TextureTarget, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
+		}
 	}
 
 

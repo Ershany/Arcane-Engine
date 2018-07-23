@@ -34,21 +34,22 @@ namespace arcane {
 
 		// Load renderables
 		graphics::Quad windowPane;
-		windowPane.getMaterial().setDiffuseMapId(opengl::Utility::loadTextureFromFile("res/textures/window.png", true));
-		windowPane.getMaterial().setSpecularMapId(opengl::Utility::loadTextureFromFile("res/textures/fullSpec.png", true));
+		windowPane.getMaterial().setDiffuseMap(utils::TextureLoader::Load2DTexture("res/textures/window.png"));
+		windowPane.getMaterial().setSpecularMap(utils::TextureLoader::Load2DTexture("res/textures/fullSpec.png"));
 		graphics::Model *glass = new graphics::Model(windowPane);
 
-		//Add(new graphics::Renderable3D(glm::vec3(30.0f, -10.0f, 30.0if), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/Reaper/Reaper.obj"), nullptr, true));
-		//Add(new graphics::Renderable3D(glm::vec3(60.0f, -10.0f, 60.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/McCree/McCree.obj"), nullptr, false));
+		Add(new graphics::Renderable3D(glm::vec3(30.0f, -10.0f, 30.0), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/Reaper/Reaper.obj"), nullptr, true));
+		Add(new graphics::Renderable3D(glm::vec3(60.0f, -10.0f, 60.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Overwatch/McCree/McCree.obj"), nullptr, false));
 		//Add(new graphics::Renderable3D(glm::vec3(90.0f, -10.0f, 90.0f), glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Crysis/nanosuit.obj"), nullptr, true));
 		//Add(new graphics::Renderable3D(glm::vec3(200.0f, 200.0f, 100.0f), glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(0.0f), new arcane::graphics::Model("res/3D_Models/Sponza/sponza.obj"), nullptr, false, false));
-		Add(new graphics::Renderable3D(glm::vec3(40, 20, 40), glm::vec3(15, 15, 15), glm::vec3(0.0, 1.0, 0.0), glm::radians(180.0f), glass, nullptr, false, true));
-		Add(new graphics::Renderable3D(glm::vec3(80, 20, 80), glm::vec3(15, 15, 15), glm::vec3(0.0, 1.0, 0.0), glm::radians(180.0f), glass, nullptr, false, true));
-		Add(new graphics::Renderable3D(glm::vec3(120, 20, 120), glm::vec3(15, 15, 15), glm::vec3(0.0, 1.0, 0.0), glm::radians(180.0f), glass, nullptr, false, true));
+		
+		//Add(new graphics::Renderable3D(glm::vec3(40, 20, 40), glm::vec3(15, 15, 15), glm::vec3(0.0, 1.0, 0.0), glm::radians(180.0f), glass, nullptr, false, true));
+		//Add(new graphics::Renderable3D(glm::vec3(80, 20, 80), glm::vec3(15, 15, 15), glm::vec3(0.0, 1.0, 0.0), glm::radians(180.0f), glass, nullptr, false, true));
+		//Add(new graphics::Renderable3D(glm::vec3(120, 20, 120), glm::vec3(15, 15, 15), glm::vec3(0.0, 1.0, 0.0), glm::radians(180.0f), glass, nullptr, false, true));
 
-		Add(new graphics::Renderable3D(glm::vec3(20, 20, 20), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Cube()), nullptr, false, false));
-		Add(new graphics::Renderable3D(glm::vec3(140, 20, 140), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Sphere()), nullptr, false, false));
-		Add(new graphics::Renderable3D(glm::vec3(-20, 20, -20), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Quad()), nullptr, false, false));
+		//Add(new graphics::Renderable3D(glm::vec3(20, 20, 20), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Cube()), nullptr, false, false));
+		//Add(new graphics::Renderable3D(glm::vec3(140, 20, 140), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Sphere()), nullptr, false, false));
+		//Add(new graphics::Renderable3D(glm::vec3(-20, 20, -20), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Quad()), nullptr, false, false));
 
 		// Terrain shader
 		m_GLCache->switchShader(m_TerrainShader.getShaderID());
