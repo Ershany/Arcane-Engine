@@ -1,4 +1,5 @@
 #include "Material.h"
+#include "../Window.h"
 
 namespace arcane { namespace graphics {
 

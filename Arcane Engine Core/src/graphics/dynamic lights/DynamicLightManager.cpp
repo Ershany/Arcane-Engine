@@ -15,8 +15,8 @@ namespace arcane { namespace graphics {
 		// Setup lighting configurations
 		m_DirectionalLight.isActive = true;
 		m_DirectionalLight.direction = glm::vec3(-0.3f, -1.0f, -0.3f);
-		m_DirectionalLight.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
-		m_DirectionalLight.diffuse = glm::vec3(0.6f, 0.6f, 0.6f);
+		m_DirectionalLight.ambient = glm::vec3(0.3f, 0.3f, 0.3f);
+		m_DirectionalLight.diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
 		m_DirectionalLight.specular = glm::vec3(0.5f, 0.5f, 0.5f);
 
 		m_SpotLight.isActive = true;
@@ -42,7 +42,7 @@ namespace arcane { namespace graphics {
 		addPointLight(pointLight);
 	}
 
-	// TODO: Dynamically change the size of the lights (LIMIT OF 5 CURRENTLY FOR POINTLIGHTS)
+	// TODO: Dynamically change the size of the lights or use only the close lights (LIMIT OF 5 CURRENTLY FOR POINTLIGHTS)
 	void DynamicLightManager::setupLightingUniforms(Shader &shader) {
 		shader.setUniform1i("numPointLights", m_PointLights.size());
 

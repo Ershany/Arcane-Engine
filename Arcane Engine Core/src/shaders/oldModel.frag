@@ -4,7 +4,6 @@
 struct Material {
 	sampler2D texture_diffuse;
 	sampler2D texture_specular;
-	sampler2D texture_normal;
 	float shininess;
 };
 
@@ -45,13 +44,13 @@ struct SpotLight {
 
 #define MAX_POINT_LIGHTS 5
 
-in mat3 TBN;
-in vec3 FragPos;
 in vec2 TexCoords;
+in vec3 Normal;
+in vec3 FragPos;
 
 out vec4 color;
 
-uniform vec3 viewPos;
+
 uniform int numPointLights;
 uniform DirLight dirLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
@@ -59,6 +58,7 @@ uniform SpotLight spotLight;
 uniform float time;
 
 uniform Material material;
+uniform vec3 viewPos;
 
 // function prototypes
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam);
@@ -69,11 +69,7 @@ void main() {
 	// Check if the fragment is too transparent, and if so just discard it
 	float textureAlpha = texture(material.texture_diffuse, TexCoords).w;
 
-	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
-	vec3 norm = texture(material.texture_normal, TexCoords).rgb;
-	norm = normalize(norm * 2.0f - 1.0f);
-	norm = normalize(TBN * norm);
-	
+	vec3 norm = normalize(Normal);
 	vec3 fragToCam = normalize(viewPos - FragPos);
 	
 	vec3 result = CalcDirLight(dirLight, norm, fragToCam);
