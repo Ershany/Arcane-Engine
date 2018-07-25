@@ -55,11 +55,11 @@ namespace arcane { namespace terrain {
 		}
 
 		// Textures
-		m_Textures[0] = utils::TextureLoader::Load2DTexture("res/terrain/grass.png");
-		m_Textures[1] = utils::TextureLoader::Load2DTexture("res/terrain/dirt.png");
-		m_Textures[2] = utils::TextureLoader::Load2DTexture("res/terrain/sand.png");
-		m_Textures[3] = utils::TextureLoader::Load2DTexture("res/terrain/stone.png");
-		m_Textures[4] = utils::TextureLoader::Load2DTexture("res/terrain/blendMap.png");
+		m_Textures[0] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/grass.png"));
+		m_Textures[1] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/dirt.png"));
+		m_Textures[2] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/sand.png"));
+		m_Textures[3] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/stone.png"));
+		m_Textures[4] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/blendMap.png"));
 
 		m_Mesh = new graphics::Mesh(positions, uvs, normals, indices);
 		m_Mesh->LoadData(true);

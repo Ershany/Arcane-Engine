@@ -5,6 +5,7 @@
 
 #include "../Shader.h"
 #include "../texture/Texture.h"
+#include "../../utils/loaders/TextureLoader.h"
 
 namespace arcane { namespace graphics {
 

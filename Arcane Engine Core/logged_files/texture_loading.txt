@@ -1,5 +1,1 @@
-(texture load (OpenGL) fail path:): res/3D_Models/Crysis/eye_generic.png
-(texture load (OpenGL) fail path:): res/3D_Models/Crysis/Sykes.png
-(texture load (OpenGL) fail path:): res/3D_Models/Crysis/Eye_Lish.png
-(texture load (OpenGL) fail path:): res/3D_Models/Crysis/teeth.png
-(texture load (OpenGL) fail path:): res/3D_Models/Crysis/Nanosuit_us_Visorlight.png
+(texture load fail - path:): res/textures/fullSpec.png

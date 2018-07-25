@@ -31,7 +31,7 @@ namespace arcane { namespace graphics {
 
 	void Model::loadModel(const std::string &path) {
 		Assimp::Importer import;
-		const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+		const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
 			utils::Logger::getInstance().error("logged_files/model_loading.txt", "model initialization", import.GetErrorString());
@@ -82,6 +82,8 @@ namespace arcane { namespace graphics {
 			positions.push_back(glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z));
 			uvs.push_back(glm::vec2(uvCoord.x, uvCoord.y));
 			normals.push_back(glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z));
+			tangents.push_back(glm::vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z));
+			bitangents.push_back(glm::vec3(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z));
 		}
 
 		// Process Indices
@@ -93,7 +95,7 @@ namespace arcane { namespace graphics {
 			}
 		}
 
-		Mesh newMesh(positions, uvs, normals, indices);
+		Mesh newMesh(positions, uvs, normals, tangents, bitangents, indices);
 		newMesh.LoadData();
 
 		// Process Materials (textures in this case)
@@ -123,7 +125,8 @@ namespace arcane { namespace graphics {
 			mat->GetTexture(type, 0, &str); // Grab only the first texture (standard shader only supports one texture of each type, it doesn't know how you want to do special blending)
 
 			// Assumption made: material stuff is located in the same directory as the model object
-			return utils::TextureLoader::Load2DTexture((m_Directory + "/" + std::string(str.C_Str())).c_str());
+			std::string fileToSearch = (m_Directory + "/" + std::string(str.C_Str())).c_str();
+			return utils::TextureLoader::Load2DTexture(fileToSearch);
 		}
 
 		return nullptr;
