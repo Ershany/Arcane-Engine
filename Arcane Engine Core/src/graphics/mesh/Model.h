@@ -12,13 +12,15 @@
 
 namespace arcane { namespace graphics {
 
+	class Renderer;
+
 	class Model {
 	public:
 		Model(const char *path);
 		Model(const Mesh &mesh);
 		Model(const std::vector<Mesh> &meshes);
 		
-		void Draw(Shader &shader) const;
+		void Draw(Shader &shader, Renderer::RenderPass pass) const;
 	private:
 		std::vector<Mesh> m_Meshes;
 		std::string m_Directory;

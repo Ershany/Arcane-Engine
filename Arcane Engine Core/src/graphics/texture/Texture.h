@@ -14,24 +14,24 @@ namespace arcane { namespace graphics {
 		~Texture();
 
 		// Generation functions
-		void Generate2DTexture(unsigned int width, unsigned int height, GLenum textureFormat, GLenum dataFormat, const void *data);
-		void Generate2DMultisampleTexture(unsigned int width, unsigned int height, GLenum textureFormat, int numSamples);
+		void generate2DTexture(unsigned int width, unsigned int height, GLenum textureFormat, GLenum dataFormat, const void *data);
+		void generate2DMultisampleTexture(unsigned int width, unsigned int height, GLenum textureFormat, int numSamples);
 
-		void Bind(int unit = -1);
-		void Unbind();
+		void bind(int unit = -1);
+		void unbind();
 
 		// Texture Tuning Functions (Works for pre-generation and post-generation)
-		void SetTextureWrapS(GLenum textureWrapMode, bool shouldBind = false);
-		void SetTextureWrapT(GLenum textureWrapMode, bool shouldBind = false);
-		void SetTextureMinFilter(GLenum textureFilterMode, bool shouldBind = false);
-		void SetTextureMagFilter(GLenum textureFilterMode, bool shouldBind = false);
-		void SetAnisotropicFilteringMode(float textureAnisotropyLevel, bool shouldBind = false);
+		void setTextureWrapS(GLenum textureWrapMode, bool shouldBind = false);
+		void setTextureWrapT(GLenum textureWrapMode, bool shouldBind = false);
+		void setTextureMinFilter(GLenum textureFilterMode, bool shouldBind = false);
+		void setTextureMagFilter(GLenum textureFilterMode, bool shouldBind = false);
+		void setAnisotropicFilteringMode(float textureAnisotropyLevel, bool shouldBind = false);
 
 		// Pre-generation controls only
-		void SetMipMode(bool shouldGenMips, int mipBias);
+		void setMipMode(bool shouldGenMips, int mipBias);
 
 		// Don't use this to bind the texture and use it. Call the Bind() function instead
-		unsigned int GetTextureId() { return m_TextureId; }
+		unsigned int getTextureId() { return m_TextureId; }
 	private:
 		unsigned int m_TextureId;
 		GLenum m_TextureTarget;

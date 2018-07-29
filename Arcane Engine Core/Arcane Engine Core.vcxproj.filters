@@ -278,9 +278,8 @@
     <None Include="src\shaders\shadowmap.frag" />
     <None Include="src\shaders\postprocess.vert" />
     <None Include="src\shaders\postprocess.frag" />
-    <None Include="src\shaders\oldModel.frag" />
     <None Include="src\shaders\model.frag" />
-    <None Include="src\shaders\oldBasic.vert" />
+    <None Include="src\shaders\model.vert" />
     <None Include="src\shaders\basic.vert" />
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,7 @@ namespace arcane { namespace graphics {
 		void setStencilTest(bool choice);
 		void setBlend(bool choice);
 		void setCull(bool choice);
+		void setMultisample(bool choice);
 
 		void setDepthFunc(GLenum depthFunc);
 		void setStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask);
@@ -34,6 +35,7 @@ namespace arcane { namespace graphics {
 		bool m_StencilTest;
 		bool m_Blend;
 		bool m_Cull;
+		bool m_Multisample;
 
 		// Depth State
 		GLenum m_DepthFunc;

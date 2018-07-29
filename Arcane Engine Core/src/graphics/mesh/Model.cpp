@@ -4,9 +4,10 @@
 #include <stb_image_aug.h>
 #include <iostream>
 
+#include "Mesh.h"
 #include "../../platform/OpenGL/Utility.h"
 #include "../../utils/Logger.h"
-#include "Mesh.h"
+#include "../renderer/Renderer.h"
 
 namespace arcane { namespace graphics {
 
@@ -22,9 +23,12 @@ namespace arcane { namespace graphics {
 		m_Meshes = meshes;
 	}
 
-	void Model::Draw(Shader &shader) const {
+	void Model::Draw(Shader &shader, Renderer::RenderPass pass) const {
+		// Only bind the meshes material information during the lighting pass
 		for (unsigned int i = 0; i < m_Meshes.size(); ++i) {
-			m_Meshes[i].m_Material.BindMaterialInformation(shader);
+			if (pass != Renderer::RenderPass::LightingPass); {
+				m_Meshes[i].m_Material.BindMaterialInformation(shader);
+			}
 			m_Meshes[i].Draw();
 		}
 	}

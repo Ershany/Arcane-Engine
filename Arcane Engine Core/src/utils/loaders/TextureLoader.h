@@ -20,9 +20,9 @@ namespace arcane { namespace utils {
 		};
 
 	public:
-		static void InitializeDefaultTextures();
+		static void initializeDefaultTextures();
 
-		static graphics::Texture* Load2DTexture(std::string &path);
+		static graphics::Texture* load2DTexture(std::string &path);
 		// TOOO: Cubemap support, then our skybox class can use it
 
 		inline static graphics::Texture* getDefaultDiffuse() { return m_DefaultTextures.m_DefaultDiffuse; }

@@ -9,15 +9,21 @@
 #include "GLCache.h"
 
 namespace arcane { namespace graphics {
+
 	class Renderer {
 	public:
+		enum RenderPass {
+			ShadowmapPass,
+			LightingPass
+		};
+
 		Renderer(Camera *camera);
 
 		void submitOpaque(Renderable3D *renderable);
 		void submitTransparent(Renderable3D *renderable);
 		
-		void flushOpaque(Shader &shader, Shader &outlineShader);
-		void flushTransparent(Shader &shader, Shader &outlineShader);
+		void flushOpaque(Shader &shader, Shader &outlineShader, RenderPass pass);
+		void flushTransparent(Shader &shader, Shader &outlineShader, RenderPass pass);
 	private:
 		void Renderer::setupModelMatrix(Renderable3D *renderable, Shader &shader, float scaleFactor = 1.0f);
 		void drawOutline(Shader &outlineShader, Renderable3D *renderable);

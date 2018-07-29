@@ -5,6 +5,8 @@
 
 namespace arcane { namespace graphics {
 
+	class Renderer;
+
 	class Renderable3D {
 	public:
 		Renderable3D(glm::vec3 &position, glm::vec3 &scale, glm::vec3 &rotationAxis, float radianRotation, Model *model, Renderable3D *parent, bool shouldOutline = false, bool transparent = false);
@@ -12,7 +14,7 @@ namespace arcane { namespace graphics {
 
 		// Assumes shader is already bound by the renderer. This also allows the renderer to have total control
 		// TODO: Add toggle in renderable that will skip the texture/material binding stage, which allows the renderer to have even more control
-		void draw(Shader &shader) const;
+		void draw(Shader &shader, Renderer::RenderPass pass) const;
 
 
 		inline const glm::vec3& getPosition() const { return m_Position; }

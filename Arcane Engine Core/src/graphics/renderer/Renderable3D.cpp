@@ -1,5 +1,7 @@
 #include "Renderable3D.h"
 
+#include "Renderer.h"
+
 namespace arcane { namespace graphics {
 
 	Renderable3D::Renderable3D(glm::vec3 &position, glm::vec3 &scale, glm::vec3 &rotationAxis, float radianRotation, Model *model, Renderable3D *parent, bool shouldOutline, bool transparent)
@@ -11,10 +13,10 @@ namespace arcane { namespace graphics {
 		
 	}
 
-	void Renderable3D::draw(Shader &shader) const {
+	void Renderable3D::draw(Shader &shader, Renderer::RenderPass pass) const {
 		// TODO: Add toggle in renderable that will skip the texture/material binding stage, which allows the renderer to have even more control
 		// Maybe do the binding here in order to easily make this work!
-		m_Model->Draw(shader);
+		m_Model->Draw(shader, pass);
 	}
 
 } }

@@ -5,7 +5,7 @@ namespace arcane { namespace utils {
 	std::map<std::string, graphics::Texture> TextureLoader::m_TextureCache;
 	TextureLoader::DefaultTextures TextureLoader::m_DefaultTextures;
 
-	graphics::Texture* TextureLoader::Load2DTexture(std::string &path) {
+	graphics::Texture* TextureLoader::load2DTexture(std::string &path) {
 		// Check the cache
 		std::map<std::string, graphics::Texture>::iterator iter = m_TextureCache.find(path);
 		if (iter != m_TextureCache.end()) {
@@ -29,18 +29,18 @@ namespace arcane { namespace utils {
 		}
 
 		graphics::Texture texture;
-		texture.Generate2DTexture(width, height, format, format, data);
+		texture.generate2DTexture(width, height, format, format, data);
 
 		m_TextureCache.insert(std::pair<std::string, graphics::Texture>(path, texture));
 		return &m_TextureCache[path];
 	}
 
-	void TextureLoader::InitializeDefaultTextures() {
-		m_DefaultTextures.m_DefaultDiffuse = Load2DTexture(std::string("res/textures/default/defaultDiffuse.png"));
-		m_DefaultTextures.m_FullSpecular = Load2DTexture(std::string("res/textures/default/fullSpec.png"));
-		m_DefaultTextures.m_NoSpecular = Load2DTexture(std::string("res/textures/default/noSpec.png"));
-		m_DefaultTextures.m_DefaultNormal = Load2DTexture(std::string("res/textures/default/defaultNormal.png"));
-		m_DefaultTextures.m_DefaultEmission = Load2DTexture(std::string("res/textures/default/defaultEmission.png"));
+	void TextureLoader::initializeDefaultTextures() {
+		m_DefaultTextures.m_DefaultDiffuse = load2DTexture(std::string("res/textures/default/defaultDiffuse.png"));
+		m_DefaultTextures.m_FullSpecular = load2DTexture(std::string("res/textures/default/fullSpec.png"));
+		m_DefaultTextures.m_NoSpecular = load2DTexture(std::string("res/textures/default/noSpec.png"));
+		m_DefaultTextures.m_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"));
+		m_DefaultTextures.m_DefaultEmission = load2DTexture(std::string("res/textures/default/defaultEmission.png"));
 	}
 
 } }

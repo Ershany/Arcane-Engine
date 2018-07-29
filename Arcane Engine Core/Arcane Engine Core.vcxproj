@@ -164,12 +164,11 @@
     <ClInclude Include="src\vendor\imgui\stb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\basic.vert" />
+    <None Include="src\shaders\model.vert" />
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\postprocess.frag" />
     <None Include="src\shaders\postprocess.vert" />
-    <None Include="src\shaders\oldModel.frag" />
     <None Include="src\shaders\modelReflection.frag" />
     <None Include="src\shaders\modelRefraction.frag" />
     <None Include="src\shaders\pointlight.frag" />
@@ -178,7 +177,7 @@
     <None Include="src\shaders\skybox.frag" />
     <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\spotlight.frag" />
-    <None Include="src\shaders\oldBasic.vert" />
+    <None Include="src\shaders\basic.vert" />
     <None Include="src\shaders\basic.frag" />
     <None Include="src\shaders\terrain.frag" />
   </ItemGroup>
