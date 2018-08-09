@@ -96,6 +96,7 @@
     <ClCompile Include="src\graphics\renderer\Renderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Skybox.cpp" />
+    <ClCompile Include="src\graphics\texture\Cubemap.cpp" />
     <ClCompile Include="src\graphics\texture\Texture.cpp" />
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -103,7 +104,6 @@
     <ClCompile Include="src\platform\OpenGL\Framebuffers\Framebuffer.cpp" />
     <ClCompile Include="src\platform\OpenGL\Framebuffers\ShadowMap.cpp" />
     <ClCompile Include="src\platform\OpenGL\IndexBuffer.cpp" />
-    <ClCompile Include="src\platform\OpenGL\Utility.cpp" />
     <ClCompile Include="src\platform\OpenGL\VertexArray.cpp" />
     <ClCompile Include="src\Scene3D.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
@@ -136,15 +136,16 @@
     <ClInclude Include="src\graphics\renderer\PostProcessor.h" />
     <ClInclude Include="src\graphics\renderer\Renderable3D.h" />
     <ClInclude Include="src\graphics\renderer\Renderer.h" />
+    <ClInclude Include="src\graphics\renderer\RenderPass.h" />
     <ClInclude Include="src\graphics\Shader.h" />
     <ClInclude Include="src\graphics\Skybox.h" />
+    <ClInclude Include="src\graphics\texture\Cubemap.h" />
     <ClInclude Include="src\graphics\texture\Texture.h" />
     <ClInclude Include="src\graphics\Window.h" />
     <ClInclude Include="src\platform\OpenGL\Buffer.h" />
     <ClInclude Include="src\platform\OpenGL\Framebuffers\Framebuffer.h" />
     <ClInclude Include="src\platform\OpenGL\Framebuffers\ShadowMap.h" />
     <ClInclude Include="src\platform\OpenGL\IndexBuffer.h" />
-    <ClInclude Include="src\platform\OpenGL\Utility.h" />
     <ClInclude Include="src\platform\OpenGL\VertexArray.h" />
     <ClInclude Include="src\Scene3D.h" />
     <ClInclude Include="src\terrain\Terrain.h" />

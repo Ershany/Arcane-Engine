@@ -7,16 +7,12 @@
 #include "../camera/Camera.h"
 #include "Renderable3D.h"
 #include "GLCache.h"
+#include "RenderPass.h"
 
 namespace arcane { namespace graphics {
 
 	class Renderer {
 	public:
-		enum RenderPass {
-			ShadowmapPass,
-			LightingPass
-		};
-
 		Renderer(Camera *camera);
 
 		void submitOpaque(Renderable3D *renderable);

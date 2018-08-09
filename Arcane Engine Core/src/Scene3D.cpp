@@ -44,12 +44,12 @@ namespace arcane {
 		//Add(new graphics::Renderable3D(glm::vec3(80, 20, 80), glm::vec3(15, 15, 15), glm::vec3(0.0, 1.0, 0.0), glm::radians(180.0f), glass, nullptr, false, true));
 		//Add(new graphics::Renderable3D(glm::vec3(120, 20, 120), glm::vec3(15, 15, 15), glm::vec3(0.0, 1.0, 0.0), glm::radians(180.0f), glass, nullptr, false, true));
 
-		//Add(new graphics::Renderable3D(glm::vec3(20, 20, 20), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Cube()), nullptr, false, false));
-		//Add(new graphics::Renderable3D(glm::vec3(140, 20, 140), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Sphere()), nullptr, false, false));
-		//Add(new graphics::Renderable3D(glm::vec3(-20, 20, -20), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Quad()), nullptr, false, false));
+		Add(new graphics::Renderable3D(glm::vec3(20, 20, 20), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Cube()), nullptr, false, false));
+		Add(new graphics::Renderable3D(glm::vec3(140, 20, 140), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Sphere()), nullptr, false, false));
+		Add(new graphics::Renderable3D(glm::vec3(-20, 20, -20), glm::vec3(10, 10, 10), glm::vec3(1, 0, 0), 0, new graphics::Model(graphics::Quad()), nullptr, false, false));
 
 		// Skybox
-		std::vector<const char*> skyboxFilePaths;
+		std::vector<std::string> skyboxFilePaths;
 		skyboxFilePaths.push_back("res/skybox/right.png");
 		skyboxFilePaths.push_back("res/skybox/left.png");
 		skyboxFilePaths.push_back("res/skybox/top.png");
@@ -102,7 +102,7 @@ namespace arcane {
 		}
 
 		// Opaque objects
-		m_Renderer->flushOpaque(m_ModelShader, m_OutlineShader, graphics::Renderer::LightingPass);
+		m_Renderer->flushOpaque(m_ModelShader, m_OutlineShader, graphics::RenderPass::LightingPass);
 
 		// Terrain
 		m_GLCache->setStencilWriteMask(0x00); // Don't update the stencil buffer
@@ -121,7 +121,7 @@ namespace arcane {
 
 		// Transparent objects
 		m_GLCache->switchShader(m_ModelShader.getShaderID());
-		m_Renderer->flushTransparent(m_ModelShader, m_OutlineShader, graphics::Renderer::LightingPass);
+		m_Renderer->flushTransparent(m_ModelShader, m_OutlineShader, graphics::RenderPass::LightingPass);
 	}
 
 	void Scene3D::Add(graphics::Renderable3D *renderable) {

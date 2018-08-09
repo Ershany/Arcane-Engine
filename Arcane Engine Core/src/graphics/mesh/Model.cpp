@@ -5,9 +5,7 @@
 #include <iostream>
 
 #include "Mesh.h"
-#include "../../platform/OpenGL/Utility.h"
 #include "../../utils/Logger.h"
-#include "../renderer/Renderer.h"
 
 namespace arcane { namespace graphics {
 
@@ -23,12 +21,11 @@ namespace arcane { namespace graphics {
 		m_Meshes = meshes;
 	}
 
-	void Model::Draw(Shader &shader, Renderer::RenderPass pass) const {
-		// Only bind the meshes material information during the lighting pass
+	void Model::Draw(Shader &shader, RenderPass pass) const {
 		for (unsigned int i = 0; i < m_Meshes.size(); ++i) {
-			if (pass != Renderer::RenderPass::LightingPass); {
+			// Avoid binding material inforomation when it isn't needed
+			if (pass != RenderPass::ShadowmapPass)
 				m_Meshes[i].m_Material.BindMaterialInformation(shader);
-			}
 			m_Meshes[i].Draw();
 		}
 	}
@@ -130,7 +127,7 @@ namespace arcane { namespace graphics {
 
 			// Assumption made: material stuff is located in the same directory as the model object
 			std::string fileToSearch = (m_Directory + "/" + std::string(str.C_Str())).c_str();
-			return utils::TextureLoader::Load2DTexture(fileToSearch);
+			return utils::TextureLoader::load2DTexture(fileToSearch);
 		}
 
 		return nullptr;

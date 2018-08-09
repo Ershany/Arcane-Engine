@@ -35,6 +35,37 @@ namespace arcane { namespace utils {
 		return &m_TextureCache[path];
 	}
 
+	graphics::Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front) {
+		graphics::Cubemap *cubemap = new graphics::Cubemap();
+
+		std::vector<std::string> faces = { right, left, top, bottom, back, front };
+
+		// Load the textures for the cubemap
+		int width, height, numComponents;
+		for (unsigned int i = 0; i < 6; ++i) {
+			unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &numComponents, 0);
+
+			if (data) {
+				GLenum format;
+				switch (numComponents) {
+				case 1: format = GL_RED;  break;
+				case 3: format = GL_RGB;  break;
+				case 4: format = GL_RGBA; break;
+				}
+
+				cubemap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, width, height, format, format, data);
+				stbi_image_free(data);
+			}
+			else {
+				utils::Logger::getInstance().error("logged_files/error.txt", "Cubemap initialization", "Couldn't load cubemap using 6 filepaths. Filepath error: " + faces[i]);
+				stbi_image_free(data);
+				return cubemap;
+			}
+		}
+		
+		return cubemap;
+	}
+
 	void TextureLoader::initializeDefaultTextures() {
 		m_DefaultTextures.m_DefaultDiffuse = load2DTexture(std::string("res/textures/default/defaultDiffuse.png"));
 		m_DefaultTextures.m_FullSpecular = load2DTexture(std::string("res/textures/default/fullSpec.png"));

@@ -2,10 +2,9 @@
 
 #include "../mesh/Model.h"
 #include <glm\glm.hpp>
+#include "RenderPass.h"
 
 namespace arcane { namespace graphics {
-
-	class Renderer;
 
 	class Renderable3D {
 	public:
@@ -13,8 +12,8 @@ namespace arcane { namespace graphics {
 		~Renderable3D();
 
 		// Assumes shader is already bound by the renderer. This also allows the renderer to have total control
-		// TODO: Add toggle in renderable that will skip the texture/material binding stage, which allows the renderer to have even more control
-		void draw(Shader &shader, Renderer::RenderPass pass) const;
+		// TODO: Add enum to control render pass like if its a shadowmap pass so avoid binding etc
+		void draw(Shader &shader, RenderPass pass) const;
 
 
 		inline const glm::vec3& getPosition() const { return m_Position; }

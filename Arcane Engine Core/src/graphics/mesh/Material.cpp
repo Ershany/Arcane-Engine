@@ -12,34 +12,34 @@ namespace arcane { namespace graphics {
 
 		shader.setUniform1i("material.texture_diffuse", currentTextureUnit);
 		if (m_DiffuseMap) {
-			m_DiffuseMap->Bind(currentTextureUnit++);
+			m_DiffuseMap->bind(currentTextureUnit++);
 		}
 		else {
-			utils::TextureLoader::getDefaultDiffuse()->Bind(currentTextureUnit++);
+			utils::TextureLoader::getDefaultDiffuse()->bind(currentTextureUnit++);
 		}
 
 		shader.setUniform1i("material.texture_specular", currentTextureUnit);
 		if (m_SpecularMap) {
-			m_SpecularMap->Bind(currentTextureUnit++);
+			m_SpecularMap->bind(currentTextureUnit++);
 		}
 		else {
-			utils::TextureLoader::getDefaultSpecular()->Bind(currentTextureUnit++);
+			utils::TextureLoader::getDefaultSpecular()->bind(currentTextureUnit++);
 		}
 
 		shader.setUniform1i("material.texture_normal", currentTextureUnit);
 		if (m_NormalMap) {
-			m_NormalMap->Bind(currentTextureUnit++);
+			m_NormalMap->bind(currentTextureUnit++);
 		}
 		else {
-			utils::TextureLoader::getDefaultNormal()->Bind(currentTextureUnit++);
+			utils::TextureLoader::getDefaultNormal()->bind(currentTextureUnit++);
 		}
 
 		shader.setUniform1i("material.texture_emission", currentTextureUnit);
 		if (m_EmissionMap) {
-			m_EmissionMap->Bind(currentTextureUnit++);
+			m_EmissionMap->bind(currentTextureUnit++);
 		}
 		else {
-			utils::TextureLoader::getDefaultEmission()->Bind(currentTextureUnit++);
+			utils::TextureLoader::getDefaultEmission()->bind(currentTextureUnit++);
 		}
 
 		shader.setUniform1f("material.shininess", m_Shininess);

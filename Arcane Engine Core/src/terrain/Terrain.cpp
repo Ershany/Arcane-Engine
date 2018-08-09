@@ -1,6 +1,5 @@
 #include "Terrain.h"
 
-#include "../platform/OpenGL/Utility.h"
 #include "../utils/Logger.h"
 
 namespace arcane { namespace terrain {
@@ -55,11 +54,11 @@ namespace arcane { namespace terrain {
 		}
 
 		// Textures
-		m_Textures[0] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/grass.png"));
-		m_Textures[1] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/dirt.png"));
-		m_Textures[2] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/sand.png"));
-		m_Textures[3] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/stone.png"));
-		m_Textures[4] = utils::TextureLoader::Load2DTexture(std::string("res/terrain/blendMap.png"));
+		m_Textures[0] = utils::TextureLoader::load2DTexture(std::string("res/terrain/grass.png"));
+		m_Textures[1] = utils::TextureLoader::load2DTexture(std::string("res/terrain/dirt.png"));
+		m_Textures[2] = utils::TextureLoader::load2DTexture(std::string("res/terrain/sand.png"));
+		m_Textures[3] = utils::TextureLoader::load2DTexture(std::string("res/terrain/stone.png"));
+		m_Textures[4] = utils::TextureLoader::load2DTexture(std::string("res/terrain/blendMap.png"));
 
 		m_Mesh = new graphics::Mesh(positions, uvs, normals, indices);
 		m_Mesh->LoadData(true);
@@ -70,19 +69,19 @@ namespace arcane { namespace terrain {
 	}
 
 	void Terrain::Draw(graphics::Shader &shader) const {
-		m_Textures[0]->Bind(0);
+		m_Textures[0]->bind(0);
 		shader.setUniform1i("material.texture_diffuse1", 0);
 
-		m_Textures[1]->Bind(1);
+		m_Textures[1]->bind(1);
 		shader.setUniform1i("material.texture_diffuse2", 1);
 
-		m_Textures[2]->Bind(2);
+		m_Textures[2]->bind(2);
 		shader.setUniform1i("material.texture_diffuse3", 2);
 
-		m_Textures[3]->Bind(3);
+		m_Textures[3]->bind(3);
 		shader.setUniform1i("material.texture_diffuse4", 3);
 
-		m_Textures[4]->Bind(4);
+		m_Textures[4]->bind(4);
 		shader.setUniform1i("material.texture_diffuse5", 4);
 
 		shader.setUniformMat4("model", m_ModelMatrix);

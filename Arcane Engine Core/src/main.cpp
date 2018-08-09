@@ -25,7 +25,7 @@ int main() {
 	arcane::graphics::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
 	arcane::Scene3D scene(&camera, &window);
 	arcane::graphics::GLCache *glCache = arcane::graphics::GLCache::getInstance();
-	arcane::utils::TextureLoader::InitializeDefaultTextures();
+	arcane::utils::TextureLoader::initializeDefaultTextures();
 
 	// Construct framebuffers
 	arcane::opengl::Framebuffer framebuffer(window.getWidth(), window.getHeight());
