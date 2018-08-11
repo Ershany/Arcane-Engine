@@ -14,6 +14,7 @@ namespace arcane { namespace graphics {
 		m_Height = height;
 		s_ScrollX = s_ScrollY = 0;
 		s_MouseXDelta = s_MouseYDelta = 0;
+		m_HideCursor = true;
 
 		if (!init()) {
 			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize window class");
@@ -58,7 +59,7 @@ namespace arcane { namespace graphics {
 		}
 
 		// Setup the mouse settings
-		if (!SHOW_MOUSE) 
+		if (m_HideCursor) 
 			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		// Set up contexts and callbacks
@@ -163,6 +164,13 @@ namespace arcane { namespace graphics {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		win->s_Keys[key] = action != GLFW_RELEASE;
 		ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
+#if DEBUG_ENABLED
+		if (key == GLFW_KEY_P && action == GLFW_RELEASE) {
+			win->m_HideCursor = !win->m_HideCursor;
+			GLenum cursorOption = win->m_HideCursor ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL;
+			glfwSetInputMode(win->m_Window, GLFW_CURSOR, cursorOption);
+		}
+#endif
 	}
 
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
