@@ -19,7 +19,7 @@ namespace arcane { namespace graphics {
 			m_TransparentRenderQueue.push_back(renderable);
 		}
 
-		void Renderer::flushOpaque(Shader &shader, Shader &outlineShader) {
+		void Renderer::flushOpaque(Shader &shader, Shader &outlineShader, RenderPass pass) {
 			m_GLCache->switchShader(shader.getShaderID());
 			m_GLCache->setCull(true);
 			m_GLCache->setDepthTest(true);
@@ -37,7 +37,7 @@ namespace arcane { namespace graphics {
 				else m_GLCache->setStencilWriteMask(0x00);
 
 				setupModelMatrix(current, shader);
-				current->draw(shader);
+				current->draw(shader, RenderPass::LightingPass);
 
 				if (current->getShouldOutline()) {
 					drawOutline(outlineShader, current);
@@ -48,7 +48,7 @@ namespace arcane { namespace graphics {
 			}
 		}
 
-		void Renderer::flushTransparent(Shader &shader, Shader &outlineShader) {
+		void Renderer::flushTransparent(Shader &shader, Shader &outlineShader, RenderPass pass) {
 			m_GLCache->setCull(false);
 			m_GLCache->setStencilTest(true);
 
@@ -70,7 +70,7 @@ namespace arcane { namespace graphics {
 				m_GLCache->setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 				setupModelMatrix(current, shader);
-				current->draw(shader);
+				current->draw(shader, RenderPass::LightingPass);
 
 				if (current->getShouldOutline()) {
 					drawOutline(outlineShader, current);
@@ -81,7 +81,7 @@ namespace arcane { namespace graphics {
 			}
 		}
 
-		// TODO: Currently only supports two levels in a hierarchical scene graph
+		// TODO: Currently only supports two levels for hierarchical transformations
 		// Make it work with any number of levels
 		void Renderer::setupModelMatrix(Renderable3D *renderable, Shader &shader, float scaleFactor) {
 			glm::mat4 model(1);
@@ -89,12 +89,12 @@ namespace arcane { namespace graphics {
 			glm::mat4 rotate = glm::toMat4(renderable->getOrientation());
 			glm::mat4 scale = glm::scale(glm::mat4(1.0f), renderable->getScale() * scaleFactor);
 
-			if (!renderable->getParent()) {
-				model = translate * rotate * scale;
-			}
-			else {
+			if (renderable->getParent()) {
 				// Only apply scale locally
 				model = glm::translate(glm::mat4(1.0f), renderable->getParent()->getPosition()) * glm::toMat4(renderable->getParent()->getOrientation()) * translate * rotate * scale;
+			}
+			else {
+				model = translate * rotate * scale;
 			}
 
 			shader.setUniformMat4("model", model);
@@ -105,7 +105,7 @@ namespace arcane { namespace graphics {
 			m_GLCache->setStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 			
 			setupModelMatrix(renderable, outlineShader, 1.05f);
-			renderable->draw(outlineShader);
+			renderable->draw(outlineShader, RenderPass::ShadowmapPass); // Use this to avoid binding useless info
 
 			m_GLCache->setDepthTest(true);
 			glClear(GL_STENCIL_BUFFER_BIT);

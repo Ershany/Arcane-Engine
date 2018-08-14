@@ -20,11 +20,11 @@ namespace arcane { namespace graphics {
 		glDeleteProgram(m_ShaderID);
 	}
 
-	GLuint Shader::load() {
+	unsigned int Shader::load() {
 		// Create the program and shaders
-		GLuint program = glCreateProgram();
-		GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
-		GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
+		unsigned int program = glCreateProgram();
+		unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
+		unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
 
 		// Variables need to be declared or the character pointers will become dangling pointers
 		std::string vertSourceString = FileUtils::readFile(m_VertPath);
@@ -35,12 +35,12 @@ namespace arcane { namespace graphics {
 		// Vertex Shader
 		glShaderSource(vertex, 1, &vertSource, NULL);
 		glCompileShader(vertex);
-		GLint result;
+		int result;
 
 		// Check to see if it was successful
 		glGetShaderiv(vertex, GL_COMPILE_STATUS, &result);
 		if (result == GL_FALSE) {
-			GLint length;
+			int length;
 			glGetShaderiv(vertex, GL_INFO_LOG_LENGTH, &length);
 			std::vector<char> error(length);
 			glGetShaderInfoLog(vertex, length, &length, &error[0]);
@@ -57,7 +57,7 @@ namespace arcane { namespace graphics {
 		// Check to see if it was successful
 		glGetShaderiv(fragment, GL_COMPILE_STATUS, &result);
 		if (result == GL_FALSE) {
-			GLint length;
+			int length;
 			glGetShaderiv(fragment, GL_INFO_LOG_LENGTH, &length);
 			std::vector<char> error(length);
 			glGetShaderInfoLog(fragment, length, &length, &error[0]);
@@ -67,7 +67,7 @@ namespace arcane { namespace graphics {
 			return 0;
 		}
 
-		GLuint geometry;
+		unsigned int geometry;
 		// Check to see if a geometry shader was supplied
 		if (m_GeomPath != "") {
 			geometry = glCreateShader(GL_GEOMETRY_SHADER);
@@ -77,12 +77,12 @@ namespace arcane { namespace graphics {
 			// Geometry Shader
 			glShaderSource(geometry, 1, &geomSource, NULL);
 			glCompileShader(geometry);
-			GLint result;
+			int result;
 
 			// Check to see if it was successful
 			glGetShaderiv(geometry, GL_COMPILE_STATUS, &result);
 			if (result == GL_FALSE) {
-				GLint length;
+				int length;
 				glGetShaderiv(geometry, GL_INFO_LOG_LENGTH, &length);
 				std::vector<char> error(length);
 				glGetShaderInfoLog(geometry, length, &length, &error[0]);
@@ -111,31 +111,31 @@ namespace arcane { namespace graphics {
 		return program;
 	}
 
-	GLint Shader::getUniformLocation(const GLchar* name) {
+	int Shader::getUniformLocation(const char* name) {
 		return glGetUniformLocation(m_ShaderID, name);
 	}
 
-	void Shader::setUniform1f(const GLchar* name, float value) {
+	void Shader::setUniform1f(const char* name, float value) {
 		glUniform1f(getUniformLocation(name), value);
 	}
 
-	void Shader::setUniform1i(const GLchar* name, int value) {
+	void Shader::setUniform1i(const char* name, int value) {
 		glUniform1i(getUniformLocation(name), value);
 	}
 
-	void Shader::setUniform2f(const GLchar* name, const glm::vec2& vector) {
+	void Shader::setUniform2f(const char* name, const glm::vec2& vector) {
 		glUniform2f(getUniformLocation(name), vector.x, vector.y);
 	}
 
-	void Shader::setUniform3f(const GLchar* name, const glm::vec3& vector) {
+	void Shader::setUniform3f(const char* name, const glm::vec3& vector) {
 		glUniform3f(getUniformLocation(name), vector.x, vector.y, vector.z);
 	}
 
-	void Shader::setUniform4f(const GLchar* name, const glm::vec4& vector) {
+	void Shader::setUniform4f(const char* name, const glm::vec4& vector) {
 		glUniform4f(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
 	}
 
-	void Shader::setUniformMat4(const GLchar* name, const glm::mat4& matrix) {
+	void Shader::setUniformMat4(const char* name, const glm::mat4& matrix) {
 		glUniformMatrix4fv(glGetUniformLocation(m_ShaderID, name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 

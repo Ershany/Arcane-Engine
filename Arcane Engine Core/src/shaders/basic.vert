@@ -3,6 +3,8 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 normal;
 layout (location = 2) in vec2 texCoords;
+layout (location = 3) in vec3 tangent;
+layout (location = 4) in vec3 bitangent;
 
 out vec3 Normal;
 out vec3 FragPos;
@@ -19,6 +21,6 @@ void main() {
 
 	// Use the normal matrix to maintain the orthogonal property of a normal when it is scaled non-uniformly
 	// Inverse is a very costly function, maybe do it on the cpu then send it to the gpu as a uniform
-	// Also this saves how many times this costly calculation is done, since right now it is happening every vertex, instead of once per triangle
+	// Also this saves how many times this costly calculation is done, since right now it is happening every vertex, instead of once per instance
 	Normal = mat3(transpose(inverse(model))) * normal;
 }

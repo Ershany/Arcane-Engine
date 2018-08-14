@@ -11,8 +11,8 @@ namespace arcane { namespace graphics {
 		
 	}
 
-	void Renderable3D::draw(Shader &shader) const {
-		m_Model->Draw(shader);
+	void Renderable3D::draw(Shader &shader, RenderPass pass) const {
+		m_Model->Draw(shader, pass);
 	}
 
 } }

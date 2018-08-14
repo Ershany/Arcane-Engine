@@ -6,7 +6,7 @@ namespace arcane { namespace opengl {
 		glGenBuffers(1, &m_BufferID);
 	}
 
-	IndexBuffer::IndexBuffer(GLuint *data, GLsizei amount) {
+	IndexBuffer::IndexBuffer(unsigned int *data, int amount) {
 		glGenBuffers(1, &m_BufferID);
 		load(data, amount);
 	}
@@ -15,12 +15,11 @@ namespace arcane { namespace opengl {
 		glDeleteBuffers(1, &m_BufferID);
 	}
 
-	void IndexBuffer::load(GLuint *data, GLsizei amount) {
+	void IndexBuffer::load(unsigned int *data, int amount) {
 		m_Count = amount;
 
 		bind();
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, amount * sizeof(GLuint), data, GL_STATIC_DRAW);
-		unbind();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, amount * sizeof(unsigned int), data, GL_STATIC_DRAW);
 	}
 
 	void IndexBuffer::bind() const {

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../Model.h"
+#include "../mesh/Model.h"
 #include <glm\glm.hpp>
+#include "RenderPass.h"
 
 namespace arcane { namespace graphics {
 
@@ -10,7 +11,9 @@ namespace arcane { namespace graphics {
 		Renderable3D(glm::vec3 &position, glm::vec3 &scale, glm::vec3 &rotationAxis, float radianRotation, Model *model, Renderable3D *parent, bool shouldOutline = false, bool transparent = false);
 		~Renderable3D();
 
-		void draw(Shader &shader) const;
+		// Assumes shader is already bound by the renderer. This also allows the renderer to have total control
+		// TODO: Add enum to control render pass like if its a shadowmap pass so avoid binding etc
+		void draw(Shader &shader, RenderPass pass) const;
 
 
 		inline const glm::vec3& getPosition() const { return m_Position; }

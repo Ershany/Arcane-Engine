@@ -3,7 +3,15 @@
 namespace arcane { namespace graphics {
 
 	GLCache::GLCache() : m_ActiveShaderID(0) {
-
+		// Initialize cache values to ensure garbage data doesn't mess with my GL state
+		m_DepthTest = false;
+		m_StencilTest = false;
+		m_Blend = false;
+		m_Cull = false;
+		m_FaceToCull = GL_BACK;
+		m_Multisample = false;;
+		setDepthTest(true);
+		setCull(true);
 	}
 
 	GLCache::~GLCache() {
@@ -55,6 +63,16 @@ namespace arcane { namespace graphics {
 		}
 	}
 
+	void GLCache::setMultisample(bool choice) {
+		if (m_Multisample != choice) {
+			m_Multisample = choice;
+			if (m_Multisample)
+				glEnable(GL_MULTISAMPLE);
+			else
+				glDisable(GL_MULTISAMPLE);
+		}
+	}
+
 	void GLCache::setDepthFunc(GLenum depthFunc) {
 		if (m_DepthFunc != depthFunc) {
 			m_DepthFunc = depthFunc;
@@ -62,7 +80,7 @@ namespace arcane { namespace graphics {
 		}
 	}
 
-	void GLCache::setStencilFunc(GLenum testFunc, GLint stencilFragValue, GLuint stencilBitmask) {
+	void GLCache::setStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask) {
 		if (m_StencilTestFunc != testFunc || m_StencilFragValue != stencilFragValue || m_StencilFuncBitmask != stencilBitmask) {
 			m_StencilTestFunc = testFunc; 
 			m_StencilFragValue = stencilFragValue; 
@@ -82,7 +100,7 @@ namespace arcane { namespace graphics {
 		}
 	}
 
-	void GLCache::setStencilWriteMask(GLuint bitmask) {
+	void GLCache::setStencilWriteMask(unsigned int bitmask) {
 		if (m_StencilWriteBitmask != bitmask) {
 			m_StencilWriteBitmask = bitmask;
 			glStencilMaskSeparate(GL_FRONT_AND_BACK, m_StencilWriteBitmask);
@@ -104,7 +122,7 @@ namespace arcane { namespace graphics {
 		}
 	}
 
-	void GLCache::switchShader(GLuint shaderID) {
+	void GLCache::switchShader(unsigned int shaderID) {
 		if (m_ActiveShaderID != shaderID) {
 			m_ActiveShaderID = shaderID;
 			glUseProgram(shaderID);

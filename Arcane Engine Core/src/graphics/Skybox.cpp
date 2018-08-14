@@ -2,11 +2,11 @@
 
 namespace arcane { namespace graphics {
 
-	Skybox::Skybox(const std::vector<const char*> &filePaths, Camera *camera, Window *window) : m_SkyboxShader("src/shaders/skybox.vert", "src/shaders/skybox.frag"), m_Camera(camera), m_Window(window)
+	Skybox::Skybox(const std::vector<std::string> &filePaths, Camera *camera) : m_SkyboxShader("src/shaders/skybox.vert", "src/shaders/skybox.frag"), m_Camera(camera)
 	{
-		m_SkyboxCubemap = opengl::Utility::loadCubemapFromFiles(filePaths);
+		m_SkyboxCubemap = utils::TextureLoader::loadCubemapTexture(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5]);
 		
-		GLfloat skyboxVertices[] = {
+		float skyboxVertices[] = {
 			// Front
 			-1.0, -1.0,  1.0,
 			1.0, -1.0,  1.0,
@@ -18,7 +18,7 @@ namespace arcane { namespace graphics {
 			1.0,  1.0, -1.0,
 			-1.0,  1.0, -1.0,
 		};
-		GLuint skyboxIndices[] = {
+		unsigned int skyboxIndices[] = {
 			// front
 			2, 1, 0,
 			0, 3, 2,
@@ -48,12 +48,11 @@ namespace arcane { namespace graphics {
 		m_SkyboxShader.enable();
 
 		// Pass the texture to the shader
-		glActiveTexture(GL_TEXTURE0);
+		m_SkyboxCubemap->bind(0);
 		m_SkyboxShader.setUniform1i("skyboxCubemap", 0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, m_SkyboxCubemap);
 
 		m_SkyboxShader.setUniformMat4("view", m_Camera->getViewMatrix());
-		m_SkyboxShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)m_Window->getWidth() / (float)m_Window->getHeight(), 0.1f, 1000.0f));
+		m_SkyboxShader.setUniformMat4("projection", glm::perspective(glm::radians(m_Camera->getFOV()), (float)Window::getWidth() / (float)Window::getHeight(), 0.1f, 1000.0f));
 
 		// Since the vertex shader is gonna make the depth value 1.0, and the default value in the depth buffer is 1.0 so this is needed to draw the sky  box
 		glDepthFunc(GL_LEQUAL);

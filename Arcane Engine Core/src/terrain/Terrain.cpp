@@ -1,6 +1,5 @@
 #include "Terrain.h"
 
-#include "../platform/OpenGL/Utility.h"
 #include "../utils/Logger.h"
 
 namespace arcane { namespace terrain {
@@ -10,12 +9,13 @@ namespace arcane { namespace terrain {
 		m_ModelMatrix = glm::translate(m_ModelMatrix, worldPosition);
 
 		// Requirements to generate a mesh
-		std::vector<graphics::Vertex> vertices;
+		std::vector<glm::vec3> positions;
+		std::vector<glm::vec2> uvs;
+		std::vector<glm::vec3> normals;
 		std::vector<unsigned int> indices;
-		std::vector<graphics::Texture> textures;
 
 		// Height map
-		GLint mapWidth, mapHeight;
+		int mapWidth, mapHeight;
 		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, SOIL_LOAD_L);
 		if (mapWidth != mapHeight) {
 			std::cout << "ERROR: Can't use a heightmap with a different width and height" << std::endl;
@@ -29,22 +29,18 @@ namespace arcane { namespace terrain {
 		m_HeightMapScale = 150;
 
 		// Vertex generation
-		for (GLuint z = 0; z < m_VertexSideCount; z++) {
-			for (GLuint x = 0; x < m_VertexSideCount; x++) {
-				graphics::Vertex vertex;
-
-				vertex.Position = glm::vec3(x * m_TerrainSize, getVertexHeight(x, z, heightMapImage), z * m_TerrainSize);
-				vertex.Normal = calculateNormal(x, z, heightMapImage);
-				vertex.TexCoords = glm::vec2((GLfloat)x / ((GLfloat)m_VertexSideCount - 1.0f), (GLfloat)z / ((GLfloat)m_VertexSideCount - 1.0f));
-
-				vertices.push_back(vertex);
+		for (unsigned int z = 0; z < m_VertexSideCount; z++) {
+			for (unsigned int x = 0; x < m_VertexSideCount; x++) {
+				positions.push_back(glm::vec3(x * m_TerrainSize, getVertexHeight(x, z, heightMapImage), z * m_TerrainSize));
+				uvs.push_back(glm::vec2((float)x / ((float)m_VertexSideCount - 1.0f), (float)z / ((float)m_VertexSideCount - 1.0f)));
+				normals.push_back(calculateNormal(x, z, heightMapImage));
 			}
 		}
 		stbi_image_free(heightMapImage);
 
 		// Indices generation (ccw winding order for consistency which will allow back face culling)
-		for (GLuint height = 0; height < m_VertexSideCount - 1; ++height) {
-			for (GLuint width = 0; width < m_VertexSideCount - 1; ++width) {
+		for (unsigned int height = 0; height < m_VertexSideCount - 1; ++height) {
+			for (unsigned int width = 0; width < m_VertexSideCount - 1; ++width) {
 				// Triangle 1
 				indices.push_back(width + (height * m_VertexSideCount));
 				indices.push_back(1 + m_VertexSideCount + width + (height * m_VertexSideCount));
@@ -58,29 +54,14 @@ namespace arcane { namespace terrain {
 		}
 
 		// Textures
-		graphics::Texture texture;
-		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/grass.png");
-		texture.type = "texture_diffuse";
-		textures.push_back(texture);
+		m_Textures[0] = utils::TextureLoader::load2DTexture(std::string("res/terrain/grass.png"));
+		m_Textures[1] = utils::TextureLoader::load2DTexture(std::string("res/terrain/dirt.png"));
+		m_Textures[2] = utils::TextureLoader::load2DTexture(std::string("res/terrain/sand.png"));
+		m_Textures[3] = utils::TextureLoader::load2DTexture(std::string("res/terrain/stone.png"));
+		m_Textures[4] = utils::TextureLoader::load2DTexture(std::string("res/terrain/blendMap.png"));
 
-		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/dirt.png");
-		texture.type = "texture_diffuse";
-		textures.push_back(texture);
-
-		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/sand.png");
-		texture.type = "texture_diffuse";
-		textures.push_back(texture);
-
-		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/stone.png");
-		texture.type = "texture_diffuse";
-		textures.push_back(texture);
-
-		texture.id = opengl::Utility::loadTextureFromFile("res/terrain/blendMap.png");
-		texture.type = "texture_diffuse";
-		textures.push_back(texture);
-
-
-		m_Mesh = new graphics::Mesh(vertices, indices, textures);
+		m_Mesh = new graphics::Mesh(positions, uvs, normals, indices);
+		m_Mesh->LoadData(true);
 	}
 
 	Terrain::~Terrain() {
@@ -88,15 +69,30 @@ namespace arcane { namespace terrain {
 	}
 
 	void Terrain::Draw(graphics::Shader &shader) const {
+		m_Textures[0]->bind(0);
+		shader.setUniform1i("material.texture_diffuse1", 0);
+
+		m_Textures[1]->bind(1);
+		shader.setUniform1i("material.texture_diffuse2", 1);
+
+		m_Textures[2]->bind(2);
+		shader.setUniform1i("material.texture_diffuse3", 2);
+
+		m_Textures[3]->bind(3);
+		shader.setUniform1i("material.texture_diffuse4", 3);
+
+		m_Textures[4]->bind(4);
+		shader.setUniform1i("material.texture_diffuse5", 4);
+
 		shader.setUniformMat4("model", m_ModelMatrix);
-		m_Mesh->Draw(shader);
+		m_Mesh->Draw();
 	}
 
 	glm::vec3 Terrain::calculateNormal(int x, int z, unsigned char *heightMapData) {
-		GLfloat heightR = getVertexHeight(x + 1, z    , heightMapData);
-		GLfloat heightL = getVertexHeight(x - 1, z    , heightMapData);
-		GLfloat heightU = getVertexHeight(x    , z + 1, heightMapData);
-		GLfloat heightD = getVertexHeight(x    , z - 1, heightMapData);
+		float heightR = getVertexHeight(x + 1, z    , heightMapData);
+		float heightL = getVertexHeight(x - 1, z    , heightMapData);
+		float heightU = getVertexHeight(x    , z + 1, heightMapData);
+		float heightD = getVertexHeight(x    , z - 1, heightMapData);
 		
 		glm::vec3 normal(heightL - heightR, 2.0f, heightD - heightU);
 		normal = glm::normalize(normal);
@@ -104,7 +100,7 @@ namespace arcane { namespace terrain {
 		return normal;
 	}
 
-	GLfloat Terrain::getVertexHeight(int x, int z, unsigned char *heightMapData) {
+	float Terrain::getVertexHeight(int x, int z, unsigned char *heightMapData) {
 		if (x < 0 || x >= m_VertexSideCount || z < 0 || z >= m_VertexSideCount) {
 			return 0.0f;
 		}
