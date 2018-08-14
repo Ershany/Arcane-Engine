@@ -10,16 +10,13 @@ out mat3 TBN;
 out vec3 FragPos;
 out vec2 TexCoords;
 
+uniform mat3 normalMatrix;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
 void main() {
 	// Use the normal matrix to maintain the orthogonal property of a vector when it is scaled non-uniformly
-	// Inverse is a very costly function, maybe do it on the cpu then send it to the gpu as a uniform
-	// Also this saves how many times this costly calculation is done, since right now it is happening every vertex, instead of once per instance
-	mat3 normalMatrix = mat3(transpose(inverse(model)));
-
 	vec3 T = normalize(normalMatrix * tangent);
 	vec3 B = normalize(normalMatrix * bitangent);
     vec3 N = normalize(normalMatrix * normal);

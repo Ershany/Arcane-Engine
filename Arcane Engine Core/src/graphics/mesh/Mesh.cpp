@@ -14,7 +14,7 @@ namespace arcane { namespace graphics {
 		: m_Positions(positions), m_UVs(uvs), m_Normals(normals), m_Indices(indices) {}
 
 	Mesh::Mesh(std::vector<glm::vec3> positions, std::vector<glm::vec2> uvs, std::vector<glm::vec3> normals, std::vector<glm::vec3> tangents, std::vector<glm::vec3> bitangents, std::vector<unsigned int> indices)
-		: m_Positions(positions), m_UVs(uvs), m_Normals(normals), m_Tangents(tangents), m_Bitangents(bitangents) {}
+		: m_Positions(positions), m_UVs(uvs), m_Normals(normals), m_Tangents(tangents), m_Bitangents(bitangents), m_Indices(indices) {}
  
 
 	void Mesh::Draw() const {

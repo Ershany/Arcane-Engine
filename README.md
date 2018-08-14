@@ -3,6 +3,8 @@
 
 ![arcaneengine](https://user-images.githubusercontent.com/11170417/27188219-75d8814e-51bb-11e7-907b-1be35da8de38.png)
 
+Arcane Engine Roadmap: https://trello.com/b/WzD2bYCD/arcane-engine
+
 Arcane Engine uses:
 - OpenGL (Graphics API)
 - GLFW (Window/Input callback handling)
