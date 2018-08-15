@@ -93,7 +93,7 @@ newmtl bricks
 	map_Ka textures\spnza_bricks_a_diff.tga
 	map_Kd textures\spnza_bricks_a_diff.tga
 	map_Ks textures\spnza_bricks_a_spec.tga
-	map_Kn textures\spnza_bricks_a_diff.tga
+	map_Kn textures\spnza_bricks_a_ddn.tga
 
 newmtl arch
 	Ns 10.0000

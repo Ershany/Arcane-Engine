@@ -84,7 +84,6 @@ void main() {
 	
 	// Result
 	color = vec4(result, textureAlpha); // Use the diffuse texture for transparency
-	//color = vec4(norm, 1.0f);
 }
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam) {

@@ -25,6 +25,7 @@ namespace arcane { namespace graphics {
 
 		inline void setPosition(glm::vec3 &other) { m_Position = other; }
 		inline void setScale(glm::vec3 &other) { m_Scale = other; }
+		inline void setOrientation(float radianRotation, glm::vec3 rotationAxis) { m_Orientation = glm::angleAxis(radianRotation, rotationAxis); }
 		inline void setShouldOutline(bool choice) { m_ShouldOutline = choice; }
 		inline void setTransparent(bool choice) { m_Transparent = choice; }
 	private:
