@@ -91,6 +91,9 @@ namespace arcane { namespace graphics {
 		}
 		std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
 
+		// Setup default OpenGL viewport
+		glViewport(0, 0, m_Width, m_Height);
+
 		// Setup ImGui bindings
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window, false);

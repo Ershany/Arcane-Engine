@@ -50,10 +50,11 @@ struct SpotLight {
 in vec2 TexCoords;
 in vec3 Normal;
 in vec3 FragPos;
+in vec4 FragPosLightClipSpace;
 
 out vec4 color;
 
-
+uniform sampler2D shadowmap;
 uniform int numPointLights;
 uniform DirLight dirLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
@@ -66,6 +67,7 @@ uniform vec3 viewPos;
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 fragToCam);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos);
+float CalculateShadow();
 
 void main() {
 	vec3 norm = normalize(Normal);
@@ -99,7 +101,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam) {
 	vec3 ambient = light.ambient;
 	vec3 diffuse = light.diffuse * diff;
 	
-	return ambient + diffuse;
+	return ambient + (diffuse * (1.0 - CalculateShadow()));
 }
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 fragToCam) {
@@ -133,4 +135,26 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos) {
 	vec3 diffuse = light.diffuse * intensity * attenuation;
 
 	return ambient + diffuse;
+}
+
+float CalculateShadow() {
+	vec3 ndcCoords = FragPosLightClipSpace.xyz / FragPosLightClipSpace.w;
+	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
+
+	float shadow = 0.0;
+	float currentDepth = depthmapCoords.z;
+
+	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows
+	vec2 texelSize = 1.0 / textureSize(shadowmap, 0);
+	for (int y = -1; y <= 1; ++y) {
+		for (int x = -1; x <= 1; ++x) {
+			float sampledDepthPCF = texture(shadowmap, depthmapCoords.xy + (texelSize * vec2(x, y))).r;
+			shadow += currentDepth > sampledDepthPCF ? 1.0 : 0.0;
+		}
+	}
+	shadow /= 9.0;
+
+	if (currentDepth > 1.0)
+		shadow = 0.0;
+	return shadow;
 }

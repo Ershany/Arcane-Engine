@@ -13,8 +13,8 @@
 #include "graphics\mesh\Model.h"
 #include "terrain\Terrain.h"
 #include "Scene3D.h"
-#include "platform\OpenGL\Framebuffers\Framebuffer.h"
-#include "graphics/mesh/common/Quad.h"
+#include "platform\OpenGL\Framebuffers\RenderTarget.h"
+#include "graphics/mesh/common/Quad.h"+
 #include "graphics/renderer/GLCache.h"
 
 
@@ -28,9 +28,12 @@ int main() {
 	arcane::utils::TextureLoader::initializeDefaultTextures();
 
 	// Construct framebuffers
-	arcane::opengl::Framebuffer framebuffer(window.getWidth(), window.getHeight());
+	arcane::opengl::RenderTarget framebuffer(window.getWidth(), window.getHeight());
 	framebuffer.addColorAttachment(true).addDepthStencilRBO(true).createFramebuffer();
-	arcane::opengl::Framebuffer blitFramebuffer(window.getWidth(), window.getHeight());
+	// TODO: MAKE MULTISAMPLE OPTION WORK OR INVESTIGATE
+	arcane::opengl::RenderTarget shadowmap(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y);
+	shadowmap.addDepthAttachment(false).createFramebuffer();
+	arcane::opengl::RenderTarget blitFramebuffer(window.getWidth(), window.getHeight());
 	blitFramebuffer.addColorAttachment(false).addDepthStencilRBO(false).createFramebuffer();
 
 	// Instantiate the shaders and a screenspace quad
@@ -64,14 +67,21 @@ int main() {
 		window.clear();
 		ImGui_ImplGlfwGL3_NewFrame();
 
+		// Shadowmap Pass
+		glViewport(0, 0, shadowmap.getWidth(), shadowmap.getHeight());
+		shadowmap.bind();
+		shadowmap.clear();
+		scene.shadowmapPass();
+
 		// Camera Update
 		camera.processInput(deltaTime.getDeltaTime());
 
 		// Draw the scene to our custom multisampled framebuffer
+		glViewport(0, 0, framebuffer.getWidth(), framebuffer.getHeight());
 		framebuffer.bind();
-		window.clear();
+		framebuffer.clear();
 		scene.onUpdate(deltaTime.getDeltaTime());
-		scene.onRender();
+		scene.onRender(shadowmap.getDepthTexture());
 
 		// Blit the multisampled framebuffer over to a non-multisampled buffer and perform a post process pass on the default framebuffer
 #if DEBUG_ENABLED

@@ -68,10 +68,25 @@ namespace arcane { namespace utils {
 
 	void TextureLoader::initializeDefaultTextures() {
 		m_DefaultTextures.m_DefaultDiffuse = load2DTexture(std::string("res/textures/default/defaultDiffuse.png"));
+		m_DefaultTextures.m_DefaultDiffuse->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_DefaultDiffuse->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_DefaultDiffuse->setTextureMagFilter(GL_NEAREST);
 		m_DefaultTextures.m_FullSpecular = load2DTexture(std::string("res/textures/default/fullSpec.png"));
+		m_DefaultTextures.m_FullSpecular->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_FullSpecular->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_FullSpecular->setTextureMagFilter(GL_NEAREST);
 		m_DefaultTextures.m_NoSpecular = load2DTexture(std::string("res/textures/default/noSpec.png"));
+		m_DefaultTextures.m_NoSpecular->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_NoSpecular->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_NoSpecular->setTextureMagFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"));
+		m_DefaultTextures.m_DefaultNormal->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_DefaultNormal->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_DefaultNormal->setTextureMagFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultEmission = load2DTexture(std::string("res/textures/default/defaultEmission.png"));
+		m_DefaultTextures.m_DefaultEmission->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_DefaultEmission->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_DefaultEmission->setTextureMagFilter(GL_NEAREST);
 	}
 
 } }

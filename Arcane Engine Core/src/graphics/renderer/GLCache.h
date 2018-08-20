@@ -18,7 +18,7 @@ namespace arcane { namespace graphics {
 		void setDepthTest(bool choice);
 		void setStencilTest(bool choice);
 		void setBlend(bool choice);
-		void setCull(bool choice);
+		void setFaceCull(bool choice);
 		void setMultisample(bool choice);
 
 		void setDepthFunc(GLenum depthFunc);

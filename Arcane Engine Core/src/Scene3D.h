@@ -22,25 +22,27 @@ namespace arcane {
 		graphics::DynamicLightManager m_DynamicLightManager;
 		graphics::GLCache *m_GLCache;
 
-		// Some sort of list of entities (tied to models that are in the Renderer (Renderable3D) (should this name be changed to Renderer3D?))
-		//std::vector<Entity*> m_Entities;
 		std::vector<graphics::Renderable3D*> m_Renderables;
 
-		graphics::Shader m_TerrainShader, m_ModelShader, m_OutlineShader, m_ShadowmapShader;
+		graphics::Shader m_TerrainShader, m_ModelShader, m_ShadowmapShader;
 	public:
 		Scene3D(graphics::Camera *camera, graphics::Window *window);
 		~Scene3D();
 		
-		void Add(graphics::Renderable3D *renderable);
+		void add(graphics::Renderable3D *renderable);
 
-		void shadowmapGeneration();
+		// Passes
+		void shadowmapPass();
+
 		void onUpdate(float deltaTime);
-		void onRender();
+		void onRender(unsigned int shadowmap);
 
 		inline graphics::Renderer* getRenderer() const { return m_Renderer; }
 		inline graphics::Camera* getCamera() const { return m_Camera; }
 	private:
 		void init();
+
+		void addObjectsToRenderQueue();
 	};
 
 }

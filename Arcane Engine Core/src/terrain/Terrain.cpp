@@ -26,7 +26,7 @@ namespace arcane { namespace terrain {
 		// Map Information
 		m_VertexSideCount = mapWidth;
 		m_TerrainSize = 4;
-		m_HeightMapScale = 150;
+		m_HeightMapScale = 220;
 
 		// Vertex generation
 		for (unsigned int z = 0; z < m_VertexSideCount; z++) {
@@ -68,26 +68,30 @@ namespace arcane { namespace terrain {
 		delete m_Mesh;
 	}
 
-	void Terrain::Draw(graphics::Shader &shader) const {
-		m_Textures[0]->bind(0);
-		shader.setUniform1i("material.texture_diffuse1", 0);
+	void Terrain::Draw(graphics::Shader &shader, graphics::RenderPass pass) const {
+		// Texture unit 0 is reserved for the shadowmap
+		if (pass != graphics::RenderPass::ShadowmapPass) {
+			m_Textures[0]->bind(1);
+			shader.setUniform1i("material.texture_diffuse1", 1);
 
-		m_Textures[1]->bind(1);
-		shader.setUniform1i("material.texture_diffuse2", 1);
+			m_Textures[1]->bind(2);
+			shader.setUniform1i("material.texture_diffuse2", 2);
 
-		m_Textures[2]->bind(2);
-		shader.setUniform1i("material.texture_diffuse3", 2);
+			m_Textures[2]->bind(3);
+			shader.setUniform1i("material.texture_diffuse3", 3);
 
-		m_Textures[3]->bind(3);
-		shader.setUniform1i("material.texture_diffuse4", 3);
+			m_Textures[3]->bind(4);
+			shader.setUniform1i("material.texture_diffuse4", 4);
 
-		m_Textures[4]->bind(4);
-		shader.setUniform1i("material.texture_diffuse5", 4);
+			m_Textures[4]->bind(5);
+			shader.setUniform1i("material.texture_diffuse5", 5);
+		}
 
 		shader.setUniformMat4("model", m_ModelMatrix);
 		m_Mesh->Draw();
 	}
 
+	// Bilinear filtering for the terrain's normal
 	glm::vec3 Terrain::calculateNormal(int x, int z, unsigned char *heightMapData) {
 		float heightR = getVertexHeight(x + 1, z    , heightMapData);
 		float heightL = getVertexHeight(x - 1, z    , heightMapData);
@@ -105,8 +109,8 @@ namespace arcane { namespace terrain {
 			return 0.0f;
 		}
 
-		// Normalize height to [-1, 1] then multiply it by the height map scale
-		return ((heightMapData[x + (z * m_VertexSideCount)] / 127.5f) - 1) * m_HeightMapScale;
+		// Normalize height to [0, 1] then multiply it by the height map scale
+		return (heightMapData[x + (z * m_VertexSideCount)] / 255.0f) * m_HeightMapScale;
 	}
 
 } }

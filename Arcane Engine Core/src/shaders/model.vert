@@ -8,12 +8,14 @@ layout (location = 4) in vec3 bitangent;
 
 out mat3 TBN;
 out vec3 FragPos;
+out vec4 FragPosLightClipSpace;
 out vec2 TexCoords;
 
 uniform mat3 normalMatrix;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 lightSpaceViewProjectionMatrix;
 
 void main() {
 	// Use the normal matrix to maintain the orthogonal property of a vector when it is scaled non-uniformly
@@ -23,6 +25,7 @@ void main() {
     TBN = mat3(T, B, N);
 
 	FragPos = vec3(model * vec4(position, 1.0f));
+	FragPosLightClipSpace = lightSpaceViewProjectionMatrix * vec4(FragPos, 1.0);
 	TexCoords = texCoords;
 
 	gl_Position = projection * view * model * (vec4(position, 1.0f));
