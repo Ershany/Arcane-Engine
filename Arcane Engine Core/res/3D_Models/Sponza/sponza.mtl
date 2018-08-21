@@ -65,20 +65,6 @@ newmtl Material__298
 	map_Kd textures\background.tga
 	map_Kn textures\background_ddn.tga
 
-newmtl 16___Default
-	Ns 10.0000
-	Ni 1.5000
-	d 1.0000
-	Tr 0.0000
-	Tf 1.0000 1.0000 1.0000 
-	illum 2
-	Ka 0.5880 0.5880 0.5880
-	Kd 0.5880 0.5880 0.5880
-	Ks 0.0000 0.0000 0.0000
-	Ke 0.0000 0.0000 0.0000
-	map_Ka textures\gi_flag.tga
-	map_Kd textures\gi_flag.tga
-
 newmtl bricks
 	Ns 10.0000
 	Ni 1.5000

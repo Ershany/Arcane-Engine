@@ -50,7 +50,7 @@ int main() {
 	// Debug timers
 #if DEBUG_ENABLED
 	arcane::Timer timer;
-	float postProcessTime = 0.0f;
+	float postProcessTime = 0.0f, shadowmapGenerationTime = 0.0f;
 #endif
 
 	arcane::Time deltaTime;
@@ -68,10 +68,18 @@ int main() {
 		ImGui_ImplGlfwGL3_NewFrame();
 
 		// Shadowmap Pass
+#if DEBUG_ENABLED
+		glFinish();
+		timer.reset();
+#endif
 		glViewport(0, 0, shadowmap.getWidth(), shadowmap.getHeight());
 		shadowmap.bind();
 		shadowmap.clear();
 		scene.shadowmapPass();
+#if DEBUG_ENABLED
+		glFinish();
+		shadowmapGenerationTime = timer.elapsed();
+#endif
 
 		// Camera Update
 		camera.processInput(deltaTime.getDeltaTime());
@@ -111,6 +119,7 @@ int main() {
 			ImGui::Text("Frametime: %.3f ms (FPS %.1f)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 #if DEBUG_ENABLED
 			ImGui::Text("Post Process: %.6f ms", 1000.0f * postProcessTime);
+			ImGui::Text("Shadowmap Generation: %.6f ms", 1000.0f * shadowmapGenerationTime);
 #endif
 			ImGui::End();
 #if DEBUG_ENABLED

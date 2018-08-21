@@ -25,12 +25,7 @@ namespace arcane { namespace graphics {
 			m_GLCache->setBlend(false);
 			m_GLCache->setStencilTest(false);
 			m_GLCache->setFaceCull(true);
-
-			// Only draw the back face to depth buffers in order to avoid shadow acne
-			if (pass == RenderPass::ShadowmapPass)
-				m_GLCache->setCullFace(GL_FRONT);
-			else
-				m_GLCache->setCullFace(GL_BACK);
+			m_GLCache->setCullFace(GL_BACK);
 
 			// Render opaque objects
 			while (!m_OpaqueRenderQueue.empty()) {
@@ -54,6 +49,7 @@ namespace arcane { namespace graphics {
 				m_GLCache->setCullFace(GL_FRONT);
 			else
 				m_GLCache->setFaceCull(false);
+			m_GLCache->setFaceCull(false);
 
 			// Sort then render transparent objects (from back to front, does not account for rotations or scaling)
 			std::sort(m_TransparentRenderQueue.begin(), m_TransparentRenderQueue.end(),
