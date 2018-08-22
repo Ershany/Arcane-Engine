@@ -43,12 +43,6 @@ namespace arcane { namespace graphics {
 			m_GLCache->setDepthTest(true);
 			m_GLCache->setBlend(true);
 			m_GLCache->setStencilTest(false);
-
-			// Only draw the back face to depth buffers in order to avoid shadow acne
-			if (pass == RenderPass::ShadowmapPass)
-				m_GLCache->setCullFace(GL_FRONT);
-			else
-				m_GLCache->setFaceCull(false);
 			m_GLCache->setFaceCull(false);
 
 			// Sort then render transparent objects (from back to front, does not account for rotations or scaling)
