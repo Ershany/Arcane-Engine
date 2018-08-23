@@ -59,6 +59,10 @@ namespace arcane { namespace terrain {
 		m_Textures[2] = utils::TextureLoader::load2DTexture(std::string("res/terrain/sand.png"));
 		m_Textures[3] = utils::TextureLoader::load2DTexture(std::string("res/terrain/stone.png"));
 		m_Textures[4] = utils::TextureLoader::load2DTexture(std::string("res/terrain/blendMap.png"));
+		m_Textures[5] = utils::TextureLoader::load2DTexture(std::string("res/terrain/grass_normal.png"));
+		m_Textures[6] = utils::TextureLoader::load2DTexture(std::string("res/terrain/dirt_normal.png"));
+		m_Textures[7] = utils::TextureLoader::load2DTexture(std::string("res/terrain/sand_normal.png"));
+		m_Textures[8] = utils::TextureLoader::load2DTexture(std::string("res/terrain/stone_normal.png"));
 
 		m_Mesh = new graphics::Mesh(positions, uvs, normals, indices);
 		m_Mesh->LoadData(true);
@@ -73,18 +77,22 @@ namespace arcane { namespace terrain {
 		if (pass != graphics::RenderPass::ShadowmapPass) {
 			m_Textures[0]->bind(1);
 			shader.setUniform1i("material.texture_diffuse1", 1);
-
 			m_Textures[1]->bind(2);
 			shader.setUniform1i("material.texture_diffuse2", 2);
-
 			m_Textures[2]->bind(3);
 			shader.setUniform1i("material.texture_diffuse3", 3);
-
 			m_Textures[3]->bind(4);
 			shader.setUniform1i("material.texture_diffuse4", 4);
-
 			m_Textures[4]->bind(5);
-			shader.setUniform1i("material.texture_diffuse5", 5);
+			shader.setUniform1i("material.blendmap", 5);
+			m_Textures[5]->bind(6);
+			shader.setUniform1i("material.texture_normal1", 6);
+			m_Textures[6]->bind(7);
+			shader.setUniform1i("material.texture_normal2", 7);
+			m_Textures[7]->bind(8);
+			shader.setUniform1i("material.texture_normal3", 8);
+			m_Textures[8]->bind(9);
+			shader.setUniform1i("material.texture_normal4", 9);
 		}
 
 		shader.setUniformMat4("model", m_ModelMatrix);

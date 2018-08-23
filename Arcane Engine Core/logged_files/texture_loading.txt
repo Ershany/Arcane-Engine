@@ -1,0 +1,4 @@
+(texture load fail - path:): res/terrain/grass_normal.png
+(texture load fail - path:): res/terrain/dirt_normal.png
+(texture load fail - path:): res/terrain/sand_normal.png
+(texture load fail - path:): res/terrain/stone_normal.png

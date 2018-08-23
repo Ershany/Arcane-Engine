@@ -6,7 +6,11 @@ struct Material {
 	sampler2D texture_diffuse2; // r texture
 	sampler2D texture_diffuse3; // g texture
 	sampler2D texture_diffuse4; // b texture
-	sampler2D texture_diffuse5; // blend map
+	sampler2D texture_normal1; // background texture
+	sampler2D texture_normal2; // r texture
+	sampler2D texture_normal3; // g texture
+	sampler2D texture_normal4; // b texture
+	sampler2D blendmap;
 	float shininess;
 };
 
@@ -73,7 +77,7 @@ void main() {
 	vec3 norm = normalize(Normal);
 	vec3 fragToCam = normalize(viewPos - FragPos);
 
-	vec4 blendMapColour = texture(material.texture_diffuse5, TexCoords);
+	vec4 blendMapColour = texture(material.blendmap, TexCoords);
 	
 	float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
 	
