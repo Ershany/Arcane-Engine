@@ -15,7 +15,6 @@ Arcane Engine uses:
 - FreeType and FreeType-GL (Text Rendering)
 
 Below are images showcasing the current state of the engine:
-![skybox](https://user-images.githubusercontent.com/11170417/29729408-fe9a1242-89a9-11e7-839b-e3319655153a.png)
-![model](https://user-images.githubusercontent.com/11170417/28281633-c62d0d06-6af5-11e7-8cf3-1da3330c2d8f.png)
+![sponza](https://user-images.githubusercontent.com/11170417/44693363-60dec180-aa35-11e8-8e06-8f305222a724.png)
 
 This README will be updated in the future with more information.
