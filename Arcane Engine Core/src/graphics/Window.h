@@ -35,8 +35,8 @@ namespace arcane { namespace graphics {
 		* Will swap the screen buffers and will poll all window/input events
 		*/
 		void update();
-		void clear() const;
 		bool closed() const;
+		static void clear();
 
 		static bool isKeyPressed(unsigned int keycode);
 		static bool isMouseButtonPressed(unsigned int code);

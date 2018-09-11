@@ -8,6 +8,7 @@
 #include "Renderable3D.h"
 #include "GLCache.h"
 #include "RenderPass.h"
+#include "../mesh/common/Quad.h"
 
 namespace arcane { namespace graphics {
 
@@ -20,13 +21,13 @@ namespace arcane { namespace graphics {
 		
 		void flushOpaque(Shader &shader, RenderPass pass);
 		void flushTransparent(Shader &shader, RenderPass pass);
+	public:
+		Quad NDC_Plane;
 	private:
 		void Renderer::setupModelMatrix(Renderable3D *renderable, Shader &shader, RenderPass pass);
 
 		std::deque<Renderable3D*> m_OpaqueRenderQueue;
 		std::deque<Renderable3D*> m_TransparentRenderQueue;
-
-		// TODO: ADD QUAD TYPE - GOES HERE CALLED m_NDCPLane
 
 		Camera *m_Camera;
 		GLCache *m_GLCache;
