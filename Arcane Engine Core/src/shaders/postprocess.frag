@@ -5,6 +5,7 @@ out vec4 FragColour;
 in vec2 TexCoords;
 
 uniform sampler2D screen_texture;
+uniform float gamma_inverse;
 uniform vec2 read_offset;
 uniform bool blur_enabled;
 
@@ -43,5 +44,5 @@ void main() {
 	}
 	
 	// Apply gamma correction and tone mapping (for HDR)
-	FragColour = vec4(colour, 1.0);
+	FragColour = vec4(pow(colour, vec3(gamma_inverse)), 1.0);
 }

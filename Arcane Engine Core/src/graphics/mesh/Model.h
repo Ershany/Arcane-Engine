@@ -27,7 +27,7 @@ namespace arcane { namespace graphics {
 		void loadModel(const std::string &path);
 		void processNode(aiNode *node, const aiScene *scene);
 		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
-		Texture* loadMaterialTexture(aiMaterial *mat, aiTextureType type);
+		Texture* loadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB);
 	};
 
 } }

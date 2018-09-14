@@ -5,7 +5,7 @@ namespace arcane { namespace utils {
 	std::map<std::string, graphics::Texture> TextureLoader::m_TextureCache;
 	TextureLoader::DefaultTextures TextureLoader::m_DefaultTextures;
 
-	graphics::Texture* TextureLoader::load2DTexture(std::string &path) {
+	graphics::Texture* TextureLoader::load2DTexture(std::string &path, bool isSRGB) {
 		// Check the cache
 		std::map<std::string, graphics::Texture>::iterator iter = m_TextureCache.find(path);
 		if (iter != m_TextureCache.end()) {
@@ -21,21 +21,29 @@ namespace arcane { namespace utils {
 			return nullptr;
 		}
 
-		GLenum format;
+		GLenum dataFormat;
 		switch (numComponents) {
-		case 1: format = GL_RED;  break;
-		case 3: format = GL_RGB;  break;
-		case 4: format = GL_RGBA; break;
+		case 1: dataFormat = GL_RED;  break;
+		case 3: dataFormat = GL_RGB;  break;
+		case 4: dataFormat = GL_RGBA; break;
+		}
+
+		GLenum textureFormat = dataFormat;
+		if (isSRGB) {
+			switch (dataFormat) {
+			case GL_RGB: textureFormat = GL_SRGB; break;
+			case GL_RGBA: textureFormat = GL_SRGB_ALPHA; break;
+			}
 		}
 
 		graphics::Texture texture;
-		texture.generate2DTexture(width, height, format, format, data);
+		texture.generate2DTexture(width, height, textureFormat, dataFormat, data);
 
 		m_TextureCache.insert(std::pair<std::string, graphics::Texture>(path, texture));
 		return &m_TextureCache[path];
 	}
 
-	graphics::Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front) {
+	graphics::Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, bool isSRGB) {
 		graphics::Cubemap *cubemap = new graphics::Cubemap();
 
 		std::vector<std::string> faces = { right, left, top, bottom, back, front };
@@ -46,14 +54,22 @@ namespace arcane { namespace utils {
 			unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &numComponents, 0);
 
 			if (data) {
-				GLenum format;
+				GLenum dataFormat;
 				switch (numComponents) {
-				case 1: format = GL_RED;  break;
-				case 3: format = GL_RGB;  break;
-				case 4: format = GL_RGBA; break;
+				case 1: dataFormat = GL_RED;  break;
+				case 3: dataFormat = GL_RGB;  break;
+				case 4: dataFormat = GL_RGBA; break;
 				}
 
-				cubemap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, width, height, format, format, data);
+				GLenum textureFormat = dataFormat;
+				if (isSRGB) {
+					switch (dataFormat) {
+					case GL_RGB: textureFormat = GL_SRGB; break;
+					case GL_RGBA: textureFormat = GL_SRGB_ALPHA; break;
+					}
+				}
+
+				cubemap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, width, height, textureFormat, dataFormat, data);
 				stbi_image_free(data);
 			}
 			else {
@@ -67,23 +83,23 @@ namespace arcane { namespace utils {
 	}
 
 	void TextureLoader::initializeDefaultTextures() {
-		m_DefaultTextures.m_DefaultDiffuse = load2DTexture(std::string("res/textures/default/defaultDiffuse.png"));
+		m_DefaultTextures.m_DefaultDiffuse = load2DTexture(std::string("res/textures/default/defaultDiffuse.png"), true);
 		m_DefaultTextures.m_DefaultDiffuse->setAnisotropicFilteringMode(1.0f, true);
 		m_DefaultTextures.m_DefaultDiffuse->setTextureMinFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultDiffuse->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_FullSpecular = load2DTexture(std::string("res/textures/default/fullSpec.png"));
+		m_DefaultTextures.m_FullSpecular = load2DTexture(std::string("res/textures/default/fullSpec.png"), false);
 		m_DefaultTextures.m_FullSpecular->setAnisotropicFilteringMode(1.0f, true);
 		m_DefaultTextures.m_FullSpecular->setTextureMinFilter(GL_NEAREST);
 		m_DefaultTextures.m_FullSpecular->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_NoSpecular = load2DTexture(std::string("res/textures/default/noSpec.png"));
+		m_DefaultTextures.m_NoSpecular = load2DTexture(std::string("res/textures/default/noSpec.png"), false);
 		m_DefaultTextures.m_NoSpecular->setAnisotropicFilteringMode(1.0f, true);
 		m_DefaultTextures.m_NoSpecular->setTextureMinFilter(GL_NEAREST);
 		m_DefaultTextures.m_NoSpecular->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"));
+		m_DefaultTextures.m_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"), false);
 		m_DefaultTextures.m_DefaultNormal->setAnisotropicFilteringMode(1.0f, true);
 		m_DefaultTextures.m_DefaultNormal->setTextureMinFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultNormal->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultEmission = load2DTexture(std::string("res/textures/default/defaultEmission.png"));
+		m_DefaultTextures.m_DefaultEmission = load2DTexture(std::string("res/textures/default/defaultEmission.png"), true);
 		m_DefaultTextures.m_DefaultEmission->setAnisotropicFilteringMode(1.0f, true);
 		m_DefaultTextures.m_DefaultEmission->setTextureMinFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultEmission->setTextureMagFilter(GL_NEAREST);

@@ -32,8 +32,8 @@ int main() {
 	arcane::utils::TextureLoader::initializeDefaultTextures();
 
 	// Prepare the UI
-	arcane::ui::RuntimePane runtimePane(glm::vec2(100.0f, 50.0f));
-	arcane::ui::DebugPane debugPane(glm::vec2(100.0f, 150.0f));
+	arcane::ui::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));
+	arcane::ui::DebugPane debugPane(glm::vec2(256.0f, 100.0f));
 
 	// Construct framebuffers
 	arcane::opengl::RenderTarget framebuffer(window.getWidth(), window.getHeight());

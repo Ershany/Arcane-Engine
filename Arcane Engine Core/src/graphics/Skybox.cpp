@@ -4,7 +4,7 @@ namespace arcane { namespace graphics {
 
 	Skybox::Skybox(const std::vector<std::string> &filePaths, Camera *camera) : m_SkyboxShader("src/shaders/skybox.vert", "src/shaders/skybox.frag"), m_Camera(camera)
 	{
-		m_SkyboxCubemap = utils::TextureLoader::loadCubemapTexture(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5]);
+		m_SkyboxCubemap = utils::TextureLoader::loadCubemapTexture(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5], true);
 		
 		float skyboxVertices[] = {
 			// Front
