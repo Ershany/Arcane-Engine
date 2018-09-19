@@ -36,7 +36,7 @@ namespace arcane { namespace opengl {
 
 		// Generate colour texture attachment
 		if (multisampledBuffer) {
-			m_ColourTexture->generate2DMultisampleTexture(m_Width, m_Height, GL_RGB, MSAA_SAMPLE_AMOUNT);
+			m_ColourTexture->generate2DMultisampleTexture(m_Width, m_Height, GL_RGBA16F, MSAA_SAMPLE_AMOUNT);
 
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_ColourTexture->getTextureId(), 0);
 		}
@@ -45,7 +45,7 @@ namespace arcane { namespace opengl {
 			m_ColourTexture->setTextureMagFilter(GL_LINEAR);
 			m_ColourTexture->setTextureWrapS(GL_CLAMP_TO_EDGE); // Both need to clamp to edge or you might see strange colours around the
 			m_ColourTexture->setTextureWrapT(GL_CLAMP_TO_EDGE); // border due to interpolation and how it works with GL_REPEAT
-			m_ColourTexture->generate2DTexture(m_Width, m_Height, GL_RGB, GL_RGB, nullptr);
+			m_ColourTexture->generate2DTexture(m_Width, m_Height, GL_RGBA16F, GL_RGB, nullptr);
 
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColourTexture->getTextureId(), 0);
 		}

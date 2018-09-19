@@ -36,8 +36,9 @@ int main() {
 	arcane::ui::DebugPane debugPane(glm::vec2(256.0f, 100.0f));
 
 	// Construct framebuffers
+	bool shouldMultisample = MSAA_SAMPLE_AMOUNT > 1.0 ? true : false;
 	arcane::opengl::RenderTarget framebuffer(window.getWidth(), window.getHeight());
-	framebuffer.addColorAttachment(true).addDepthStencilRBO(true).createFramebuffer();
+	framebuffer.addColorAttachment(shouldMultisample).addDepthStencilRBO(shouldMultisample).createFramebuffer();
 	// TODO: MAKE MULTISAMPLE OPTION WORK OR INVESTIGATE
 	arcane::opengl::RenderTarget shadowmap(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y);
 	shadowmap.addDepthAttachment(false).createFramebuffer();
