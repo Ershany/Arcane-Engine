@@ -13,6 +13,8 @@ namespace arcane {	namespace graphics {
 		m_Yaw = yaw;
 		m_Pitch = pitch;
 		updateCameraVectors();
+
+		ui::DebugPane::bindCameraPositionValue(&m_Position);
 	}
 
 	Camera::Camera(float xPos, float yPos, float zPos, float xUp, float yUp, float zUp, float yaw = YAW, float pitch = PITCH)

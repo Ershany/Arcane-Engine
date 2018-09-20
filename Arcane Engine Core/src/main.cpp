@@ -33,7 +33,7 @@ int main() {
 
 	// Prepare the UI
 	arcane::ui::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));
-	arcane::ui::DebugPane debugPane(glm::vec2(256.0f, 100.0f));
+	arcane::ui::DebugPane debugPane(glm::vec2(256.0f, 115.0f));
 
 	// Construct framebuffers
 	bool shouldMultisample = MSAA_SAMPLE_AMOUNT > 1.0 ? true : false;

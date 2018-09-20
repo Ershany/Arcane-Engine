@@ -25,7 +25,7 @@ void main() {
 		vec2(read_offset.x, -read_offset.y)
 	);
 
-	vec3 colour = vec3(0.0);
+	vec3 hdrColour = vec3(0.0);
 	if (blur_enabled) {
 		// Blur kernel
 		float kernel[9] = float[] (
@@ -36,13 +36,16 @@ void main() {
 
 		// Apply the kernel (post-processing effect)
 		for(int i = 0; i < 9; ++i) {
-			colour += texture(screen_texture, TexCoords + readOffsets[i]).rgb * kernel[i];
+			hdrColour += texture(screen_texture, TexCoords + readOffsets[i]).rgb * kernel[i];
 		}
 	}
 	else {
-		colour = texture(screen_texture, TexCoords).rgb;
+		hdrColour = texture(screen_texture, TexCoords).rgb;
 	}
 	
-	// Apply gamma correction and tone mapping (for HDR)
-	FragColour = vec4(pow(colour, vec3(gamma_inverse)), 1.0);
+	// Apply a simple Reinhard tonemapper (HDR -> SDR)
+	vec3 tonemappedColour = hdrColour / (hdrColour + vec3(1.0));
+
+	// Apply gamma correction
+	FragColour = vec4(pow(tonemappedColour, vec3(gamma_inverse)), 1.0);
 }

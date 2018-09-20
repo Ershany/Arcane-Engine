@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../Window.h"
+#include "../../ui/DebugPane.h"
 
 namespace arcane { namespace graphics {
 
