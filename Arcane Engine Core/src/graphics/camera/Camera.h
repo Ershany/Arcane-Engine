@@ -67,12 +67,8 @@ namespace arcane { namespace graphics {
 		Camera(float xPos, float yPos, float zPos, float xUp, float yUp, float zUp, float yaw, float pitch);
 
 
-		/**
-		* Returns the view matrix for the camera's position, yaw, and pitch
-		*
-		* @return returns the view matrix for the camera
-		*/
 		glm::mat4 getViewMatrix();
+		glm::mat4 getProjectionMatrix();
 
 		void processInput(float deltaTime);
 

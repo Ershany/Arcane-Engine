@@ -31,6 +31,10 @@ namespace arcane {	namespace graphics {
 		return glm::lookAt(m_Position, m_Position + m_Front, m_Up);
 	}
 
+	glm::mat4 Camera::getProjectionMatrix() {
+		return glm::perspective(glm::radians(m_FOV), (float)graphics::Window::getWidth() / (float)graphics::Window::getHeight(), NEAR_PLANE, FAR_PLANE);
+	}
+
 	void Camera::processInput(float deltaTime) {
 		// Keyboard input
 		if (Window::isKeyPressed(GLFW_KEY_W))
