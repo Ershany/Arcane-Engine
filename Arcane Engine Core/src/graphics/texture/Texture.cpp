@@ -2,9 +2,9 @@
 
 namespace arcane { namespace graphics {
 
-	Texture::Texture() {
-		m_TextureTarget = 0;
-	}
+	Texture::Texture() : m_TextureTarget(0) {}
+
+	Texture::Texture(TextureSettings settings) : m_TextureTarget(0), m_TextureSettings(settings) {}
 
 	Texture::~Texture() {
 		// Destruction handled by the texture loader unless for some reason you don't want to go through the texture loading system
@@ -21,37 +21,24 @@ namespace arcane { namespace graphics {
 		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		// Texture wrapping
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_TextureWrapSMode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_TextureWrapTMode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_TextureSettings.TextureWrapSMode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_TextureSettings.TextureWrapTMode);
 
 		// Texture filtering
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_TextureMinificationFilterMode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_TextureMagnificationFilterMode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_TextureSettings.TextureMinificationFilterMode);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_TextureSettings.TextureMagnificationFilterMode);
 
 		// Mipmapping
-		if (m_HasMips) {
+		if (m_TextureSettings.HasMips) {
 			glGenerateMipmap(GL_TEXTURE_2D); 
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, m_MipBias);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, m_TextureSettings.MipBias);
 		}
 
 		// Anisotropic filtering (TODO: Move the anistropyAmount calculation to Defs.h to avoid querying the OpenGL driver everytime)
 		float maxAnisotropy;
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-		float anistropyAmount = glm::min(maxAnisotropy, m_TextureAnisotropyLevel);
+		float anistropyAmount = glm::min(maxAnisotropy, m_TextureSettings.TextureAnisotropyLevel);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
-
-		unbind();
-	}
-
-	void Texture::generate2DMultisampleTexture(unsigned int width, unsigned int height, GLenum textureFormat, int numSamples) {
-		m_TextureTarget = GL_TEXTURE_2D_MULTISAMPLE;
-		m_Width = width;
-		m_Height = height;
-		m_TextureFormat = textureFormat;
-
-		glGenTextures(1, &m_TextureId);
-		bind();
-		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, numSamples, textureFormat, m_Width, m_Height, GL_TRUE);
 
 		unbind();
 	}
@@ -69,36 +56,36 @@ namespace arcane { namespace graphics {
 
 
 	void Texture::setTextureWrapS(GLenum textureWrapMode, bool shouldBind) {
-		if (m_TextureWrapSMode == textureWrapMode)
+		if (m_TextureSettings.TextureWrapSMode == textureWrapMode)
 			return;
 
-		m_TextureWrapSMode = textureWrapMode;
+		m_TextureSettings.TextureWrapSMode = textureWrapMode;
 		if (shouldBind)
 			bind();
 		if (m_TextureTarget)
-			glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_S, m_TextureWrapSMode);
+			glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_S, m_TextureSettings.TextureWrapSMode);
 	}
 
 	void Texture::setTextureWrapT(GLenum textureWrapMode, bool shouldBind) {
-		if (m_TextureWrapTMode == textureWrapMode)
+		if (m_TextureSettings.TextureWrapTMode == textureWrapMode)
 			return;
 
-		m_TextureWrapTMode = textureWrapMode;
+		m_TextureSettings.TextureWrapTMode = textureWrapMode;
 		if (shouldBind)
 			bind();
 		if (m_TextureTarget)
-			glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_T, m_TextureWrapTMode);
+			glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_T, m_TextureSettings.TextureWrapTMode);
 	}
 
 	void Texture::setTextureMinFilter(GLenum textureFilterMode, bool shouldBind) {
-		if (m_TextureMinificationFilterMode == textureFilterMode)
+		if (m_TextureSettings.TextureMinificationFilterMode == textureFilterMode)
 			return;
 
-		m_TextureMinificationFilterMode = textureFilterMode;
+		m_TextureSettings.TextureMinificationFilterMode = textureFilterMode;
 		if (shouldBind)
 			bind();
 		if (m_TextureTarget)
-			glTexParameteri(m_TextureTarget, GL_TEXTURE_MIN_FILTER, m_TextureMinificationFilterMode);
+			glTexParameteri(m_TextureTarget, GL_TEXTURE_MIN_FILTER, m_TextureSettings.TextureMinificationFilterMode);
 	}
 
 	void Texture::setTextureMagFilter(GLenum textureFilterMode, bool shouldBind) {
@@ -106,35 +93,35 @@ namespace arcane { namespace graphics {
 		if (textureFilterMode > GL_LINEAR)
 			utils::Logger::getInstance().warning("logged_files/textures.txt", "Texture Filter Tuning", "Texture's magnification filter exceeded bilinear filtering which won't result in any visual improvements and will just cost more");
 
-		if (m_TextureMagnificationFilterMode == textureFilterMode)
+		if (m_TextureSettings.TextureMagnificationFilterMode == textureFilterMode)
 			return;
 
-		m_TextureMagnificationFilterMode = textureFilterMode;
+		m_TextureSettings.TextureMagnificationFilterMode = textureFilterMode;
 		if (shouldBind)
 			bind();
 		if (m_TextureTarget)
-			glTexParameteri(m_TextureTarget, GL_TEXTURE_MAG_FILTER, m_TextureMagnificationFilterMode);
+			glTexParameteri(m_TextureTarget, GL_TEXTURE_MAG_FILTER, m_TextureSettings.TextureMagnificationFilterMode);
 	}
 
 	void Texture::setAnisotropicFilteringMode(float textureAnisotropyLevel, bool shouldBind) {
-		if (m_TextureAnisotropyLevel == textureAnisotropyLevel)
+		if (m_TextureSettings.TextureAnisotropyLevel == textureAnisotropyLevel)
 			return;
 
-		m_TextureAnisotropyLevel = textureAnisotropyLevel;
+		m_TextureSettings.TextureAnisotropyLevel = textureAnisotropyLevel;
 		if (shouldBind)
 			bind();
 		if (m_TextureTarget) {
 			float maxAnisotropy;
 			glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-			float anistropyAmount = glm::min(maxAnisotropy, m_TextureAnisotropyLevel);
+			float anistropyAmount = glm::min(maxAnisotropy, m_TextureSettings.TextureAnisotropyLevel);
 			glTexParameterf(m_TextureTarget, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
 		}
 	}
 
 
 	void Texture::setMipMode(bool shouldGenMips, int mipBias) {
-		m_HasMips = shouldGenMips;
-		m_MipBias = mipBias;
+		m_TextureSettings.HasMips = shouldGenMips;
+		m_TextureSettings.MipBias = mipBias;
 	}
 
 } }

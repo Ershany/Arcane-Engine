@@ -29,7 +29,7 @@ namespace arcane { namespace opengl {
 		inline unsigned int getHeight() { return m_Height; }
 
 		inline unsigned int getFramebuffer() { return m_FBO; }
-		inline graphics::Texture* getColourBufferTexture() { return m_ColourTexture; }
+		inline unsigned int getColourBufferTexture() { return m_ColourTexture; }
 		inline unsigned int getDepthTexture() { return m_DepthTexture; }
 
 		inline bool isMultisampledColourBuffer() { return m_IsMultisampledColourBuffer; }
@@ -39,7 +39,7 @@ namespace arcane { namespace opengl {
 		bool m_IsMultisampledColourBuffer;
 		
 		// Attachments
-		graphics::Texture *m_ColourTexture;
+		unsigned int m_ColourTexture;
 		unsigned int m_DepthStencilRBO;
 		unsigned int m_DepthTexture;
 		

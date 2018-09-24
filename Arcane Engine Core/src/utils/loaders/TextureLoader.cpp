@@ -5,7 +5,7 @@ namespace arcane { namespace utils {
 	std::map<std::string, graphics::Texture> TextureLoader::m_TextureCache;
 	TextureLoader::DefaultTextures TextureLoader::m_DefaultTextures;
 
-	graphics::Texture* TextureLoader::load2DTexture(std::string &path, bool isSRGB) {
+	graphics::Texture* TextureLoader::load2DTexture(std::string &path, bool isSRGB, graphics::TextureSettings *settings) {
 		// Check the cache
 		std::map<std::string, graphics::Texture>::iterator iter = m_TextureCache.find(path);
 		if (iter != m_TextureCache.end()) {
@@ -37,14 +37,18 @@ namespace arcane { namespace utils {
 		}
 
 		graphics::Texture texture;
+		if (settings != nullptr)
+			texture.setTextureSettings(*settings);
 		texture.generate2DTexture(width, height, textureFormat, dataFormat, data);
 
 		m_TextureCache.insert(std::pair<std::string, graphics::Texture>(path, texture));
 		return &m_TextureCache[path];
 	}
 
-	graphics::Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, bool isSRGB) {
+	graphics::Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, bool isSRGB, graphics::CubemapSettings *settings) {
 		graphics::Cubemap *cubemap = new graphics::Cubemap();
+		if (settings != nullptr)
+			cubemap->setCubemapSettings(*settings);
 
 		std::vector<std::string> faces = { right, left, top, bottom, back, front };
 
