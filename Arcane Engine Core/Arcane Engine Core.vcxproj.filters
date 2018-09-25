@@ -284,7 +284,6 @@
     <None Include="src\shaders\pointlight.frag" />
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\terrain.frag" />
-    <None Include="src\shaders\basic.frag" />
     <None Include="src\shaders\skybox.frag" />
     <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\modelReflection.frag" />
@@ -295,7 +294,7 @@
     <None Include="src\shaders\postprocess.frag" />
     <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\model.vert" />
-    <None Include="src\shaders\basic.vert" />
+    <None Include="src\shaders\terrain.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

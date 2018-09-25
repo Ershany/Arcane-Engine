@@ -12,7 +12,7 @@
 namespace arcane {
 
 	Scene3D::Scene3D(graphics::Camera *camera, graphics::Window *window)
-		: m_TerrainShader("src/shaders/basic.vert", "src/shaders/terrain.frag"), m_ModelShader("src/shaders/model.vert", "src/shaders/model.frag"), m_Camera(camera),
+		: m_TerrainShader("src/shaders/terrain.vert", "src/shaders/terrain.frag"), m_ModelShader("src/shaders/model.vert", "src/shaders/model.frag"), m_Camera(camera),
 		  m_ShadowmapShader("src/shaders/shadowmap.vert", "src/shaders/shadowmap.frag"), m_DynamicLightManager()
 	{
 		m_Renderer = new graphics::Renderer(camera);

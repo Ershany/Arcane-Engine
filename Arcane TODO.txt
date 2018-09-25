@@ -1,20 +1,18 @@
 TODO:
+-Terrain needs multiple light support (only supports 1 atm)
+-Investigate red specular? from point light on Sponza
 -Move Anistropic amount querying to the defs.h or something instead of querying the driver for every texture
 -Need support for textures/cubemaps de-allocation/cleanup. So streaming support can be easier integrated into the engine in the future
 -Better define the render passes with names so RenderDoc can easily see the passes
--Clean up shaders so they are properly adding up light and multiplying with sampled data only when needed. Instead of oversampling
--Terrain needs multiple light support (only supports 1 atm)
--Investigate red specular? from point light on Sponza
+-Update README with new screenshots and features!!
 
 Shadow mapping:
 -Investigate crappy self shadows on models
 
 Normal mapping:
--Make normal mapping code work on terrain (need to calculate tangents and bitangents for terrain vertices)
 -Investigate if the normals are right from normal mapping and their strange artifacts!
+-Make normal mapping code work on terrain (need to calculate tangents and bitangents for terrain vertices)
 -Specify tangents and bitangents for a cube and sphere
--Remove bad shaders or rename the ones that we have to be more fitting
 
 Post Processing:
 -See if super sampling can be an easy integration. Since the post processor will blit to a RenderTarget that matches the screen's resolution
--Update README with new screenshots and features!!
