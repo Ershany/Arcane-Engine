@@ -4,9 +4,8 @@ namespace arcane { namespace graphics {
 
 	// TODO: Add functionality so it can update with an entity's position and orientation
 	DynamicLightManager::DynamicLightManager() 
-		: m_DirectionalLight(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)),
-		  m_SpotLight(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f),
-			          glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f, 0.0f, 0.0f, 0.0f) 
+		: m_DirectionalLight(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f)),
+		  m_SpotLight(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f)
 	{
 		init();
 	}
@@ -15,29 +14,16 @@ namespace arcane { namespace graphics {
 		// Setup lighting configurations
 		m_DirectionalLight.isActive = true;
 		m_DirectionalLight.direction = glm::vec3(-0.1f, -1.0f, -0.1f);
-		m_DirectionalLight.ambient = glm::vec3(0.2f, 0.2f, 0.2f);
-		m_DirectionalLight.diffuse = glm::vec3(1.25f, 1.25f, 1.25f);
-		m_DirectionalLight.specular = glm::vec3(1.5f, 1.5f, 1.5f);
+		m_DirectionalLight.lightColour = glm::vec3(1.25f, 1.25f, 1.25f);
 
 		m_SpotLight.isActive = true;
-		m_SpotLight.ambient = glm::vec3(0.05f, 0.05f, 0.05f);
-		m_SpotLight.diffuse = glm::vec3(1.0f, 1.0f, 1.0f);
-		m_SpotLight.specular = glm::vec3(1.0f, 1.0f, 1.0f);
+		m_SpotLight.lightColour = glm::vec3(1.0f, 1.0f, 1.0f);
 		m_SpotLight.position = glm::vec3(0.0f, 0.0f, 0.0f);
 		m_SpotLight.direction = glm::vec3(1.0f, 0.0f, 0.0f);
-		m_SpotLight.constant = 1.0f;
-		m_SpotLight.linear = 0.022f;
-		m_SpotLight.quadratic = 0.0019f;
 		m_SpotLight.cutOff = glm::cos(glm::radians(12.5f));
 		m_SpotLight.outerCutOff = glm::cos(glm::radians(15.0f));
 
-		PointLight pointLight1(glm::vec3(0.05f, 0.05f, 0.05f), 
-			glm::vec3(1.0f, 1.0f, 1.0f), 
-			glm::vec3(1.0f, 1.0f, 1.0f), 
-			glm::vec3(225.0f, 54.0f, 98.0f),
-			1.0f, 
-			0.007f, 
-			0.0002f);
+		PointLight pointLight1(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(225.0f, 54.0f, 98.0f));
 		pointLight1.isActive = true;
 		addPointLight(pointLight1);
 		/*

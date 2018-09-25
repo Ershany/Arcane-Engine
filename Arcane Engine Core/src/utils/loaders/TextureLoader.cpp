@@ -87,22 +87,35 @@ namespace arcane { namespace utils {
 	}
 
 	void TextureLoader::initializeDefaultTextures() {
-		m_DefaultTextures.m_DefaultDiffuse = load2DTexture(std::string("res/textures/default/defaultDiffuse.png"), true);
-		m_DefaultTextures.m_DefaultDiffuse->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_DefaultDiffuse->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultDiffuse->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_FullSpecular = load2DTexture(std::string("res/textures/default/fullSpec.png"), false);
-		m_DefaultTextures.m_FullSpecular->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_FullSpecular->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_FullSpecular->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_NoSpecular = load2DTexture(std::string("res/textures/default/noSpec.png"), false);
-		m_DefaultTextures.m_NoSpecular->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_NoSpecular->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_NoSpecular->setTextureMagFilter(GL_NEAREST);
+		// Setup texture and minimal filtering because they are 1x1 textures so they require none
+		m_DefaultTextures.m_DefaultAlbedo = load2DTexture(std::string("res/textures/default/defaultAlbedo.png"), true);
+		m_DefaultTextures.m_DefaultAlbedo->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_DefaultAlbedo->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_DefaultAlbedo->setTextureMagFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"), false);
 		m_DefaultTextures.m_DefaultNormal->setAnisotropicFilteringMode(1.0f, true);
 		m_DefaultTextures.m_DefaultNormal->setTextureMinFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultNormal->setTextureMagFilter(GL_NEAREST);
+		m_DefaultTextures.m_FullMetallic = load2DTexture(std::string("res/textures/default/white.png"), false);
+		m_DefaultTextures.m_FullMetallic->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_FullMetallic->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_FullMetallic->setTextureMagFilter(GL_NEAREST);
+		m_DefaultTextures.m_NoMetallic = load2DTexture(std::string("res/textures/default/black.png"), false);
+		m_DefaultTextures.m_NoMetallic->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_NoMetallic->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_NoMetallic->setTextureMagFilter(GL_NEAREST);
+		m_DefaultTextures.m_FullRoughness = load2DTexture(std::string("res/textures/default/white.png"), false);
+		m_DefaultTextures.m_FullRoughness->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_FullRoughness->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_FullRoughness->setTextureMagFilter(GL_NEAREST);
+		m_DefaultTextures.m_NoRoughness = load2DTexture(std::string("res/textures/default/black.png"), false);
+		m_DefaultTextures.m_NoRoughness->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_NoRoughness->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_NoRoughness->setTextureMagFilter(GL_NEAREST);
+		m_DefaultTextures.m_DefaultAO = load2DTexture(std::string("res/textures/default/white.png"), false);
+		m_DefaultTextures.m_DefaultAO->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultTextures.m_DefaultAO->setTextureMinFilter(GL_NEAREST);
+		m_DefaultTextures.m_DefaultAO->setTextureMagFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultEmission = load2DTexture(std::string("res/textures/default/defaultEmission.png"), true);
 		m_DefaultTextures.m_DefaultEmission->setAnisotropicFilteringMode(1.0f, true);
 		m_DefaultTextures.m_DefaultEmission->setTextureMinFilter(GL_NEAREST);

@@ -103,14 +103,13 @@ namespace arcane { namespace graphics {
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-			// Only colour data for the renderer is considered SRGB, all other type of non-colour texture data shouldn't be corrected by the hardware
-			newMesh.m_Material.setDiffuseMap(loadMaterialTexture(material, aiTextureType_DIFFUSE, true));
-			newMesh.m_Material.setSpecularMap(loadMaterialTexture(material, aiTextureType_SPECULAR, false));
+			// Only colour data for the renderer is considered sRGB, all other type of non-colour texture data shouldn't be corrected by the hardware
+			newMesh.m_Material.setAlbedoMap(loadMaterialTexture(material, aiTextureType_DIFFUSE, true));
 			newMesh.m_Material.setNormalMap(loadMaterialTexture(material, aiTextureType_NORMALS, false));
+			//newMesh.m_Material.setSpecularMap(loadMaterialTexture(material, aiTextureType_SPECULAR, false));
+			//newMesh.m_Material.setSpecularMap(loadMaterialTexture(material, aiTextureType_SPECULAR, false));
+			newMesh.m_Material.setAmbientOcclusionMap(loadMaterialTexture(material, aiTextureType_AMBIENT, false));
 			newMesh.m_Material.setEmissionMap(loadMaterialTexture(material, aiTextureType_EMISSIVE, true));
-			float shininess = 0.0f;
-			material->Get(AI_MATKEY_SHININESS, shininess); // Assimp scales specular exponent by 4 times since most renderers handle it that way. Value defaults to 0 if not specified
-			newMesh.m_Material.setShininess(shininess);
 		}
 
 		return newMesh;

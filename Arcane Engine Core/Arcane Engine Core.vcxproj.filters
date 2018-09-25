@@ -296,6 +296,8 @@
     <None Include="src\shaders\model.frag" />
     <None Include="src\shaders\model.vert" />
     <None Include="src\shaders\basic.vert" />
+    <None Include="src\shaders\pbr_model.vert" />
+    <None Include="src\shaders\pbr_model.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
