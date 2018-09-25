@@ -50,38 +50,154 @@ uniform SpotLight spotLight;
 
 uniform Material material;
 
+
+// Light radiance calculations
+vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity);
+vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity);
+vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity);
+
 // Cook-Torrance BRDF function prototypes
 float NormalDistributionGGX(vec3 normal, vec3 halfway, float roughness);
 float GeometrySmith(vec3 normal, vec3 viewDir, vec3 lightDir, float roughness);
-float GeometrySchlickGGX(vec3 cosTheta, float roughness);
-vec3 FresnelSchlick(vec3 cosTheta, vec3 baseReflectivity);
+float GeometrySchlickGGX(float cosTheta, float roughness);
+vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity);
 
 // Other function prototypes
 float CalculateShadow(vec3 normal, vec3 fragToDirLight);
 
 void main() {
-	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
+	// Sample textures
+	vec3 albedo = texture(material.texture_albedo, TexCoords).rgb;
 	vec3 normal = texture(material.texture_normal, TexCoords).rgb;
-	normal = normalize(norm * 2.0f - 1.0f);
-	normal = normalize(TBN * norm);
+	float metallic = texture(material.texture_metallic, TexCoords).r;
+	float roughness = texture(material.texture_roughness, TexCoords).r;
+	float ao = texture(material.texture_ao, TexCoords).r;
+
+	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
+	normal = normalize(normal * 2.0f - 1.0f);
+	normal = normalize(TBN * normal);
 	
 	vec3 fragToView = normalize(viewPos - FragPos);
 
-	vec3 irradiance = vec3(0.0);
-	
+	// Dielectrics have an average base specular reflectivity around 0.04, and metals absorb all of their diffuse (refraction) lighting so their albedo is used instead for their specular lighting (reflection)
+	vec3 baseReflectivity = vec3(0.04);
+	baseReflectivity = mix(baseReflectivity, albedo, metallic);
 
-	color = vec4(0.0, 1.0, 1.0, 1.0);
-	/*
-	vec3 result = CalcDirLight(dirLight, norm, fragToCam);
-	for(uint i = 0; i < numPointLights; ++i) {
-		result += CalcPointLight(pointLights[i], norm, FragPos, fragToCam);
-	}
-	result += CalcSpotLight(spotLight, norm, FragPos, fragToCam);
-	
-	// Result
-	color = vec4(result, textureAlpha); // Use the diffuse texture for transparency
-	*/
+
+	vec3 irradiance = vec3(0.0);
+
+	// Calculate per light radiance for the directional light
+	irradiance += CalculateDirectionalLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
+
+	// Calculate per light radiance for all point lights
+	//irradiance += CalculatePointLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
+
+	// Calculate per light radiance for the spot light
+	//irradiance += CalculateSpotLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
+
+	// Finally apply ambient lighting while taking into account the AO map for the material
+	vec3 ambient = vec3(0.03) * albedo * ao;
+	color = vec4(ambient + irradiance, 1.0);
 }
+
+
+vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity) {
+	vec3 lightDir = normalize(-dirLight.direction);
+	vec3 halfway = normalize(lightDir + fragToView);
+	vec3 radiance = dirLight.lightColour;
+
+	// Cook-Torrance Specular BRDF calculations
+	float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
+	vec3 fresnel = FresnelSchlick(max(dot(halfway, fragToView), 0.0), baseReflectivity);
+	float geometry = GeometrySmith(normal, fragToView, lightDir, roughness);
+
+	// Calculate reflected and refracted light respectively, and since metals absorb all refracted light, we nullify the diffuse lighting based on the metallic parameter
+	vec3 specularRatio = fresnel;
+	vec3 diffuseRatio = vec3(1.0) - specularRatio;
+	diffuseRatio *= 1.0 - metallic;
+
+	vec3 numerator = fresnel * normalDistribution * geometry;
+	float denominator = 4 * max(dot(fragToView, normal), 0.0) * max(dot(lightDir, normal), 0.0) + 0.001;  // Prevents any division by zero
+	vec3 specular = numerator / max(denominator, 0.001);
+
+	// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
+	vec3 diffuse = diffuseRatio * albedo / PI;
+
+	// return the radiance of the directional light
+	return (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0);
+}
+
+
+vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity) {
+	vec3 pointLightIrradiance = vec3(0.0);
+
+	for (int i = 0; i < numPointLights; ++i) {
+		vec3 fragToLight = normalize(pointLights[i].position - FragPos);
+		vec3 halfway = normalize(fragToView + fragToLight);
+		float fragToLightDistance = length(pointLights[i].position - FragPos);
+		float attenuation = 1.0 / (fragToLightDistance * fragToLightDistance);
+		vec3 radiance = pointLights[i].lightColour * attenuation;
+
+		// Cook-Torrance Specular BRDF calculations
+		float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
+		vec3 fresnel = FresnelSchlick(max(dot(halfway, fragToView), 0.0), baseReflectivity);
+		float geometry = GeometrySmith(normal, fragToView, fragToLight, roughness);
+
+		// Calculate reflected and refracted light respectively, and since metals absorb all refracted light, we nullify the diffuse lighting based on the metallic parameter
+		vec3 specularRatio = fresnel;
+		vec3 diffuseRatio = vec3(1.0) - specularRatio;
+		diffuseRatio *= 1.0 - metallic;
+
+		// Finally calculate the specular part of the Cook-Torrance BRDF
+		vec3 numerator = specularRatio * normalDistribution * geometry;
+		float denominator = 4 * max(dot(fragToView, normal), 0.0) * max(dot(fragToLight, normal), 0.0) + 0.001; // Prevents any division by zero
+		vec3 specular = numerator / denominator;
+
+		// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
+		vec3 diffuse = diffuseRatio * albedo / PI;
+
+		// Add light radiance to the irradiance sum
+		pointLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0);
+	}
+
+	return pointLightIrradiance;
+}
+
+
+vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity) {
+	vec3 fragToLight = normalize(spotLight.position - FragPos);
+	vec3 halfway = normalize(fragToView + fragToLight);
+	float fragToLightDistance = length(spotLight.position - FragPos);
+
+	// Check if it is in the spotlight's circle
+	float theta = dot(normalize(spotLight.direction), -fragToLight);
+	float difference = spotLight.cutOff - spotLight.outerCutOff;
+	float intensity = clamp((theta - spotLight.outerCutOff) / difference, 0.0, 1.0);
+	float attenuation = intensity * (1.0 / (fragToLightDistance * fragToLightDistance));
+	vec3 radiance = spotLight.lightColour * attenuation;
+
+	// Cook-Torrance Specular BRDF calculations
+	float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
+	vec3 fresnel = FresnelSchlick(max(dot(halfway, fragToView), 0.0), baseReflectivity);
+	float geometry = GeometrySmith(normal, fragToView, fragToLight, roughness);
+
+	// Calculate reflected and refracted light respectively, and since metals absorb all refracted light, we nullify the diffuse lighting based on the metallic parameter
+	vec3 specularRatio = fresnel;
+	vec3 diffuseRatio = vec3(1.0) - specularRatio;
+	diffuseRatio *= 1.0 - metallic;
+
+	// Finally calculate the specular part of the Cook-Torrance BRDF
+	vec3 numerator = specularRatio * normalDistribution * geometry;
+	float denominator = 4 * max(dot(fragToView, normal), 0.0) * max(dot(fragToLight, normal), 0.0) + 0.001; // Prevents any division by zero
+	vec3 specular = numerator / denominator;
+
+	// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
+	vec3 diffuse = diffuseRatio * albedo / PI;
+
+	// Add light radiance to the irradiance sum
+	return (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0);
+}
+
 
 // Approximates the amount of microfacets that are properly aligned with the halfway vector, thus determines the strength and area for specular light
 float NormalDistributionGGX(vec3 normal, vec3 halfway, float roughness) {
@@ -96,21 +212,24 @@ float NormalDistributionGGX(vec3 normal, vec3 halfway, float roughness) {
 	return numerator / denominator;
 }
 
+
 // Approximates the geometry obstruction and geometry shadowing respectively, on the microfacet level
 float GeometrySmith(vec3 normal, vec3 viewDir, vec3 lightDir, float roughness) {
 	return GeometrySchlickGGX(max(dot(normal, viewDir), 1.0), roughness) * GeometrySchlickGGX(max(dot(normal, lightDir), 1.0), roughness);
 }
-float GeometrySchlickGGX(vec3 cosTheta, float roughness) {
+float GeometrySchlickGGX(float cosTheta, float roughness) {
 	float numerator = cosTheta;
 	float denominator = cosTheta * (1.0 - roughness) + roughness;
 	return numerator / denominator;
 }
 
+
 // Calculates the amount of specular (reflected) light. Since diffuse(refraction) and specular(reflection) are mutually exclusive, 
 // we can also use this to determine the amount of diffuse light
-vec3 FresnelSchlick(vec3 cosTheta, vec3 baseReflectivity) {
-	return baseReflectivity + (1.0 - baseReflectivity) * pow(1.0 - cosTheta, 5);
+vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity) {
+	return max(baseReflectivity + (1.0 - baseReflectivity) * pow(1.0 - cosTheta, 5), 0.0);
 }
+
 
 float CalculateShadow(vec3 normal, vec3 fragToDirLight) {
 	vec3 ndcCoords = FragPosLightClipSpace.xyz / FragPosLightClipSpace.w;

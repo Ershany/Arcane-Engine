@@ -116,7 +116,7 @@ namespace arcane { namespace utils {
 		m_DefaultTextures.m_DefaultAO->setAnisotropicFilteringMode(1.0f, true);
 		m_DefaultTextures.m_DefaultAO->setTextureMinFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultAO->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultEmission = load2DTexture(std::string("res/textures/default/defaultEmission.png"), true);
+		m_DefaultTextures.m_DefaultEmission = load2DTexture(std::string("res/textures/default/black.png"), true);
 		m_DefaultTextures.m_DefaultEmission->setAnisotropicFilteringMode(1.0f, true);
 		m_DefaultTextures.m_DefaultEmission->setTextureMinFilter(GL_NEAREST);
 		m_DefaultTextures.m_DefaultEmission->setTextureMagFilter(GL_NEAREST);
