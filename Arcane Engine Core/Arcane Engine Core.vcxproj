@@ -184,8 +184,7 @@
     <None Include="src\shaders\skybox.frag" />
     <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\spotlight.frag" />
-    <None Include="src\shaders\basic.vert" />
-    <None Include="src\shaders\basic.frag" />
+    <None Include="src\shaders\terrain.vert" />
     <None Include="src\shaders\terrain.frag" />
   </ItemGroup>
   <ItemGroup>
