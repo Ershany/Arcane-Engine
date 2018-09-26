@@ -118,7 +118,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 
 	vec3 numerator = fresnel * normalDistribution * geometry;
 	float denominator = 4 * max(dot(fragToView, normal), 0.0) * max(dot(lightDir, normal), 0.0) + 0.001;  // Prevents any division by zero
-	vec3 specular = numerator / max(denominator, 0.001);
+	vec3 specular = numerator / denominator;
 
 	// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
 	vec3 diffuse = diffuseRatio * albedo / PI;
@@ -224,7 +224,7 @@ float GeometrySchlickGGX(float cosTheta, float roughness) {
 	float numerator = cosTheta;
 	float denominator = cosTheta * (1.0 - k) + k;
 
-	return numerator / denominator;
+	return numerator / max(denominator, 0.001);
 }
 
 
