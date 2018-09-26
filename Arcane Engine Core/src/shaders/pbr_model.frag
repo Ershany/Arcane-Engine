@@ -56,7 +56,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity);
 vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity);
 
-// Cook-Torrance BRDF function prototypes
+// Cook-Torrance BRDF functions adopted by Epic for UE4
 float NormalDistributionGGX(vec3 normal, vec3 halfway, float roughness);
 float GeometrySmith(vec3 normal, vec3 viewDir, vec3 lightDir, float roughness);
 float GeometrySchlickGGX(float cosTheta, float roughness);
@@ -123,7 +123,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 	// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
 	vec3 diffuse = diffuseRatio * albedo / PI;
 
-	// return the radiance of the directional light
+	// Add the light's radiance to the irradiance sum
 	return (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0);
 }
 
@@ -156,7 +156,7 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 		// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
 		vec3 diffuse = diffuseRatio * albedo / PI;
 
-		// Add light radiance to the irradiance sum
+		// Add the light's radiance to the irradiance sum
 		pointLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0);
 	}
 
@@ -194,7 +194,7 @@ vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float 
 	// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
 	vec3 diffuse = diffuseRatio * albedo / PI;
 
-	// Add light radiance to the irradiance sum
+	// Add the light's radiance to the irradiance sum
 	return (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0);
 }
 
@@ -215,11 +215,15 @@ float NormalDistributionGGX(vec3 normal, vec3 halfway, float roughness) {
 
 // Approximates the geometry obstruction and geometry shadowing respectively, on the microfacet level
 float GeometrySmith(vec3 normal, vec3 viewDir, vec3 lightDir, float roughness) {
-	return GeometrySchlickGGX(max(dot(normal, viewDir), 1.0), roughness) * GeometrySchlickGGX(max(dot(normal, lightDir), 1.0), roughness);
+	return GeometrySchlickGGX(max(dot(normal, viewDir), 0.0), roughness) * GeometrySchlickGGX(max(dot(normal, lightDir), 0.0), roughness);
 }
 float GeometrySchlickGGX(float cosTheta, float roughness) {
+	float r = (roughness + 1.0);
+	float k = (roughness * roughness) / 8.0;
+
 	float numerator = cosTheta;
-	float denominator = cosTheta * (1.0 - roughness) + roughness;
+	float denominator = cosTheta * (1.0 - k) + k;
+
 	return numerator / denominator;
 }
 
