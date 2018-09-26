@@ -37,7 +37,6 @@ namespace arcane {
 		graphics::Model *glass = new graphics::Model(windowPane);
 		*/
 
-		//add(new graphics::Renderable3D(glm::vec3(90.0f, 60.0f, 90.0f), glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0, new arcane::graphics::Model("res/3D_Models/Crysis/nanosuit.obj"), nullptr, false
 		//add(new graphics::Renderable3D(glm::vec3(200.0f, 50.0f, 100.0f), glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.0f, 0.0f, 1.0f), glm::radians(0.0f), new arcane::graphics::Model("res/3D_Models/Sponza/sponza.obj"), nullptr, false));
 		
 		//add(new graphics::Renderable3D(glm::vec3(40, 60, 40), glm::vec3(15, 15, 15), glm::vec3(0.0, 1.0, 0.0), glm::radians(180.0f), glass, nullptr, true));
@@ -56,6 +55,24 @@ namespace arcane {
 		pbrGun->getMeshes()[0].getMaterial().setMetallicMap(utils::TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga"), false));
 		pbrGun->getMeshes()[0].getMaterial().setRoughnessMap(utils::TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga"), false));
 		pbrGun->getMeshes()[0].getMaterial().setAmbientOcclusionMap(utils::TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga"), false));
+
+		// Temp testing code
+		int nrRows = 2;
+		int nrColumns = 2;
+		float spacing = 2.5;
+		for (int row = 0; row < nrRows; row++) {
+			for (int col = 0; col < nrColumns; col++) {
+				graphics::Model *sphere = new arcane::graphics::Model("res/3D_Models/Sphere/globe-sphere.obj");
+				graphics::Material &mat = sphere->getMeshes()[0].getMaterial();
+				mat.setAlbedoMap(utils::TextureLoader::load2DTexture(std::string("res/3D_Models/Sphere/rustediron2_basecolor.png"), true));
+				mat.setNormalMap(utils::TextureLoader::load2DTexture(std::string("res/3D_Models/Sphere/rustediron2_normal.png"), false));
+				mat.setAmbientOcclusionMap(utils::TextureLoader::load2DTexture(std::string("res/textures/default/white.png"), false));
+				mat.setMetallicMap(utils::TextureLoader::load2DTexture(std::string("res/3D_Models/Sphere/rustediron2_metallic.png"), false));
+				mat.setRoughnessMap(utils::TextureLoader::load2DTexture(std::string("res/3D_Models/Sphere/rustediron2_roughness.png"), false));
+				add(new graphics::Renderable3D(glm::vec3((float)(col - (nrColumns / 2)) * spacing,
+					(float)(row - (nrRows / 2)) * spacing, 0.0f), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, sphere, nullptr, false));
+			}
+		}
 
 		// Skybox
 		std::vector<std::string> skyboxFilePaths;
