@@ -17,7 +17,7 @@ namespace arcane { namespace graphics {
 		m_DirectionalLight.lightColour = glm::vec3(3.25f, 3.25f, 3.25f);
 
 		m_SpotLight.isActive = true;
-		m_SpotLight.lightColour = glm::vec3(100.0f, 100.0f, 100.0f);
+		m_SpotLight.lightColour = glm::vec3(300.0f, 300.0f, 300.0f);
 		m_SpotLight.position = glm::vec3(0.0f, 0.0f, 0.0f);
 		m_SpotLight.direction = glm::vec3(1.0f, 0.0f, 0.0f);
 		m_SpotLight.cutOff = glm::cos(glm::radians(12.5f));
@@ -31,7 +31,7 @@ namespace arcane { namespace graphics {
 		pointLight2.isActive = true;
 		addPointLight(pointLight2);
 
-		PointLight pointLight3(glm::vec3(1200.0f, 300.0f, 0.0f), glm::vec3(120.0f, 77.0f, 100.0f));
+		PointLight pointLight3(glm::vec3(800.0f, 200.0f, 0.0f), glm::vec3(120.0f, 77.0f, 100.0f));
 		pointLight3.isActive = true;
 		addPointLight(pointLight3);
 	}
