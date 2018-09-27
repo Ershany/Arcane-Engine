@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
+    <ClCompile Include="src\graphics\camera\CubemapCamera.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DirectionalLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DynamicLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DynamicLightManager.cpp" />
@@ -123,6 +124,7 @@
   <ItemGroup>
     <ClInclude Include="src\Defs.h" />
     <ClInclude Include="src\graphics\camera\Camera.h" />
+    <ClInclude Include="src\graphics\camera\CubemapCamera.h" />
     <ClInclude Include="src\graphics\dynamic lights\DirectionalLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\DynamicLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\DynamicLightManager.h" />

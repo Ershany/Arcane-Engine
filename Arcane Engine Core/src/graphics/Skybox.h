@@ -6,6 +6,7 @@
 #include "../platform/OpenGL/IndexBuffer.h"
 #include "../platform/OpenGL/Buffer.h"
 #include "../utils/loaders/TextureLoader.h"
+#include "../graphics/renderer/GLCache.h"
 #include "camera/Camera.h"
 #include "Shader.h"
 #include "Window.h"
@@ -20,6 +21,7 @@ namespace arcane { namespace graphics {
 	private:
 		Camera *m_Camera;
 		Shader m_SkyboxShader;
+		GLCache *m_GLCache;
 		
 		opengl::VertexArray m_SkyboxVAO;
 		opengl::IndexBuffer m_SkyboxIBO;

@@ -16,3 +16,6 @@ Normal mapping:
 
 Post Processing:
 -See if super sampling can be an easy integration. Since the post processor will blit to a RenderTarget that matches the screen's resolution
+
+IBL:
+-Add support for rendering cubemaps from our scene

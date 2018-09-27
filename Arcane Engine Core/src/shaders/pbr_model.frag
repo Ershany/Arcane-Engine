@@ -93,7 +93,7 @@ void main() {
 	irradiance += CalculatePointLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
 
 	// Calculate per light radiance for the spot light
-	irradiance += CalculateSpotLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
+	//irradiance += CalculateSpotLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
 
 	// Finally apply ambient lighting while taking into account the AO map for the material
 	vec3 ambient = vec3(0.02) * albedo * ao;
