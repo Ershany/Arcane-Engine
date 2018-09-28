@@ -2,8 +2,8 @@
 
 namespace arcane { namespace graphics {
 
-	PostProcessor::PostProcessor(Renderer *renderer) 
-		: m_Renderer(renderer), m_PostProcessShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag"), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight())
+	PostProcessor::PostProcessor(MeshRenderer *meshRenderer)
+		: m_MeshRenderer(meshRenderer), m_PostProcessShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag"), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight())
 	{
 		m_ScreenRenderTarget.addColorAttachment(false).addDepthStencilRBO(false).createFramebuffer();
 		ui::DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
@@ -48,7 +48,7 @@ namespace arcane { namespace graphics {
 		glBindTexture(GL_TEXTURE_2D, target->getColourBufferTexture());
 
 		Window::clear();
-		m_Renderer->NDC_Plane.Draw();
+		m_MeshRenderer->NDC_Plane.Draw();
 
 #if DEBUG_ENABLED
 		glFinish();

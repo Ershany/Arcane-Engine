@@ -1,8 +1,8 @@
-#include "Renderer.h"
+#include "MeshRenderer.h"
 
 namespace arcane { namespace graphics {
 
-		Renderer::Renderer(Camera *camera) : 
+		MeshRenderer::MeshRenderer(FPSCamera *camera) :
 			m_Camera(camera), NDC_Plane()
 		{
 			// Configure and cache OpenGL state
@@ -12,15 +12,15 @@ namespace arcane { namespace graphics {
 			m_GLCache->setFaceCull(true);
 		}
 
-		void Renderer::submitOpaque(Renderable3D *renderable) {
+		void MeshRenderer::submitOpaque(Renderable3D *renderable) {
 			m_OpaqueRenderQueue.push_back(renderable);
 		}
 
-		void Renderer::submitTransparent(Renderable3D *renderable) {
+		void MeshRenderer::submitTransparent(Renderable3D *renderable) {
 			m_TransparentRenderQueue.push_back(renderable);
 		}
 
-		void Renderer::flushOpaque(Shader &shader, RenderPass pass) {
+		void MeshRenderer::flushOpaque(Shader &shader, RenderPass pass) {
 			m_GLCache->switchShader(shader.getShaderID());
 			m_GLCache->setDepthTest(true);
 			m_GLCache->setBlend(false);
@@ -39,7 +39,7 @@ namespace arcane { namespace graphics {
 			}
 		}
 
-		void Renderer::flushTransparent(Shader &shader, RenderPass pass) {
+		void MeshRenderer::flushTransparent(Shader &shader, RenderPass pass) {
 			m_GLCache->switchShader(shader.getShaderID());
 			m_GLCache->setDepthTest(true);
 			m_GLCache->setBlend(true);
@@ -67,7 +67,7 @@ namespace arcane { namespace graphics {
 
 		// TODO: Currently only supports two levels for hierarchical transformations
 		// Make it work with any number of levels
-		void Renderer::setupModelMatrix(Renderable3D *renderable, Shader &shader, RenderPass pass) {
+		void MeshRenderer::setupModelMatrix(Renderable3D *renderable, Shader &shader, RenderPass pass) {
 			glm::mat4 model(1);
 			glm::mat4 translate = glm::translate(glm::mat4(1.0f), renderable->getPosition());
 			glm::mat4 rotate = glm::toMat4(renderable->getOrientation());

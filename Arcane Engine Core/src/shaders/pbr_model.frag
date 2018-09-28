@@ -42,6 +42,11 @@ out vec4 color;
 
 uniform vec3 viewPos;
 
+// IBL
+uniform samplerCube irradianceMap;
+uniform samplerCube prefilterMap;
+uniform sampler2D brdfLUT;
+
 uniform sampler2D shadowmap;
 uniform int numPointLights;
 uniform DirLight dirLight;
@@ -83,21 +88,21 @@ void main() {
 	vec3 baseReflectivity = vec3(0.04);
 	baseReflectivity = mix(baseReflectivity, albedo, metallic);
 
+	// Calculate per light radiance for all of the direct lighting
+	vec3 directLightIrradiance = vec3(0.0);
+	directLightIrradiance += CalculateDirectionalLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
+	directLightIrradiance += CalculatePointLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
+	//directLightIrradiance += CalculateSpotLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
 
-	vec3 irradiance = vec3(0.0);
+	// Calcualte ambient IBL for both diffuse and specular
+	vec3 specularRatio = FresnelSchlick(max(dot(normal, fragToView), 0.0), baseReflectivity);
+	vec3 diffuseRatio = vec3(1.0) - specularRatio;
+	diffuseRatio *= 1.0 - metallic;
+	vec3 indirectIrradiance = texture(irradianceMap, normal).rgb;
+	vec3 indirectDiffuse = indirectIrradiance * albedo;
+	vec3 ambient = (diffuseRatio * indirectDiffuse) * ao;
 
-	// Calculate per light radiance for the directional light
-	irradiance += CalculateDirectionalLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
-
-	// Calculate per light radiance for all point lights
-	irradiance += CalculatePointLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
-
-	// Calculate per light radiance for the spot light
-	//irradiance += CalculateSpotLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
-
-	// Finally apply ambient lighting while taking into account the AO map for the material
-	vec3 ambient = vec3(0.02) * albedo * ao;
-	color = vec4(ambient + irradiance, 1.0);
+	color = vec4(ambient + directLightIrradiance, 1.0);
 }
 
 

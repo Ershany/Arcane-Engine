@@ -78,13 +78,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\graphics\camera\Camera.cpp" />
+    <ClCompile Include="src\graphics\camera\FPSCamera.cpp" />
     <ClCompile Include="src\graphics\camera\CubemapCamera.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DirectionalLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DynamicLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DynamicLightManager.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\PointLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\SpotLight.cpp" />
+    <ClCompile Include="src\graphics\ibl\EnvironmentProbe.cpp" />
+    <ClCompile Include="src\graphics\ibl\EnvironmentProbeManager.cpp" />
     <ClCompile Include="src\graphics\mesh\common\Cube.cpp" />
     <ClCompile Include="src\graphics\mesh\common\Quad.cpp" />
     <ClCompile Include="src\graphics\mesh\common\Sphere.cpp" />
@@ -94,7 +96,7 @@
     <ClCompile Include="src\graphics\renderer\GLCache.cpp" />
     <ClCompile Include="src\graphics\renderer\PostProcessor.cpp" />
     <ClCompile Include="src\graphics\renderer\Renderable3D.cpp" />
-    <ClCompile Include="src\graphics\renderer\Renderer.cpp" />
+    <ClCompile Include="src\graphics\renderer\MeshRenderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Skybox.cpp" />
     <ClCompile Include="src\graphics\texture\Cubemap.cpp" />
@@ -123,13 +125,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Defs.h" />
-    <ClInclude Include="src\graphics\camera\Camera.h" />
+    <ClInclude Include="src\graphics\camera\FPSCamera.h" />
     <ClInclude Include="src\graphics\camera\CubemapCamera.h" />
     <ClInclude Include="src\graphics\dynamic lights\DirectionalLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\DynamicLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\DynamicLightManager.h" />
     <ClInclude Include="src\graphics\dynamic lights\PointLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\SpotLight.h" />
+    <ClInclude Include="src\graphics\ibl\EnvironmentProbe.h" />
+    <ClInclude Include="src\graphics\ibl\EnvironmentProbeManager.h" />
     <ClInclude Include="src\graphics\mesh\common\Cube.h" />
     <ClInclude Include="src\graphics\mesh\common\Quad.h" />
     <ClInclude Include="src\graphics\mesh\common\Sphere.h" />
@@ -139,7 +143,7 @@
     <ClInclude Include="src\graphics\renderer\GLCache.h" />
     <ClInclude Include="src\graphics\renderer\PostProcessor.h" />
     <ClInclude Include="src\graphics\renderer\Renderable3D.h" />
-    <ClInclude Include="src\graphics\renderer\Renderer.h" />
+    <ClInclude Include="src\graphics\renderer\MeshRenderer.h" />
     <ClInclude Include="src\graphics\renderer\RenderPass.h" />
     <ClInclude Include="src\graphics\Shader.h" />
     <ClInclude Include="src\graphics\Skybox.h" />
