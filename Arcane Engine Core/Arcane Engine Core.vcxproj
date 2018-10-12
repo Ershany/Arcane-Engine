@@ -95,7 +95,7 @@
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\renderer\GLCache.cpp" />
     <ClCompile Include="src\graphics\renderer\PostProcessor.cpp" />
-    <ClCompile Include="src\graphics\renderer\Renderable3D.cpp" />
+    <ClCompile Include="src\scene\SceneNode.cpp" />
     <ClCompile Include="src\graphics\renderer\MeshRenderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Skybox.cpp" />
@@ -108,6 +108,7 @@
     <ClCompile Include="src\platform\OpenGL\IndexBuffer.cpp" />
     <ClCompile Include="src\platform\OpenGL\VertexArray.cpp" />
     <ClCompile Include="src\Scene3D.cpp" />
+    <ClCompile Include="src\scene\SceneGraph.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
     <ClCompile Include="src\ui\DebugPane.cpp" />
     <ClCompile Include="src\ui\Pane.cpp" />
@@ -142,7 +143,7 @@
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\graphics\renderer\GLCache.h" />
     <ClInclude Include="src\graphics\renderer\PostProcessor.h" />
-    <ClInclude Include="src\graphics\renderer\Renderable3D.h" />
+    <ClInclude Include="src\scene\SceneNode.h" />
     <ClInclude Include="src\graphics\renderer\MeshRenderer.h" />
     <ClInclude Include="src\graphics\renderer\RenderPass.h" />
     <ClInclude Include="src\graphics\Shader.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="src\platform\OpenGL\IndexBuffer.h" />
     <ClInclude Include="src\platform\OpenGL\VertexArray.h" />
     <ClInclude Include="src\Scene3D.h" />
+    <ClInclude Include="src\scene\SceneGraph.h" />
     <ClInclude Include="src\terrain\Terrain.h" />
     <ClInclude Include="src\ui\DebugPane.h" />
     <ClInclude Include="src\ui\Pane.h" />
