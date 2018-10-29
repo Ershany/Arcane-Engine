@@ -57,6 +57,7 @@ namespace arcane {
 		pbrGun->getMeshes()[0].getMaterial().setAmbientOcclusionMap(utils::TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga"), false));
 
 		// Temp testing code
+		/*
 		int nrRows = 2;
 		int nrColumns = 2;
 		float spacing = 2.5;
@@ -73,6 +74,7 @@ namespace arcane {
 					(float)(row - (nrRows / 2)) * spacing, 0.0f), glm::vec3(2.0f, 2.0f, 2.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, sphere, nullptr, false));
 			}
 		}
+		*/
 
 		// Skybox
 		std::vector<std::string> skyboxFilePaths;
@@ -156,7 +158,7 @@ namespace arcane {
 		m_TerrainShader.setUniformMat4("model", modelMatrix);
 		m_TerrainShader.setUniformMat4("view", m_Camera->getViewMatrix());
 		m_TerrainShader.setUniformMat4("projection", projectionMatrix);
-		//m_Terrain->Draw(m_TerrainShader, graphics::RenderPass::LightingPass);
+		m_Terrain->Draw(m_TerrainShader, graphics::RenderPass::LightingPass);
 
 		// Skybox
 		m_Skybox->Draw();
