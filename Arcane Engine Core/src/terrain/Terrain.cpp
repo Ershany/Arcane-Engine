@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "Terrain.h"
-
-#include "../utils/Logger.h"
 
 namespace arcane { namespace terrain {
 
@@ -100,7 +99,7 @@ namespace arcane { namespace terrain {
 	}
 
 	// Bilinear filtering for the terrain's normal
-	glm::vec3 Terrain::calculateNormal(int x, int z, unsigned char *heightMapData) {
+	glm::vec3 Terrain::calculateNormal(unsigned int x, unsigned int z, unsigned char *heightMapData) {
 		float heightR = getVertexHeight(x + 1, z    , heightMapData);
 		float heightL = getVertexHeight(x - 1, z    , heightMapData);
 		float heightU = getVertexHeight(x    , z + 1, heightMapData);
@@ -112,7 +111,7 @@ namespace arcane { namespace terrain {
 		return normal;
 	}
 
-	float Terrain::getVertexHeight(int x, int z, unsigned char *heightMapData) {
+	float Terrain::getVertexHeight(unsigned int x, unsigned int z, unsigned char *heightMapData) {
 		if (x < 0 || x >= m_VertexSideCount || z < 0 || z >= m_VertexSideCount) {
 			return 0.0f;
 		}

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Logger.h"
 
 namespace arcane { namespace utils {

@@ -1,15 +1,14 @@
 #pragma once
 
-#include <vector>
-
-#include "../platform/OpenGL/VertexArray.h"
-#include "../platform/OpenGL/IndexBuffer.h"
-#include "../platform/OpenGL/Buffer.h"
-#include "../utils/loaders/TextureLoader.h"
-#include "../graphics/renderer/GLCache.h"
-#include "camera/FPSCamera.h"
 #include "Shader.h"
 #include "Window.h"
+
+#include <graphics/camera/FPSCamera.h>
+#include <graphics/renderer/GLCache.h>
+#include <platform/OpenGL/Buffer.h>
+#include <platform/OpenGL/IndexBuffer.h>
+#include <platform/OpenGL/VertexArray.h>
+#include <utils/loaders/TextureLoader.h>
 
 namespace arcane { namespace graphics {
 

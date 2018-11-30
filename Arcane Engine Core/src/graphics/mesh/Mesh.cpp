@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Mesh.h"
 
 namespace arcane { namespace graphics {

@@ -1,8 +1,6 @@
 #pragma once
 
-#include <glm\common.hpp>
-
-#include "../Shader.h"
+#include <graphics/Shader.h>
 
 namespace arcane { namespace graphics {
 

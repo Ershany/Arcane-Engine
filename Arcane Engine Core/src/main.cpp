@@ -1,26 +1,19 @@
-#include <iostream>
-#include "graphics\Window.h"
-#include "utils\Timer.h"
-#include "graphics\Shader.h"
-#include <SOIL.h>
-#include <cmath>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include "utils\Time.h"
-#include "graphics\camera\FPSCamera.h"
-#include "utils\Logger.h"
-#include "graphics\mesh\Model.h"
-#include "terrain\Terrain.h"
+#include "pch.h"
 #include "Scene3D.h"
-#include "platform\OpenGL\Framebuffers\RenderTarget.h"
-#include "graphics/mesh/common/Quad.h"
-#include "graphics/renderer/GLCache.h"
-#include "graphics/renderer/PostProcessor.h"
-#include "ui/RuntimePane.h"
-#include "ui/DebugPane.h"
 
-
+#include <graphics/Shader.h>
+#include <graphics/Window.h>
+#include <graphics/camera/FPSCamera.h>
+#include <graphics/mesh/Model.h>
+#include <graphics/mesh/common/Quad.h>
+#include <graphics/renderer/GLCache.h>
+#include <graphics/renderer/PostProcessor.h>
+#include <platform/OpenGL/Framebuffers/RenderTarget.h>
+#include <terrain/Terrain.h>
+#include <ui/DebugPane.h>
+#include <ui/RuntimePane.h>
+#include <utils/Time.h>
+#include <utils/Timer.h>
 
 int main() {
 	// Prepare the engine
@@ -71,17 +64,17 @@ int main() {
 		scene.shadowmapPass();
 #if DEBUG_ENABLED
 		glFinish();
-		runtimePane.setShadowmapTimer(timer.elapsed());
+		runtimePane.setShadowmapTimer((float)timer.elapsed());
 #endif
 
 		// Camera Update
-		camera.processInput(deltaTime.getDeltaTime());
+		camera.processInput((float)deltaTime.getDeltaTime());
 
 		// Draw the scene to our custom multisampled framebuffer
 		glViewport(0, 0, framebuffer.getWidth(), framebuffer.getHeight());
 		framebuffer.bind();
 		framebuffer.clear();
-		scene.onUpdate(deltaTime.getDeltaTime());
+		scene.onUpdate((float)deltaTime.getDeltaTime());
 		scene.onRender(shadowmap.getDepthTexture());
 
 		// Peform post processing

@@ -1,11 +1,6 @@
 #pragma once
 
-#include "../utils/FileUtils.h"
-#include <GL\glew.h>
-#include <iostream>
-#include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <utils/FileUtils.h>
 
 namespace arcane { namespace graphics {
 

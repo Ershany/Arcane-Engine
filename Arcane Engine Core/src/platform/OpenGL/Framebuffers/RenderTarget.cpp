@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "RenderTarget.h"
 
 namespace arcane { namespace opengl {

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "SpotLight.h"
 
 namespace arcane { namespace graphics {

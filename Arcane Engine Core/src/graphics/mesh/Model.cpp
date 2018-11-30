@@ -1,11 +1,7 @@
+#include "pch.h"
 #include "Model.h"
 
-#include <iostream>
-#include <stb_image_aug.h>
-#include <iostream>
-
 #include "Mesh.h"
-#include "../../utils/Logger.h"
 
 namespace arcane { namespace graphics {
 

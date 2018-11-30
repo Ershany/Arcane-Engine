@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "FPSCamera.h"
-
-#include <iostream>
 
 namespace arcane {	namespace graphics {
 
@@ -58,7 +57,7 @@ namespace arcane {	namespace graphics {
 			m_MovementSpeed = SPEED;
 
 		// Mouse scrolling
-		processMouseScroll(Window::getScrollY() * 6);
+		processMouseScroll(Window::getScrollY() * 6.0);
 
 		// Mouse movement
 		processMouseMovement(Window::getMouseXDelta(), -Window::getMouseYDelta(), true);
@@ -88,12 +87,12 @@ namespace arcane {	namespace graphics {
 		}
 	}
 
-	void FPSCamera::processMouseMovement(float xOffset, float yOffset, GLboolean constrainPitch = true) {
+	void FPSCamera::processMouseMovement(double xOffset, double yOffset, GLboolean constrainPitch = true) {
 		xOffset *= m_MouseSensitivity;
 		yOffset *= m_MouseSensitivity;
 
-		m_Yaw += xOffset;
-		m_Pitch += yOffset;
+		m_Yaw += (float)xOffset;
+		m_Pitch += (float)yOffset;
 
 		// Constrain the pitch
 		if (constrainPitch) {
@@ -108,9 +107,9 @@ namespace arcane {	namespace graphics {
 		updateCameraVectors();
 	}
 
-	void FPSCamera::processMouseScroll(float offset) {
-		if (offset != 0 && m_FOV >= 1.0f && m_FOV <= FOV) {
-			m_FOV -= offset;
+	void FPSCamera::processMouseScroll(double offset) {
+		if (offset != 0.0 && m_FOV >= 1.0 && m_FOV <= FOV) {
+			m_FOV -= (float)offset;
 		}
 		if (m_FOV < 1.0f) {
 			m_FOV = 1.0f;

@@ -1,8 +1,5 @@
 #pragma once
 
-#include <gl/glew.h>
-#include "../../Defs.h"
-
 namespace arcane { namespace graphics {
 
 	struct CubemapSettings {

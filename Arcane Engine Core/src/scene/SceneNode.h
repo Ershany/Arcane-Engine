@@ -1,9 +1,7 @@
 #pragma once
 
-#include <glm\glm.hpp>
-
-#include "../graphics/mesh/Model.h"
-#include "../graphics/renderer/RenderPass.h"
+#include <graphics/mesh/Model.h>
+#include <graphics/renderer/RenderPass.h>
 
 namespace arcane { namespace scene {
 

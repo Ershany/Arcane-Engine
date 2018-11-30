@@ -1,13 +1,12 @@
+#include "pch.h"
 #include "Sphere.h"
-
-#include <math.h>
 
 namespace arcane { namespace graphics {
 
 	Sphere::Sphere(int xSegments, int ySegments) {
-		for (unsigned int y = 0; y <= ySegments; ++y)
+		for (int y = 0; y <= ySegments; ++y)
 		{
-			for (unsigned int x = 0; x <= xSegments; ++x)
+			for (int x = 0; x <= xSegments; ++x)
 			{
 				float xSegment = (float)x / (float)xSegments;
 				float ySegment = (float)y / (float)ySegments;

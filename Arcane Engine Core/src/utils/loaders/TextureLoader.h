@@ -1,12 +1,7 @@
 #pragma once
 
-#include <map>
-#include <gl/glew.h>
-#include <stb_image_aug.h>
-#include <string>
-
-#include "../../graphics/texture/Texture.h"
-#include "../../graphics/texture/Cubemap.h"
+#include <graphics/texture/Cubemap.h>
+#include <graphics/texture/Texture.h>
 
 namespace arcane { namespace utils {
 

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "EnvironmentProbe.h"
 
 namespace arcane { namespace graphics {

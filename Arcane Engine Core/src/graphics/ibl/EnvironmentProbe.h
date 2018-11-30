@@ -1,9 +1,7 @@
 #pragma once
 
-#include <glm\common.hpp>
-
-#include "../texture/Cubemap.h"
-#include "../Shader.h"
+#include <graphics/Shader.h>
+#include <graphics/texture/Cubemap.h>
 
 namespace arcane { namespace graphics {
 

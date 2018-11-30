@@ -1,11 +1,5 @@
 #pragma once
 
-#include <gl/glew.h>
-#include <glm/common.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include "../../Defs.h"
-
 namespace arcane { namespace graphics {
 
 	class CubemapCamera {

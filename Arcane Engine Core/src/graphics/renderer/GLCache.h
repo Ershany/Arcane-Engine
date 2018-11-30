@@ -1,10 +1,6 @@
 #pragma once
 
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
-#include "../../utils/Singleton.h"
-
-#include <iostream>
+#include <utils/Singleton.h>
 
 namespace arcane { namespace graphics {
 

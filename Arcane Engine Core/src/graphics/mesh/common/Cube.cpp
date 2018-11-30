@@ -1,7 +1,5 @@
+#include "pch.h"
 #include "Cube.h"
-
-#include <glm/common.hpp>
-#include <vector>
 
 namespace arcane { namespace graphics {
 

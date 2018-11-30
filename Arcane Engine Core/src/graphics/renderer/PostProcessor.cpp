@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "PostProcessor.h"
 
 namespace arcane { namespace graphics {
@@ -52,7 +53,7 @@ namespace arcane { namespace graphics {
 
 #if DEBUG_ENABLED
 		glFinish();
-		ui::RuntimePane::setPostProcessTimer(m_Timer.elapsed());
+		ui::RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
 #endif
 	}
 

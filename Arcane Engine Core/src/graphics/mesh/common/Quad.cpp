@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Quad.h"
 
 namespace arcane { namespace graphics {

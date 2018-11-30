@@ -1,14 +1,12 @@
 #pragma once
 
-#include <deque>
-#include <glm\gtx\norm.hpp>
-
-#include "../mesh/Model.h"
-#include "../camera/FPSCamera.h"
-#include "../../scene/SceneNode.h"
 #include "GLCache.h"
 #include "RenderPass.h"
-#include "../mesh/common/Quad.h"
+
+#include <scene/SceneNode.h>
+#include <graphics/camera/FPSCamera.h>
+#include <graphics/mesh/Model.h>
+#include <graphics/mesh/common/Quad.h>
 
 namespace arcane { namespace graphics {
 

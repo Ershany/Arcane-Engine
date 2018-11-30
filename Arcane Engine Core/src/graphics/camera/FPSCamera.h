@@ -1,12 +1,7 @@
 #pragma once
 
-#include <iostream>
-#include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include "../Window.h"
-#include "../../ui/DebugPane.h"
+#include <graphics/Window.h>
+#include <ui/DebugPane.h>
 
 namespace arcane { namespace graphics {
 
@@ -103,7 +98,7 @@ namespace arcane { namespace graphics {
 		* @param yOffset The value that is added to the y-offset
 		* @param constrainPitch Optional. Option to constrain the pitch. Default is true
 		*/
-		void processMouseMovement(float xOffset, float yOffset, GLboolean constrainPitch);
+		void processMouseMovement(double xOffset, double yOffset, GLboolean constrainPitch);
 
 		/**
 		* Changes the camera's Field of View
@@ -111,7 +106,7 @@ namespace arcane { namespace graphics {
 		*
 		* @param offset The value that is added to the Field of View
 		*/
-		void processMouseScroll(float yOffset);
+		void processMouseScroll(double yOffset);
 	};
 
 } }

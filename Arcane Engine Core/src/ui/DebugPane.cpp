@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DebugPane.h"
 
 namespace arcane { namespace ui {

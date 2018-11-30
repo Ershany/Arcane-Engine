@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Buffer.h"
 
 namespace arcane { namespace opengl {

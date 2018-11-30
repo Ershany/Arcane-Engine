@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "DynamicLightManager.h"
 
 namespace arcane { namespace graphics {

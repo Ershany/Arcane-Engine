@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Cubemap.h"
 
 namespace arcane { namespace graphics {

@@ -1,15 +1,14 @@
 #pragma once
 
-#include "scene/SceneNode.h"
-#include "Defs.h"
-#include "graphics\camera\FPSCamera.h"
-#include "graphics\renderer\MeshRenderer.h"
-#include "graphics\renderer\GLCache.h"
-#include "terrain\Terrain.h"
-#include "graphics\Window.h"
-#include "graphics\Skybox.h"
-#include "graphics\dynamic lights\DynamicLightManager.h"
-#include "utils\loaders\TextureLoader.h"
+#include <graphics/Skybox.h>
+#include <graphics/Window.h>
+#include <graphics/camera/FPSCamera.h>
+#include <graphics/dynamic lights/DynamicLightManager.h>
+#include <graphics/renderer/GLCache.h>
+#include <graphics/renderer/MeshRenderer.h>
+#include <scene/SceneNode.h>
+#include <terrain/Terrain.h>
+#include <utils/loaders/TextureLoader.h>
 
 namespace arcane {
 	

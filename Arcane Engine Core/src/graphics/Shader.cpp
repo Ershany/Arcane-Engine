@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "Shader.h"
-
-#include "../utils/Logger.h"
 
 namespace arcane { namespace graphics {
 

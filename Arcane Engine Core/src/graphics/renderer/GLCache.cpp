@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "GLCache.h"
 
 namespace arcane { namespace graphics {

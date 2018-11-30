@@ -1,5 +1,7 @@
+#include "pch.h"
 #include "Material.h"
-#include "../Window.h"
+
+#include <graphics/Window.h>
 
 namespace arcane { namespace graphics {
 
