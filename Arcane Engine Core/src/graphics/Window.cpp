@@ -64,7 +64,8 @@ namespace arcane { namespace graphics {
 		glfwMakeContextCurrent(m_Window);
 		glfwSetWindowUserPointer(m_Window, this);
 		glfwSetErrorCallback(error_callback);
-		glfwSetWindowSizeCallback(m_Window, window_resize);
+		glfwSetWindowSizeCallback(m_Window, window_resize_callback);
+		glfwSetFramebufferSizeCallback(m_Window, framebuffer_resize_callback);
 		glfwSetKeyCallback(m_Window, key_callback);
 		glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
@@ -154,11 +155,21 @@ namespace arcane { namespace graphics {
 		std::cout << "Error:" << std::endl << description << std::endl;
 	}
 
-	static void window_resize(GLFWwindow *window, int width, int height) {
+	static void window_resize_callback(GLFWwindow *window, int width, int height) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
-		win->m_Width = width;
-		win->m_Height = height;
+		if (width == 0 || height == 0) {
+			win->m_Width = WINDOW_X_RESOLUTION;
+			win->m_Height = WINDOW_Y_RESOLUTION;
+		}
+		else {
+			win->m_Width = width;
+			win->m_Height = height;
+		}
 		glViewport(0, 0, win->m_Width, win->m_Height);
+	}
+
+	static void framebuffer_resize_callback(GLFWwindow *window, int width, int height) {
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
 	}
 
 	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
