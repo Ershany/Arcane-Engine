@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "RenderTarget.h"
+#include "Framebuffer.h"
 
 namespace arcane { namespace opengl {
 

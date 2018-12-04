@@ -112,7 +112,7 @@
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\platform\OpenGL\Buffer.cpp" />
-    <ClCompile Include="src\platform\OpenGL\Framebuffers\RenderTarget.cpp" />
+    <ClCompile Include="src\platform\OpenGL\Framebuffers\Framebuffer.cpp" />
     <ClCompile Include="src\platform\OpenGL\IndexBuffer.cpp" />
     <ClCompile Include="src\platform\OpenGL\VertexArray.cpp" />
     <ClCompile Include="src\Scene3D.cpp" />
@@ -173,7 +173,7 @@
     <ClInclude Include="src\graphics\texture\Texture.h" />
     <ClInclude Include="src\graphics\Window.h" />
     <ClInclude Include="src\platform\OpenGL\Buffer.h" />
-    <ClInclude Include="src\platform\OpenGL\Framebuffers\RenderTarget.h" />
+    <ClInclude Include="src\platform\OpenGL\Framebuffers\Framebuffer.h" />
     <ClInclude Include="src\platform\OpenGL\IndexBuffer.h" />
     <ClInclude Include="src\platform\OpenGL\VertexArray.h" />
     <ClInclude Include="src\Scene3D.h" />

@@ -1,1 +1,1 @@
-(shader initialization): mpile Geometry Shader
+(shader initialization): ed to Compile Geometry Shader

@@ -4,7 +4,7 @@
 
 #include <graphics/Shader.h>
 #include <graphics/mesh/common/Quad.h>
-#include <platform/OpenGL/Framebuffers/RenderTarget.h>
+#include <platform/OpenGL/Framebuffers/Framebuffer.h>
 #include <ui/DebugPane.h>
 #include <ui/RuntimePane.h>
 #include <utils/Timer.h>
@@ -21,7 +21,7 @@ namespace arcane { namespace graphics {
 		void postLightingPostProcess(opengl::RenderTarget *input);
 
 		// Might be useful to have if we want to have more custom post processing. Unity does it this way
-		//void blit(Texture *texture, opengl::RenderTarget *source);
+		//void blit(Texture *texture, opengl::Framebuffer *source);
 
 		inline void EnableBlur(bool choice) { m_Blur = choice; }
 	private:

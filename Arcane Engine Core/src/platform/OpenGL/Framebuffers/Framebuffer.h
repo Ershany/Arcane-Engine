@@ -32,7 +32,7 @@ namespace arcane { namespace opengl {
 
 		bool m_IsMultisampledColourBuffer;
 		
-		// Attachments
+		// Render Targets (Attachments)
 		unsigned int m_ColourTexture;
 		unsigned int m_DepthStencilRBO;
 		unsigned int m_DepthTexture;
