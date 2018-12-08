@@ -35,13 +35,25 @@ namespace arcane { namespace graphics {
 	}
 
 	bool Window::init() {
+		// Needed in order to establish the correct OpenGL context (also enabled the usage of RenderDoc along with the window hints)
+		glewExperimental = true;
+
 		if (!glfwInit()) {
 			std::cout << "GLFW Failed To Initialize" << std::endl;
 			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLFW window");
 			return false;
 		}
 
-		// Create the window
+		// Context hints
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+
+		// Window hints
+		glfwWindowHint(GLFW_DOUBLEBUFFER, true);
+
+		// Create the window and OpenGL context
 		if (FULLSCREEN_MODE) {
 			setFullscreenResolution();
 			m_Window = glfwCreateWindow(m_Width, m_Height, m_Title, glfwGetPrimaryMonitor(), NULL);
