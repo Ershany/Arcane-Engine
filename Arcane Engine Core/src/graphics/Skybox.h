@@ -17,6 +17,8 @@ namespace arcane { namespace graphics {
 		Skybox(const std::vector<std::string> &filePaths, FPSCamera *camera);
 
 		void Draw();
+
+		graphics::Cubemap* getSkyboxCubemap() { return m_SkyboxCubemap; }
 	private:
 		FPSCamera *m_Camera;
 		Shader m_SkyboxShader;

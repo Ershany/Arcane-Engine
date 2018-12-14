@@ -133,6 +133,10 @@ namespace arcane {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, shadowmap);
 
+		// IBL code
+		m_ModelShader.setUniform1i("irradianceMap", 1);
+		m_Skybox->getSkyboxCubemap()->bind(1);
+
 		// Add objects to the renderer
 		addObjectsToRenderQueue();
 

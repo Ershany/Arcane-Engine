@@ -109,6 +109,16 @@ namespace arcane { namespace graphics {
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window, false);
 		ImGui::StyleColorsDark();
+
+		// Error callback setup
+#if DEBUG_ENABLED
+		glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback(DebugMessageCallback, 0);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, nullptr, GL_FALSE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_MEDIUM, 0, nullptr, GL_TRUE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, nullptr, GL_TRUE);
+#endif
 		
 		// Everything was successful so return true
 		return 1;
@@ -220,6 +230,12 @@ namespace arcane { namespace graphics {
 
 	static void char_callback(GLFWwindow* window, unsigned int c) {
 		ImGui_ImplGlfw_CharCallback(window, c);
+	}
+
+	static void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+			type, severity, message);
 	}
 
 } }

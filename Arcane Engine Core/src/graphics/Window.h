@@ -59,6 +59,7 @@ namespace arcane { namespace graphics {
 		static friend void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 		static friend void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 		static friend void char_callback(GLFWwindow* window, unsigned int c);
+		static friend void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 	};
 
 } }
