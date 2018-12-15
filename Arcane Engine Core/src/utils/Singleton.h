@@ -1,6 +1,6 @@
 #pragma once
 
-namespace arcane { namespace utils {
+namespace arcane {
 
 	class Singleton {
 	public:
@@ -14,4 +14,4 @@ namespace arcane { namespace utils {
 		virtual ~Singleton() = default;
 	};
 
-} }
+}

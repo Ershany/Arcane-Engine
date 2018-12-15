@@ -1,18 +1,29 @@
 TODO:
--Terrain needs multiple light support (only supports 1 atm)
--Investigate red specular? from point light on Sponza
+-Implement a proper scene graph
+-Refactoring rendering system
+-Refactor how we handle render passes like rendering to our texture and shadowmap generation
+-Need support for textures/cubemaps de-allocation/cleanup. So streaming support can be easier integrated into the engine in the future. This would also allowing the streaming of environment probes
+
+Nice To Have:
 -Move Anistropic amount querying to the defs.h or something instead of querying the driver for every texture
--Need support for textures/cubemaps de-allocation/cleanup. So streaming support can be easier integrated into the engine in the future
 -Better define the render passes with names so RenderDoc can easily see the passes
--Update README with new screenshots and features!!
 
 Shadow mapping:
 -Investigate crappy self shadows on models
 
 Normal mapping:
--Investigate if the normals are right from normal mapping and their strange artifacts!
+-Investigate if the normals are right from normal mapping and their strange artifacts! Seems to be an issue with normal map mips. Might need to do some processing on these normal map mips... Might need a proper asset pipeline for this and IBL probes
 -Make normal mapping code work on terrain (need to calculate tangents and bitangents for terrain vertices)
 -Specify tangents and bitangents for a cube and sphere
 
-Post Processing:
--See if super sampling can be an easy integration. Since the post processor will blit to a RenderTarget that matches the screen's resolution
+PBR:
+-Make the terrain use a PBR shader
+-Terrain needs multiple light support (only supports 1 atm)
+
+IBL:
+-Implement Diffuse IBL in the shader (and work around when nothing is bound)
+-Implement Specular IBL in the shader (and work around when nothing is bound)
+-Add support for rendering cubemaps from our scene
+-Might need support for asset pipelines, since Normal mips might need filtering and baked IBL probes will need to be stored on disk and procesed
+-Implement environment probes that will generate all of the needed stuff offline
+-Add support for binding the appropriate environment probes for each renderable. So the mesh renderer can use this for each renderable it attempts to render. (There should be a fallback environment probe always)

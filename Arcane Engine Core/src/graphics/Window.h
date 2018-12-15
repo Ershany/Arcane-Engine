@@ -1,17 +1,9 @@
 #pragma once
 
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
-#include <iostream>
+#include <vendor/imgui/imgui.h>
+#include <vendor/imgui/imgui_impl_glfw_gl3.h>
 
-#include "../Defs.h"
-#include "../utils/Logger.h"
-#include "../Defs.h"
-
-#include "../vendor/imgui/imgui.h"
-#include "../vendor/imgui/imgui_impl_glfw_gl3.h"
-
-namespace arcane { namespace graphics {
+namespace arcane {
 
 #define MAX_KEYS 1024
 #define MAX_BUTTONS 32
@@ -60,12 +52,14 @@ namespace arcane { namespace graphics {
 
 		// Callback Functions
 		static friend void error_callback(int error, const char* description);
-		static friend void window_resize(GLFWwindow *window, int width, int height);
+		static friend void window_resize_callback(GLFWwindow *window, int width, int height);
+		static friend void framebuffer_resize_callback(GLFWwindow *window, int width, int height);
 		static friend void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 		static friend void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 		static friend void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 		static friend void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 		static friend void char_callback(GLFWwindow* window, unsigned int c);
+		static friend void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 	};
 
-} }
+}

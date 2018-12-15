@@ -1,6 +1,7 @@
+#include "pch.h"
 #include "Mesh.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	Mesh::Mesh() {}
 
@@ -36,16 +37,16 @@ namespace arcane { namespace graphics {
 			unsigned int vertexCount = m_Positions.size();
 
 			if (vertexCount == 0)
-				utils::Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh doesn't contain any vertices");
+				Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh doesn't contain any vertices");
 
 			if (m_UVs.size() != 0 && m_UVs.size() != vertexCount)
-				utils::Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh UV count doesn't match the vertex count");
+				Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh UV count doesn't match the vertex count");
 			if (m_Normals.size() != 0 && m_Normals.size() != vertexCount)
-				utils::Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh Normal count doesn't match the vertex count");
+				Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh Normal count doesn't match the vertex count");
 			if (m_Tangents.size() != 0 && m_Tangents.size() != vertexCount)
-				utils::Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh Tangent count doesn't match the vertex count");
+				Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh Tangent count doesn't match the vertex count");
 			if (m_Bitangents.size() != 0 && m_Bitangents.size() != vertexCount)
-				utils::Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh Bitangent count doesn't match the vertex count");
+				Logger::getInstance().error("logged_files/mesh_creation.txt", "Mesh Creation", "Mesh Bitangent count doesn't match the vertex count");
 		}
 
 		// Preprocess the mesh data in the format that was specified
@@ -190,4 +191,4 @@ namespace arcane { namespace graphics {
 		glBindVertexArray(0);
 	}
 
-} }
+}

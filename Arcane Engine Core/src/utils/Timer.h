@@ -1,8 +1,5 @@
 #pragma once
 
-#include <GLFW\glfw3.h>
-#pragma once
-
 namespace arcane {
 
 	class Timer {
@@ -23,4 +20,4 @@ namespace arcane {
 		inline double elapsed() const { return glfwGetTime() - startTime; }
 	};
 
-} 
+}

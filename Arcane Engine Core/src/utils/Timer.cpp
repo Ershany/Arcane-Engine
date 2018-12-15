@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Timer.h"
 
 namespace arcane {
@@ -11,4 +12,3 @@ namespace arcane {
 	}
 
 };
-

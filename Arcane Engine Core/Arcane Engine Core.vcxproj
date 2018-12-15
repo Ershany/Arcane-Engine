@@ -40,11 +40,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane Engine Core\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib-vc2013;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane Engine Core\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib-vc2013;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -54,6 +54,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -69,6 +71,8 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -78,12 +82,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\graphics\camera\Camera.cpp" />
+    <ClCompile Include="src\graphics\camera\FPSCamera.cpp" />
+    <ClCompile Include="src\graphics\camera\CubemapCamera.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DirectionalLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DynamicLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DynamicLightManager.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\PointLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\SpotLight.cpp" />
+    <ClCompile Include="src\graphics\ibl\EnvironmentProbe.cpp" />
+    <ClCompile Include="src\graphics\ibl\EnvironmentProbeManager.cpp" />
     <ClCompile Include="src\graphics\mesh\common\Cube.cpp" />
     <ClCompile Include="src\graphics\mesh\common\Quad.cpp" />
     <ClCompile Include="src\graphics\mesh\common\Sphere.cpp" />
@@ -92,8 +99,12 @@
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\renderer\GLCache.cpp" />
     <ClCompile Include="src\graphics\renderer\PostProcessor.cpp" />
-    <ClCompile Include="src\graphics\renderer\Renderable3D.cpp" />
-    <ClCompile Include="src\graphics\renderer\Renderer.cpp" />
+    <ClCompile Include="src\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\scene\Renderable3D.cpp" />
+    <ClCompile Include="src\graphics\renderer\MeshRenderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Skybox.cpp" />
     <ClCompile Include="src\graphics\texture\Cubemap.cpp" />
@@ -101,10 +112,10 @@
     <ClCompile Include="src\graphics\Window.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\platform\OpenGL\Buffer.cpp" />
-    <ClCompile Include="src\platform\OpenGL\Framebuffers\RenderTarget.cpp" />
+    <ClCompile Include="src\platform\OpenGL\Framebuffers\Framebuffer.cpp" />
     <ClCompile Include="src\platform\OpenGL\IndexBuffer.cpp" />
     <ClCompile Include="src\platform\OpenGL\VertexArray.cpp" />
-    <ClCompile Include="src\Scene3D.cpp" />
+    <ClCompile Include="src\scene\Scene3D.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
     <ClCompile Include="src\ui\DebugPane.cpp" />
     <ClCompile Include="src\ui\Pane.cpp" />
@@ -115,19 +126,34 @@
     <ClCompile Include="src\utils\Logger.cpp" />
     <ClCompile Include="src\utils\Time.cpp" />
     <ClCompile Include="src\utils\Timer.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw_gl3.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw_gl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Defs.h" />
-    <ClInclude Include="src\graphics\camera\Camera.h" />
+    <ClInclude Include="src\graphics\camera\FPSCamera.h" />
+    <ClInclude Include="src\graphics\camera\CubemapCamera.h" />
     <ClInclude Include="src\graphics\dynamic lights\DirectionalLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\DynamicLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\DynamicLightManager.h" />
     <ClInclude Include="src\graphics\dynamic lights\PointLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\SpotLight.h" />
+    <ClInclude Include="src\graphics\ibl\EnvironmentProbe.h" />
+    <ClInclude Include="src\graphics\ibl\EnvironmentProbeManager.h" />
     <ClInclude Include="src\graphics\mesh\common\Cube.h" />
     <ClInclude Include="src\graphics\mesh\common\Quad.h" />
     <ClInclude Include="src\graphics\mesh\common\Sphere.h" />
@@ -136,8 +162,9 @@
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\graphics\renderer\GLCache.h" />
     <ClInclude Include="src\graphics\renderer\PostProcessor.h" />
-    <ClInclude Include="src\graphics\renderer\Renderable3D.h" />
-    <ClInclude Include="src\graphics\renderer\Renderer.h" />
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\scene\Renderable3D.h" />
+    <ClInclude Include="src\graphics\renderer\MeshRenderer.h" />
     <ClInclude Include="src\graphics\renderer\RenderPass.h" />
     <ClInclude Include="src\graphics\Shader.h" />
     <ClInclude Include="src\graphics\Skybox.h" />
@@ -145,10 +172,10 @@
     <ClInclude Include="src\graphics\texture\Texture.h" />
     <ClInclude Include="src\graphics\Window.h" />
     <ClInclude Include="src\platform\OpenGL\Buffer.h" />
-    <ClInclude Include="src\platform\OpenGL\Framebuffers\RenderTarget.h" />
+    <ClInclude Include="src\platform\OpenGL\Framebuffers\Framebuffer.h" />
     <ClInclude Include="src\platform\OpenGL\IndexBuffer.h" />
     <ClInclude Include="src\platform\OpenGL\VertexArray.h" />
-    <ClInclude Include="src\Scene3D.h" />
+    <ClInclude Include="src\scene\Scene3D.h" />
     <ClInclude Include="src\terrain\Terrain.h" />
     <ClInclude Include="src\ui\DebugPane.h" />
     <ClInclude Include="src\ui\Pane.h" />
@@ -172,6 +199,8 @@
     <None Include="src\shaders\model.vert" />
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\model.frag" />
+    <None Include="src\shaders\pbr_model.frag" />
+    <None Include="src\shaders\pbr_model.vert" />
     <None Include="src\shaders\postprocess.frag" />
     <None Include="src\shaders\postprocess.vert" />
     <None Include="src\shaders\modelReflection.frag" />

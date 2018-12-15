@@ -1,14 +1,10 @@
 #pragma once
 
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
-#include "../../utils/Singleton.h"
+#include <utils/Singleton.h>
 
-#include <iostream>
+namespace arcane {
 
-namespace arcane { namespace graphics {
-
-	class GLCache : utils::Singleton {
+	class GLCache : Singleton {
 	public:
 		GLCache();
 		~GLCache();
@@ -58,4 +54,4 @@ namespace arcane { namespace graphics {
 		unsigned int m_ActiveShaderID;
 	};
 
-} }
+}

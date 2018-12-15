@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../Mesh.h"
+#include <graphics/mesh/Mesh.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	class Cube : public Mesh {
 	public:
 		Cube();
 	};
 
-} }
+}

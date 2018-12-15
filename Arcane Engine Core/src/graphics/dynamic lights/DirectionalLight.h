@@ -2,10 +2,10 @@
 
 #include "DynamicLight.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	struct DirectionalLight : public DynamicLight {
-		DirectionalLight(glm::vec3 &amb, glm::vec3 &diff, glm::vec3 &spec, glm::vec3 &dir);
+		DirectionalLight(glm::vec3 &lightColour, glm::vec3 &dir);
 
 		virtual void setupUniforms(Shader &shader, int currentLightIndex) override;
 
@@ -13,4 +13,4 @@ namespace arcane { namespace graphics {
 		glm::vec3 direction;
 	};
 
-} }
+}

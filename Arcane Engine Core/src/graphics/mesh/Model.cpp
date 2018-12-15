@@ -1,13 +1,9 @@
+#include "pch.h"
 #include "Model.h"
 
-#include <iostream>
-#include <stb_image_aug.h>
-#include <iostream>
-
 #include "Mesh.h"
-#include "../../utils/Logger.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	Model::Model(const char *path) {
 		loadModel(path);
@@ -35,7 +31,7 @@ namespace arcane { namespace graphics {
 		const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-			utils::Logger::getInstance().error("logged_files/model_loading.txt", "model initialization", import.GetErrorString());
+			Logger::getInstance().error("logged_files/model_loading.txt", "model initialization", import.GetErrorString());
 			return;
 		}
 
@@ -103,14 +99,12 @@ namespace arcane { namespace graphics {
 		if (mesh->mMaterialIndex >= 0) {
 			aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
 
-			// Only colour data for the renderer is considered SRGB, all other type of non-colour texture data shouldn't be corrected by the hardware
-			newMesh.m_Material.setDiffuseMap(loadMaterialTexture(material, aiTextureType_DIFFUSE, true));
-			newMesh.m_Material.setSpecularMap(loadMaterialTexture(material, aiTextureType_SPECULAR, false));
+			// Attempt to load the materials if they can be found. However PBR materials will need to be manually configured since Assimp doesn't support them
+			// Only colour data for the renderer is considered sRGB, all other type of non-colour texture data shouldn't be corrected by the hardware
+			newMesh.m_Material.setAlbedoMap(loadMaterialTexture(material, aiTextureType_DIFFUSE, true));
 			newMesh.m_Material.setNormalMap(loadMaterialTexture(material, aiTextureType_NORMALS, false));
+			newMesh.m_Material.setAmbientOcclusionMap(loadMaterialTexture(material, aiTextureType_AMBIENT, false));
 			newMesh.m_Material.setEmissionMap(loadMaterialTexture(material, aiTextureType_EMISSIVE, true));
-			float shininess = 0.0f;
-			material->Get(AI_MATKEY_SHININESS, shininess); // Assimp scales specular exponent by 4 times since most renderers handle it that way. Value defaults to 0 if not specified
-			newMesh.m_Material.setShininess(shininess);
 		}
 
 		return newMesh;
@@ -119,7 +113,7 @@ namespace arcane { namespace graphics {
 	Texture* Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB) {
 		// Log material constraints are being violated (1 texture per type for the standard shader)
 		if (mat->GetTextureCount(type) > 1)
-			utils::Logger::getInstance().error("logged_files/material_creation.txt", "Mesh Loading", "Mesh's default material contains more than 1 texture for the same type, which currently isn't supported by the standard shader");
+			Logger::getInstance().error("logged_files/material_creation.txt", "Mesh Loading", "Mesh's default material contains more than 1 texture for the same type, which currently isn't supported by the standard shader");
 
 		// Load the texture of a certain type, assuming there is one
 		if (mat->GetTextureCount(type) > 0) {
@@ -128,9 +122,10 @@ namespace arcane { namespace graphics {
 
 			// Assumption made: material stuff is located in the same directory as the model object
 			std::string fileToSearch = (m_Directory + "/" + std::string(str.C_Str())).c_str();
-			return utils::TextureLoader::load2DTexture(fileToSearch, isSRGB);
+			return TextureLoader::load2DTexture(fileToSearch, isSRGB);
 		}
 
 		return nullptr;
 	}
-} }
+
+}

@@ -1,9 +1,6 @@
 #pragma once
 
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
-
-namespace arcane { namespace opengl {
+namespace arcane {
 
 	class IndexBuffer {
 	private:
@@ -22,4 +19,4 @@ namespace arcane { namespace opengl {
 		inline int getCount() const { return m_Count; }
 	};
 
-} }
+}

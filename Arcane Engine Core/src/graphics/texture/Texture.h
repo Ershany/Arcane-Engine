@@ -1,12 +1,6 @@
 #pragma once
 
-#include <GL/glew.h>
-#include <glm/common.hpp>
-
-#include "../../Defs.h"
-#include "../../utils/Logger.h"
-
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	struct TextureSettings {
 		// Texture wrapping options
@@ -59,4 +53,4 @@ namespace arcane { namespace graphics {
 		TextureSettings m_TextureSettings;
 	};
 
-} }
+}

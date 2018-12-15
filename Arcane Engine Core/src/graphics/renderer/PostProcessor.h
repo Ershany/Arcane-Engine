@@ -1,39 +1,39 @@
 #pragma once
 
-#include "../../Defs.h"
-#include "../mesh/common/Quad.h"
-#include "Renderer.h"
-#include "../Shader.h"
-#include "../../platform/OpenGL/Framebuffers/RenderTarget.h"
-#include "../../utils/Timer.h"
-#include "../../ui/DebugPane.h"
-#include "../../ui/RuntimePane.h"
+#include "MeshRenderer.h"
 
-namespace arcane { namespace graphics {
+#include <graphics/Shader.h>
+#include <graphics/mesh/common/Quad.h>
+#include <platform/OpenGL/Framebuffers/Framebuffer.h>
+#include <ui/DebugPane.h>
+#include <ui/RuntimePane.h>
+#include <utils/Timer.h>
+
+namespace arcane {
 
 	class PostProcessor {
 	public:
-		PostProcessor(Renderer *renderer);
+		PostProcessor(MeshRenderer *meshRenderer);
 		~PostProcessor();
 
 		void preLightingPostProcess();
 		// Assumes the input RenderTarget is bound, after function runs the default screen RenderTarget is bound
-		void postLightingPostProcess(opengl::RenderTarget *input);
+		void postLightingPostProcess(Framebuffer *input);
 
 		// Might be useful to have if we want to have more custom post processing. Unity does it this way
-		//void blit(Texture *texture, opengl::RenderTarget *source);
+		//void blit(Texture *texture, Framebuffer *source);
 
 		inline void EnableBlur(bool choice) { m_Blur = choice; }
 	private:
 		float m_GammaCorrection = 2.2f;
 
-		Renderer *m_Renderer;
+		MeshRenderer *m_MeshRenderer;
 		Shader m_PostProcessShader;
 		Quad m_NDC_Plane;
-		opengl::RenderTarget m_ScreenRenderTarget;
+		Framebuffer m_ScreenRenderTarget;
 		Timer m_Timer;
 
 		bool m_Blur = false;
 	};
 
-} }
+}

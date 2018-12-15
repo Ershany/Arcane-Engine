@@ -1,6 +1,7 @@
+#include "pch.h"
 #include "IndexBuffer.h"
 
-namespace arcane { namespace opengl {
+namespace arcane {
 
 	IndexBuffer::IndexBuffer() {
 		glGenBuffers(1, &m_BufferID);
@@ -30,4 +31,4 @@ namespace arcane { namespace opengl {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
-} }
+}

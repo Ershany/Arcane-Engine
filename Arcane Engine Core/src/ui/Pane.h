@@ -1,10 +1,8 @@
 #pragma once
 
-#include <string>
-#include <glm/common.hpp>
-#include "../vendor/imgui/imgui.h"
+#include <vendor/imgui/imgui.h>
 
-namespace arcane { namespace ui {
+namespace arcane {
 
 	class Pane {
 	public:
@@ -18,4 +16,4 @@ namespace arcane { namespace ui {
 		glm::vec2 m_PaneSize;
 	};
 
-} }
+}

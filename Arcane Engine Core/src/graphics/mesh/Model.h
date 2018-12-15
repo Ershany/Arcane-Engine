@@ -1,17 +1,15 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include <graphics/Shader.h>
+#include <graphics/mesh/Mesh.h>
+#include <graphics/renderer/RenderPass.h>
+#include <utils/loaders/TextureLoader.h>
+
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "../Shader.h"
-#include "Mesh.h"
-#include "../../utils/loaders/TextureLoader.h"
-#include "../renderer/RenderPass.h"
-
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	class Model {
 	public:
@@ -20,6 +18,8 @@ namespace arcane { namespace graphics {
 		Model(const std::vector<Mesh> &meshes);
 		
 		void Draw(Shader &shader, RenderPass pass) const;
+
+		inline std::vector<Mesh>& getMeshes() { return m_Meshes; }
 	private:
 		std::vector<Mesh> m_Meshes;
 		std::string m_Directory;
@@ -30,4 +30,4 @@ namespace arcane { namespace graphics {
 		Texture* loadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB);
 	};
 
-} }
+}

@@ -1,11 +1,8 @@
 #pragma once
 
-#include <iostream>
-#include <fstream>
-#include <vector>
 #include "Singleton.h"
 
-namespace arcane { namespace utils {
+namespace arcane {
 
 	class Logger : public Singleton {
 	private:
@@ -75,4 +72,4 @@ namespace arcane { namespace utils {
 		std::string file; // Default value set to: "logged_files/log.txt"
 	};
 
-} }
+}

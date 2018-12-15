@@ -1,30 +1,33 @@
 #pragma once
 
-#include <vector>
-
-#include "../platform/OpenGL/VertexArray.h"
-#include "../platform/OpenGL/IndexBuffer.h"
-#include "../platform/OpenGL/Buffer.h"
-#include "../utils/loaders/TextureLoader.h"
-#include "camera/Camera.h"
 #include "Shader.h"
 #include "Window.h"
 
-namespace arcane { namespace graphics {
+#include <graphics/camera/FPSCamera.h>
+#include <graphics/renderer/GLCache.h>
+#include <platform/OpenGL/Buffer.h>
+#include <platform/OpenGL/IndexBuffer.h>
+#include <platform/OpenGL/VertexArray.h>
+#include <utils/loaders/TextureLoader.h>
+
+namespace arcane {
 
 	class Skybox {
 	public:
-		Skybox(const std::vector<std::string> &filePaths, Camera *camera);
+		Skybox(const std::vector<std::string> &filePaths, FPSCamera *camera);
 
 		void Draw();
+
+		Cubemap* getSkyboxCubemap() { return m_SkyboxCubemap; }
 	private:
-		Camera *m_Camera;
+		FPSCamera *m_Camera;
 		Shader m_SkyboxShader;
+		GLCache *m_GLCache;
 		
-		opengl::VertexArray m_SkyboxVAO;
-		opengl::IndexBuffer m_SkyboxIBO;
-		opengl::Buffer  m_SkyboxVBO;
-		graphics::Cubemap *m_SkyboxCubemap;
+		VertexArray m_SkyboxVAO;
+		IndexBuffer m_SkyboxIBO;
+		Buffer  m_SkyboxVBO;
+		Cubemap *m_SkyboxCubemap;
 	};
 
-} }
+}

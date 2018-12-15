@@ -1,8 +1,7 @@
+#include "pch.h"
 #include "Terrain.h"
 
-#include "../utils/Logger.h"
-
-namespace arcane { namespace terrain {
+namespace arcane {
 
 	Terrain::Terrain(glm::vec3 &worldPosition) : m_Position(worldPosition)
 	{
@@ -19,7 +18,7 @@ namespace arcane { namespace terrain {
 		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, SOIL_LOAD_L);
 		if (mapWidth != mapHeight) {
 			std::cout << "ERROR: Can't use a heightmap with a different width and height" << std::endl;
-			utils::Logger::getInstance().error("logged_files/terrain_creation.txt", "terrain initialization", "Can't use a heightmap with a different width and height");
+			Logger::getInstance().error("logged_files/terrain_creation.txt", "terrain initialization", "Can't use a heightmap with a different width and height");
 			return;
 		}
 
@@ -54,17 +53,17 @@ namespace arcane { namespace terrain {
 		}
 
 		// Textures
-		m_Textures[0] = utils::TextureLoader::load2DTexture(std::string("res/terrain/grass.png"), true);
-		m_Textures[1] = utils::TextureLoader::load2DTexture(std::string("res/terrain/dirt.png"), true);
-		m_Textures[2] = utils::TextureLoader::load2DTexture(std::string("res/terrain/sand.png"), true);
-		m_Textures[3] = utils::TextureLoader::load2DTexture(std::string("res/terrain/stone.png"), true);
-		m_Textures[4] = utils::TextureLoader::load2DTexture(std::string("res/terrain/blendMap.png"), false);
-		m_Textures[5] = utils::TextureLoader::load2DTexture(std::string("res/terrain/grass_normal.png"), false);
-		m_Textures[6] = utils::TextureLoader::load2DTexture(std::string("res/terrain/dirt_normal.png"), false);
-		m_Textures[7] = utils::TextureLoader::load2DTexture(std::string("res/terrain/sand_normal.png"), false);
-		m_Textures[8] = utils::TextureLoader::load2DTexture(std::string("res/terrain/stone_normal.png"), false);
+		m_Textures[0] = TextureLoader::load2DTexture(std::string("res/terrain/grass.png"), true);
+		m_Textures[1] = TextureLoader::load2DTexture(std::string("res/terrain/dirt.png"), true);
+		m_Textures[2] = TextureLoader::load2DTexture(std::string("res/terrain/sand.png"), true);
+		m_Textures[3] = TextureLoader::load2DTexture(std::string("res/terrain/stone.png"), true);
+		m_Textures[4] = TextureLoader::load2DTexture(std::string("res/terrain/blendMap.png"), false);
+		m_Textures[5] = TextureLoader::load2DTexture(std::string("res/terrain/grass_normal.png"), false);
+		m_Textures[6] = TextureLoader::load2DTexture(std::string("res/terrain/dirt_normal.png"), false);
+		m_Textures[7] = TextureLoader::load2DTexture(std::string("res/terrain/sand_normal.png"), false);
+		m_Textures[8] = TextureLoader::load2DTexture(std::string("res/terrain/stone_normal.png"), false);
 
-		m_Mesh = new graphics::Mesh(positions, uvs, normals, indices);
+		m_Mesh = new Mesh(positions, uvs, normals, indices);
 		m_Mesh->LoadData(true);
 	}
 
@@ -72,9 +71,9 @@ namespace arcane { namespace terrain {
 		delete m_Mesh;
 	}
 
-	void Terrain::Draw(graphics::Shader &shader, graphics::RenderPass pass) const {
+	void Terrain::Draw(Shader &shader, RenderPass pass) const {
 		// Texture unit 0 is reserved for the shadowmap
-		if (pass != graphics::RenderPass::ShadowmapPass) {
+		if (pass != RenderPass::ShadowmapPass) {
 			m_Textures[0]->bind(1);
 			shader.setUniform1i("material.texture_diffuse1", 1);
 			m_Textures[1]->bind(2);
@@ -100,7 +99,7 @@ namespace arcane { namespace terrain {
 	}
 
 	// Bilinear filtering for the terrain's normal
-	glm::vec3 Terrain::calculateNormal(int x, int z, unsigned char *heightMapData) {
+	glm::vec3 Terrain::calculateNormal(unsigned int x, unsigned int z, unsigned char *heightMapData) {
 		float heightR = getVertexHeight(x + 1, z    , heightMapData);
 		float heightL = getVertexHeight(x - 1, z    , heightMapData);
 		float heightU = getVertexHeight(x    , z + 1, heightMapData);
@@ -112,7 +111,7 @@ namespace arcane { namespace terrain {
 		return normal;
 	}
 
-	float Terrain::getVertexHeight(int x, int z, unsigned char *heightMapData) {
+	float Terrain::getVertexHeight(unsigned int x, unsigned int z, unsigned char *heightMapData) {
 		if (x < 0 || x >= m_VertexSideCount || z < 0 || z >= m_VertexSideCount) {
 			return 0.0f;
 		}
@@ -121,4 +120,4 @@ namespace arcane { namespace terrain {
 		return (heightMapData[x + (z * m_VertexSideCount)] / 255.0f) * m_HeightMapScale;
 	}
 
-} }
+}

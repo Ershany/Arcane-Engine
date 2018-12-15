@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Pane.h"
-#include "../Defs.h"
 
-namespace arcane { namespace ui {
+namespace arcane {
 
 	class DebugPane : public Pane {
 	public:
@@ -22,4 +21,4 @@ namespace arcane { namespace ui {
 		static bool s_WireframeMode;
 	};
 
-} }
+}

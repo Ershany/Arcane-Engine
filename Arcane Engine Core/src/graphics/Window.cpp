@@ -1,6 +1,7 @@
+#include "pch.h"
 #include "Window.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	bool Window::s_Keys[MAX_KEYS];
 	bool Window::s_Buttons[MAX_BUTTONS];
@@ -17,7 +18,7 @@ namespace arcane { namespace graphics {
 		m_HideCursor = true;
 
 		if (!init()) {
-			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize window class");
+			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize window class");
 			glfwDestroyWindow(m_Window);
 			glfwTerminate();
 		}
@@ -34,13 +35,25 @@ namespace arcane { namespace graphics {
 	}
 
 	bool Window::init() {
+		// Needed in order to establish the correct OpenGL context (also enabled the usage of RenderDoc along with the window hints)
+		glewExperimental = true;
+
 		if (!glfwInit()) {
 			std::cout << "GLFW Failed To Initialize" << std::endl;
-			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLFW window");
+			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLFW window");
 			return false;
 		}
 
-		// Create the window
+		// Context hints
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+
+		// Window hints
+		glfwWindowHint(GLFW_DOUBLEBUFFER, true);
+
+		// Create the window and OpenGL context
 		if (FULLSCREEN_MODE) {
 			setFullscreenResolution();
 			m_Window = glfwCreateWindow(m_Width, m_Height, m_Title, glfwGetPrimaryMonitor(), NULL);
@@ -50,7 +63,7 @@ namespace arcane { namespace graphics {
 		}
 		
 		if (!m_Window) {
-			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not create the GLFW window");
+			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not create the GLFW window");
 			std::cout << "GLFW Window Couldn't Be Created" << std::endl;
 			return false;
 		}
@@ -63,7 +76,8 @@ namespace arcane { namespace graphics {
 		glfwMakeContextCurrent(m_Window);
 		glfwSetWindowUserPointer(m_Window, this);
 		glfwSetErrorCallback(error_callback);
-		glfwSetWindowSizeCallback(m_Window, window_resize);
+		glfwSetWindowSizeCallback(m_Window, window_resize_callback);
+		glfwSetFramebufferSizeCallback(m_Window, framebuffer_resize_callback);
 		glfwSetKeyCallback(m_Window, key_callback);
 		glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
@@ -83,7 +97,7 @@ namespace arcane { namespace graphics {
 		// Initialize GLEW (allows us to use newer versions of OpenGL)
 		if (glewInit() != GLEW_OK) {
 			std::cout << "Could not Initialize GLEW" << std::endl;
-			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLEW");
+			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLEW");
 			return 0;
 		}
 		std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
@@ -95,6 +109,16 @@ namespace arcane { namespace graphics {
 		ImGui::CreateContext();
 		ImGui_ImplGlfwGL3_Init(m_Window, false);
 		ImGui::StyleColorsDark();
+
+		// Error callback setup
+#if DEBUG_ENABLED
+		glEnable(GL_DEBUG_OUTPUT);
+		glDebugMessageCallback(DebugMessageCallback, 0);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, nullptr, GL_FALSE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_MEDIUM, 0, nullptr, GL_TRUE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, nullptr, GL_TRUE);
+#endif
 		
 		// Everything was successful so return true
 		return 1;
@@ -129,7 +153,7 @@ namespace arcane { namespace graphics {
 	/*                   Static Functions                    */
 	bool Window::isKeyPressed(unsigned int keycode) {
 		if (keycode >= MAX_KEYS) {
-			utils::Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
+			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
 			return false;
 		}
 		else {
@@ -139,7 +163,7 @@ namespace arcane { namespace graphics {
 
 	bool Window::isMouseButtonPressed(unsigned int code) {
 		if (code >= MAX_BUTTONS) {
-			utils::Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
+			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
 			return false;
 		}
 		else {
@@ -153,11 +177,21 @@ namespace arcane { namespace graphics {
 		std::cout << "Error:" << std::endl << description << std::endl;
 	}
 
-	static void window_resize(GLFWwindow *window, int width, int height) {
+	static void window_resize_callback(GLFWwindow *window, int width, int height) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
-		win->m_Width = width;
-		win->m_Height = height;
+		if (width == 0 || height == 0) {
+			win->m_Width = WINDOW_X_RESOLUTION;
+			win->m_Height = WINDOW_Y_RESOLUTION;
+		}
+		else {
+			win->m_Width = width;
+			win->m_Height = height;
+		}
 		glViewport(0, 0, win->m_Width, win->m_Height);
+	}
+
+	static void framebuffer_resize_callback(GLFWwindow *window, int width, int height) {
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
 	}
 
 	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
@@ -198,4 +232,10 @@ namespace arcane { namespace graphics {
 		ImGui_ImplGlfw_CharCallback(window, c);
 	}
 
-} }
+	static void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
+		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
+			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
+			type, severity, message);
+	}
+
+}

@@ -1,8 +1,7 @@
+#include "pch.h"
 #include "Shader.h"
 
-#include "../utils/Logger.h"
-
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	Shader::Shader(const char *vertPath, const char *fragPath)
 		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath("")
@@ -45,7 +44,7 @@ namespace arcane { namespace graphics {
 			std::vector<char> error(length);
 			glGetShaderInfoLog(vertex, length, &length, &error[0]);
 			std::cout << "Failed to Compile Vertex Shader" << std::endl << &error[0] << std::endl;
-			utils::Logger::getInstance().error("logged_files/shader_creation.txt", "shader initialization", "failed to compile vertex shader " + error[0]);
+			Logger::getInstance().error("logged_files/shader_creation.txt", "shader initialization", "failed to compile vertex shader " + error[0]);
 			glDeleteShader(vertex);
 			return 0;
 		}
@@ -62,7 +61,7 @@ namespace arcane { namespace graphics {
 			std::vector<char> error(length);
 			glGetShaderInfoLog(fragment, length, &length, &error[0]);
 			std::cout << "Failed to Compile Fragment Shader" << std::endl << &error[0] << std::endl;
-			utils::Logger::getInstance().error("logged_files/shader_creation.txt", "shader initialization", "failed to compile fragment shader " + error[0]);
+			Logger::getInstance().error("logged_files/shader_creation.txt", "shader initialization", "failed to compile fragment shader " + error[0]);
 			glDeleteShader(fragment);
 			return 0;
 		}
@@ -87,7 +86,7 @@ namespace arcane { namespace graphics {
 				std::vector<char> error(length);
 				glGetShaderInfoLog(geometry, length, &length, &error[0]);
 				std::cout << "Failed to Compile Geometry Shader" << std::endl << &error[0] << std::endl;
-				utils::Logger::getInstance().error("logged_files/shader_creation.txt", "shader initialization", "failed to compile geometry shader " + error[0]);
+				Logger::getInstance().error("logged_files/shader_creation.txt", "shader initialization", "failed to compile geometry shader " + error[0]);
 				glDeleteShader(geometry);
 				return 0;
 			}
@@ -151,4 +150,4 @@ namespace arcane { namespace graphics {
 		glUseProgram(0);
 	}
 
-} }
+}

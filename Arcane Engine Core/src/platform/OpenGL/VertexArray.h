@@ -1,11 +1,8 @@
 #pragma once
 
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
 #include "Buffer.h"
-#include <vector>
 
-namespace arcane { namespace opengl {
+namespace arcane {
 
 	class VertexArray {
 	private:
@@ -22,4 +19,4 @@ namespace arcane { namespace opengl {
 		void unbind() const;
 	};
 
-} }
+}

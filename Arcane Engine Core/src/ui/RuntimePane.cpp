@@ -1,6 +1,7 @@
+#include "pch.h"
 #include "RuntimePane.h"
 
-namespace arcane { namespace ui {
+namespace arcane {
 
 	float RuntimePane::m_ShadowmapTimer = 0.0f;
 	float RuntimePane::m_PostProcessTimer = 0.0f;
@@ -17,4 +18,4 @@ namespace arcane { namespace ui {
 #endif
 	}
 
-} }
+}
