@@ -3,7 +3,7 @@
 #include <vendor/imgui/imgui.h>
 #include <vendor/imgui/imgui_impl_glfw_gl3.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 #define MAX_KEYS 1024
 #define MAX_BUTTONS 32
@@ -62,4 +62,4 @@ namespace arcane { namespace graphics {
 		static friend void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 	};
 
-} }
+}

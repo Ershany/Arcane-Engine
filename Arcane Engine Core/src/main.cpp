@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Scene3D.h"
 
 #include <graphics/Shader.h>
 #include <graphics/Window.h>
@@ -9,6 +8,7 @@
 #include <graphics/renderer/GLCache.h>
 #include <graphics/renderer/PostProcessor.h>
 #include <platform/OpenGL/Framebuffers/Framebuffer.h>
+#include <scene/Scene3D.h>
 #include <terrain/Terrain.h>
 #include <ui/DebugPane.h>
 #include <ui/RuntimePane.h>
@@ -17,22 +17,22 @@
 
 int main() {
 	// Prepare the engine
-	arcane::graphics::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
-	arcane::graphics::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
+	arcane::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
+	arcane::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
 	arcane::Scene3D scene(&camera, &window);
-	arcane::graphics::GLCache *glCache = arcane::graphics::GLCache::getInstance();
-	arcane::graphics::PostProcessor postProcessor(scene.getRenderer());
-	arcane::utils::TextureLoader::initializeDefaultTextures();
+	arcane::GLCache *glCache = arcane::GLCache::getInstance();
+	arcane::PostProcessor postProcessor(scene.getRenderer());
+	arcane::TextureLoader::initializeDefaultTextures();
 
 	// Prepare the UI
-	arcane::ui::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));
-	arcane::ui::DebugPane debugPane(glm::vec2(256.0f, 115.0f));
+	arcane::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));
+	arcane::DebugPane debugPane(glm::vec2(256.0f, 115.0f));
 
 	// Construct framebuffers
 	bool shouldMultisample = MSAA_SAMPLE_AMOUNT > 1.0 ? true : false;
-	arcane::opengl::RenderTarget framebuffer(window.getWidth(), window.getHeight());
+	arcane::Framebuffer framebuffer(window.getWidth(), window.getHeight());
 	framebuffer.addColorAttachment(shouldMultisample).addDepthStencilRBO(shouldMultisample).createFramebuffer();
-	arcane::opengl::RenderTarget shadowmap(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y);
+	arcane::Framebuffer shadowmap(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y);
 	shadowmap.addDepthAttachment(false).createFramebuffer();
 
 #if DEBUG_ENABLED

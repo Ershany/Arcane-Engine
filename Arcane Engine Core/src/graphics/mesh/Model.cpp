@@ -3,7 +3,7 @@
 
 #include "Mesh.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	Model::Model(const char *path) {
 		loadModel(path);
@@ -31,7 +31,7 @@ namespace arcane { namespace graphics {
 		const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-			utils::Logger::getInstance().error("logged_files/model_loading.txt", "model initialization", import.GetErrorString());
+			Logger::getInstance().error("logged_files/model_loading.txt", "model initialization", import.GetErrorString());
 			return;
 		}
 
@@ -113,7 +113,7 @@ namespace arcane { namespace graphics {
 	Texture* Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB) {
 		// Log material constraints are being violated (1 texture per type for the standard shader)
 		if (mat->GetTextureCount(type) > 1)
-			utils::Logger::getInstance().error("logged_files/material_creation.txt", "Mesh Loading", "Mesh's default material contains more than 1 texture for the same type, which currently isn't supported by the standard shader");
+			Logger::getInstance().error("logged_files/material_creation.txt", "Mesh Loading", "Mesh's default material contains more than 1 texture for the same type, which currently isn't supported by the standard shader");
 
 		// Load the texture of a certain type, assuming there is one
 		if (mat->GetTextureCount(type) > 0) {
@@ -122,9 +122,10 @@ namespace arcane { namespace graphics {
 
 			// Assumption made: material stuff is located in the same directory as the model object
 			std::string fileToSearch = (m_Directory + "/" + std::string(str.C_Str())).c_str();
-			return utils::TextureLoader::load2DTexture(fileToSearch, isSRGB);
+			return TextureLoader::load2DTexture(fileToSearch, isSRGB);
 		}
 
 		return nullptr;
 	}
-} }
+
+}

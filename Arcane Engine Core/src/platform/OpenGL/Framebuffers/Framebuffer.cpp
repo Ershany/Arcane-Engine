@@ -1,19 +1,19 @@
 #include "pch.h"
 #include "Framebuffer.h"
 
-namespace arcane { namespace opengl {
+namespace arcane {
 
-	RenderTarget::RenderTarget(unsigned int width, unsigned int height)
+	Framebuffer::Framebuffer(unsigned int width, unsigned int height)
 		: m_Width(width), m_Height(height), m_FBO(0), m_ColourTexture(0), m_DepthStencilRBO(0), m_DepthTexture(0)
 	{
 		glGenFramebuffers(1, &m_FBO);
 	}
 
-	RenderTarget::~RenderTarget() {
+	Framebuffer::~Framebuffer() {
 		glDeleteFramebuffers(1, &m_FBO);
 	}
 
-	void RenderTarget::createFramebuffer() {
+	void Framebuffer::createFramebuffer() {
 		bind();
 		if (m_ColourTexture == 0) {
 			// Indicate that there won't be a colour buffer for this FBO
@@ -23,13 +23,13 @@ namespace arcane { namespace opengl {
 
 		// Check if the creation failed
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			utils::Logger::getInstance().error("logged_files/error.txt", "Framebuffer initialization", "Could not initialize the framebuffer");
+			Logger::getInstance().error("logged_files/error.txt", "Framebuffer initialization", "Could not initialize the framebuffer");
 			return;
 		}
 		unbind();
 	}
 
-	RenderTarget& RenderTarget::addColorAttachment(bool multisampledBuffer) {
+	Framebuffer& Framebuffer::addColorAttachment(bool multisampledBuffer) {
 		m_IsMultisampledColourBuffer = multisampledBuffer;
 
 		bind();
@@ -57,7 +57,7 @@ namespace arcane { namespace opengl {
 		return *this;
 	}
 
-	RenderTarget& RenderTarget::addDepthStencilRBO(bool multisampledBuffer) {
+	Framebuffer& Framebuffer::addDepthStencilRBO(bool multisampledBuffer) {
 		bind();
 
 		// Generate depth+stencil rbo attachment
@@ -75,7 +75,7 @@ namespace arcane { namespace opengl {
 		return *this;
 	}
 
-	RenderTarget& RenderTarget::addDepthAttachment(bool multisampled) {
+	Framebuffer& Framebuffer::addDepthAttachment(bool multisampled) {
 		bind();
 
 		// Generate depth attachment
@@ -106,16 +106,16 @@ namespace arcane { namespace opengl {
 		return *this;
 	}
 
-	void RenderTarget::bind() {
+	void Framebuffer::bind() {
 		glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 	}
 
-	void RenderTarget::unbind() {
+	void Framebuffer::unbind() {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void RenderTarget::clear() {
+	void Framebuffer::clear() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
-} }
+}

@@ -2,7 +2,7 @@
 
 #include <utils/FileUtils.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	class Shader {
 	private:
@@ -31,4 +31,4 @@ namespace arcane { namespace graphics {
 		unsigned int load();
 	};
 
-} }
+}

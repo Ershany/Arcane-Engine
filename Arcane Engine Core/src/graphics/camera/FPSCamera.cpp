@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "FPSCamera.h"
 
-namespace arcane {	namespace graphics {
+namespace arcane {
 
 	FPSCamera::FPSCamera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH)
 		: m_Front(glm::vec3(0.0f, 0.0f, -1.0f)), m_MovementSpeed(SPEED), m_MouseSensitivity(SENSITIVITY), m_FOV(FOV)
@@ -13,7 +13,7 @@ namespace arcane {	namespace graphics {
 		m_Pitch = pitch;
 		updateCameraVectors();
 
-		ui::DebugPane::bindCameraPositionValue(&m_Position);
+		DebugPane::bindCameraPositionValue(&m_Position);
 	}
 
 	FPSCamera::FPSCamera(float xPos, float yPos, float zPos, float xUp, float yUp, float zUp, float yaw = YAW, float pitch = PITCH)
@@ -31,23 +31,23 @@ namespace arcane {	namespace graphics {
 	}
 
 	glm::mat4 FPSCamera::getProjectionMatrix() {
-		return glm::perspective(glm::radians(m_FOV), (float)graphics::Window::getWidth() / (float)graphics::Window::getHeight(), NEAR_PLANE, FAR_PLANE);
+		return glm::perspective(glm::radians(m_FOV), (float)Window::getWidth() / (float)Window::getHeight(), NEAR_PLANE, FAR_PLANE);
 	}
 
 	void FPSCamera::processInput(float deltaTime) {
 		// Keyboard input
 		if (Window::isKeyPressed(GLFW_KEY_W))
-			processKeyboard(arcane::graphics::FORWARD, deltaTime);
+			processKeyboard(arcane::FORWARD, deltaTime);
 		if (Window::isKeyPressed(GLFW_KEY_S))
-			processKeyboard(arcane::graphics::BACKWARD, deltaTime);
+			processKeyboard(arcane::BACKWARD, deltaTime);
 		if (Window::isKeyPressed(GLFW_KEY_A))
-			processKeyboard(arcane::graphics::LEFT, deltaTime);
+			processKeyboard(arcane::LEFT, deltaTime);
 		if (Window::isKeyPressed(GLFW_KEY_D))
-			processKeyboard(arcane::graphics::RIGHT, deltaTime);
+			processKeyboard(arcane::RIGHT, deltaTime);
 		if (Window::isKeyPressed(GLFW_KEY_SPACE))
-			processKeyboard(arcane::graphics::UPWARDS, deltaTime);
+			processKeyboard(arcane::UPWARDS, deltaTime);
 		if (Window::isKeyPressed(GLFW_KEY_LEFT_CONTROL))
-			processKeyboard(arcane::graphics::DOWNWARDS, deltaTime);
+			processKeyboard(arcane::DOWNWARDS, deltaTime);
 
 		if (Window::isKeyPressed(GLFW_KEY_LEFT_SHIFT))
 			m_MovementSpeed = SPEED * 4.0f;
@@ -131,4 +131,4 @@ namespace arcane {	namespace graphics {
 		m_Up = glm::normalize(glm::cross(m_Right, m_Front));
 	}
 
-} }
+}

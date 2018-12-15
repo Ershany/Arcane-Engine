@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "DebugPane.h"
 
-namespace arcane { namespace ui {
+namespace arcane {
 
 	glm::vec3* DebugPane::s_CameraPosition = nullptr;
 	float* DebugPane::s_GammaCorrectionValue = nullptr;
@@ -22,4 +22,4 @@ namespace arcane { namespace ui {
 #endif
 	}
 
-} }
+}

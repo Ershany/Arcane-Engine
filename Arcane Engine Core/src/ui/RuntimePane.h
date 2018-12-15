@@ -2,7 +2,7 @@
 
 #include "Pane.h"
 
-namespace arcane { namespace ui {
+namespace arcane {
 
 	class RuntimePane : public Pane {
 	public:
@@ -19,4 +19,4 @@ namespace arcane { namespace ui {
 		static float m_PostProcessTimer;
 	};
 
-} }
+}

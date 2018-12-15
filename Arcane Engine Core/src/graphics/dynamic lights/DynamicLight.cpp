@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "DynamicLight.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	DynamicLight::DynamicLight(glm::vec3 &lightColour) 
 		: lightColour(lightColour), isActive(false) {}
 
-} }
+}

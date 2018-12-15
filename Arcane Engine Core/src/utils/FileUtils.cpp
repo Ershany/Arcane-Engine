@@ -2,6 +2,7 @@
 #include "FileUtils.h"
 
 namespace arcane {
+
 	std::string FileUtils::readFile(const char *filepath) {
 		// Use the C library to read from a file
 		FILE* file = fopen(filepath, "rt");
@@ -17,4 +18,5 @@ namespace arcane {
 		delete[] data;
 		return result;
 	}
+
 }

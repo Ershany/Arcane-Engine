@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Logger.h"
 
-namespace arcane { namespace utils {
+namespace arcane {
 
 	Logger::Logger() {
 		file = "logged_files/log.txt";
@@ -60,4 +60,5 @@ namespace arcane { namespace utils {
 		}
 		filestream.close();
 	}
-} }
+
+}

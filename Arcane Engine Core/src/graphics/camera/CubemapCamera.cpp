@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CubemapCamera.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	CubemapCamera::CubemapCamera(glm::vec3 &centerPosiiton) : m_CenterPosition(centerPosiiton) {
 		switchCameraToFace(0);
@@ -44,4 +44,4 @@ namespace arcane { namespace graphics {
 		return glm::perspective(glm::radians(90.0f), 1.0f, NEAR_PLANE, FAR_PLANE);
 	}
 
-} }
+}

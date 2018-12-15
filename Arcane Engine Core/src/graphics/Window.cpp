@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Window.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	bool Window::s_Keys[MAX_KEYS];
 	bool Window::s_Buttons[MAX_BUTTONS];
@@ -18,7 +18,7 @@ namespace arcane { namespace graphics {
 		m_HideCursor = true;
 
 		if (!init()) {
-			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize window class");
+			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize window class");
 			glfwDestroyWindow(m_Window);
 			glfwTerminate();
 		}
@@ -40,7 +40,7 @@ namespace arcane { namespace graphics {
 
 		if (!glfwInit()) {
 			std::cout << "GLFW Failed To Initialize" << std::endl;
-			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLFW window");
+			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLFW window");
 			return false;
 		}
 
@@ -63,7 +63,7 @@ namespace arcane { namespace graphics {
 		}
 		
 		if (!m_Window) {
-			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not create the GLFW window");
+			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not create the GLFW window");
 			std::cout << "GLFW Window Couldn't Be Created" << std::endl;
 			return false;
 		}
@@ -97,7 +97,7 @@ namespace arcane { namespace graphics {
 		// Initialize GLEW (allows us to use newer versions of OpenGL)
 		if (glewInit() != GLEW_OK) {
 			std::cout << "Could not Initialize GLEW" << std::endl;
-			utils::Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLEW");
+			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLEW");
 			return 0;
 		}
 		std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
@@ -153,7 +153,7 @@ namespace arcane { namespace graphics {
 	/*                   Static Functions                    */
 	bool Window::isKeyPressed(unsigned int keycode) {
 		if (keycode >= MAX_KEYS) {
-			utils::Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
+			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
 			return false;
 		}
 		else {
@@ -163,7 +163,7 @@ namespace arcane { namespace graphics {
 
 	bool Window::isMouseButtonPressed(unsigned int code) {
 		if (code >= MAX_BUTTONS) {
-			utils::Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
+			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
 			return false;
 		}
 		else {
@@ -238,4 +238,4 @@ namespace arcane { namespace graphics {
 			type, severity, message);
 	}
 
-} }
+}

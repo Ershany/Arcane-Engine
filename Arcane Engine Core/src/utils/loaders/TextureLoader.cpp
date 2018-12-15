@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "TextureLoader.h"
 
-namespace arcane { namespace utils {
+namespace arcane {
 
-	std::map<std::string, graphics::Texture> TextureLoader::m_TextureCache;
+	std::map<std::string, Texture> TextureLoader::m_TextureCache;
 	TextureLoader::DefaultTextures TextureLoader::m_DefaultTextures;
 
-	graphics::Texture* TextureLoader::load2DTexture(std::string &path, bool isSRGB, graphics::TextureSettings *settings) {
+	Texture* TextureLoader::load2DTexture(std::string &path, bool isSRGB, TextureSettings *settings) {
 		// Check the cache
-		std::map<std::string, graphics::Texture>::iterator iter = m_TextureCache.find(path);
+		std::map<std::string, Texture>::iterator iter = m_TextureCache.find(path);
 		if (iter != m_TextureCache.end()) {
 			return &iter->second;
 		}
@@ -17,7 +17,7 @@ namespace arcane { namespace utils {
 		int width, height, numComponents;
 		unsigned char *data = stbi_load(path.c_str(), &width, &height, &numComponents, 0);
 		if (!data) {
-			utils::Logger::getInstance().error("logged_files/texture_loading.txt", "texture load fail - path:", path);
+			Logger::getInstance().error("logged_files/texture_loading.txt", "texture load fail - path:", path);
 			stbi_image_free(data);
 			return nullptr;
 		}
@@ -37,17 +37,17 @@ namespace arcane { namespace utils {
 			}
 		}
 
-		graphics::Texture texture;
+		Texture texture;
 		if (settings != nullptr)
 			texture.setTextureSettings(*settings);
 		texture.generate2DTexture(width, height, textureFormat, dataFormat, data);
 
-		m_TextureCache.insert(std::pair<std::string, graphics::Texture>(path, texture));
+		m_TextureCache.insert(std::pair<std::string, Texture>(path, texture));
 		return &m_TextureCache[path];
 	}
 
-	graphics::Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, bool isSRGB, graphics::CubemapSettings *settings) {
-		graphics::Cubemap *cubemap = new graphics::Cubemap();
+	Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, bool isSRGB, CubemapSettings *settings) {
+		Cubemap *cubemap = new Cubemap();
 		if (settings != nullptr)
 			cubemap->setCubemapSettings(*settings);
 
@@ -78,7 +78,7 @@ namespace arcane { namespace utils {
 				stbi_image_free(data);
 			}
 			else {
-				utils::Logger::getInstance().error("logged_files/error.txt", "Cubemap initialization", "Couldn't load cubemap using 6 filepaths. Filepath error: " + faces[i]);
+				Logger::getInstance().error("logged_files/error.txt", "Cubemap initialization", "Couldn't load cubemap using 6 filepaths. Filepath error: " + faces[i]);
 				stbi_image_free(data);
 				return cubemap;
 			}
@@ -123,4 +123,4 @@ namespace arcane { namespace utils {
 		m_DefaultTextures.m_DefaultEmission->setTextureMagFilter(GL_NEAREST);
 	}
 
-} }
+}

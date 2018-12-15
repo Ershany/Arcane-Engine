@@ -2,17 +2,17 @@
 
 #include <utils/loaders/TextureLoader.h>
 
-namespace arcane { namespace opengl {
+namespace arcane {
 
-	class RenderTarget {
+	class Framebuffer {
 	public:
-		RenderTarget(unsigned int width, unsigned int height);
-		~RenderTarget();
+		Framebuffer(unsigned int width, unsigned int height);
+		~Framebuffer();
 
 		void createFramebuffer();
-		RenderTarget& addColorAttachment(bool multisampledBuffer);
-		RenderTarget& addDepthStencilRBO(bool multisampledBuffer);
-		RenderTarget& addDepthAttachment(bool multisampledBuffer);
+		Framebuffer& addColorAttachment(bool multisampledBuffer);
+		Framebuffer& addDepthStencilRBO(bool multisampledBuffer);
+		Framebuffer& addDepthAttachment(bool multisampledBuffer);
 
 		void bind();
 		void unbind();
@@ -40,4 +40,4 @@ namespace arcane { namespace opengl {
 		unsigned int m_Width, m_Height;
 	};
 
-} }
+}

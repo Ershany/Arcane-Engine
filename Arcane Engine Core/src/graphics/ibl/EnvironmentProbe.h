@@ -3,7 +3,7 @@
 #include <graphics/Shader.h>
 #include <graphics/texture/Cubemap.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	class EnvironmentProbe {
 	public:
@@ -19,4 +19,4 @@ namespace arcane { namespace graphics {
 		bool m_Generated;
 	};
 
-} }
+}

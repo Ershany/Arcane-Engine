@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Cubemap.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	Cubemap::Cubemap() : m_CubemapId(0) {}
 
@@ -45,4 +45,4 @@ namespace arcane { namespace graphics {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	}
 
-} }
+}

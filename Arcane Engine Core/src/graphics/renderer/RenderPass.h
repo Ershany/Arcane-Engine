@@ -1,10 +1,10 @@
 #pragma once
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	enum RenderPass {
 		ShadowmapPass,
 		LightingPass
 	};
 
-} }
+}

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Texture.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	Texture::Texture() : m_TextureTarget(0) {}
 
@@ -92,7 +92,7 @@ namespace arcane { namespace graphics {
 	void Texture::setTextureMagFilter(GLenum textureFilterMode, bool shouldBind) {
 		// If mag filter mode exceeds GL_Linear (bilinear) report an error because it is useless to perform more expensive filtering with magnification
 		if (textureFilterMode > GL_LINEAR)
-			utils::Logger::getInstance().warning("logged_files/textures.txt", "Texture Filter Tuning", "Texture's magnification filter exceeded bilinear filtering which won't result in any visual improvements and will just cost more");
+			Logger::getInstance().warning("logged_files/textures.txt", "Texture Filter Tuning", "Texture's magnification filter exceeded bilinear filtering which won't result in any visual improvements and will just cost more");
 
 		if (m_TextureSettings.TextureMagnificationFilterMode == textureFilterMode)
 			return;
@@ -125,4 +125,4 @@ namespace arcane { namespace graphics {
 		m_TextureSettings.MipBias = mipBias;
 	}
 
-} }
+}

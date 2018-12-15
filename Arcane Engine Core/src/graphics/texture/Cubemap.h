@@ -1,6 +1,6 @@
 #pragma once
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	struct CubemapSettings {
 		// Texture wrapping options
@@ -37,4 +37,4 @@ namespace arcane { namespace graphics {
 		CubemapSettings m_CubemapSettings;
 	};
 
-} }
+}

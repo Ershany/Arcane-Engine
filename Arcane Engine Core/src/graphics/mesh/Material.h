@@ -4,7 +4,7 @@
 #include <graphics/texture/Texture.h>
 #include <utils/loaders/TextureLoader.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	class Material {
 	public:
@@ -24,4 +24,4 @@ namespace arcane { namespace graphics {
 		Texture *m_AlbedoMap, *m_NormalMap, *m_MetallicMap, *m_RoughnessMap, *m_AmbientOcclusionMap, *m_EmissionMap;
 	};
 
-} }
+}

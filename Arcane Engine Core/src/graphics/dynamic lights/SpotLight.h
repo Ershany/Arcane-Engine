@@ -2,7 +2,7 @@
 
 #include "DynamicLight.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	struct SpotLight : public DynamicLight {
 	public:
@@ -15,4 +15,4 @@ namespace arcane { namespace graphics {
 		float cutOff, outerCutOff;
 	};
 
-} }
+}

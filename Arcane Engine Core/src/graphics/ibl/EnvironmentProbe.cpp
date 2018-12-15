@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnvironmentProbe.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	EnvironmentProbe::EnvironmentProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution) {
 
@@ -20,4 +20,4 @@ namespace arcane { namespace graphics {
 		shader.setUniform1i("brdfLUT", 3);
 	}
 
-} }
+}

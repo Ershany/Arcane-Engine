@@ -9,7 +9,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	class Model {
 	public:
@@ -30,4 +30,4 @@ namespace arcane { namespace graphics {
 		Texture* loadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB);
 	};
 
-} }
+}

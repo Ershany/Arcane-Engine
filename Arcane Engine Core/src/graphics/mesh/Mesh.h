@@ -5,7 +5,7 @@
 #include <platform/OpenGL/IndexBuffer.h>
 #include <platform/OpenGL/VertexArray.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	class Model;
 
@@ -44,4 +44,4 @@ namespace arcane { namespace graphics {
 		std::vector<unsigned int> m_Indices;
 	};
 
-} }
+}

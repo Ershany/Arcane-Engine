@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "PostProcessor.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	PostProcessor::PostProcessor(MeshRenderer *meshRenderer)
 		: m_MeshRenderer(meshRenderer), m_PostProcessShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag"), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight())
 	{
 		m_ScreenRenderTarget.addColorAttachment(false).addDepthStencilRBO(false).createFramebuffer();
-		ui::DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
+		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
 	}
 
 	PostProcessor::~PostProcessor() {
@@ -18,14 +18,14 @@ namespace arcane { namespace graphics {
 		// SSAO goes here
 	}
 
-	void PostProcessor::postLightingPostProcess(opengl::RenderTarget *input) {
+	void PostProcessor::postLightingPostProcess(Framebuffer *input) {
 #if DEBUG_ENABLED
 		glFinish();
 		m_Timer.reset();
 #endif
 
 		// If the input RenderTarget is multi-sampled. Resolve it by blitting it to a non-multi-sampled RenderTarget
-		opengl::RenderTarget *target = input;
+		Framebuffer *target = input;
 		if (input->isMultisampledColourBuffer()) {
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, input->getFramebuffer());
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_ScreenRenderTarget.getFramebuffer());
@@ -34,7 +34,7 @@ namespace arcane { namespace graphics {
 		}
 
 #if DEBUG_ENABLED
-		if (ui::DebugPane::getWireframeMode())
+		if (DebugPane::getWireframeMode())
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #endif
 
@@ -53,8 +53,8 @@ namespace arcane { namespace graphics {
 
 #if DEBUG_ENABLED
 		glFinish();
-		ui::RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
+		RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
 #endif
 	}
 
-} }
+}

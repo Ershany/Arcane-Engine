@@ -5,14 +5,14 @@
 #include <graphics/mesh/Model.h>
 #include <utils/loaders/TextureLoader.h>
 
-namespace arcane { namespace terrain {
+namespace arcane {
 
 	class Terrain {
 	public:
 		Terrain(glm::vec3 &worldPosition);
 		~Terrain();
 
-		void Draw(graphics::Shader &shader, graphics::RenderPass pass) const;
+		void Draw(Shader &shader, RenderPass pass) const;
 
 		inline const glm::vec3& getPosition() const { return m_Position; }
 	private:
@@ -25,9 +25,8 @@ namespace arcane { namespace terrain {
 
 		glm::mat4 m_ModelMatrix;
 		glm::vec3 m_Position;
-		graphics::Mesh *m_Mesh;
-		std::array<graphics::Texture*, 9> m_Textures; // Represents all the textures supported by the terrain's texure splatting (rgba and the default value)
+		Mesh *m_Mesh;
+		std::array<Texture*, 9> m_Textures; // Represents all the textures supported by the terrain's texure splatting (rgba and the default value)
 	};
 
-} }
-
+}

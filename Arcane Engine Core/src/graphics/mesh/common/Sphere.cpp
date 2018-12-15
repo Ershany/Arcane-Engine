@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Sphere.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	Sphere::Sphere(int xSegments, int ySegments) {
 		for (int y = 0; y <= ySegments; ++y)
@@ -37,4 +37,4 @@ namespace arcane { namespace graphics {
 		LoadData();
 	}
 
-} }
+}

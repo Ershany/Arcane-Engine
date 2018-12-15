@@ -2,9 +2,9 @@
 
 #include <utils/Singleton.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
-	class GLCache : utils::Singleton {
+	class GLCache : Singleton {
 	public:
 		GLCache();
 		~GLCache();
@@ -54,4 +54,4 @@ namespace arcane { namespace graphics {
 		unsigned int m_ActiveShaderID;
 	};
 
-} }
+}

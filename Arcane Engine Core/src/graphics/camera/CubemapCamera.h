@@ -1,6 +1,6 @@
 #pragma once
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	class CubemapCamera {
 	public:
@@ -14,4 +14,4 @@ namespace arcane { namespace graphics {
 		glm::vec3 m_CenterPosition, m_Front, m_Up;
 	};
 
-} }
+}

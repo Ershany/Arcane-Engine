@@ -2,7 +2,7 @@
 
 #include <graphics/Shader.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	struct DynamicLight {
 		DynamicLight(glm::vec3 &lightColour);
@@ -14,4 +14,4 @@ namespace arcane { namespace graphics {
 		bool isActive;
 	};
 
-} }
+}

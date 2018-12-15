@@ -9,7 +9,7 @@
 #include <ui/RuntimePane.h>
 #include <utils/Timer.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	class PostProcessor {
 	public:
@@ -18,10 +18,10 @@ namespace arcane { namespace graphics {
 
 		void preLightingPostProcess();
 		// Assumes the input RenderTarget is bound, after function runs the default screen RenderTarget is bound
-		void postLightingPostProcess(opengl::RenderTarget *input);
+		void postLightingPostProcess(Framebuffer *input);
 
 		// Might be useful to have if we want to have more custom post processing. Unity does it this way
-		//void blit(Texture *texture, opengl::Framebuffer *source);
+		//void blit(Texture *texture, Framebuffer *source);
 
 		inline void EnableBlur(bool choice) { m_Blur = choice; }
 	private:
@@ -30,10 +30,10 @@ namespace arcane { namespace graphics {
 		MeshRenderer *m_MeshRenderer;
 		Shader m_PostProcessShader;
 		Quad m_NDC_Plane;
-		opengl::RenderTarget m_ScreenRenderTarget;
+		Framebuffer m_ScreenRenderTarget;
 		Timer m_Timer;
 
 		bool m_Blur = false;
 	};
 
-} }
+}

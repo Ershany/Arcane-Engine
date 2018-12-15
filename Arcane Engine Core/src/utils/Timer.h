@@ -20,4 +20,4 @@ namespace arcane {
 		inline double elapsed() const { return glfwGetTime() - startTime; }
 	};
 
-} 
+}

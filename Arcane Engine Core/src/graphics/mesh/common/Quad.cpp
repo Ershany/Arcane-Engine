@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Quad.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	Quad::Quad() {
 		m_Positions.push_back(glm::vec3(-1, 1, 0));  m_UVs.push_back(glm::vec2(0, 1)); m_Normals.push_back(glm::vec3(0, 0, 1)); m_Tangents.push_back(glm::vec3(1, 0, 0)); m_Bitangents.push_back(glm::vec3(0, 1, 0));
@@ -15,4 +15,4 @@ namespace arcane { namespace graphics {
 		LoadData();
 	}
 
-} }
+}

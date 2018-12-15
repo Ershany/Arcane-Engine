@@ -3,7 +3,7 @@
 #include <graphics/Window.h>
 #include <ui/DebugPane.h>
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	enum Camera_Movement {
 		FORWARD,
@@ -109,4 +109,4 @@ namespace arcane { namespace graphics {
 		void processMouseScroll(double yOffset);
 	};
 
-} }
+}

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "DynamicLightManager.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	// TODO: Add functionality so it can update with an entity's position and orientation
 	DynamicLightManager::DynamicLightManager() 
@@ -49,4 +49,4 @@ namespace arcane { namespace graphics {
 		m_PointLights.push_back(pointLight);
 	}
 
-} }
+}

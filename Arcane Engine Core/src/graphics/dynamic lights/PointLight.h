@@ -2,7 +2,7 @@
 
 #include "DynamicLight.h"
 
-namespace arcane { namespace graphics {
+namespace arcane {
 
 	struct PointLight : public DynamicLight {
 	public:
@@ -14,4 +14,4 @@ namespace arcane { namespace graphics {
 		glm::vec3 position;
 	};
 
-} }
+}

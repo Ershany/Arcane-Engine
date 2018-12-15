@@ -2,7 +2,7 @@
 
 #include "Buffer.h"
 
-namespace arcane { namespace opengl {
+namespace arcane {
 
 	class VertexArray {
 	private:
@@ -19,4 +19,4 @@ namespace arcane { namespace opengl {
 		void unbind() const;
 	};
 
-} }
+}

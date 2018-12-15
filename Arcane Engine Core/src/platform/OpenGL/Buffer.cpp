@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Buffer.h"
 
-namespace arcane { namespace opengl {
+namespace arcane {
 
 	Buffer::Buffer() {
 		glGenBuffers(1, &m_BufferID);
@@ -31,4 +31,4 @@ namespace arcane { namespace opengl {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-} }
+}
