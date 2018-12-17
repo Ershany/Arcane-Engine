@@ -36,31 +36,31 @@ namespace arcane {
 
 	void FPSCamera::processInput(float deltaTime) {
 		// Keyboard input
-		if (Window::isKeyPressed(GLFW_KEY_W))
+		if (InputManager::isKeyPressed(GLFW_KEY_W))
 			processKeyboard(arcane::FORWARD, deltaTime);
-		if (Window::isKeyPressed(GLFW_KEY_S))
+		if (InputManager::isKeyPressed(GLFW_KEY_S))
 			processKeyboard(arcane::BACKWARD, deltaTime);
-		if (Window::isKeyPressed(GLFW_KEY_A))
+		if (InputManager::isKeyPressed(GLFW_KEY_A))
 			processKeyboard(arcane::LEFT, deltaTime);
-		if (Window::isKeyPressed(GLFW_KEY_D))
+		if (InputManager::isKeyPressed(GLFW_KEY_D))
 			processKeyboard(arcane::RIGHT, deltaTime);
-		if (Window::isKeyPressed(GLFW_KEY_SPACE))
+		if (InputManager::isKeyPressed(GLFW_KEY_SPACE))
 			processKeyboard(arcane::UPWARDS, deltaTime);
-		if (Window::isKeyPressed(GLFW_KEY_LEFT_CONTROL))
+		if (InputManager::isKeyPressed(GLFW_KEY_LEFT_CONTROL))
 			processKeyboard(arcane::DOWNWARDS, deltaTime);
 
-		if (Window::isKeyPressed(GLFW_KEY_LEFT_SHIFT))
+		if (InputManager::isKeyPressed(GLFW_KEY_LEFT_SHIFT))
 			m_MovementSpeed = SPEED * 4.0f;
-		else if(Window::isKeyPressed(GLFW_KEY_LEFT_ALT))
+		else if(InputManager::isKeyPressed(GLFW_KEY_LEFT_ALT))
 			m_MovementSpeed = SPEED / 4.0f;
 		else
 			m_MovementSpeed = SPEED;
 
 		// Mouse scrolling
-		processMouseScroll(Window::getScrollY() * 6.0);
+		processMouseScroll(InputManager::getScrollY() * 6.0);
 
 		// Mouse movement
-		processMouseMovement(Window::getMouseXDelta(), -Window::getMouseYDelta(), true);
+		processMouseMovement(InputManager::getMouseXDelta(), -InputManager::getMouseYDelta(), true);
 	}
 
 	void FPSCamera::processKeyboard(Camera_Movement direction, float deltaTime) {
