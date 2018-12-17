@@ -3,14 +3,20 @@
 
 namespace arcane {
 
-	std::map<std::string, Texture> TextureLoader::m_TextureCache;
-	TextureLoader::DefaultTextures TextureLoader::m_DefaultTextures;
+	// Static declarations
+	std::map<std::string, Texture*> TextureLoader::m_TextureCache;
+	Texture *TextureLoader::m_DefaultAlbedo;
+	Texture *TextureLoader::m_DefaultNormal;
+	Texture *TextureLoader::m_FullMetallic, *TextureLoader::m_NoMetallic;
+	Texture *TextureLoader::m_FullRoughness, *TextureLoader::m_NoRoughness;
+	Texture *TextureLoader::m_DefaultAO;
+	Texture *TextureLoader::m_DefaultEmission;
 
 	Texture* TextureLoader::load2DTexture(std::string &path, bool isSRGB, TextureSettings *settings) {
 		// Check the cache
-		std::map<std::string, Texture>::iterator iter = m_TextureCache.find(path);
+		std::map<std::string, Texture*>::iterator iter = m_TextureCache.find(path);
 		if (iter != m_TextureCache.end()) {
-			return &iter->second;
+			return iter->second;
 		}
 
 		// Load the texture
@@ -37,13 +43,13 @@ namespace arcane {
 			}
 		}
 
-		Texture texture;
+		Texture *texture = new Texture();
 		if (settings != nullptr)
-			texture.setTextureSettings(*settings);
-		texture.generate2DTexture(width, height, textureFormat, dataFormat, data);
+			texture->setTextureSettings(*settings);
+		texture->generate2DTexture(width, height, textureFormat, dataFormat, data);
 
-		m_TextureCache.insert(std::pair<std::string, Texture>(path, texture));
-		return &m_TextureCache[path];
+		m_TextureCache.insert(std::pair<std::string, Texture*>(path, texture));
+		return m_TextureCache[path];
 	}
 
 	Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, bool isSRGB, CubemapSettings *settings) {
@@ -89,38 +95,38 @@ namespace arcane {
 
 	void TextureLoader::initializeDefaultTextures() {
 		// Setup texture and minimal filtering because they are 1x1 textures so they require none
-		m_DefaultTextures.m_DefaultAlbedo = load2DTexture(std::string("res/textures/default/defaultAlbedo.png"), true);
-		m_DefaultTextures.m_DefaultAlbedo->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_DefaultAlbedo->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultAlbedo->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"), false);
-		m_DefaultTextures.m_DefaultNormal->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_DefaultNormal->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultNormal->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_FullMetallic = load2DTexture(std::string("res/textures/default/white.png"), false);
-		m_DefaultTextures.m_FullMetallic->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_FullMetallic->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_FullMetallic->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_NoMetallic = load2DTexture(std::string("res/textures/default/black.png"), false);
-		m_DefaultTextures.m_NoMetallic->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_NoMetallic->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_NoMetallic->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_FullRoughness = load2DTexture(std::string("res/textures/default/white.png"), false);
-		m_DefaultTextures.m_FullRoughness->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_FullRoughness->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_FullRoughness->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_NoRoughness = load2DTexture(std::string("res/textures/default/black.png"), false);
-		m_DefaultTextures.m_NoRoughness->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_NoRoughness->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_NoRoughness->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultAO = load2DTexture(std::string("res/textures/default/white.png"), false);
-		m_DefaultTextures.m_DefaultAO->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_DefaultAO->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultAO->setTextureMagFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultEmission = load2DTexture(std::string("res/textures/default/black.png"), true);
-		m_DefaultTextures.m_DefaultEmission->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultTextures.m_DefaultEmission->setTextureMinFilter(GL_NEAREST);
-		m_DefaultTextures.m_DefaultEmission->setTextureMagFilter(GL_NEAREST);
+		m_DefaultAlbedo = load2DTexture(std::string("res/textures/default/defaultAlbedo.png"), true);
+		m_DefaultAlbedo->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultAlbedo->setTextureMinFilter(GL_NEAREST);
+		m_DefaultAlbedo->setTextureMagFilter(GL_NEAREST);
+		m_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"), false);
+		m_DefaultNormal->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultNormal->setTextureMinFilter(GL_NEAREST);
+		m_DefaultNormal->setTextureMagFilter(GL_NEAREST);
+		m_FullMetallic = load2DTexture(std::string("res/textures/default/white.png"), false);
+		m_FullMetallic->setAnisotropicFilteringMode(1.0f, true);
+		m_FullMetallic->setTextureMinFilter(GL_NEAREST);
+		m_FullMetallic->setTextureMagFilter(GL_NEAREST);
+		m_NoMetallic = load2DTexture(std::string("res/textures/default/black.png"), false);
+		m_NoMetallic->setAnisotropicFilteringMode(1.0f, true);
+		m_NoMetallic->setTextureMinFilter(GL_NEAREST);
+		m_NoMetallic->setTextureMagFilter(GL_NEAREST);
+		m_FullRoughness = load2DTexture(std::string("res/textures/default/white.png"), false);
+		m_FullRoughness->setAnisotropicFilteringMode(1.0f, true);
+		m_FullRoughness->setTextureMinFilter(GL_NEAREST);
+		m_FullRoughness->setTextureMagFilter(GL_NEAREST);
+		m_NoRoughness = load2DTexture(std::string("res/textures/default/black.png"), false);
+		m_NoRoughness->setAnisotropicFilteringMode(1.0f, true);
+		m_NoRoughness->setTextureMinFilter(GL_NEAREST);
+		m_NoRoughness->setTextureMagFilter(GL_NEAREST);
+		m_DefaultAO = load2DTexture(std::string("res/textures/default/white.png"), false);
+		m_DefaultAO->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultAO->setTextureMinFilter(GL_NEAREST);
+		m_DefaultAO->setTextureMagFilter(GL_NEAREST);
+		m_DefaultEmission = load2DTexture(std::string("res/textures/default/black.png"), true);
+		m_DefaultEmission->setAnisotropicFilteringMode(1.0f, true);
+		m_DefaultEmission->setTextureMinFilter(GL_NEAREST);
+		m_DefaultEmission->setTextureMagFilter(GL_NEAREST);
 	}
 
 }

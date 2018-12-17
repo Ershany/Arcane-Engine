@@ -6,7 +6,7 @@
 #include <graphics/dynamic lights/DynamicLightManager.h>
 #include <graphics/renderer/GLCache.h>
 #include <graphics/renderer/MeshRenderer.h>
-#include <scene/Renderable3D.h>
+#include <scene/RenderableModel.h>
 #include <terrain/Terrain.h>
 #include <utils/loaders/TextureLoader.h>
 
@@ -21,14 +21,14 @@ namespace arcane {
 		DynamicLightManager m_DynamicLightManager;
 		GLCache *m_GLCache;
 
-		std::vector<Renderable3D*> m_Renderables;
+		std::vector<RenderableModel*> m_Renderables;
 
 		Shader m_TerrainShader, m_ModelShader, m_ShadowmapShader;
 	public:
 		Scene3D(FPSCamera *camera, Window *window);
 		~Scene3D();
 		
-		void add(Renderable3D *renderable);
+		void add(RenderableModel *renderable);
 
 		// Passes
 		void shadowmapPass();

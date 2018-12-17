@@ -28,7 +28,6 @@ namespace arcane {
 		inline void setCubemapSettings(CubemapSettings settings) { m_CubemapSettings = settings; }
 	private:
 		// TODO: Look into better filtering like anisotropic support and also look into proper mips for cubemaps
-		// Also need support for deletion/cleanup of cubemaps
 		unsigned int m_CubemapId;
 
 		unsigned int m_FaceWidth, m_FaceHeight;

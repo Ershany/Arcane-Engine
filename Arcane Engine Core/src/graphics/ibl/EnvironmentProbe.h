@@ -7,7 +7,7 @@ namespace arcane {
 
 	class EnvironmentProbe {
 	public:
-		EnvironmentProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution);
+		EnvironmentProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution, bool isStatic);
 
 		void generate();
 
@@ -15,8 +15,12 @@ namespace arcane {
 		void bind(Shader &shader);
 	private:
 		Cubemap *m_IrradianceMap, *m_PrefilterMap, *m_BRDF_LUT;
+
 		glm::vec3 m_GeneratedPosition;
 		bool m_Generated;
+
+		glm::vec2 m_ProbeResolution;
+		bool isStatic;
 	};
 
 }

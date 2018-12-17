@@ -105,7 +105,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\scene\Renderable3D.cpp" />
+    <ClCompile Include="src\scene\RenderableModel.cpp" />
     <ClCompile Include="src\graphics\renderer\MeshRenderer.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Skybox.cpp" />
@@ -167,7 +167,7 @@
     <ClInclude Include="src\input\InputManager.h" />
     <ClInclude Include="src\input\JoystickManager.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\scene\Renderable3D.h" />
+    <ClInclude Include="src\scene\RenderableModel.h" />
     <ClInclude Include="src\graphics\renderer\MeshRenderer.h" />
     <ClInclude Include="src\graphics\renderer\RenderPass.h" />
     <ClInclude Include="src\graphics\Shader.h" />

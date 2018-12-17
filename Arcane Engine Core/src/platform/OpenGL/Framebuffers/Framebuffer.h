@@ -9,14 +9,17 @@ namespace arcane {
 		Framebuffer(unsigned int width, unsigned int height);
 		~Framebuffer();
 
+		// Creation functions
 		void createFramebuffer();
-		Framebuffer& addColorAttachment(bool multisampledBuffer);
+		Framebuffer& addTexture2DColorAttachment(bool multisampledBuffer);
 		Framebuffer& addDepthStencilRBO(bool multisampledBuffer);
 		Framebuffer& addDepthAttachment(bool multisampledBuffer);
 
 		void bind();
 		void unbind();
 
+		// Assumes framebuffer is bound
+		void setColorAttachment(unsigned int target, unsigned int targetType);
 		void clear();
 
 		inline unsigned int getWidth() { return m_Width; }

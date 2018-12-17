@@ -8,7 +8,7 @@ namespace arcane {
 	Texture::Texture(TextureSettings settings) : m_TextureTarget(0), m_TextureSettings(settings) {}
 
 	Texture::~Texture() {
-		// Destruction handled by the texture loader unless for some reason you don't want to go through the texture loading system
+		glDeleteTextures(1, &m_TextureId);
 	}
 
 	void Texture::generate2DTexture(unsigned int width, unsigned int height, GLenum textureFormat, GLenum dataFormat, const void *data) {

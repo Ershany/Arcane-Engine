@@ -73,6 +73,7 @@ float CalculateShadow(vec3 normal, vec3 fragToDirLight);
 void main() {
 	// Sample textures
 	vec3 albedo = texture(material.texture_albedo, TexCoords).rgb;
+	float albedoAlpha = texture(material.texture_albedo, TexCoords).w;
 	vec3 normal = texture(material.texture_normal, TexCoords).rgb;
 	float metallic = texture(material.texture_metallic, TexCoords).r;
 	float roughness = max(texture(material.texture_roughness, TexCoords).r, 0.04);
@@ -102,7 +103,7 @@ void main() {
 	vec3 indirectDiffuse = indirectIrradiance * albedo;
 	vec3 ambient = (diffuseRatio * indirectDiffuse) * ao;
 
-	color = vec4(ambient + directLightIrradiance, 1.0);
+	color = vec4(ambient + directLightIrradiance, albedoAlpha);
 }
 
 

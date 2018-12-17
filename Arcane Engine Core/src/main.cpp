@@ -32,7 +32,7 @@ int main() {
 	// Construct framebuffers
 	bool shouldMultisample = MSAA_SAMPLE_AMOUNT > 1.0 ? true : false;
 	arcane::Framebuffer framebuffer(window.getWidth(), window.getHeight());
-	framebuffer.addColorAttachment(shouldMultisample).addDepthStencilRBO(shouldMultisample).createFramebuffer();
+	framebuffer.addTexture2DColorAttachment(shouldMultisample).addDepthStencilRBO(shouldMultisample).createFramebuffer();
 	arcane::Framebuffer shadowmap(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y);
 	shadowmap.addDepthAttachment(false).createFramebuffer();
 
