@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MeshRenderer.h"
+#include "ModelRenderer.h"
 
 #include <graphics/Shader.h>
 #include <graphics/mesh/common/Quad.h>
@@ -13,7 +13,7 @@ namespace arcane {
 
 	class PostProcessor {
 	public:
-		PostProcessor(MeshRenderer *meshRenderer);
+		PostProcessor(ModelRenderer *meshRenderer);
 		~PostProcessor();
 
 		void preLightingPostProcess();
@@ -27,7 +27,7 @@ namespace arcane {
 	private:
 		float m_GammaCorrection = 2.2f;
 
-		MeshRenderer *m_MeshRenderer;
+		ModelRenderer *m_ModelRenderer;
 		Shader m_PostProcessShader;
 		Quad m_NDC_Plane;
 		Framebuffer m_ScreenRenderTarget;

@@ -28,5 +28,5 @@ void main() {
 	FragPosLightClipSpace = lightSpaceViewProjectionMatrix * vec4(FragPos, 1.0);
 	TexCoords = texCoords;
 
-	gl_Position = projection * view * model * (vec4(position, 1.0f));
+	gl_Position = projection * view * vec4(FragPos, 1.0f);
 }

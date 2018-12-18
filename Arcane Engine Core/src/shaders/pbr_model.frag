@@ -123,7 +123,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 	diffuseRatio *= 1.0 - metallic;
 
 	// Finally calculate the specular part of the Cook-Torrance BRDF (max 0.1 stops any visual artifacts)
-	vec3 numerator = fresnel * normalDistribution * geometry;
+	vec3 numerator = specularRatio * normalDistribution * geometry;
 	float denominator = 4 * max(dot(fragToView, normal), 0.1) * max(dot(lightDir, normal), 0.0) + 0.001;  // Prevents any division by zero
 	vec3 specular = numerator / denominator;
 

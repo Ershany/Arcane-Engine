@@ -18,11 +18,10 @@
 
 int main() {
 	// Prepare the engine
-	arcane::FPSCamera camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f);
 	arcane::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
-	arcane::Scene3D scene(&camera, &window);
+	arcane::Scene3D scene(&window);
 	arcane::GLCache *glCache = arcane::GLCache::getInstance();
-	arcane::PostProcessor postProcessor(scene.getRenderer());
+	arcane::PostProcessor postProcessor(scene.getModelRenderer());
 	arcane::TextureLoader::initializeDefaultTextures();
 
 	// Prepare the UI
@@ -67,9 +66,6 @@ int main() {
 		glFinish();
 		runtimePane.setShadowmapTimer((float)timer.elapsed());
 #endif
-
-		// Camera Update
-		camera.processInput((float)deltaTime.getDeltaTime());
 
 		// Draw the scene to our custom multisampled framebuffer
 		glViewport(0, 0, framebuffer.getWidth(), framebuffer.getHeight());

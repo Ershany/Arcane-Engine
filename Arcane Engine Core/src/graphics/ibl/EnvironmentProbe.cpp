@@ -12,7 +12,7 @@ namespace arcane {
 		CubemapSettings settings;
 		m_IrradianceMap = new Cubemap(settings);
 		for (int i = 0; i < 6; i++) {
-			m_IrradianceMap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_ProbeResolution.x, m_ProbeResolution.y, GL_RGBA16F, GL_RGBA16F, nullptr);
+			m_IrradianceMap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, (unsigned int)m_ProbeResolution.x, (unsigned int)m_ProbeResolution.y, GL_RGBA16F, GL_RGBA16F, nullptr);
 		}
 
 		m_Generated = true;
