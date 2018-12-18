@@ -16,11 +16,11 @@ namespace arcane {
 	private:
 		Cubemap *m_IrradianceMap, *m_PrefilterMap, *m_BRDF_LUT;
 
-		glm::vec3 m_GeneratedPosition;
+		glm::vec3 m_Position;
 		bool m_Generated;
 
 		glm::vec2 m_ProbeResolution;
-		bool isStatic;
+		bool m_IsStatic;
 	};
 
 }

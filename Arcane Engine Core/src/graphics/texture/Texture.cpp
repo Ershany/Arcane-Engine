@@ -5,7 +5,7 @@ namespace arcane {
 
 	Texture::Texture() : m_TextureTarget(0) {}
 
-	Texture::Texture(TextureSettings settings) : m_TextureTarget(0), m_TextureSettings(settings) {}
+	Texture::Texture(TextureSettings &settings) : m_TextureTarget(0), m_TextureSettings(settings) {}
 
 	Texture::~Texture() {
 		glDeleteTextures(1, &m_TextureId);

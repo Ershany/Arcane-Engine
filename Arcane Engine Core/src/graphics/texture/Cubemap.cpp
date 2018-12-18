@@ -5,7 +5,7 @@ namespace arcane {
 
 	Cubemap::Cubemap() : m_CubemapId(0) {}
 
-	Cubemap::Cubemap(CubemapSettings settings) : m_CubemapId(0), m_CubemapSettings(settings) {}
+	Cubemap::Cubemap(CubemapSettings &settings) : m_CubemapId(0), m_CubemapSettings(settings) {}
 
 	Cubemap::~Cubemap() {
 		glDeleteTextures(1, &m_CubemapId);

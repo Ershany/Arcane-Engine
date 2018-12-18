@@ -12,6 +12,7 @@ namespace arcane {
 		// isSRGB will let the loader know that the texture needs to be "linearlized" before it is sampled in the shaders
 		// Anything that will be used for colour in a renderer should be linearlized. However textures that contain data (Heightfields, normal maps, metallic maps etc.) should not be,
 		// thus they are not in SRGB space
+		// TODO: HDR loading
 		static Texture* load2DTexture(std::string &path, bool isSRGB, TextureSettings *settings = nullptr);
 		static Cubemap* loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, bool isSRGB, CubemapSettings *settings = nullptr);
 

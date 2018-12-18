@@ -4,6 +4,7 @@
 #include <graphics/Window.h>
 #include <graphics/camera/FPSCamera.h>
 #include <graphics/dynamic lights/DynamicLightManager.h>
+#include <graphics/ibl/EnvironmentProbeManager.h>
 #include <graphics/renderer/GLCache.h>
 #include <graphics/renderer/MeshRenderer.h>
 #include <scene/RenderableModel.h>
@@ -14,12 +15,13 @@ namespace arcane {
 	
 	class Scene3D {
 	private:
+		GLCache *m_GLCache;
 		FPSCamera *m_Camera;
 		MeshRenderer *m_MeshRenderer;
 		Terrain *m_Terrain;
 		Skybox *m_Skybox;
 		DynamicLightManager m_DynamicLightManager;
-		GLCache *m_GLCache;
+		EnvironmentProbeManager m_ProbeManager;
 
 		std::vector<RenderableModel*> m_Renderables;
 

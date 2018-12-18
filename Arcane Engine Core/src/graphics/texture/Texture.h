@@ -20,7 +20,7 @@ namespace arcane {
 	class Texture {
 	public:
 		Texture();
-		Texture(TextureSettings settings);
+		Texture(TextureSettings &settings);
 		~Texture();
 
 		// Generation functions

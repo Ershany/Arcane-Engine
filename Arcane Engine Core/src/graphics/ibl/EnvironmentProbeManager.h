@@ -12,11 +12,11 @@ namespace arcane
 	public:
 		EnvironmentProbeManager();
 
-		void GenerateProbe(glm::vec3 worldPosition, glm::vec2 probeResolution, bool isStaticProbe);
+		void GenerateProbe(glm::vec3 &worldPosition, glm::vec2 &probeResolution, bool isStaticProbe);
 	private:
-		//Framebuffer m_CubemapGenerationFramebuffer;
-		//CubemapCamera m_CubemapCamera;
-		std::vector<EnvironmentProbe> m_EnvironmentProbes;
+		Framebuffer m_CubemapGenerationFramebuffer;
+		CubemapCamera m_CubemapCamera;
+		std::vector<EnvironmentProbe*> m_EnvironmentProbes;
 	};
 
 }
