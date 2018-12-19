@@ -39,6 +39,7 @@ namespace arcane {
 #endif
 
 		// Bind shader and its post processing settings, and also bind the screenspace texture
+		glViewport(0, 0, Window::getWidth(), Window::getHeight());
 		input->unbind();
 		GLCache::getInstance()->switchShader(m_PostProcessShader.getShaderID());
 		m_PostProcessShader.setUniform1f("gamma_inverse", 1.0f / m_GammaCorrection);

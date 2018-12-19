@@ -13,9 +13,15 @@ namespace arcane
 		PostProcessPass(Scene3D *scene);
 		virtual ~PostProcessPass() override;
 
-		void executeRenderPass();
+		void executeRenderPass(Framebuffer *framebufferToProcess);
 	private:
 		Shader m_PostProcessShader;
+		Quad m_NDC_Plane;
+		Framebuffer m_ScreenRenderTarget; // Only used if multi-sampling is enabled so it can blit to a non-multisampled buffer
+
+		// Post Processing Tweaks
+		float m_GammaCorrection = 2.2f;
+		bool m_Blur = false;
 	};
 
 }

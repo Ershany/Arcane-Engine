@@ -73,7 +73,7 @@ namespace arcane {
 
 	void Terrain::Draw(Shader &shader, RenderPassType pass) const {
 		// Texture unit 0 is reserved for the shadowmap
-		if (pass != RenderPassType::ShadowmapPass) {
+		if (pass != RenderPassType::ShadowmapPassType) {
 			m_Textures[0]->bind(1);
 			shader.setUniform1i("material.texture_diffuse1", 1);
 			m_Textures[1]->bind(2);

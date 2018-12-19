@@ -1,13 +1,15 @@
 #pragma once
 
+#include <platform/OpenGL/Framebuffers/Framebuffer.h>
+
 namespace arcane
 {
 
 	enum RenderPassType
 	{
-		ShadowmapPass,
-		LightingPass,
-		PostProcessPass
+		ShadowmapPassType,
+		LightingPassType,
+		PostProcessPassType
 	};
 
 	struct ShadowmapPassOutput
@@ -18,7 +20,7 @@ namespace arcane
 
 	struct LightingPassOutput
 	{
-		unsigned int outputTexture;
+		Framebuffer *outputFramebuffer;
 	};
 
 }

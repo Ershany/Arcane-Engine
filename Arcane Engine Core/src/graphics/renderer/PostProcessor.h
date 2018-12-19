@@ -30,7 +30,7 @@ namespace arcane {
 		ModelRenderer *m_ModelRenderer;
 		Shader m_PostProcessShader;
 		Quad m_NDC_Plane;
-		Framebuffer m_ScreenRenderTarget;
+		Framebuffer m_ScreenRenderTarget; // Only used if multi-sampling is enabled so it can blit to a non-multisampled buffer
 		Timer m_Timer;
 
 		bool m_Blur = false;

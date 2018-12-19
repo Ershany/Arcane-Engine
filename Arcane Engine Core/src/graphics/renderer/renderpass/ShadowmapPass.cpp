@@ -4,7 +4,7 @@
 namespace arcane
 {
 
-	ShadowmapPass::ShadowmapPass(Scene3D *scene) : RenderPass(scene, RenderPassType::ShadowmapPass), 
+	ShadowmapPass::ShadowmapPass(Scene3D *scene) : RenderPass(scene, RenderPassType::ShadowmapPassType), 
 		m_ShadowmapFramebuffer(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y), m_ShadowmapShader("src/shaders/shadowmap.vert", "src/shaders/shadowmap.frag")
 	{
 		m_ShadowmapFramebuffer.addDepthAttachment(false).createFramebuffer();
@@ -13,6 +13,7 @@ namespace arcane
 	ShadowmapPass::~ShadowmapPass() {}
 
 	ShadowmapPassOutput ShadowmapPass::executeRenderPass() {
+		// TODO: Add rendering state changes (to ensure proper state)
 		glViewport(0, 0, m_ShadowmapFramebuffer.getWidth(), m_ShadowmapFramebuffer.getHeight());
 		m_ShadowmapFramebuffer.bind();
 		m_ShadowmapFramebuffer.clear();

@@ -6,6 +6,7 @@
 #include <graphics/mesh/Model.h>
 #include <graphics/mesh/common/Quad.h>
 #include <graphics/renderer/GLCache.h>
+#include <graphics/renderer/MasterRenderer.h>
 #include <graphics/renderer/PostProcessor.h>
 #include <input/InputManager.h>
 #include <platform/OpenGL/Framebuffers/Framebuffer.h>
@@ -20,20 +21,12 @@ int main() {
 	// Prepare the engine
 	arcane::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
 	arcane::Scene3D scene(&window);
-	arcane::GLCache *glCache = arcane::GLCache::getInstance();
-	arcane::PostProcessor postProcessor(scene.getModelRenderer());
+	arcane::MasterRenderer renderer(&scene);
 	arcane::TextureLoader::initializeDefaultTextures();
 
 	// Prepare the UI
 	arcane::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));
 	arcane::DebugPane debugPane(glm::vec2(256.0f, 115.0f));
-
-	// Construct framebuffers
-	bool shouldMultisample = MSAA_SAMPLE_AMOUNT > 1.0 ? true : false;
-	arcane::Framebuffer framebuffer(window.getWidth(), window.getHeight());
-	framebuffer.addTexture2DColorAttachment(shouldMultisample).addDepthStencilRBO(shouldMultisample).createFramebuffer();
-	arcane::Framebuffer shadowmap(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y);
-	shadowmap.addDepthAttachment(false).createFramebuffer();
 
 #if DEBUG_ENABLED
 	arcane::Timer timer;
@@ -53,29 +46,8 @@ int main() {
 		window.clear();
 		ImGui_ImplGlfwGL3_NewFrame();
 
-		// Shadowmap Pass
-#if DEBUG_ENABLED
-		glFinish();
-		timer.reset();
-#endif
-		glViewport(0, 0, shadowmap.getWidth(), shadowmap.getHeight());
-		shadowmap.bind();
-		shadowmap.clear();
-		scene.shadowmapPass();
-#if DEBUG_ENABLED
-		glFinish();
-		runtimePane.setShadowmapTimer((float)timer.elapsed());
-#endif
-
-		// Draw the scene to our custom multisampled framebuffer
-		glViewport(0, 0, framebuffer.getWidth(), framebuffer.getHeight());
-		framebuffer.bind();
-		framebuffer.clear();
 		scene.onUpdate((float)deltaTime.getDeltaTime());
-		scene.onRender(shadowmap.getDepthTexture());
-
-		// Peform post processing
-		postProcessor.postLightingPostProcess(&framebuffer);
+		renderer.render();
 
 		// Display panes
 		runtimePane.render();

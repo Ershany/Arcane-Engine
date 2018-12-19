@@ -95,9 +95,9 @@ namespace arcane {
 
 		addModelsToRenderer();
 
-		m_ModelRenderer.flushOpaque(m_ShadowmapShader, RenderPassType::ShadowmapPass);
-		m_ModelRenderer.flushTransparent(m_ShadowmapShader, RenderPassType::ShadowmapPass);
-		m_Terrain.Draw(m_ShadowmapShader, RenderPassType::ShadowmapPass);
+		m_ModelRenderer.flushOpaque(m_ShadowmapShader, RenderPassType::ShadowmapPassType);
+		m_ModelRenderer.flushTransparent(m_ShadowmapShader, RenderPassType::ShadowmapPassType);
+		m_Terrain.Draw(m_ShadowmapShader, RenderPassType::ShadowmapPassType);
 
 		// Setup shadow uniforms for other shaders so they can have normal mapping
 		m_GLCache->switchShader(m_TerrainShader.getShaderID());
@@ -110,14 +110,12 @@ namespace arcane {
 	void Scene3D::onUpdate(float deltaTime) {
 		// Camera Update
 		m_SceneCamera.processInput(deltaTime);
+
+		m_DynamicLightManager.setSpotLightDirection(m_SceneCamera.getFront());
+		m_DynamicLightManager.setSpotLightPosition(m_SceneCamera.getPosition());
 	}
 
 	void Scene3D::onRender(unsigned int shadowmap) {
-		/*
-		lightManager->setSpotLightDirection(m_SceneCamera.getFront());
-		lightManager->setSpotLightPosition(m_SceneCamera.getPosition());
-		*/
-
 		// Setup
 		glm::mat4 projectionMatrix = m_SceneCamera.getProjectionMatrix();
 		m_DynamicLightManager.setSpotLightDirection(m_SceneCamera.getFront());
@@ -143,7 +141,7 @@ namespace arcane {
 		addModelsToRenderer();
 
 		// Opaque objects
-		m_ModelRenderer.flushOpaque(m_ModelShader, RenderPassType::LightingPass);
+		m_ModelRenderer.flushOpaque(m_ModelShader, RenderPassType::LightingPassType);
 
 		// Terrain
 		m_GLCache->switchShader(m_TerrainShader.getShaderID());
@@ -161,14 +159,14 @@ namespace arcane {
 		m_TerrainShader.setUniformMat4("model", modelMatrix);
 		m_TerrainShader.setUniformMat4("view", m_SceneCamera.getViewMatrix());
 		m_TerrainShader.setUniformMat4("projection", projectionMatrix);
-		m_Terrain.Draw(m_TerrainShader, RenderPassType::LightingPass);
+		m_Terrain.Draw(m_TerrainShader, RenderPassType::LightingPassType);
 
 		// Skybox
 		m_Skybox->Draw();
 
 		// Transparent objects
 		m_GLCache->switchShader(m_ModelShader.getShaderID());
-		m_ModelRenderer.flushTransparent(m_ModelShader, RenderPassType::LightingPass);
+		m_ModelRenderer.flushTransparent(m_ModelShader, RenderPassType::LightingPassType);
 	}
 
 	void Scene3D::addModelsToRenderer() {

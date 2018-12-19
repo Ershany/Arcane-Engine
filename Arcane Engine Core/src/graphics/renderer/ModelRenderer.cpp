@@ -84,7 +84,7 @@ namespace arcane {
 
 		shader.setUniformMat4("model", model);
 
-		if (pass != RenderPassType::ShadowmapPass) {
+		if (pass != RenderPassType::ShadowmapPassType) {
 			glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
 			shader.setUniformMat3("normalMatrix", normalMatrix);
 		}
