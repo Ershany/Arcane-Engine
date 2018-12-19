@@ -13,7 +13,7 @@ namespace arcane
 		ShadowmapPass(Scene3D *scene);
 		virtual ~ShadowmapPass() override;
 
-		ShadowmapPassOutput executeRenderPass();
+		ShadowmapPassOutput generateShadowmaps();
 	private:
 		Framebuffer m_ShadowmapFramebuffer;
 		Shader m_ShadowmapShader;

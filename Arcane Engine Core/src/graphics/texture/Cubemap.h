@@ -26,9 +26,12 @@ namespace arcane {
 
 		// Pre-generation controls only
 		inline void setCubemapSettings(CubemapSettings settings) { m_CubemapSettings = settings; }
+
+		// Getters
+		unsigned int getCubemapID() { return m_CubemapID; }
 	private:
 		// TODO: Look into better filtering like anisotropic support and also look into proper mips for cubemaps
-		unsigned int m_CubemapId;
+		unsigned int m_CubemapID;
 
 		unsigned int m_FaceWidth, m_FaceHeight;
 		GLenum m_TextureFormat;

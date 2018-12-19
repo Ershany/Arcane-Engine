@@ -12,7 +12,7 @@ namespace arcane
 
 	ShadowmapPass::~ShadowmapPass() {}
 
-	ShadowmapPassOutput ShadowmapPass::executeRenderPass() {
+	ShadowmapPassOutput ShadowmapPass::generateShadowmaps() {
 		// TODO: Add rendering state changes (to ensure proper state)
 		glViewport(0, 0, m_ShadowmapFramebuffer.getWidth(), m_ShadowmapFramebuffer.getHeight());
 		m_ShadowmapFramebuffer.bind();

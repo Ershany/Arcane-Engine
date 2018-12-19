@@ -1,5 +1,6 @@
 #pragma once
 
+#include <graphics/renderer/renderpass/EnvironmentProbePass.h>
 #include <graphics/renderer/renderpass/LightingPass.h>
 #include <graphics/renderer/renderpass/PostProcessPass.h>
 #include <graphics/renderer/renderpass/ShadowmapPass.h>
@@ -14,6 +15,7 @@ namespace arcane
 	public:
 		MasterRenderer(Scene3D *scene);
 
+		void init();
 		void render();
 	private:
 		GLCache *m_GLCache;
@@ -23,6 +25,7 @@ namespace arcane
 		ShadowmapPass m_ShadowmapPass;
 		LightingPass m_LightingPass;
 		PostProcessPass m_PostProcessPass;
+		EnvironmentProbePass m_EnvironmentProbePass;
 
 		Timer m_Timer;
 	};

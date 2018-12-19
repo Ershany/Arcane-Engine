@@ -7,9 +7,14 @@ namespace arcane
 {
 
 	MasterRenderer::MasterRenderer(Scene3D *scene) : m_ActiveScene(scene),
-		m_ShadowmapPass(scene), m_LightingPass(scene), m_PostProcessPass(scene)
+		m_ShadowmapPass(scene), m_LightingPass(scene), m_PostProcessPass(scene), m_EnvironmentProbePass(scene)
 	{
 		m_GLCache = GLCache::getInstance();
+	}
+
+	void MasterRenderer::init() {
+		//ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps();
+		//m_EnvironmentProbePass.pregenerateProbes(shadowmapOutput);
 	}
 
 	void MasterRenderer::render() {
@@ -18,7 +23,7 @@ namespace arcane
 		glFinish();
 		m_Timer.reset();
 #endif
-		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.executeRenderPass();
+		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps();
 #if DEBUG_ENABLED
 		glFinish();
 		RuntimePane::setShadowmapTimer((float)m_Timer.elapsed());

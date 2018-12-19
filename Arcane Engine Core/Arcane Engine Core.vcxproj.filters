@@ -129,9 +129,6 @@
     <ClCompile Include="src\graphics\ibl\EnvironmentProbe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\ibl\EnvironmentProbeManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -166,6 +163,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\renderer\renderpass\PostProcessPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\EnvironmentProbePass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -296,9 +296,6 @@
     <ClInclude Include="src\graphics\ibl\EnvironmentProbe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\ibl\EnvironmentProbeManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -338,6 +335,9 @@
     <ClInclude Include="src\graphics\renderer\renderpass\PostProcessPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\EnvironmentProbePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\spotlight.frag" />
@@ -353,8 +353,6 @@
     <None Include="src\shaders\shadowmap.frag" />
     <None Include="src\shaders\postprocess.vert" />
     <None Include="src\shaders\postprocess.frag" />
-    <None Include="src\shaders\model.frag" />
-    <None Include="src\shaders\model.vert" />
     <None Include="src\shaders\pbr_model.vert" />
     <None Include="src\shaders\pbr_model.frag" />
   </ItemGroup>

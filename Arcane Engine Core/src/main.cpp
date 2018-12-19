@@ -1,20 +1,11 @@
 #include "pch.h"
 
-#include <graphics/Shader.h>
 #include <graphics/Window.h>
-#include <graphics/camera/FPSCamera.h>
-#include <graphics/mesh/Model.h>
-#include <graphics/mesh/common/Quad.h>
-#include <graphics/renderer/GLCache.h>
 #include <graphics/renderer/MasterRenderer.h>
-#include <input/InputManager.h>
-#include <platform/OpenGL/Framebuffers/Framebuffer.h>
 #include <scene/Scene3D.h>
-#include <terrain/Terrain.h>
 #include <ui/DebugPane.h>
 #include <ui/RuntimePane.h>
 #include <utils/Time.h>
-#include <utils/Timer.h>
 
 int main() {
 	// Prepare the engine
@@ -27,9 +18,8 @@ int main() {
 	arcane::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));
 	arcane::DebugPane debugPane(glm::vec2(256.0f, 115.0f));
 
-#if DEBUG_ENABLED
-	arcane::Timer timer;
-#endif
+	// Initialize the renderer
+	renderer.init();
 
 	arcane::Time deltaTime;
 	while (!window.closed()) {

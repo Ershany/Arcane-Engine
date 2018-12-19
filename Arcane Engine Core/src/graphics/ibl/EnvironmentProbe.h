@@ -13,6 +13,9 @@ namespace arcane {
 
 		// Assumes the shader is bound
 		void bind(Shader &shader);
+
+		// Getters
+		inline Cubemap* getIrradianceMap() { return m_IrradianceMap; }
 	private:
 		Cubemap *m_IrradianceMap, *m_PrefilterMap, *m_BRDF_LUT;
 

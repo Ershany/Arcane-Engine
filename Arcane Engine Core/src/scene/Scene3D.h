@@ -4,7 +4,7 @@
 #include <graphics/Window.h>
 #include <graphics/camera/FPSCamera.h>
 #include <graphics/dynamic lights/DynamicLightManager.h>
-#include <graphics/ibl/EnvironmentProbeManager.h>
+#include <graphics/ibl/EnvironmentProbe.h>
 #include <graphics/renderer/GLCache.h>
 #include <graphics/renderer/ModelRenderer.h>
 #include <scene/RenderableModel.h>
@@ -40,7 +40,7 @@ namespace arcane {
 		ModelRenderer m_ModelRenderer;
 		Terrain m_Terrain;
 		DynamicLightManager m_DynamicLightManager;
-		EnvironmentProbeManager m_ProbeManager;
+		std::vector<EnvironmentProbe*> m_Probes;
 		std::vector<RenderableModel*> m_RenderableModels;
 	};
 
