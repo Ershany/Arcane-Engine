@@ -18,11 +18,8 @@ namespace arcane {
 		Scene3D(Window *window);
 		~Scene3D();
 
-		// Passes
-		void shadowmapPass();
-
 		void onUpdate(float deltaTime);
-		void onRender(unsigned int shadowmap);
+		void onRender();
 
 		void addModelsToRenderer();
 
@@ -45,8 +42,6 @@ namespace arcane {
 		DynamicLightManager m_DynamicLightManager;
 		EnvironmentProbeManager m_ProbeManager;
 		std::vector<RenderableModel*> m_RenderableModels;
-
-		Shader m_TerrainShader, m_ModelShader, m_ShadowmapShader;
 	};
 
 }

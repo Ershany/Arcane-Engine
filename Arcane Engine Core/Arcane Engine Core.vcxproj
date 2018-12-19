@@ -99,7 +99,6 @@
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\renderer\GLCache.cpp" />
     <ClCompile Include="src\graphics\renderer\MasterRenderer.cpp" />
-    <ClCompile Include="src\graphics\renderer\PostProcessor.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\LightingPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\PostProcessPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\RenderPass.cpp" />
@@ -169,7 +168,6 @@
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\graphics\renderer\GLCache.h" />
     <ClInclude Include="src\graphics\renderer\MasterRenderer.h" />
-    <ClInclude Include="src\graphics\renderer\PostProcessor.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\LightingPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\PostProcessPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\RenderPassType.h" />

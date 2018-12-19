@@ -7,7 +7,6 @@
 #include <graphics/mesh/common/Quad.h>
 #include <graphics/renderer/GLCache.h>
 #include <graphics/renderer/MasterRenderer.h>
-#include <graphics/renderer/PostProcessor.h>
 #include <input/InputManager.h>
 #include <platform/OpenGL/Framebuffers/Framebuffer.h>
 #include <scene/Scene3D.h>

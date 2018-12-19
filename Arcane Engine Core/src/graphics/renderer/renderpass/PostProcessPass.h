@@ -14,6 +14,8 @@ namespace arcane
 		virtual ~PostProcessPass() override;
 
 		void executeRenderPass(Framebuffer *framebufferToProcess);
+
+		inline void EnableBlur(bool choice) { m_Blur = choice; }
 	private:
 		Shader m_PostProcessShader;
 		Quad m_NDC_Plane;
