@@ -78,7 +78,7 @@ namespace arcane {
 		skyboxFilePaths.push_back("res/skybox/bottom.png");
 		skyboxFilePaths.push_back("res/skybox/back.png");
 		skyboxFilePaths.push_back("res/skybox/front.png");
-		m_Skybox = new Skybox(skyboxFilePaths, getCamera());
+		m_Skybox = new Skybox(skyboxFilePaths);
 	}
 
 	void Scene3D::onUpdate(float deltaTime) {

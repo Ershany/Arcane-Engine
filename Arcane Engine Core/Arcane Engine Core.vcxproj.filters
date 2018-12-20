@@ -338,6 +338,9 @@
     <ClInclude Include="src\graphics\renderer\renderpass\EnvironmentProbePass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\camera\ICamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\spotlight.frag" />

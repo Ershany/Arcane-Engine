@@ -14,13 +14,12 @@ namespace arcane {
 
 	class Skybox {
 	public:
-		Skybox(const std::vector<std::string> &filePaths, FPSCamera *camera);
+		Skybox(const std::vector<std::string> &filePaths);
 
-		void Draw();
+		void Draw(ICamera *camera);
 
 		Cubemap* getSkyboxCubemap() { return m_SkyboxCubemap; }
 	private:
-		FPSCamera *m_Camera;
 		Shader m_SkyboxShader;
 		GLCache *m_GLCache;
 		

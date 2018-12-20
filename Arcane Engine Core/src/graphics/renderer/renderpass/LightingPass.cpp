@@ -13,14 +13,13 @@ namespace arcane
 
 	LightingPass::~LightingPass() {}
 
-	LightingPassOutput LightingPass::executeRenderPass(ShadowmapPassOutput shadowmapData) {
+	LightingPassOutput LightingPass::executeRenderPass(ShadowmapPassOutput shadowmapData, ICamera *camera) {
 		glViewport(0, 0, m_Framebuffer.getWidth(), m_Framebuffer.getHeight());
 		m_Framebuffer.bind();
 		m_Framebuffer.clear();
 
 		// Setup
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
-		FPSCamera *camera = m_ActiveScene->getCamera();
 		Terrain *terrain = m_ActiveScene->getTerrain();
 		DynamicLightManager *lightManager = m_ActiveScene->getDynamicLightManager();
 		Skybox *skybox = m_ActiveScene->getSkybox();
@@ -61,7 +60,7 @@ namespace arcane
 		m_TerrainShader.setUniformMat4("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 		terrain->Draw(m_TerrainShader, m_RenderPassType);
 
-		skybox->Draw();
+		skybox->Draw(camera);
 
 		m_GLCache->switchShader(m_ModelShader);
 		modelRenderer->flushTransparent(m_ModelShader, m_RenderPassType);

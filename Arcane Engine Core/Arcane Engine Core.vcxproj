@@ -153,6 +153,7 @@
     <ClInclude Include="src\Defs.h" />
     <ClInclude Include="src\graphics\camera\FPSCamera.h" />
     <ClInclude Include="src\graphics\camera\CubemapCamera.h" />
+    <ClInclude Include="src\graphics\camera\ICamera.h" />
     <ClInclude Include="src\graphics\dynamic lights\DirectionalLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\DynamicLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\DynamicLightManager.h" />
