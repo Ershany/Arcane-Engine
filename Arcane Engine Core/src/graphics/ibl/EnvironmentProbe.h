@@ -8,6 +8,7 @@ namespace arcane {
 	class EnvironmentProbe {
 	public:
 		EnvironmentProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution, bool isStatic);
+		~EnvironmentProbe();
 
 		void generate();
 

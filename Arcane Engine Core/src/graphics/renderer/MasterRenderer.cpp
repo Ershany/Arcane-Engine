@@ -13,8 +13,7 @@ namespace arcane
 	}
 
 	void MasterRenderer::init() {
-		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps();
-		m_EnvironmentProbePass.pregenerateProbes(shadowmapOutput);
+		m_EnvironmentProbePass.pregenerateProbes();
 	}
 
 	void MasterRenderer::render() {
@@ -23,7 +22,7 @@ namespace arcane
 		glFinish();
 		m_Timer.reset();
 #endif
-		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps();
+		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->getCamera());
 #if DEBUG_ENABLED
 		glFinish();
 		RuntimePane::setShadowmapTimer((float)m_Timer.elapsed());

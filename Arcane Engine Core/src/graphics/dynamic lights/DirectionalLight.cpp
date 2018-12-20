@@ -7,10 +7,10 @@ namespace arcane {
 		: DynamicLight(lightColour), direction(dir) {}
 
 	// TODO: Add in multiple directional light support
-	void DirectionalLight::setupUniforms(Shader &shader, int currentLightIndex) {
+	void DirectionalLight::setupUniforms(Shader *shader, int currentLightIndex) {
 		if (isActive) {
-			shader.setUniform3f("dirLight.direction", direction);
-			shader.setUniform3f("dirLight.lightColour", lightColour);
+			shader->setUniform3f("dirLight.direction", direction);
+			shader->setUniform3f("dirLight.lightColour", lightColour);
 		}
 	}
 

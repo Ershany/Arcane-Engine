@@ -74,8 +74,9 @@ namespace arcane {
 		inline float getMovementSpeed() const { return m_MovementSpeed; }
 		inline float getMouseSensitivity() const { return m_MouseSensitivity; }
 		inline float getFOV() const { return m_FOV; }
-		inline const glm::vec3& getFront() const { return m_Front; }
 		inline virtual const glm::vec3& getPosition() const override { return m_Position; }
+		inline virtual const glm::vec3& getFront() const { return m_Front; }
+		inline virtual const glm::vec3& getUp() const { return m_Up; }
 	private:
 		/**
 		* Updates the front, right, and up vectors for the camera

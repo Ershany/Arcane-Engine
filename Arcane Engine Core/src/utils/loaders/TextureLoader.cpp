@@ -4,17 +4,17 @@
 namespace arcane {
 
 	// Static declarations
-	std::map<std::string, Texture*> TextureLoader::m_TextureCache;
-	Texture *TextureLoader::m_DefaultAlbedo;
-	Texture *TextureLoader::m_DefaultNormal;
-	Texture *TextureLoader::m_FullMetallic, *TextureLoader::m_NoMetallic;
-	Texture *TextureLoader::m_FullRoughness, *TextureLoader::m_NoRoughness;
-	Texture *TextureLoader::m_DefaultAO;
-	Texture *TextureLoader::m_DefaultEmission;
+	std::unordered_map<std::string, Texture*> TextureLoader::m_TextureCache;
+	Texture *TextureLoader::s_DefaultAlbedo;
+	Texture *TextureLoader::s_DefaultNormal;
+	Texture *TextureLoader::s_FullMetallic, *TextureLoader::s_NoMetallic;
+	Texture *TextureLoader::s_FullRoughness, *TextureLoader::s_NoRoughness;
+	Texture *TextureLoader::s_DefaultAO;
+	Texture *TextureLoader::s_DefaultEmission;
 
 	Texture* TextureLoader::load2DTexture(std::string &path, bool isSRGB, TextureSettings *settings) {
 		// Check the cache
-		std::map<std::string, Texture*>::iterator iter = m_TextureCache.find(path);
+		auto iter = m_TextureCache.find(path);
 		if (iter != m_TextureCache.end()) {
 			return iter->second;
 		}
@@ -95,38 +95,38 @@ namespace arcane {
 
 	void TextureLoader::initializeDefaultTextures() {
 		// Setup texture and minimal filtering because they are 1x1 textures so they require none
-		m_DefaultAlbedo = load2DTexture(std::string("res/textures/default/defaultAlbedo.png"), true);
-		m_DefaultAlbedo->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultAlbedo->setTextureMinFilter(GL_NEAREST);
-		m_DefaultAlbedo->setTextureMagFilter(GL_NEAREST);
-		m_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"), false);
-		m_DefaultNormal->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultNormal->setTextureMinFilter(GL_NEAREST);
-		m_DefaultNormal->setTextureMagFilter(GL_NEAREST);
-		m_FullMetallic = load2DTexture(std::string("res/textures/default/white.png"), false);
-		m_FullMetallic->setAnisotropicFilteringMode(1.0f, true);
-		m_FullMetallic->setTextureMinFilter(GL_NEAREST);
-		m_FullMetallic->setTextureMagFilter(GL_NEAREST);
-		m_NoMetallic = load2DTexture(std::string("res/textures/default/black.png"), false);
-		m_NoMetallic->setAnisotropicFilteringMode(1.0f, true);
-		m_NoMetallic->setTextureMinFilter(GL_NEAREST);
-		m_NoMetallic->setTextureMagFilter(GL_NEAREST);
-		m_FullRoughness = load2DTexture(std::string("res/textures/default/white.png"), false);
-		m_FullRoughness->setAnisotropicFilteringMode(1.0f, true);
-		m_FullRoughness->setTextureMinFilter(GL_NEAREST);
-		m_FullRoughness->setTextureMagFilter(GL_NEAREST);
-		m_NoRoughness = load2DTexture(std::string("res/textures/default/black.png"), false);
-		m_NoRoughness->setAnisotropicFilteringMode(1.0f, true);
-		m_NoRoughness->setTextureMinFilter(GL_NEAREST);
-		m_NoRoughness->setTextureMagFilter(GL_NEAREST);
-		m_DefaultAO = load2DTexture(std::string("res/textures/default/white.png"), false);
-		m_DefaultAO->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultAO->setTextureMinFilter(GL_NEAREST);
-		m_DefaultAO->setTextureMagFilter(GL_NEAREST);
-		m_DefaultEmission = load2DTexture(std::string("res/textures/default/black.png"), true);
-		m_DefaultEmission->setAnisotropicFilteringMode(1.0f, true);
-		m_DefaultEmission->setTextureMinFilter(GL_NEAREST);
-		m_DefaultEmission->setTextureMagFilter(GL_NEAREST);
+		s_DefaultAlbedo = load2DTexture(std::string("res/textures/default/defaultAlbedo.png"), true);
+		s_DefaultAlbedo->setAnisotropicFilteringMode(1.0f, true);
+		s_DefaultAlbedo->setTextureMinFilter(GL_NEAREST);
+		s_DefaultAlbedo->setTextureMagFilter(GL_NEAREST);
+		s_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"), false);
+		s_DefaultNormal->setAnisotropicFilteringMode(1.0f, true);
+		s_DefaultNormal->setTextureMinFilter(GL_NEAREST);
+		s_DefaultNormal->setTextureMagFilter(GL_NEAREST);
+		s_FullMetallic = load2DTexture(std::string("res/textures/default/white.png"), false);
+		s_FullMetallic->setAnisotropicFilteringMode(1.0f, true);
+		s_FullMetallic->setTextureMinFilter(GL_NEAREST);
+		s_FullMetallic->setTextureMagFilter(GL_NEAREST);
+		s_NoMetallic = load2DTexture(std::string("res/textures/default/black.png"), false);
+		s_NoMetallic->setAnisotropicFilteringMode(1.0f, true);
+		s_NoMetallic->setTextureMinFilter(GL_NEAREST);
+		s_NoMetallic->setTextureMagFilter(GL_NEAREST);
+		s_FullRoughness = load2DTexture(std::string("res/textures/default/white.png"), false);
+		s_FullRoughness->setAnisotropicFilteringMode(1.0f, true);
+		s_FullRoughness->setTextureMinFilter(GL_NEAREST);
+		s_FullRoughness->setTextureMagFilter(GL_NEAREST);
+		s_NoRoughness = load2DTexture(std::string("res/textures/default/black.png"), false);
+		s_NoRoughness->setAnisotropicFilteringMode(1.0f, true);
+		s_NoRoughness->setTextureMinFilter(GL_NEAREST);
+		s_NoRoughness->setTextureMagFilter(GL_NEAREST);
+		s_DefaultAO = load2DTexture(std::string("res/textures/default/white.png"), false);
+		s_DefaultAO->setAnisotropicFilteringMode(1.0f, true);
+		s_DefaultAO->setTextureMinFilter(GL_NEAREST);
+		s_DefaultAO->setTextureMagFilter(GL_NEAREST);
+		s_DefaultEmission = load2DTexture(std::string("res/textures/default/black.png"), true);
+		s_DefaultEmission->setAnisotropicFilteringMode(1.0f, true);
+		s_DefaultEmission->setTextureMinFilter(GL_NEAREST);
+		s_DefaultEmission->setTextureMagFilter(GL_NEAREST);
 	}
 
 }

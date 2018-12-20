@@ -128,6 +128,7 @@
     <ClCompile Include="src\ui\RuntimePane.cpp" />
     <ClCompile Include="src\utils\FileUtils.cpp" />
     <ClCompile Include="src\utils\loaders\MeshLoader.cpp" />
+    <ClCompile Include="src\utils\loaders\ShaderLoader.cpp" />
     <ClCompile Include="src\utils\loaders\TextureLoader.cpp" />
     <ClCompile Include="src\utils\Logger.cpp" />
     <ClCompile Include="src\utils\Time.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="src\ui\RuntimePane.h" />
     <ClInclude Include="src\utils\FileUtils.h" />
     <ClInclude Include="src\utils\loaders\MeshLoader.h" />
+    <ClInclude Include="src\utils\loaders\ShaderLoader.h" />
     <ClInclude Include="src\utils\loaders\TextureLoader.h" />
     <ClInclude Include="src\utils\Logger.h" />
     <ClInclude Include="src\utils\Singleton.h" />

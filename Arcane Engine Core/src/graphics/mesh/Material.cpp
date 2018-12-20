@@ -9,14 +9,14 @@ namespace arcane {
 		: m_AlbedoMap(albedoMap), m_NormalMap(normalMap), m_MetallicMap(metallicMap), m_RoughnessMap(roughnessMap), m_AmbientOcclusionMap(ambientOcclusionMap), m_EmissionMap(emissionMap) {}
 
 
-	void Material::BindMaterialInformation(Shader &shader) const {
+	void Material::BindMaterialInformation(Shader *shader) const {
 		// Texture unit 0 is reserved for the shadowmap
 		// Texture unit 1 is reserved for the irradianceMap used for indirect diffuse IBL
 		// Texture unit 2 is reserved for the prefilterMap
 		// Texture unit 3 is reserved for the brdfLUT
 		int currentTextureUnit = 4;
 
-		shader.setUniform1i("material.texture_albedo", currentTextureUnit);
+		shader->setUniform1i("material.texture_albedo", currentTextureUnit);
 		if (m_AlbedoMap) {
 			m_AlbedoMap->bind(currentTextureUnit++);
 		}
@@ -24,7 +24,7 @@ namespace arcane {
 			TextureLoader::getDefaultAlbedo()->bind(currentTextureUnit++);
 		}
 
-		shader.setUniform1i("material.texture_normal", currentTextureUnit);
+		shader->setUniform1i("material.texture_normal", currentTextureUnit);
 		if (m_NormalMap) {
 			m_NormalMap->bind(currentTextureUnit++);
 		}
@@ -32,7 +32,7 @@ namespace arcane {
 			TextureLoader::getDefaultNormal()->bind(currentTextureUnit++);
 		}
 
-		shader.setUniform1i("material.texture_metallic", currentTextureUnit);
+		shader->setUniform1i("material.texture_metallic", currentTextureUnit);
 		if (m_MetallicMap) {
 			m_MetallicMap->bind(currentTextureUnit++);
 		}
@@ -40,7 +40,7 @@ namespace arcane {
 			TextureLoader::getDefaultMetallic()->bind(currentTextureUnit++);
 		}
 
-		shader.setUniform1i("material.texture_roughness", currentTextureUnit);
+		shader->setUniform1i("material.texture_roughness", currentTextureUnit);
 		if (m_RoughnessMap) {
 			m_RoughnessMap->bind(currentTextureUnit++);
 		}
@@ -48,7 +48,7 @@ namespace arcane {
 			TextureLoader::getDefaultRoughness()->bind(currentTextureUnit++);
 		}
 
-		shader.setUniform1i("material.texture_ao", currentTextureUnit);
+		shader->setUniform1i("material.texture_ao", currentTextureUnit);
 		if (m_AmbientOcclusionMap) {
 			m_AmbientOcclusionMap->bind(currentTextureUnit++);
 		}
@@ -56,7 +56,7 @@ namespace arcane {
 			TextureLoader::getDefaultAO()->bind(currentTextureUnit++);
 		}
 
-		shader.setUniform1i("material.texture_emission", currentTextureUnit);
+		shader->setUniform1i("material.texture_emission", currentTextureUnit);
 		if (m_EmissionMap) {
 			m_EmissionMap->bind(currentTextureUnit++);
 		}

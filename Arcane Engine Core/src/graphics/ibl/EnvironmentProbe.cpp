@@ -4,8 +4,14 @@
 namespace arcane {
 
 	EnvironmentProbe::EnvironmentProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution, bool isStatic)
-		: m_Position(probePosition), m_ProbeResolution(probeResolution), m_IsStatic(isStatic)
+		: m_Position(probePosition), m_ProbeResolution(probeResolution), m_IsStatic(isStatic), m_IrradianceMap(nullptr), m_PrefilterMap(nullptr), m_BRDF_LUT(nullptr)
 	{}
+
+	EnvironmentProbe::~EnvironmentProbe() {
+		delete m_IrradianceMap;
+		delete m_PrefilterMap;
+		delete m_BRDF_LUT;
+	}
 
 	void EnvironmentProbe::generate() {
 		// Generate the HDR environment probe and set the generated flag

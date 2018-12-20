@@ -11,12 +11,14 @@ namespace arcane
 	{
 	public:
 		LightingPass(Scene3D *scene);
+		LightingPass(Scene3D *scene, Framebuffer *customFramebuffer);
 		virtual ~LightingPass() override;
 
 		LightingPassOutput executeRenderPass(ShadowmapPassOutput shadowmapData, ICamera *camera);
 	private:
-		Framebuffer m_Framebuffer;
-		Shader m_ModelShader, m_TerrainShader;
+		Framebuffer *m_Framebuffer = nullptr;
+
+		Shader *m_ModelShader, *m_TerrainShader;
 	};
 
 }

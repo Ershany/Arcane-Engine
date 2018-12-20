@@ -12,6 +12,8 @@ namespace arcane
 		virtual glm::mat4 getProjectionMatrix() = 0;
 
 		virtual const glm::vec3& getPosition() const = 0;
+		virtual const glm::vec3& getFront() const = 0;
+		virtual const glm::vec3& getUp() const = 0;
 	};
 
 }

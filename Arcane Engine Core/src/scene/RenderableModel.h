@@ -11,7 +11,7 @@ namespace arcane {
 		~RenderableModel();
 
 		// Assumes shader is already bound by the renderer
-		void draw(Shader &shader, RenderPassType pass) const;
+		void draw(Shader *shader, RenderPassType pass) const;
 
 		void addChild(RenderableModel *child);
 

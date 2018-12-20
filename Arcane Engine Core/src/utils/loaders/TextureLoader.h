@@ -16,26 +16,26 @@ namespace arcane {
 		static Texture* load2DTexture(std::string &path, bool isSRGB, TextureSettings *settings = nullptr);
 		static Cubemap* loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, bool isSRGB, CubemapSettings *settings = nullptr);
 
-		inline static Texture* getDefaultAlbedo() { return m_DefaultAlbedo; }
-		inline static Texture* getDefaultNormal() { return m_DefaultNormal; }
-		inline static Texture* getDefaultMetallic() { return m_NoMetallic; }
-		inline static Texture* getDefaultRoughness() { return m_NoRoughness; }
-		inline static Texture* getDefaultAO() { return m_DefaultAO; }
-		inline static Texture* getDefaultEmission() { return m_DefaultEmission; }
-		inline static Texture* getFullMetallic() { return m_FullMetallic; }
-		inline static Texture* getNoMetallic() { return m_NoMetallic; }
-		inline static Texture* getFullRoughness() { return m_FullRoughness; }
-		inline static Texture* getNoRoughness() { return m_NoRoughness; }
+		inline static Texture* getDefaultAlbedo() { return s_DefaultAlbedo; }
+		inline static Texture* getDefaultNormal() { return s_DefaultNormal; }
+		inline static Texture* getDefaultMetallic() { return s_NoMetallic; }
+		inline static Texture* getDefaultRoughness() { return s_NoRoughness; }
+		inline static Texture* getDefaultAO() { return s_DefaultAO; }
+		inline static Texture* getDefaultEmission() { return s_DefaultEmission; }
+		inline static Texture* getFullMetallic() { return s_FullMetallic; }
+		inline static Texture* getNoMetallic() { return s_NoMetallic; }
+		inline static Texture* getFullRoughness() { return s_FullRoughness; }
+		inline static Texture* getNoRoughness() { return s_NoRoughness; }
 	private:
-		static std::map<std::string, Texture*> m_TextureCache;
+		static std::unordered_map<std::string, Texture*> m_TextureCache;
 		
 		// Default Textures
-		static Texture *m_DefaultAlbedo;
-		static Texture *m_DefaultNormal;
-		static Texture *m_FullMetallic, *m_NoMetallic;
-		static Texture *m_FullRoughness, *m_NoRoughness;
-		static Texture *m_DefaultAO;
-		static Texture *m_DefaultEmission;
+		static Texture *s_DefaultAlbedo;
+		static Texture *s_DefaultNormal;
+		static Texture *s_FullMetallic, *s_NoMetallic;
+		static Texture *s_FullRoughness, *s_NoRoughness;
+		static Texture *s_DefaultAO;
+		static Texture *s_DefaultEmission;
 	};
 
 }

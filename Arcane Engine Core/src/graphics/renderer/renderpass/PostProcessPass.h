@@ -17,7 +17,7 @@ namespace arcane
 
 		inline void EnableBlur(bool choice) { m_Blur = choice; }
 	private:
-		Shader m_PostProcessShader;
+		Shader *m_PostProcessShader;
 		Quad m_NDC_Plane;
 		Framebuffer m_ScreenRenderTarget; // Only used if multi-sampling is enabled so it can blit to a non-multisampled buffer
 

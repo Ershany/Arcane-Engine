@@ -71,30 +71,30 @@ namespace arcane {
 		delete m_Mesh;
 	}
 
-	void Terrain::Draw(Shader &shader, RenderPassType pass) const {
+	void Terrain::Draw(Shader *shader, RenderPassType pass) const {
 		// Texture unit 0 is reserved for the shadowmap
 		if (pass != RenderPassType::ShadowmapPassType) {
 			m_Textures[0]->bind(1);
-			shader.setUniform1i("material.texture_diffuse1", 1);
+			shader->setUniform1i("material.texture_diffuse1", 1);
 			m_Textures[1]->bind(2);
-			shader.setUniform1i("material.texture_diffuse2", 2);
+			shader->setUniform1i("material.texture_diffuse2", 2);
 			m_Textures[2]->bind(3);
-			shader.setUniform1i("material.texture_diffuse3", 3);
+			shader->setUniform1i("material.texture_diffuse3", 3);
 			m_Textures[3]->bind(4);
-			shader.setUniform1i("material.texture_diffuse4", 4);
+			shader->setUniform1i("material.texture_diffuse4", 4);
 			m_Textures[4]->bind(5);
-			shader.setUniform1i("material.blendmap", 5);
+			shader->setUniform1i("material.blendmap", 5);
 			m_Textures[5]->bind(6);
-			shader.setUniform1i("material.texture_normal1", 6);
+			shader->setUniform1i("material.texture_normal1", 6);
 			m_Textures[6]->bind(7);
-			shader.setUniform1i("material.texture_normal2", 7);
+			shader->setUniform1i("material.texture_normal2", 7);
 			m_Textures[7]->bind(8);
-			shader.setUniform1i("material.texture_normal3", 8);
+			shader->setUniform1i("material.texture_normal3", 8);
 			m_Textures[8]->bind(9);
-			shader.setUniform1i("material.texture_normal4", 9);
+			shader->setUniform1i("material.texture_normal4", 9);
 		}
 
-		shader.setUniformMat4("model", m_ModelMatrix);
+		shader->setUniformMat4("model", m_ModelMatrix);
 		m_Mesh->Draw();
 	}
 

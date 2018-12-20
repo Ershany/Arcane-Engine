@@ -15,15 +15,10 @@ namespace arcane
 		EnvironmentProbePass(Scene3D *scene);
 		virtual ~EnvironmentProbePass() override;
 
-		void pregenerateProbes(ShadowmapPassOutput shadowmapData);
+		void pregenerateProbes();
 	private:
 		Framebuffer m_CubemapGenerationFramebuffer;
 		CubemapCamera m_CubemapCamera;
-
-		Shader m_ModelShader;
-
-		// Render Passes - Requried to generate probes
-		ShadowmapPass m_ShadowmapPass;
 	};
 
 }

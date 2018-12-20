@@ -12,7 +12,7 @@ namespace arcane {
 				 Texture *ambientOcclusionMap = nullptr, Texture *emissionMap = nullptr);
 
 		// Assumes the shader is already bound
-		void BindMaterialInformation(Shader &shader) const;
+		void BindMaterialInformation(Shader *shader) const;
 
 		inline void setAlbedoMap(Texture *texture) { m_AlbedoMap = texture; }
 		inline void setNormalMap(Texture *texture) { m_NormalMap = texture; }

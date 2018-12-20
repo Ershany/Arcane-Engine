@@ -21,8 +21,8 @@ namespace arcane {
 		m_TransparentRenderQueue.push_back(renderable);
 	}
 
-	void ModelRenderer::flushOpaque(Shader &shader, RenderPassType pass) {
-		m_GLCache->switchShader(shader.getShaderID());
+	void ModelRenderer::flushOpaque(Shader *shader, RenderPassType pass) {
+		m_GLCache->switchShader(shader);
 		m_GLCache->setDepthTest(true);
 		m_GLCache->setBlend(false);
 		m_GLCache->setStencilTest(false);
@@ -40,8 +40,8 @@ namespace arcane {
 		}
 	}
 
-	void ModelRenderer::flushTransparent(Shader &shader, RenderPassType pass) {
-		m_GLCache->switchShader(shader.getShaderID());
+	void ModelRenderer::flushTransparent(Shader *shader, RenderPassType pass) {
+		m_GLCache->switchShader(shader);
 		m_GLCache->setDepthTest(true);
 		m_GLCache->setBlend(true);
 		m_GLCache->setStencilTest(false);
@@ -68,7 +68,7 @@ namespace arcane {
 
 	// TODO: Currently only supports two levels for hierarchical transformations
 	// Make it work with any number of levels
-	void ModelRenderer::setupModelMatrix(RenderableModel *renderable, Shader &shader, RenderPassType pass) {
+	void ModelRenderer::setupModelMatrix(RenderableModel *renderable, Shader *shader, RenderPassType pass) {
 		glm::mat4 model(1);
 		glm::mat4 translate = glm::translate(glm::mat4(1.0f), renderable->getPosition());
 		glm::mat4 rotate = glm::toMat4(renderable->getOrientation());
@@ -82,11 +82,11 @@ namespace arcane {
 			model = translate * rotate * scale;
 		}
 
-		shader.setUniformMat4("model", model);
+		shader->setUniformMat4("model", model);
 
 		if (pass != RenderPassType::ShadowmapPassType) {
 			glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
-			shader.setUniformMat3("normalMatrix", normalMatrix);
+			shader->setUniformMat3("normalMatrix", normalMatrix);
 		}
 	}
 

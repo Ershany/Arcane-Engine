@@ -34,8 +34,8 @@ namespace arcane {
 	}
 
 	// TODO: Dynamically change the size of the lights or use only the close lights (LIMIT OF 5 CURRENTLY FOR POINTLIGHTS)
-	void DynamicLightManager::setupLightingUniforms(Shader &shader) {
-		shader.setUniform1i("numPointLights", m_PointLights.size());
+	void DynamicLightManager::setupLightingUniforms(Shader *shader) {
+		shader->setUniform1i("numPointLights", m_PointLights.size());
 
 		m_DirectionalLight.setupUniforms(shader, 0);
 		m_SpotLight.setupUniforms(shader, 0);

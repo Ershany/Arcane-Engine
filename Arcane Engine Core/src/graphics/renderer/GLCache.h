@@ -25,7 +25,7 @@ namespace arcane {
 		void setBlendFunc(GLenum src, GLenum dst);
 		void setCullFace(GLenum faceToCull);
 
-		void switchShader(Shader &shader);
+		void switchShader(Shader *shader);
 		void switchShader(unsigned int shaderID);
 	private:
 		// Toggles
