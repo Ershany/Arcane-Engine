@@ -17,10 +17,10 @@ namespace arcane
 
 	void EnvironmentProbePass::pregenerateProbes() {
 		// Create framebuffers for generating the probes
-		Framebuffer shadowmapFramebuffer(DEFAULT_IBL_RESOLUTION, DEFAULT_IBL_RESOLUTION); // Creating without colour might make a depth only framebuffer :O
-		shadowmapFramebuffer.addTexture2DColorAttachment(false).addDepthAttachment(false).createFramebuffer();
+		Framebuffer shadowmapFramebuffer(DEFAULT_IBL_RESOLUTION, DEFAULT_IBL_RESOLUTION);
+		shadowmapFramebuffer.addDepthAttachment(false).createFramebuffer();
 		Framebuffer lightingFramebuffer(DEFAULT_IBL_RESOLUTION, DEFAULT_IBL_RESOLUTION);
-		lightingFramebuffer.addDepthStencilRBO(false).createFramebuffer();
+		lightingFramebuffer.addTexture2DColorAttachment(false).addDepthStencilRBO(false).createFramebuffer(); // TODO CLEAN: Needs to be created with colour or it will be considered depthmap, thanks to Framebuffer
 		
 		// Generate the cubemap for the probe
 		glm::vec3 probePosition = glm::vec3(120.0f, 90.0f, 140.0f);
