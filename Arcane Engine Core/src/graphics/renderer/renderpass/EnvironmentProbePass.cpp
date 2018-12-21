@@ -30,7 +30,7 @@ namespace arcane
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.setCenterPosition(probePosition);
 		ShadowmapPass shadowPass(m_ActiveScene, &shadowmapFramebuffer);
-		LightingPass lightingPass(m_ActiveScene, &lightingFramebuffer);
+		LightingPass lightingPass(m_ActiveScene, &lightingFramebuffer, false);
 
 		// Render to the probe's cubemap
 		for (int i = 0; i < 6; i++) {
@@ -46,8 +46,8 @@ namespace arcane
 			lightingPass.executeRenderPass(shadowpassOutput, &m_CubemapCamera);
 		}
 
-		// Temp cleanup
-		delete iblProbe;
+		EnvironmentProbeManager *probeManager = m_ActiveScene->getProbeManager();
+		probeManager->addProbe(iblProbe);
 	}
 
 }

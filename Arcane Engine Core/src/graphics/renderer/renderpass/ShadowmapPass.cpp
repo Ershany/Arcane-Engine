@@ -3,8 +3,7 @@
 
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane
-{
+namespace arcane {
 
 	ShadowmapPass::ShadowmapPass(Scene3D *scene) : RenderPass(scene, RenderPassType::ShadowmapPassType) 
 	{

@@ -2,8 +2,7 @@
 
 #include <platform/OpenGL/Framebuffers/Framebuffer.h>
 
-namespace arcane
-{
+namespace arcane {
 
 	enum RenderPassType
 	{

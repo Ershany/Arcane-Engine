@@ -1,3 +1,1 @@
-(shader initialization): failed to compile vertex shader
-(shader initialization): failed to compile vertex shader
-(shader initialization): failed to compile fragment shader
+(shader initialization): ed to compile fragment shader

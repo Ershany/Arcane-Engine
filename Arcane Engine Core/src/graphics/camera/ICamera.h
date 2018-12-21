@@ -1,10 +1,8 @@
 #pragma once
 
-namespace arcane
-{
+namespace arcane {
 
-	class ICamera
-	{
+	class ICamera {
 	public:
 		virtual ~ICamera() {}
 

@@ -6,8 +6,7 @@
 
 namespace arcane {
 
-	class RenderPass
-	{
+	class RenderPass {
 	public:
 		RenderPass(Scene3D *scene, RenderPassType passType);
 		virtual ~RenderPass();

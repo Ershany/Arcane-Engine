@@ -3,8 +3,7 @@
 
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane
-{
+namespace arcane {
 
 	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene, RenderPassType::PostProcessPassType), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight())
 	{

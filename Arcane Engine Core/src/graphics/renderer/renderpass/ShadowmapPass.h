@@ -5,11 +5,9 @@
 #include <graphics/Shader.h>
 #include <scene/Scene3D.h>
 
-namespace arcane
-{
+namespace arcane {
 
-	class ShadowmapPass : public RenderPass
-	{
+	class ShadowmapPass : public RenderPass {
 	public:
 		ShadowmapPass(Scene3D *scene);
 		ShadowmapPass(Scene3D *scene, Framebuffer *customFramebuffer);

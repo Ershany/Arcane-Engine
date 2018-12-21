@@ -6,11 +6,9 @@
 #include <graphics/Shader.h>
 #include <scene/Scene3D.h>
 
-namespace arcane
-{
+namespace arcane {
 
-	class EnvironmentProbePass : public RenderPass
-	{
+	class EnvironmentProbePass : public RenderPass {
 	public:
 		EnvironmentProbePass(Scene3D *scene);
 		virtual ~EnvironmentProbePass() override;
