@@ -48,13 +48,10 @@ namespace arcane {
 		// IBL code
 		if (m_UseIBL) {
 			m_ModelShader->setUniform1i("computeIBL", 1);
-			m_ModelShader->setUniform1i("irradianceMap", 1);
-			skybox->getSkyboxCubemap()->bind(1);
+			probeManager->bindProbe(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 		}
 		else {
 			m_ModelShader->setUniform1i("computeIBL", 0);
-			m_ModelShader->setUniform1i("irradianceMap", 1); // TODO: Why do I need to bind this when computeIBL is set to false?!!
-			skybox->getSkyboxCubemap()->bind(1); // TODO: Why do I need to bind this when computeIBL is set to false?!!
 		}
 
 		// Render the scene

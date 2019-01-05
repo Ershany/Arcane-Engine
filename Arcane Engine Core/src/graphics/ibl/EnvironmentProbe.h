@@ -13,7 +13,7 @@ namespace arcane {
 		void generate();
 
 		// Assumes the shader is bound
-		void bind(Shader &shader);
+		void bind(Shader *shader);
 
 		// Getters
 		inline Cubemap* getIrradianceMap() { return m_IrradianceMap; }

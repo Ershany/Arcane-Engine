@@ -33,7 +33,10 @@ namespace arcane {
 		void init();
 	private:
 		// Global Data
-		GLCache * m_GLCache;
+		GLCache *m_GLCache;
+
+		// Scene parameters
+		EnvironmentProbeBlendSetting m_SceneProbeBlendSetting = PROBES_SIMPLE;
 
 		// Scene Specific Data
 		FPSCamera m_SceneCamera;
@@ -43,9 +46,6 @@ namespace arcane {
 		DynamicLightManager m_DynamicLightManager;
 		EnvironmentProbeManager m_ProbeManager;
 		std::vector<RenderableModel*> m_RenderableModels;
-
-		// Scene parameters
-		EnvironmentProbeBlendSetting m_SceneProbeBlendSetting = PROBES_SIMPLE;
 	};
 
 }

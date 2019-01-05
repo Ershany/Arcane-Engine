@@ -10,9 +10,9 @@
 int main() {
 	// Prepare the engine
 	arcane::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
+	arcane::TextureLoader::initializeDefaultTextures();
 	arcane::Scene3D scene(&window);
 	arcane::MasterRenderer renderer(&scene);
-	arcane::TextureLoader::initializeDefaultTextures();
 
 	// Prepare the UI
 	arcane::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));

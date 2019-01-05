@@ -23,7 +23,7 @@ namespace arcane
 		lightingFramebuffer.addTexture2DColorAttachment(false).addDepthStencilRBO(false).createFramebuffer(); // TODO CLEAN: Needs to be created with colour or it will be considered depthmap, thanks to Framebuffer
 		
 		// Generate the cubemap for the probe
-		glm::vec3 probePosition = glm::vec3(120.0f, 90.0f, 140.0f);
+		glm::vec3 probePosition = glm::vec3(67.0f, 92.0f, 133.0f);
 		EnvironmentProbe *iblProbe = new EnvironmentProbe(probePosition, glm::vec2(DEFAULT_IBL_RESOLUTION, DEFAULT_IBL_RESOLUTION), true);
 		iblProbe->generate();
 
@@ -42,6 +42,7 @@ namespace arcane
 
 			// Light pass
 			iblProbe->getIrradianceMap()->bind();
+			lightingFramebuffer.bind();
 			lightingFramebuffer.setColorAttachment(iblProbe->getIrradianceMap()->getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			lightingPass.executeRenderPass(shadowpassOutput, &m_CubemapCamera);
 		}

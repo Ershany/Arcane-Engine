@@ -104,7 +104,8 @@ void main() {
 		diffuseRatio *= 1.0 - metallic;
 		vec3 indirectIrradiance = texture(irradianceMap, normal).rgb;
 		vec3 indirectDiffuse = indirectIrradiance * albedo;
-		ambient = (diffuseRatio * indirectDiffuse) * ao;
+		vec3 indirectSpecular = texture(irradianceMap, reflect(-fragToView, normal)).rgb;
+		ambient = (diffuseRatio * indirectDiffuse + specularRatio * indirectSpecular) * ao;
 	}
 
 	color = vec4(ambient + directLightIrradiance, albedoAlpha);
