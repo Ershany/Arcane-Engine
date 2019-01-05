@@ -49,4 +49,13 @@ namespace arcane {
 		}
 	}
 
+	JoystickInputData *JoystickManager::getJoystickInfo(int joystick) {
+		if (joystick >= MAX_JOYSTICKS) {
+			Logger::getInstance().error("logged_files/input_errors.txt", "Joystick Check", "Joystick data requested does not exist");
+			return nullptr;
+		}
+
+		return &s_JoystickData[joystick];
+	}
+
 }

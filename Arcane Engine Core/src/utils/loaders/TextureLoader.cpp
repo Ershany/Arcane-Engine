@@ -3,12 +3,12 @@
 
 namespace arcane {
 
-	std::map<std::string, Texture> TextureLoader::m_TextureCache;
+	std::unordered_map<std::string, Texture> TextureLoader::m_TextureCache;
 	TextureLoader::DefaultTextures TextureLoader::m_DefaultTextures;
 
 	Texture* TextureLoader::load2DTexture(std::string &path, bool isSRGB, TextureSettings *settings) {
 		// Check the cache
-		std::map<std::string, Texture>::iterator iter = m_TextureCache.find(path);
+		std::unordered_map<std::string, Texture>::iterator iter = m_TextureCache.find(path);
 		if (iter != m_TextureCache.end()) {
 			return &iter->second;
 		}

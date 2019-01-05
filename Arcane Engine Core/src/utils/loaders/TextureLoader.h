@@ -37,7 +37,7 @@ namespace arcane {
 		inline static Texture* getFullRoughness() { return m_DefaultTextures.m_FullRoughness; }
 		inline static Texture* getNoRoughness() { return m_DefaultTextures.m_NoRoughness; }
 	private:
-		static std::map<std::string, Texture> m_TextureCache;
+		static std::unordered_map<std::string, Texture> m_TextureCache;
 		static DefaultTextures m_DefaultTextures;
 	};
 
