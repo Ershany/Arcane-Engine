@@ -3,6 +3,10 @@
 
 namespace arcane {
 
+	CubemapCamera::CubemapCamera() : m_CenterPosition(0.0f, 0.0f, 0.0f) {
+		switchCameraToFace(0);
+	}
+
 	CubemapCamera::CubemapCamera(glm::vec3 &centerPosiiton) : m_CenterPosition(centerPosiiton) {
 		switchCameraToFace(0);
 	}
@@ -41,7 +45,7 @@ namespace arcane {
 	}
 	
 	glm::mat4 CubemapCamera::getProjectionMatrix() {
-		return glm::perspective(glm::radians(90.0f), 1.0f, NEAR_PLANE, FAR_PLANE);
+		return glm::perspective(glm::radians(90.0f), 1.0f, 0.5f, FAR_PLANE);
 	}
 
 }

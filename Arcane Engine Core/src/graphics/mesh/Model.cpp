@@ -17,10 +17,10 @@ namespace arcane {
 		m_Meshes = meshes;
 	}
 
-	void Model::Draw(Shader &shader, RenderPass pass) const {
+	void Model::Draw(Shader *shader, RenderPassType pass) const {
 		for (unsigned int i = 0; i < m_Meshes.size(); ++i) {
 			// Avoid binding material inforomation when it isn't needed
-			if (pass != RenderPass::ShadowmapPass)
+			if (pass != RenderPassType::ShadowmapPassType)
 				m_Meshes[i].m_Material.BindMaterialInformation(shader);
 			m_Meshes[i].Draw();
 		}

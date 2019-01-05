@@ -10,6 +10,19 @@ namespace arcane {
 	}
 
 	Framebuffer::~Framebuffer() {
+		if (m_ColourTexture != 0)
+		{
+			glDeleteTextures(1, &m_ColourTexture);
+		}
+		if (m_DepthTexture != 0)
+		{
+			glDeleteTextures(1, &m_DepthTexture);
+		}
+		if (m_DepthStencilRBO != 0)
+		{
+			glDeleteRenderbuffers(1, &m_DepthStencilRBO);
+		}
+
 		glDeleteFramebuffers(1, &m_FBO);
 	}
 
@@ -29,8 +42,13 @@ namespace arcane {
 		unbind();
 	}
 
-	Framebuffer& Framebuffer::addColorAttachment(bool multisampledBuffer) {
+	Framebuffer& Framebuffer::addTexture2DColorAttachment(bool multisampledBuffer) {
 		m_IsMultisampledColourBuffer = multisampledBuffer;
+
+		if (m_ColourTexture != 0) {
+			Logger::getInstance().error("logged_files/error.txt", "Framebuffer initialization", "Framebuffer already has a colour attachment");
+			return *this;
+		}
 
 		bind();
 		glGenTextures(1, &m_ColourTexture);
@@ -58,6 +76,12 @@ namespace arcane {
 	}
 
 	Framebuffer& Framebuffer::addDepthStencilRBO(bool multisampledBuffer) {
+		if (m_DepthStencilRBO != 0)
+		{
+			Logger::getInstance().error("logged_files/error.txt", "Framebuffer initialization", "Framebuffer already has a depth+stencil RBO attachment");
+			return *this;
+		}
+
 		bind();
 
 		// Generate depth+stencil rbo attachment
@@ -76,6 +100,12 @@ namespace arcane {
 	}
 
 	Framebuffer& Framebuffer::addDepthAttachment(bool multisampled) {
+		if (m_DepthTexture != 0)
+		{
+			Logger::getInstance().error("logged_files/error.txt", "Framebuffer initialization", "Framebuffer already has a depth attachment");
+			return *this;
+		}
+
 		bind();
 
 		// Generate depth attachment
@@ -104,6 +134,11 @@ namespace arcane {
 
 		unbind();
 		return *this;
+	}
+
+	void Framebuffer::setColorAttachment(unsigned int target, unsigned int targetType)
+	{
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, targetType, target, 0);
 	}
 
 	void Framebuffer::bind() {

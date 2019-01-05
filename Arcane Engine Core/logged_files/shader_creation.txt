@@ -1,1 +1,1 @@
-(shader initialization): ed to Compile Geometry Shader
+(shader initialization): t shader

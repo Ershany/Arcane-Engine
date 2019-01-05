@@ -2,7 +2,7 @@
 
 #include <graphics/Shader.h>
 #include <graphics/mesh/Mesh.h>
-#include <graphics/renderer/RenderPass.h>
+#include <graphics/renderer/renderpass/RenderPassType.h>
 #include <utils/loaders/TextureLoader.h>
 
 #include <assimp/Importer.hpp>
@@ -17,7 +17,7 @@ namespace arcane {
 		Model(const Mesh &mesh);
 		Model(const std::vector<Mesh> &meshes);
 		
-		void Draw(Shader &shader, RenderPass pass) const;
+		void Draw(Shader *shader, RenderPassType pass) const;
 
 		inline std::vector<Mesh>& getMeshes() { return m_Meshes; }
 	private:

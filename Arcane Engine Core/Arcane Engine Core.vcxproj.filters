@@ -81,9 +81,6 @@
     <ClCompile Include="src\vendor\imgui\imgui_impl_glfw_gl3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderer\PostProcessor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\mesh\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,19 +129,10 @@
     <ClCompile Include="src\graphics\ibl\EnvironmentProbe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\ibl\EnvironmentProbeManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderer\MeshRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\OpenGL\Framebuffers\Framebuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\scene\Renderable3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\scene\Scene3D.cpp">
@@ -154,6 +142,36 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\input\JoystickManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\RenderableModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\MasterRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\LightingPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\ShadowmapPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\RenderPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\ModelRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\PostProcessPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\EnvironmentProbePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\loaders\ShaderLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\ibl\EnvironmentProbeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -266,12 +284,6 @@
     <ClInclude Include="src\graphics\texture\Cubemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderer\RenderPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderer\PostProcessor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\ui\RuntimePane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -290,19 +302,10 @@
     <ClInclude Include="src\graphics\ibl\EnvironmentProbe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\ibl\EnvironmentProbeManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderer\MeshRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\OpenGL\Framebuffers\Framebuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\Renderable3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\Scene3D.h">
@@ -312,6 +315,42 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\input\JoystickManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\RenderableModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\MasterRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\LightingPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\RenderPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\ShadowmapPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\ModelRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\RenderPassType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\PostProcessPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\EnvironmentProbePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera\ICamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\loaders\ShaderLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\ibl\EnvironmentProbeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -329,8 +368,6 @@
     <None Include="src\shaders\shadowmap.frag" />
     <None Include="src\shaders\postprocess.vert" />
     <None Include="src\shaders\postprocess.frag" />
-    <None Include="src\shaders\model.frag" />
-    <None Include="src\shaders\model.vert" />
     <None Include="src\shaders\pbr_model.vert" />
     <None Include="src\shaders\pbr_model.frag" />
   </ItemGroup>

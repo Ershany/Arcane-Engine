@@ -20,8 +20,8 @@ namespace arcane {
 		JoystickManager();
 		~JoystickManager();
 
-		void Update();
-		void JoystickConnectionCallback(int joystick, int event);
+		void update();
+		void joystickConnectionCallback(int joystick, int event);
 
 		static JoystickInputData *getJoystickInfo(int joystick);
 	private:

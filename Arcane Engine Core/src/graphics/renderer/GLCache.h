@@ -1,5 +1,6 @@
 #pragma once
 
+#include <graphics/Shader.h>
 #include <utils/Singleton.h>
 
 namespace arcane {
@@ -24,6 +25,7 @@ namespace arcane {
 		void setBlendFunc(GLenum src, GLenum dst);
 		void setCullFace(GLenum faceToCull);
 
+		void switchShader(Shader *shader);
 		void switchShader(unsigned int shaderID);
 	private:
 		// Toggles

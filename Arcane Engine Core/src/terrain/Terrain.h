@@ -12,7 +12,7 @@ namespace arcane {
 		Terrain(glm::vec3 &worldPosition);
 		~Terrain();
 
-		void Draw(Shader &shader, RenderPass pass) const;
+		void Draw(Shader *shader, RenderPassType pass) const;
 
 		inline const glm::vec3& getPosition() const { return m_Position; }
 	private:

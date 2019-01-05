@@ -20,7 +20,7 @@ namespace arcane {
 	class Texture {
 	public:
 		Texture();
-		Texture(TextureSettings settings);
+		Texture(TextureSettings &settings);
 		~Texture();
 
 		// Generation functions
@@ -43,7 +43,6 @@ namespace arcane {
 		// Don't use this to bind the texture and use it. Call the Bind() function instead
 		inline unsigned int getTextureId() { return m_TextureId; }
 	private:
-		// TODO: Need support for deletion/cleanup of cubemaps
 		unsigned int m_TextureId;
 		GLenum m_TextureTarget;
 

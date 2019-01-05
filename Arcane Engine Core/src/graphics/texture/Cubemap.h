@@ -16,7 +16,7 @@ namespace arcane {
 	class Cubemap {
 	public:
 		Cubemap();
-		Cubemap(CubemapSettings settings);
+		Cubemap(CubemapSettings &settings);
 		~Cubemap();
 
 		void generateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum textureFormat, GLenum dataFormat, const unsigned char *data);
@@ -26,10 +26,12 @@ namespace arcane {
 
 		// Pre-generation controls only
 		inline void setCubemapSettings(CubemapSettings settings) { m_CubemapSettings = settings; }
+
+		// Getters
+		unsigned int getCubemapID() { return m_CubemapID; }
 	private:
 		// TODO: Look into better filtering like anisotropic support and also look into proper mips for cubemaps
-		// Also need support for deletion/cleanup of cubemaps
-		unsigned int m_CubemapId;
+		unsigned int m_CubemapID;
 
 		unsigned int m_FaceWidth, m_FaceHeight;
 		GLenum m_TextureFormat;

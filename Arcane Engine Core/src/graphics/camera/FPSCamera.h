@@ -1,5 +1,6 @@
 #pragma once
 
+#include <graphics/camera/ICamera.h>
 #include <graphics/Window.h>
 #include <ui/DebugPane.h>
 
@@ -21,7 +22,7 @@ namespace arcane {
 	const float SENSITIVITY = 0.10f;
 	const float FOV = 100.0f;
 
-	class FPSCamera {
+	class FPSCamera : public ICamera {
 	private:
 		// Camera Attributes
 		glm::vec3 m_Position, m_Front, m_Up, m_Right, m_WorldUp;
@@ -62,8 +63,8 @@ namespace arcane {
 		FPSCamera(float xPos, float yPos, float zPos, float xUp, float yUp, float zUp, float yaw, float pitch);
 
 
-		glm::mat4 getViewMatrix();
-		glm::mat4 getProjectionMatrix();
+		virtual glm::mat4 getViewMatrix() override;
+		virtual glm::mat4 getProjectionMatrix() override;
 
 		void processInput(float deltaTime);
 
@@ -73,8 +74,9 @@ namespace arcane {
 		inline float getMovementSpeed() const { return m_MovementSpeed; }
 		inline float getMouseSensitivity() const { return m_MouseSensitivity; }
 		inline float getFOV() const { return m_FOV; }
-		inline const glm::vec3& getFront() const { return m_Front; }
-		inline const glm::vec3& getPosition() const { return m_Position; }
+		inline virtual const glm::vec3& getPosition() const override { return m_Position; }
+		inline virtual const glm::vec3& getFront() const { return m_Front; }
+		inline virtual const glm::vec3& getUp() const { return m_Up; }
 	private:
 		/**
 		* Updates the front, right, and up vectors for the camera

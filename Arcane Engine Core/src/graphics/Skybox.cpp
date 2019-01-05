@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "Skybox.h"
 
+#include <utils/loaders/ShaderLoader.h>
+
 namespace arcane {
 
-	Skybox::Skybox(const std::vector<std::string> &filePaths, FPSCamera *camera) : m_SkyboxShader("src/shaders/skybox.vert", "src/shaders/skybox.frag"), m_Camera(camera)
-	{
+	Skybox::Skybox(const std::vector<std::string> &filePaths) {
+		m_SkyboxShader = ShaderLoader::loadShader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
+
 		m_SkyboxCubemap = TextureLoader::loadCubemapTexture(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5], true);
 		
 		float skyboxVertices[] = {
@@ -47,15 +50,15 @@ namespace arcane {
 		m_GLCache = GLCache::getInstance();
 	}
 
-	void Skybox::Draw() {
-		m_SkyboxShader.enable();
+	void Skybox::Draw(ICamera *camera) {
+		m_SkyboxShader->enable();
 
 		// Pass the texture to the shader
 		m_SkyboxCubemap->bind(0);
-		m_SkyboxShader.setUniform1i("skyboxCubemap", 0);
+		m_SkyboxShader->setUniform1i("skyboxCubemap", 0);
 
-		m_SkyboxShader.setUniformMat4("view", m_Camera->getViewMatrix());
-		m_SkyboxShader.setUniformMat4("projection", m_Camera->getProjectionMatrix());
+		m_SkyboxShader->setUniformMat4("view", camera->getViewMatrix());
+		m_SkyboxShader->setUniformMat4("projection", camera->getProjectionMatrix());
 
 		// Since the vertex shader is gonna make the depth value 1.0, and the default value in the depth buffer is 1.0 so this is needed to draw the sky  box
 		m_GLCache->setDepthFunc(GL_LEQUAL);
@@ -66,7 +69,7 @@ namespace arcane {
 		m_SkyboxIBO.unbind();
 		m_GLCache->setDepthFunc(GL_LESS);
 
-		m_SkyboxShader.disable();
+		m_SkyboxShader->disable();
 	}
 
 }

@@ -43,6 +43,7 @@ out vec4 color;
 uniform vec3 viewPos;
 
 // IBL
+uniform bool computeIBL;
 uniform samplerCube irradianceMap;
 uniform samplerCube prefilterMap;
 uniform sampler2D brdfLUT;
@@ -73,6 +74,7 @@ float CalculateShadow(vec3 normal, vec3 fragToDirLight);
 void main() {
 	// Sample textures
 	vec3 albedo = texture(material.texture_albedo, TexCoords).rgb;
+	float albedoAlpha = texture(material.texture_albedo, TexCoords).w;
 	vec3 normal = texture(material.texture_normal, TexCoords).rgb;
 	float metallic = texture(material.texture_metallic, TexCoords).r;
 	float roughness = max(texture(material.texture_roughness, TexCoords).r, 0.04);
@@ -95,14 +97,18 @@ void main() {
 	directLightIrradiance += CalculateSpotLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
 
 	// Calcualte ambient IBL for both diffuse and specular
-	vec3 specularRatio = FresnelSchlick(max(dot(normal, fragToView), 0.0), baseReflectivity);
-	vec3 diffuseRatio = vec3(1.0) - specularRatio;
-	diffuseRatio *= 1.0 - metallic;
-	vec3 indirectIrradiance = texture(irradianceMap, normal).rgb;
-	vec3 indirectDiffuse = indirectIrradiance * albedo;
-	vec3 ambient = (diffuseRatio * indirectDiffuse) * ao;
+	vec3 ambient = vec3(0.03) * albedo * ao;
+	if (computeIBL) {
+		vec3 specularRatio = FresnelSchlick(max(dot(normal, fragToView), 0.0), baseReflectivity);
+		vec3 diffuseRatio = vec3(1.0) - specularRatio;
+		diffuseRatio *= 1.0 - metallic;
+		vec3 indirectIrradiance = texture(irradianceMap, normal).rgb;
+		vec3 indirectDiffuse = indirectIrradiance * albedo;
+		vec3 indirectSpecular = texture(irradianceMap, reflect(-fragToView, normal)).rgb;
+		ambient = (diffuseRatio * indirectDiffuse + specularRatio * indirectSpecular) * ao;
+	}
 
-	color = vec4(ambient + directLightIrradiance, 1.0);
+	color = vec4(ambient + directLightIrradiance, albedoAlpha);
 }
 
 
@@ -122,7 +128,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 	diffuseRatio *= 1.0 - metallic;
 
 	// Finally calculate the specular part of the Cook-Torrance BRDF (max 0.1 stops any visual artifacts)
-	vec3 numerator = fresnel * normalDistribution * geometry;
+	vec3 numerator = specularRatio * normalDistribution * geometry;
 	float denominator = 4 * max(dot(fragToView, normal), 0.1) * max(dot(lightDir, normal), 0.0) + 0.001;  // Prevents any division by zero
 	vec3 specular = numerator / denominator;
 
