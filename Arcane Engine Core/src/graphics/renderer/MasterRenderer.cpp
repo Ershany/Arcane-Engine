@@ -13,7 +13,7 @@ namespace arcane
 	}
 
 	void MasterRenderer::init() {
-		m_EnvironmentProbePass.pregenerateProbes();
+		//m_EnvironmentProbePass.pregenerateProbes();
 	}
 
 	void MasterRenderer::render() {

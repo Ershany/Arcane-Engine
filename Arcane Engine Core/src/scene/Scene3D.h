@@ -36,7 +36,7 @@ namespace arcane {
 		GLCache *m_GLCache;
 
 		// Scene parameters
-		EnvironmentProbeBlendSetting m_SceneProbeBlendSetting = PROBES_SIMPLE;
+		EnvironmentProbeBlendSetting m_SceneProbeBlendSetting = PROBES_DISABLED;
 
 		// Scene Specific Data
 		FPSCamera m_SceneCamera;
