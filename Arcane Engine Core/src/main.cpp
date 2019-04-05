@@ -5,6 +5,7 @@
 #include <scene/Scene3D.h>
 #include <ui/DebugPane.h>
 #include <ui/RuntimePane.h>
+#include <ui/NavmeshPane.h>
 #include <utils/Time.h>
 
 int main() {
@@ -17,6 +18,7 @@ int main() {
 	// Prepare the UI
 	arcane::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));
 	arcane::DebugPane debugPane(glm::vec2(256.0f, 115.0f));
+	arcane::NavmeshPane navmeshPane(glm::vec2(256.0f, 200.0f));
 
 	// Initialize the renderer
 	renderer.init();
@@ -41,6 +43,7 @@ int main() {
 		// Display panes
 		runtimePane.render();
 		debugPane.render();
+		navmeshPane.render();
 
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());

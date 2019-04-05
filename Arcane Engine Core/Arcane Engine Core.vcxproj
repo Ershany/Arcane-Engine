@@ -106,6 +106,7 @@
     <ClCompile Include="src\graphics\renderer\renderpass\ShadowmapPass.cpp" />
     <ClCompile Include="src\input\InputManager.cpp" />
     <ClCompile Include="src\input\JoystickManager.cpp" />
+    <ClCompile Include="src\pathfinding\PathfindingAgent.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -125,6 +126,7 @@
     <ClCompile Include="src\scene\Scene3D.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
     <ClCompile Include="src\ui\DebugPane.cpp" />
+    <ClCompile Include="src\ui\NavmeshPane.cpp" />
     <ClCompile Include="src\ui\Pane.cpp" />
     <ClCompile Include="src\ui\RuntimePane.cpp" />
     <ClCompile Include="src\utils\FileUtils.cpp" />
@@ -178,6 +180,7 @@
     <ClInclude Include="src\graphics\renderer\renderpass\ShadowmapPass.h" />
     <ClInclude Include="src\input\InputManager.h" />
     <ClInclude Include="src\input\JoystickManager.h" />
+    <ClInclude Include="src\pathfinding\PathfindingAgent.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\scene\RenderableModel.h" />
     <ClInclude Include="src\graphics\renderer\ModelRenderer.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="src\scene\Scene3D.h" />
     <ClInclude Include="src\terrain\Terrain.h" />
     <ClInclude Include="src\ui\DebugPane.h" />
+    <ClInclude Include="src\ui\NavmeshPane.h" />
     <ClInclude Include="src\ui\Pane.h" />
     <ClInclude Include="src\ui\RuntimePane.h" />
     <ClInclude Include="src\utils\FileUtils.h" />

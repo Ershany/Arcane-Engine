@@ -88,6 +88,9 @@ namespace arcane {
 	}
 
 	void FPSCamera::processMouseMovement(double xOffset, double yOffset, GLboolean constrainPitch = true) {
+		if (!Window::getHideCursor())
+			return;
+
 		xOffset *= m_MouseSensitivity;
 		yOffset *= m_MouseSensitivity;
 
