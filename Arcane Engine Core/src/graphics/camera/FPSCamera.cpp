@@ -88,6 +88,10 @@ namespace arcane {
 	}
 
 	void FPSCamera::processMouseMovement(double xOffset, double yOffset, GLboolean constrainPitch = true) {
+		// Make sure the user isn't interacting with the UI
+		if (!Window::getHideCursor())
+			return;
+
 		xOffset *= m_MouseSensitivity;
 		yOffset *= m_MouseSensitivity;
 

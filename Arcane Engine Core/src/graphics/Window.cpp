@@ -4,13 +4,14 @@
 namespace arcane {
 
 	// Static declarations
-	int Window::m_Width; int Window::m_Height;
+	bool Window::s_HideCursor;
+	int Window::s_Width; int Window::s_Height;
 
 	Window::Window(const char *title, int width, int height) {
 		m_Title = title;
-		m_Width = width;
-		m_Height = height;
-		m_HideCursor = true;
+		s_Width = width;
+		s_Height = height;
+		s_HideCursor = true;
 
 		if (!init()) {
 			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize window class");
@@ -48,10 +49,10 @@ namespace arcane {
 		// Create the window and OpenGL context
 		if (FULLSCREEN_MODE) {
 			setFullscreenResolution();
-			m_Window = glfwCreateWindow(m_Width, m_Height, m_Title, glfwGetPrimaryMonitor(), NULL);
+			m_Window = glfwCreateWindow(s_Width, s_Height, m_Title, glfwGetPrimaryMonitor(), NULL);
 		}
 		else {
-			m_Window = glfwCreateWindow(m_Width, m_Height, m_Title, NULL, NULL);
+			m_Window = glfwCreateWindow(s_Width, s_Height, m_Title, NULL, NULL);
 		}
 		
 		if (!m_Window) {
@@ -61,7 +62,7 @@ namespace arcane {
 		}
 
 		// Setup the mouse settings
-		if (m_HideCursor) 
+		if (s_HideCursor) 
 			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		double currMouseX, currMouseY;
@@ -98,7 +99,7 @@ namespace arcane {
 		std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
 
 		// Setup default OpenGL viewport
-		glViewport(0, 0, m_Width, m_Height);
+		glViewport(0, 0, s_Width, s_Height);
 
 		// Setup ImGui bindings
 		ImGui::CreateContext();
@@ -145,8 +146,8 @@ namespace arcane {
 	// Sets the Window's Size to the Primary Monitor's Resolution
 	void Window::setFullscreenResolution() {
 		const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-		m_Width = mode->width;
-		m_Height = mode->height;
+		s_Width = mode->width;
+		s_Height = mode->height;
 	}
 
 	/*              Callback Functions              */
@@ -157,14 +158,14 @@ namespace arcane {
 	static void window_resize_callback(GLFWwindow *window, int width, int height) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		if (width == 0 || height == 0) {
-			win->m_Width = WINDOW_X_RESOLUTION;
-			win->m_Height = WINDOW_Y_RESOLUTION;
+			win->s_Width = WINDOW_X_RESOLUTION;
+			win->s_Height = WINDOW_Y_RESOLUTION;
 		}
 		else {
-			win->m_Width = width;
-			win->m_Height = height;
+			win->s_Width = width;
+			win->s_Height = height;
 		}
-		glViewport(0, 0, win->m_Width, win->m_Height);
+		glViewport(0, 0, win->s_Width, win->s_Height);
 	}
 
 	static void framebuffer_resize_callback(GLFWwindow *window, int width, int height) {
@@ -177,8 +178,8 @@ namespace arcane {
 		ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
 #if DEBUG_ENABLED
 		if (key == GLFW_KEY_P && action == GLFW_RELEASE) {
-			win->m_HideCursor = !win->m_HideCursor;
-			GLenum cursorOption = win->m_HideCursor ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL;
+			win->s_HideCursor = !win->s_HideCursor;
+			GLenum cursorOption = win->s_HideCursor ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL;
 			glfwSetInputMode(win->m_Window, GLFW_CURSOR, cursorOption);
 		}
 #endif

@@ -10,13 +10,13 @@ namespace arcane {
 
 		virtual void setupPaneObjects();
 
-		inline static float getShadowmapTimer() { return m_ShadowmapTimer; }
-		inline static float getPostProcessTimer() { return m_PostProcessTimer; }
-		inline static void setShadowmapTimer(float frameTime) { m_ShadowmapTimer = frameTime; }
-		inline static void setPostProcessTimer(float frameTime) { m_PostProcessTimer = frameTime; }
+		static inline float getShadowmapTimer() { return s_ShadowmapTimer; }
+		static inline float getPostProcessTimer() { return s_PostProcessTimer; }
+		static inline void setShadowmapTimer(float frameTime) { s_ShadowmapTimer = frameTime; }
+		static inline void setPostProcessTimer(float frameTime) { s_PostProcessTimer = frameTime; }
 	private:
-		static float m_ShadowmapTimer;
-		static float m_PostProcessTimer;
+		static float s_ShadowmapTimer;
+		static float s_PostProcessTimer;
 	};
 
 }
