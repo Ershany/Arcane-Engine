@@ -9,7 +9,7 @@ namespace arcane {
 	enum EnvironmentProbeBlendSetting
 	{
 		PROBES_DISABLED, // Ignores probes and uses the skybox
-		PROBES_SIMPLE, // Disables blending between probes
+		PROBES_SIMPLE, // Uses the closest probe (no blending)
 		PROBES_BLEND // Blends adjacent probes
 	};
 
