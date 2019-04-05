@@ -10,6 +10,8 @@
 #include <unordered_map>
 #include <array>
 #include <iterator>
+#include <queue>
+#include <unordered_set>
 
 #include <gl/glew.h>
 
