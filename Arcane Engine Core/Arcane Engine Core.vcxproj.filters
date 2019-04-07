@@ -180,6 +180,9 @@
     <ClCompile Include="src\ui\NavmeshPane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\pathfinding\NavigationMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\Window.h">
@@ -363,6 +366,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ui\NavmeshPane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pathfinding\NavigationMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
