@@ -44,5 +44,13 @@ namespace arcane
 		inline void SetTerrain(Terrain* terrain) { this->terrain = terrain; }
 		// Generate the navigation mesh from the current terrain
 		void GenerateNavigationMesh();
+		// Checks if there is an obstacle at this location
+		bool ObstacleOnPoint(const glm::vec3& point);
+		// Checks if this point is navigable
+		bool ExistsPathToPoint(const glm::vec3& point);
+		// Triangulate the generated polygon
+		std::vector<Triangle> TriangulatePoly(std::vector<glm::vec3*> polygon);
+		// Draw the navigation mesh
+		void Draw(const std::vector<Triangle>& trinagles);
 	};
 }

@@ -42,16 +42,47 @@ namespace arcane
 	{
 		// Filter out the points that we cannot reach
 		std::vector<glm::vec3> terrainPoints = terrain->GetPoints();
+		std::vector<glm::vec3*> navigationPolygon;
+
 		for (int i = 0; i < terrainPoints.size(); ++i)
 		{
+			// Check if there is an obstacle at this point or whether it is in the list if so forget about it
+			if(ObstacleOnPoint(terrainPoints[i]))
+				continue;
 
+			// Check if any of the points around it can navigate to the point we are currently on 
+			if (ExistsPathToPoint(terrainPoints[i]))
+				navigationPolygon.push_back(&terrainPoints[i]);
 		}
 
-		// triangulate these new points to form a new mesh
+		// Triangulate these new points to form a new mesh
+		std::vector<Triangle> triangulatedPolygon = TriangulatePoly(navigationPolygon);
+
+		// Optimize this mesh for pathfinding by attempting to decrease number of triangles
 
 		// Draw this new mesh
+		Draw(triangulatedPolygon);
+	}
 
-		// Optimize this mesh for pathfinding
+	bool NavigationMesh::ObstacleOnPoint(const glm::vec3& point)
+	{
+		return false;
+	}
 
+	bool NavigationMesh::ExistsPathToPoint(const glm::vec3& point)
+	{
+		return false;
+	}
+
+	void NavigationMesh::Draw(const std::vector<Triangle>& trinagles)
+	{
+
+	}
+
+	std::vector<Triangle> NavigationMesh::TriangulatePoly(std::vector<glm::vec3*> polygon)
+	{
+		std::vector<Triangle> triangles;
+
+		return triangles;
 	}
 }
