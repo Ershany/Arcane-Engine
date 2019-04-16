@@ -15,6 +15,8 @@ namespace arcane {
 		void Draw(Shader *shader, RenderPassType pass) const;
 
 		inline const glm::vec3& getPosition() const { return m_Position; }
+		inline const std::vector<glm::vec3>& GetPoints() const { return m_Mesh->GetPositions(); }
+
 	private:
 		glm::vec3 calculateNormal(unsigned int x, unsigned int z, unsigned char *heightMapData);
 		float getVertexHeight(unsigned int x, unsigned int y, unsigned char *heightMapData);

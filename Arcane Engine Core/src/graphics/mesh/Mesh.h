@@ -29,6 +29,8 @@ namespace arcane {
 		inline void setTangents(std::vector<glm::vec3> &tangents) { m_Tangents = tangents; }
 		inline void setBitangents(std::vector<glm::vec3> &bitangents) { m_Bitangents = bitangents; }
 		inline void setIndices(std::vector<unsigned int> &indices) { m_Indices = indices; }
+		
+		inline const std::vector<glm::vec3>& GetPositions() const { return m_Positions; }
 
 		inline Material& getMaterial() { return m_Material; }
 	protected:

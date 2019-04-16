@@ -3,6 +3,12 @@
 
 namespace arcane
 {
+	NavigationMesh::NavigationMesh(Terrain* terrain, int slope) : terrain(terrain), slope(slope)
+	{}
+
+	NavigationMesh::~NavigationMesh()
+	{}
+
 	bool NavigationMesh::IsPointOnTriangle(const glm::vec3& point, const Triangle& triangle)
 	{
 		// Check if point is on the same plane as the triangle
@@ -31,11 +37,21 @@ namespace arcane
 		return glm::dot(abCrossap, abCrossac) >= 0;
 	}
 
-	NavigationMesh::NavigationMesh()
-	{
-	}
 
-	NavigationMesh::~NavigationMesh()
+	void NavigationMesh::GenerateNavigationMesh()
 	{
+		// Filter out the points that we cannot reach
+		std::vector<glm::vec3> terrainPoints = terrain->GetPoints();
+		for (int i = 0; i < terrainPoints.size(); ++i)
+		{
+
+		}
+
+		// triangulate these new points to form a new mesh
+
+		// Draw this new mesh
+
+		// Optimize this mesh for pathfinding
+
 	}
 }
