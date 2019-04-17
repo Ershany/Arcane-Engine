@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "NavigationMesh.h"
-#include "scene/RenderableModel.h"
 
 namespace arcane
 {
-	NavigationMesh::NavigationMesh(Terrain* terrain, int slope) : terrain(terrain), slope(slope)
-	{}
+	NavigationMesh::NavigationMesh(Terrain* terrain, int slopeAngle) : terrain(terrain), slopeAngle (slopeAngle)
+	{
+		SetSlopeMesh(slopeAngle); // Checks the angle given for the slope and calculates the cosine of that angle
+	}
 
 	NavigationMesh::~NavigationMesh()
 	{}
@@ -38,6 +39,47 @@ namespace arcane
 		return glm::dot(abCrossap, abCrossac) >= 0;
 	}
 
+	void NavigationMesh::SetSlopeMesh(int angle) 
+	{
+		if (angle < 0 || angle > 90)
+			slopeAngle = DEFAULT_DEGREE; 
+		
+		this->slopeAngle = std::cos(slopeAngle);
+	}
+	
+	float NavigationMesh::GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2)
+	{
+		glm::vec3 difference = point2 - point1; // Getting the difference vectors
+		glm::vec3 referenceVec = difference;
+		referenceVec.y = point1.y; // Create a vector in the direction of the difference but get straighten it out with reference point's y coordinate
+		float dot = glm::dot(glm::normalize(difference), glm::normalize(referenceVec)); // This will give us cos(theta)
+
+		return dot;
+	}
+
+	bool NavigationMesh::ObstacleOnPoint(const glm::vec3& point)
+	{
+		return false;
+	}
+
+	bool NavigationMesh::ExistsPathToPoint(const glm::vec3& point, const std::vector<glm::vec3>& terrainPoints)
+	{
+		// Check if we can go from this point to any of the others around it
+		unsigned int columnNumber = terrain->GetVertexCount();
+		return false;
+	}
+
+	void NavigationMesh::Draw(const std::vector<Triangle>& trinagles)
+	{
+
+	}
+
+	std::vector<Triangle> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
+	{
+		std::vector<Triangle> triangles;
+
+		return triangles;
+	}
 
 	void NavigationMesh::GenerateNavigationMesh()
 	{
@@ -69,7 +111,7 @@ namespace arcane
 						continue;
 
 					// Check the slope of the 2 points
-					if (GetSlopePoints(terrainPoints[i], *neighborPoint) < 0.6f)
+					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > COS_30)
 					{
 						navigationPolygon[rowNumber].push_back(&terrainPoints[i]);
 						navigable = true;
@@ -81,7 +123,6 @@ namespace arcane
 				if (navigable)
 					break;
 			}
-
 		}
 
 		// Triangulate these new points to form a new mesh
@@ -91,36 +132,5 @@ namespace arcane
 
 		// Draw this new mesh
 		Draw(triangulatedPolygon);
-	}
-
-	bool NavigationMesh::ObstacleOnPoint(const glm::vec3& point)
-	{
-		return false;
-	}
-
-	bool NavigationMesh::ExistsPathToPoint(const glm::vec3& point, const std::vector<glm::vec3>& terrainPoints)
-	{
-		// Check if we can go from this point to any of the others around it
-		unsigned int columnNumber = terrain->GetVertexCount();
-		
-
-		return false;
-	}
-
-	void NavigationMesh::Draw(const std::vector<Triangle>& trinagles)
-	{
-
-	}
-
-	std::vector<Triangle> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
-	{
-		std::vector<Triangle> triangles;
-
-		return triangles;
-	}
-
-	float GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2)
-	{
-		return 0.f;
 	}
 }

@@ -1,6 +1,11 @@
 #pragma once
 
+#define DEFAULT_DEGREE 30
+#define COS_30 0.866666f
+
 #include "terrain/Terrain.h"
+#include "scene/RenderableModel.h"
+
 
 namespace arcane
 {
@@ -31,7 +36,7 @@ namespace arcane
 	{
 	public:
 		Terrain* terrain; // Reference terrain that we want to build the navigation mesh on 
-		float slope; // A parameter that will hold the slope that we will accept for the navigation mesh
+		float slopeAngle; // A parameter that will hold the slope that we will accept for the navigation mesh
 		glm::vec3 sideVector; // Store the side vector of the terrain mesh
 
 		NavigationMesh(Terrain* terrain, int slope);
@@ -55,5 +60,7 @@ namespace arcane
 		void Draw(const std::vector<Triangle>& trinagles);
 		// Get the slope of the 2 pts its mostly the angle between these 2 pts and a reference vector(probably side vector)
 		float GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2);
+		// Set the Slope that the nav mesh will use for generation
+		void SetSlopeMesh(int angle);
 	};
 }
