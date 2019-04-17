@@ -98,6 +98,16 @@ namespace arcane {
 		m_Mesh->Draw();
 	}
 
+	// Nearest Neighbor sample for the terrain's vertex position
+	glm::vec3& Terrain::sampleHeightfield(const glm::vec3& worldPos) {
+		glm::vec2 terrainXZ = glm::vec2(clip(worldPos.x / m_TerrainSize, 0.0f, (float)m_VertexSideCount + 1.0f), clip(worldPos.z / m_TerrainSize, 0.0f, (float)m_VertexSideCount + 1.0f));
+		return glm::vec3(m_Mesh->GetPositions()[(int)terrainXZ.x + ((int)terrainXZ.y * m_VertexSideCount)]);
+	}
+
+	float Terrain::clip(float n, float lower, float upper) {
+		return std::max(lower, std::min(n, upper));
+	}
+
 	// Bilinear filtering for the terrain's normal
 	glm::vec3 Terrain::calculateNormal(unsigned int x, unsigned int z, unsigned char *heightMapData) {
 		float heightR = getVertexHeight(x + 1, z    , heightMapData);
