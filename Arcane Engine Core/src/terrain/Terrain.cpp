@@ -99,9 +99,27 @@ namespace arcane {
 	}
 
 	// Nearest Neighbor sample for the terrain's vertex position
-	glm::vec3& Terrain::sampleHeightfield(const glm::vec3& worldPos) {
-		glm::vec2 terrainXZ = glm::vec2(clip(worldPos.x / m_TerrainSize, 0.0f, (float)m_VertexSideCount + 1.0f), clip(worldPos.z / m_TerrainSize, 0.0f, (float)m_VertexSideCount + 1.0f));
-		return glm::vec3(m_Mesh->GetPositions()[(int)terrainXZ.x + ((int)terrainXZ.y * m_VertexSideCount)]);
+	float Terrain::sampleHeightfieldNearest(const glm::vec3& worldPos) {
+		glm::vec2 terrainXZ = glm::vec2(clip(worldPos.x / m_TerrainSize, 0.0f, (float)m_VertexSideCount - 1.0f), clip(worldPos.z / m_TerrainSize, 0.0f, (float)m_VertexSideCount - 1.0f));
+		return m_Mesh->GetPositions()[(int)terrainXZ.x + ((int)terrainXZ.y * m_VertexSideCount)].y;
+	}
+
+	// Bilinear sampling for the terrain's vertex position
+	float Terrain::sampleHeightfieldBilinear(const glm::vec3& worldPos) {
+		// Get the weights for the bilinear filter
+		glm::vec2 terrainXZ = glm::vec2(worldPos.x / m_TerrainSize, worldPos.z / m_TerrainSize);
+		float xFrac = terrainXZ.x - (int)terrainXZ.x;
+		float zFrac = terrainXZ.y - (int)terrainXZ.y;
+
+		// Get the values that should be lerped
+		float topLeft = sampleHeightfieldNearest(worldPos);
+		float topRight = sampleHeightfieldNearest(worldPos + glm::vec3(m_TerrainSize, 0.0f, 0.0f));
+		float bottomLeft = sampleHeightfieldNearest(worldPos + glm::vec3(0.0f, 0.0f, m_TerrainSize));
+		float bottomRight = sampleHeightfieldNearest(worldPos + glm::vec3(m_TerrainSize, 0.0f, m_TerrainSize));
+
+		// Do the bilinear filtering
+		float height = glm::mix(glm::mix(topLeft, topRight, xFrac), glm::mix(bottomLeft, bottomRight, xFrac), zFrac);
+		return height;
 	}
 
 	float Terrain::clip(float n, float lower, float upper) {

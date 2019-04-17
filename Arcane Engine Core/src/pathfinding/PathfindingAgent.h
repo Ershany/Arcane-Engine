@@ -16,6 +16,6 @@ namespace arcane
 		Terrain* m_Terrain;
 		RenderableModel *m_Model;
 
-		float m_MovementSpeedPerSec = 10.0f;
+		float m_MovementSpeedPerSec = 20.0f;
 	};
 }
