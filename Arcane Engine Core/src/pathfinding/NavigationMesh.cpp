@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "NavigationMesh.h"
+#include "scene/RenderableModel.h"
 
 namespace arcane
 {
@@ -42,17 +43,45 @@ namespace arcane
 	{
 		// Filter out the points that we cannot reach
 		std::vector<glm::vec3> terrainPoints = terrain->GetPoints();
-		std::vector<glm::vec3*> navigationPolygon;
+		std::vector<std::vector<glm::vec3*>> navigationPolygon;
+		int rowNumber = 0;
+		int columnCount = terrain->GetVertexCount();
 
 		for (int i = 0; i < terrainPoints.size(); ++i)
 		{
+			// Check for rows there probably is a better way to do this
+			if (i == rowNumber * columnCount)
+				++rowNumber;
+
 			// Check if there is an obstacle at this point or whether it is in the list if so forget about it
-			if(ObstacleOnPoint(terrainPoints[i]))
-				continue;
+			if (ObstacleOnPoint(terrainPoints[i]))
+				continue; // No obstacles being checked atm
 
 			// Check if any of the points around it can navigate to the point we are currently on 
-			if (ExistsPathToPoint(terrainPoints[i]))
-				navigationPolygon.push_back(&terrainPoints[i]);
+			bool navigable = false;
+			for (int j = -1; j < 2; ++j)
+			{
+				for (int k = -1; k < 2; ++k)
+				{
+					// Get the neighboring points
+					glm::vec3* neighborPoint = &terrainPoints[(i + k) + (j * columnCount)];
+					if (!neighborPoint)
+						continue;
+
+					// Check the slope of the 2 points
+					if (GetSlopePoints(terrainPoints[i], *neighborPoint) < 0.6f)
+					{
+						navigationPolygon[rowNumber].push_back(&terrainPoints[i]);
+						navigable = true;
+						break;
+					}
+				}
+
+				// If we found something 
+				if (navigable)
+					break;
+			}
+
 		}
 
 		// Triangulate these new points to form a new mesh
@@ -69,8 +98,12 @@ namespace arcane
 		return false;
 	}
 
-	bool NavigationMesh::ExistsPathToPoint(const glm::vec3& point)
+	bool NavigationMesh::ExistsPathToPoint(const glm::vec3& point, const std::vector<glm::vec3>& terrainPoints)
 	{
+		// Check if we can go from this point to any of the others around it
+		unsigned int columnNumber = terrain->GetVertexCount();
+		
+
 		return false;
 	}
 
@@ -79,10 +112,15 @@ namespace arcane
 
 	}
 
-	std::vector<Triangle> NavigationMesh::TriangulatePoly(std::vector<glm::vec3*> polygon)
+	std::vector<Triangle> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
 	{
 		std::vector<Triangle> triangles;
 
 		return triangles;
+	}
+
+	float GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2)
+	{
+		return 0.f;
 	}
 }

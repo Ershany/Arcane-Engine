@@ -18,6 +18,7 @@ namespace arcane {
 
 		inline const glm::vec3& getPosition() const { return m_Position; }
 		inline const std::vector<glm::vec3>& GetPoints() const { return m_Mesh->GetPositions(); }
+		inline const unsigned int GetVertexCount() const { return m_VertexSideCount; }
 
 	private:
 		glm::vec3 calculateNormal(unsigned int x, unsigned int z, unsigned char *heightMapData);
