@@ -55,7 +55,7 @@ namespace arcane {
 	}
 
 	void Scene3D::onRender() {
-
+		
 	}
 
 	void Scene3D::addModelsToRenderer() {

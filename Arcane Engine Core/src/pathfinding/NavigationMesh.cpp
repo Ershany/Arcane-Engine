@@ -2,6 +2,8 @@
 #include "NavigationMesh.h"
 
 #include <ui/NavmeshPane.h>
+#include <utils/loaders/ShaderLoader.h>
+#include <graphics/mesh/common/Cube.h>
 
 namespace arcane
 {
@@ -11,6 +13,10 @@ namespace arcane
 
 		regenerationCallback = [&] {OnRegenerateButtonClick(); };
 		NavmeshPane::setRegenerationFunctionPtr(regenerationCallback);
+
+		m_GLCache = GLCache::getInstance();
+		m_DebugShader = ShaderLoader::loadShader("src/shaders/simple_instanced.vert", "src/shaders/simple_instanced.frag");
+		m_DebugVertexModel = new RenderableModel(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, new Model(Cube()), nullptr);
 	}
 
 	NavigationMesh::~NavigationMesh()
@@ -85,19 +91,29 @@ namespace arcane
 		GenerateNavigationMesh();
 	}
 
-	void NavigationMesh::DrawMesh(const std::vector<TrianglePrim>& trinagles) {
+	void NavigationMesh::DrawMesh(ICamera* camera) {
 	
 	}
 
-	void NavigationMesh::DrawVertices(const std::vector<std::vector<glm::vec3*>>& vertices) {
-	
+	void NavigationMesh::DrawVertices(ICamera* camera) {
+		m_GLCache->switchShader(m_DebugShader->getShaderID());
+
+		// Setup model, view, and projection matrix
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 110.0f, 0.0f));
+		m_DebugShader->setUniformMat4("model", model);
+		m_DebugShader->setUniformMat4("view", camera->getViewMatrix());
+		m_DebugShader->setUniformMat4("projection", camera->getProjectionMatrix());
+		m_DebugVertexModel->draw(m_DebugShader, RenderPassType::ShadowmapPassType);
 	}
 
 	void NavigationMesh::GenerateNavigationMesh()
 	{
+		// Clear the old nav mesh stuff
+		m_NavigationPolygon.clear();
+		m_TriangulatedPolygon.clear();
+
 		// Filter out the points that we cannot reach
 		std::vector<glm::vec3> terrainPoints = terrain->GetPoints();
-		std::vector<std::vector<glm::vec3*>> navigationPolygon;
 		int rowNumber = 0;
 		int columnCount = terrain->GetVertexCount();
 
@@ -127,7 +143,7 @@ namespace arcane
 					// Check the slope of the 2 points
 					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > COS_30)
 					{
-						navigationPolygon[rowNumber].push_back(&terrainPoints[i]);
+						m_NavigationPolygon[rowNumber].push_back(&terrainPoints[i]);
 						navigable = true;
 						break;
 					}
@@ -140,13 +156,13 @@ namespace arcane
 		}
 
 		// Triangulate these new points to form a new mesh
-		std::vector<TrianglePrim> triangulatedPolygon = TriangulatePoly(navigationPolygon);
+		m_TriangulatedPolygon = TriangulatePoly(m_NavigationPolygon);
 
 		// Optimize this mesh for pathfinding by attempting to decrease number of triangles
 
 		// Draw vertices 
-		DrawVertices(navigationPolygon);
+		//DrawVertices(m_NavigationPolygon);
 		// Draw this new mesh
-		DrawMesh(triangulatedPolygon);
+		//DrawMesh(triangulatedPolygon);
 	}
 }

@@ -33,6 +33,9 @@ namespace arcane {
 		inline const std::vector<glm::vec3>& GetPositions() const { return m_Positions; }
 
 		inline Material& getMaterial() { return m_Material; }
+		inline unsigned int getVAO() { return m_VAO; }
+		inline unsigned int getVBO() { return m_VBO; }
+		inline unsigned int getIBO() { return m_IBO; }
 	protected:
 		unsigned int m_VAO, m_VBO, m_IBO;
 		Material m_Material;

@@ -31,6 +31,7 @@ namespace arcane {
 		inline EnvironmentProbeManager* getProbeManager() { return &m_ProbeManager; }
 		inline FPSCamera* getCamera() { return &m_SceneCamera; }
 		inline Skybox* getSkybox() { return m_Skybox; }
+		inline NavigationMesh* getNavigationMesh() { return m_NavMesh; }
 	private:
 		void init();
 	private:

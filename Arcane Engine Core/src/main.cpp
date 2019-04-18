@@ -39,6 +39,7 @@ int main() {
 
 		scene.onUpdate((float)deltaTime.getDeltaTime());
 		renderer.render();
+		scene.onRender();
 
 		// Display panes
 		runtimePane.render();
