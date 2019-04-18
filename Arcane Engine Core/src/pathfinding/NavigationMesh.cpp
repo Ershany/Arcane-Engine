@@ -1,17 +1,22 @@
 #include "pch.h"
 #include "NavigationMesh.h"
 
+#include <ui/NavmeshPane.h>
+
 namespace arcane
 {
-	NavigationMesh::NavigationMesh(Terrain* terrain, int slopeAngle) : terrain(terrain), slopeAngle (slopeAngle)
+	NavigationMesh::NavigationMesh(Terrain* terrain) : terrain(terrain)
 	{
-		SetSlopeMesh(slopeAngle); // Checks the angle given for the slope and calculates the cosine of that angle
+		SetSlopeMesh(NavmeshPane::getNavmeshSlope()); // Checks the angle given for the slope and calculates the cosine of that angle
+
+		regenerationCallback = [&] {OnRegenerateButtonClick(); };
+		NavmeshPane::setRegenerationFunctionPtr(regenerationCallback);
 	}
 
 	NavigationMesh::~NavigationMesh()
 	{}
 
-	bool NavigationMesh::IsPointOnTriangle(const glm::vec3& point, const Triangle& triangle)
+	bool NavigationMesh::IsPointOnTriangle(const glm::vec3& point, const TrianglePrim& triangle)
 	{
 		// Check if point is on the same plane as the triangle
 		if (!IsPointOnPlane(point, *triangle.a, *triangle.b, *triangle.c))
@@ -69,16 +74,23 @@ namespace arcane
 		return false;
 	}
 
-	void NavigationMesh::Draw(const std::vector<Triangle>& trinagles)
+	void NavigationMesh::Draw(const std::vector<TrianglePrim>& triangles)
 	{
 
 	}
 
-	std::vector<Triangle> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
+	std::vector<TrianglePrim> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
 	{
-		std::vector<Triangle> triangles;
+		std::vector<TrianglePrim> triangles;
 
 		return triangles;
+	}
+
+	void NavigationMesh::OnRegenerateButtonClick() {
+		std::cout << "Regenerating Nav Mesh" << std::endl;
+
+		SetSlopeMesh(NavmeshPane::getNavmeshSlope());
+		GenerateNavigationMesh();
 	}
 
 	void NavigationMesh::GenerateNavigationMesh()
@@ -126,7 +138,7 @@ namespace arcane
 		}
 
 		// Triangulate these new points to form a new mesh
-		std::vector<Triangle> triangulatedPolygon = TriangulatePoly(navigationPolygon);
+		std::vector<TrianglePrim> triangulatedPolygon = TriangulatePoly(navigationPolygon);
 
 		// Optimize this mesh for pathfinding by attempting to decrease number of triangles
 

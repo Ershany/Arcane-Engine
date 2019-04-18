@@ -9,6 +9,7 @@
 #include <graphics/renderer/ModelRenderer.h>
 #include <scene/RenderableModel.h>
 #include <pathfinding/PathfindingAgent.h>
+#include <pathfinding/NavigationMesh.h>
 #include <terrain/Terrain.h>
 #include <utils/loaders/TextureLoader.h>
 
@@ -47,6 +48,7 @@ namespace arcane {
 		DynamicLightManager m_DynamicLightManager;
 		EnvironmentProbeManager m_ProbeManager;
 		std::vector<RenderableModel*> m_RenderableModels;
+		NavigationMesh* m_NavMesh;
 		PathfindingAgent *m_Agent;
 	};
 

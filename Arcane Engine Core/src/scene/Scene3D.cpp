@@ -24,7 +24,9 @@ namespace arcane {
 	void Scene3D::init() {
 		m_GLCache->setMultisample(true);
 
-		// Load renderables
+		// Navmesh stuff
+		m_NavMesh = new NavigationMesh(&m_Terrain);
+
 		RenderableModel *agentsRenderable = new RenderableModel(glm::vec3(50.0f, 0.0f, 50.0f), glm::vec3(3.0f, 10.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, new Model(Cube()), nullptr);
 		m_Agent = new PathfindingAgent(&m_Terrain, agentsRenderable);
 		m_RenderableModels.push_back(agentsRenderable);

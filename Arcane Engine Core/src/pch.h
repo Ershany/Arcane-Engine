@@ -12,6 +12,7 @@
 #include <iterator>
 #include <queue>
 #include <unordered_set>
+#include <functional>
 
 #include <gl/glew.h>
 
