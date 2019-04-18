@@ -11,7 +11,7 @@ namespace arcane {
 	}
 
 	void NavmeshPane::setupPaneObjects() {
-		ImGui::SliderFloat("Slope", &s_NavmeshSlope, 0.0f, 90.0f);
+		ImGui::SliderFloat("Slope", &s_NavmeshSlope, 0.1f, 89.9f);
 		if (ImGui::Button("Regenerate", ImVec2(240, 20))) {
 			s_RegenerationFuncPtr();
 		}

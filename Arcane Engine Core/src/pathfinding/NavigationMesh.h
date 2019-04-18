@@ -1,6 +1,5 @@
 #pragma once
 
-#define DEFAULT_DEGREE 30
 #define COS_30 0.866666f
 
 #include "terrain/Terrain.h"
@@ -65,6 +64,6 @@ namespace arcane
 		// Get the slope of the 2 pts its mostly the angle between these 2 pts and a reference vector(probably side vector)
 		float GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2);
 		// Set the Slope that the nav mesh will use for generation
-		void SetSlopeMesh(int angle);
+		void SetSlopeMesh(float angle);
 	};
 }

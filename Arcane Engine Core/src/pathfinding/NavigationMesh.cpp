@@ -44,12 +44,9 @@ namespace arcane
 		return glm::dot(abCrossap, abCrossac) >= 0;
 	}
 
-	void NavigationMesh::SetSlopeMesh(int angle) 
+	void NavigationMesh::SetSlopeMesh(float angle) 
 	{
-		if (angle < 0 || angle > 90)
-			slopeAngle = DEFAULT_DEGREE; 
-		
-		this->slopeAngle = std::cos(slopeAngle);
+		this->slopeAngle = std::cos(angle);
 	}
 	
 	float NavigationMesh::GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2)
