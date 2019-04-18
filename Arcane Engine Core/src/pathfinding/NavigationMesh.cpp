@@ -69,17 +69,18 @@ namespace arcane
 		return false;
 	}
 
-	void NavigationMesh::Draw(const std::vector<Triangle>& trinagles)
-	{
-
-	}
-
 	std::vector<Triangle> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
 	{
 		std::vector<Triangle> triangles;
 
 		return triangles;
 	}
+
+	void NavigationMesh::DrawMesh(const std::vector<Triangle>& trinagles)
+	{}
+
+	void NavigationMesh::DrawVertices(const std::vector<std::vector<glm::vec3*>>& vertices)
+	{}
 
 	void NavigationMesh::GenerateNavigationMesh()
 	{
@@ -130,7 +131,9 @@ namespace arcane
 
 		// Optimize this mesh for pathfinding by attempting to decrease number of triangles
 
+		// Draw vetices 
+		DrawVertices(navigationPolygon);
 		// Draw this new mesh
-		Draw(triangulatedPolygon);
+		DrawMesh(triangulatedPolygon);
 	}
 }

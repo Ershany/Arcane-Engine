@@ -57,7 +57,9 @@ namespace arcane
 		// Triangulate the generated polygon
 		std::vector<Triangle> TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon);
 		// Draw the navigation mesh
-		void Draw(const std::vector<Triangle>& trinagles);
+		void DrawMesh(const std::vector<Triangle>& trinagles);
+		// Draw the vertices of the navigation mesh
+		void DrawVertices(const std::vector<std::vector<glm::vec3*>>& vertices);
 		// Get the slope of the 2 pts its mostly the angle between these 2 pts and a reference vector(probably side vector)
 		float GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2);
 		// Set the Slope that the nav mesh will use for generation
