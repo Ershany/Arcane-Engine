@@ -74,11 +74,6 @@ namespace arcane
 		return false;
 	}
 
-	void NavigationMesh::Draw(const std::vector<TrianglePrim>& triangles)
-	{
-
-	}
-
 	std::vector<TrianglePrim> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
 	{
 		std::vector<TrianglePrim> triangles;
@@ -91,6 +86,14 @@ namespace arcane
 
 		SetSlopeMesh(NavmeshPane::getNavmeshSlope());
 		GenerateNavigationMesh();
+	}
+
+	void NavigationMesh::DrawMesh(const std::vector<TrianglePrim>& trinagles) {
+	
+	}
+
+	void NavigationMesh::DrawVertices(const std::vector<std::vector<glm::vec3*>>& vertices) {
+	
 	}
 
 	void NavigationMesh::GenerateNavigationMesh()
@@ -118,9 +121,11 @@ namespace arcane
 				for (int k = -1; k < 2; ++k)
 				{
 					// Get the neighboring points
-					glm::vec3* neighborPoint = &terrainPoints[(i + k) + (j * columnCount)];
-					if (!neighborPoint)
+					int index = (i + k) + (j * columnCount);
+					if (index < 0 || index >= terrainPoints.size())
 						continue;
+
+					glm::vec3* neighborPoint = &terrainPoints[index];
 
 					// Check the slope of the 2 points
 					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > COS_30)
@@ -142,7 +147,9 @@ namespace arcane
 
 		// Optimize this mesh for pathfinding by attempting to decrease number of triangles
 
+		// Draw vertices 
+		DrawVertices(navigationPolygon);
 		// Draw this new mesh
-		Draw(triangulatedPolygon);
+		DrawMesh(triangulatedPolygon);
 	}
 }
