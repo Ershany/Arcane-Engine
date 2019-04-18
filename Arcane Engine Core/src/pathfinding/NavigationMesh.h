@@ -6,7 +6,6 @@
 #include "terrain/Terrain.h"
 #include "scene/RenderableModel.h"
 
-
 namespace arcane
 {
 	struct Triangle
