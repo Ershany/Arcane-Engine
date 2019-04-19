@@ -60,8 +60,8 @@ namespace arcane
 	float NavigationMesh::GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2)
 	{
 		glm::vec3 difference = point2 - point1; // Getting the difference vectors
-		glm::vec3 referenceVec = difference;
-		referenceVec.y = point1.y; // Create a vector in the direction of the difference but get straighten it out with reference point's y coordinate
+		glm::vec3 referenceVec(difference);
+		referenceVec.y = 0; 
 		float dot = glm::dot(glm::normalize(difference), glm::normalize(referenceVec)); // This will give us cos(theta)
 
 		return dot;
@@ -82,6 +82,47 @@ namespace arcane
 	std::vector<TrianglePrim> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
 	{
 		std::vector<TrianglePrim> triangles;
+		
+		for (int i = 0; i < polygon.size(); ++i)
+		{
+			for (int j = 0; j < polygon[i].size(); ++j)
+			{
+				TrianglePrim currentTriangle;
+				
+				// DO bounds check
+				glm::vec3* current = polygon[i][j];
+				glm::vec3* up = polygon[i + 1][j] && glm::length2(*current - *polygon[i + 1][j]) == 16.f && polygon[i + 1][j] ? polygon[i + 1][j] : nullptr;
+				glm::vec3* right = polygon[i][j + 1] && glm::length2(*current - *polygon[i][j + 1]) == 16.f ? polygon[i][j + 1] : nullptr;
+				glm::vec3* upRight = polygon[i + 1][j + 1] && glm::length2(*current - *polygon[i + 1][j + 1]) == 32.f ? polygon[i][j + 1] : nullptr; // diagonal
+
+				if (!up && !upRight)
+					continue;
+				
+				currentTriangle.a = current;
+				
+				if (up && right)
+				{
+					currentTriangle.b = up;
+					currentTriangle.c = right;
+
+					if (upRight)
+					{
+						TrianglePrim otherTri;
+						otherTri.a = up;
+						otherTri.b = upRight;
+						otherTri.c = right;
+						triangles.push_back(otherTri);
+					}
+				}
+				else if (!up && upRight && right)
+				{
+					currentTriangle.b = upRight;
+					currentTriangle.c = right;
+				}
+
+				triangles.push_back(currentTriangle);
+			}
+		}
 
 		return triangles;
 	}
@@ -158,42 +199,47 @@ namespace arcane
 		int rowNumber = 0;
 		int columnCount = terrain->GetVertexCount();
 
-		for (int i = 0; i < terrainPoints.size(); ++i)
+		for (int row = 0; row < terrain->GetVertexCount(); ++row)
 		{
-			// Check for rows there probably is a better way to do this
-			if (i == m_NavigationPolygon.size() * columnCount)
-				m_NavigationPolygon.emplace_back();
-	
-			// Check if there is an obstacle at this point or whether it is in the list if so forget about it
-			if (ObstacleOnPoint(terrainPoints[i]))
-				continue; // No obstacles being checked atm
+			m_NavigationPolygon.emplace_back();
 
-			// Check if any of the points around it can navigate to the point we are currently on 
-			bool navigable = false;
-			for (int j = 0; j < 2; ++j)
+			for (int col = 0; col < terrain->GetVertexCount(); ++col)
 			{
-				for (int k = -1; k < 2; ++k)
+				if (ObstacleOnPoint(terrainPoints[col + (row * columnCount)]))
+					continue; // No obstacles being checked atm
+
+				// Check if any of the points around it can navigate to the point we are currently on 
+				bool navigable = false;
+				for (int j = 0; j < 2; ++j)
 				{
-					int index = (i + k) + (j * columnCount);
-					if (index < 0 || index >= terrainPoints.size())
-						continue;
-
-					glm::vec3* neighborPoint = &terrainPoints[index];
-					if (*neighborPoint == terrainPoints[i])
-						continue;
-
-					// Check the slope of the 2 points
-					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > m_slopeAngle)
+					for (int k = -1; k < 2; ++k)
 					{
-						m_NavigationPolygon[m_NavigationPolygon.size() - 1].push_back(&terrainPoints[i]);
-						navigable = true;
-						break;
-					}
-				}
+						int c = col + k;
+						int r = row + j;
 
-				// If we found something 
-				if (navigable)
-					break;
+						if (c < 0 || c >= columnCount || r < 0 || r >= columnCount)
+							continue;
+
+						int index = r * columnCount + c;
+						glm::vec3* neighborPoint = &terrainPoints[index];
+						if (*neighborPoint == terrainPoints[col + (row * columnCount)])
+							continue;
+
+						// Check the slope of the 2 points
+						float slope = GetSlopePoints(terrainPoints[col + (row * columnCount)], *neighborPoint);
+						//if (slope > m_slopeAngle)
+						if(terrainPoints[col + (row * columnCount)].y < 114.f)
+						{
+							m_NavigationPolygon[m_NavigationPolygon.size() - 1].push_back(&terrainPoints[col + (row * columnCount)]);
+							navigable = true;
+							break;
+						}
+					}
+
+					// If we found something 
+					if (navigable)
+						break;
+				}
 			}
 		}
 
