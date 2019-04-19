@@ -39,8 +39,6 @@ namespace arcane
 	{
 	public:
 		Terrain* terrain; // Reference terrain that we want to build the navigation mesh on 
-		float slopeAngle; // A parameter that will hold the slope that we will accept for the navigation mesh
-		glm::vec3 sideVector; // Store the side vector of the terrain mesh
 		std::function<void()> regenerationCallback;
 
 		NavigationMesh(Terrain* terrain);
@@ -74,7 +72,8 @@ namespace arcane
 		GLCache *m_GLCache;
 		Shader *m_DebugShader;
 		RenderableModel *m_DebugVertexModel;
-
+	
+		float m_slopeAngle; // A parameter that will hold the slope that we will accept for the navigation mesh
 		std::vector<std::vector<glm::vec3*>> m_NavigationPolygon;
 		std::vector<TrianglePrim> m_TriangulatedPolygon;
 	};

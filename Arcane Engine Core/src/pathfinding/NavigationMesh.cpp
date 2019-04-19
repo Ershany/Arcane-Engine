@@ -11,7 +11,7 @@ namespace arcane
 	{
 		SetSlopeMesh(NavmeshPane::getNavmeshSlope()); // Checks the angle given for the slope and calculates the cosine of that angle
 
-		regenerationCallback = [&] {OnRegenerateButtonClick(); };
+		regenerationCallback = [&] { OnRegenerateButtonClick(); };
 		NavmeshPane::setRegenerationFunctionPtr(regenerationCallback);
 
 		m_GLCache = GLCache::getInstance();
@@ -52,7 +52,7 @@ namespace arcane
 
 	void NavigationMesh::SetSlopeMesh(float angle) 
 	{
-		this->slopeAngle = std::cos(angle);
+		this->m_slopeAngle = std::cos(angle);
 	}
 	
 	float NavigationMesh::GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2)
@@ -121,7 +121,10 @@ namespace arcane
 		{
 			// Check for rows there probably is a better way to do this
 			if (i == rowNumber * columnCount)
+			{
+				m_NavigationPolygon.emplace_back();
 				++rowNumber;
+			}
 
 			// Check if there is an obstacle at this point or whether it is in the list if so forget about it
 			if (ObstacleOnPoint(terrainPoints[i]))
