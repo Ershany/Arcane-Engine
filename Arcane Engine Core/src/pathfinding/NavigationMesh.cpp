@@ -172,7 +172,7 @@ namespace arcane
 			glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-			glVertexAttribDivisor(1, 1);
+			glVertexAttribDivisor(1, 1); // Only updates this vertex data per instance (instead of per vertex)
 
 			glBindVertexArray(0);
 		}
@@ -205,7 +205,7 @@ namespace arcane
 	void NavigationMesh::OnRegenerateButtonClick() {
 		std::cout << "Regenerating Nav Mesh" << std::endl;
 
-		// Clean up old instance buffers on the GPU
+		// Clean up old buffers on the GPU
 		if (m_CubePositionInstancedVBO != 0 && m_CubeTransformInstancedVBO != 0) {
 			glDeleteVertexArrays(1, &m_CubeInstancedVAO);
 			glDeleteBuffers(1, &m_CubePositionInstancedVBO);
@@ -215,14 +215,11 @@ namespace arcane
 			glDeleteVertexArrays(1, &m_NavmeshVAO);
 			glDeleteBuffers(1, &m_NavmeshVBO);
 		}
-
-		// Setup
-		//SetHeight
 		
 		// Regenerate
 		GenerateNavigationMesh();
 
-		// Post generation setup
+		// Post generation setup (generate new buffers on the GPU)
 		SetupVertexDebugView();
 		SetupNavmeshDebugView();
 	}
@@ -262,6 +259,8 @@ namespace arcane
 		m_DebugVerticesShader->setUniformMat4("view", camera->getViewMatrix());
 		m_DebugVerticesShader->setUniformMat4("projection", camera->getProjectionMatrix());
 		m_DebugVerticesShader->setUniform3f("colour", glm::vec3(1.0f, 0.0f, 0.0f));
+		m_DebugVerticesShader->setUniform1f("yOffset", m_NavmeshDebugYOffset);
+		
 
 		// Draw our cube
 		if (m_NumCubesToDraw != 0) {
