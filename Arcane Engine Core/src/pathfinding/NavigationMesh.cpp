@@ -10,6 +10,8 @@ namespace arcane
 	NavigationMesh::NavigationMesh(Terrain* terrain) : terrain(terrain)
 	{
 		SetSlopeMesh(NavmeshPane::getNavmeshSlope()); // Checks the angle given for the slope and calculates the cosine of that angle
+		m_CubePositionInstancedVBO = 0;
+		m_CubeTransformInstancedVBO = 0;
 
 		regenerationCallback = [&] { OnRegenerateButtonClick(); };
 		NavmeshPane::setRegenerationFunctionPtr(regenerationCallback);
@@ -89,7 +91,11 @@ namespace arcane
 	void NavigationMesh::OnRegenerateButtonClick() {
 		std::cout << "Regenerating Nav Mesh" << std::endl;
 
-		// TODO: Clean up old instance buffers on the GPU
+		// Clean up old instance buffers on the GPU
+		if (m_CubePositionInstancedVBO != 0 && m_CubeTransformInstancedVBO != 0) {
+			glDeleteBuffers(1, &m_CubePositionInstancedVBO);
+			glDeleteBuffers(1, &m_CubeTransformInstancedVBO);
+		}
 
 		// Setup
 		SetSlopeMesh(NavmeshPane::getNavmeshSlope());
@@ -105,30 +111,31 @@ namespace arcane
 			}
 		}
 		m_NumCubesToDraw = verticesToDraw.size();
+		if (m_NumCubesToDraw != 0) {
+			glGenVertexArrays(1, &m_CubeInstancedVAO);
+			glGenBuffers(1, &m_CubePositionInstancedVBO);
+			glGenBuffers(1, &m_CubeTransformInstancedVBO);
 
-		glGenVertexArrays(1, &m_CubeInstancedVAO);
-		glGenBuffers(1, &m_CubePositionInstancedVBO);
-		glGenBuffers(1, &m_CubeTransformInstancedVBO);
+			glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
+			glBufferData(GL_ARRAY_BUFFER, m_Cube.GetPositions().size() * sizeof(glm::vec3), &m_Cube.GetPositions()[0], GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
-		glBufferData(GL_ARRAY_BUFFER, m_Cube.GetPositions().size() * sizeof(glm::vec3), &m_Cube.GetPositions()[0], GL_STATIC_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
+			glBufferData(GL_ARRAY_BUFFER, m_NumCubesToDraw * sizeof(glm::vec3), &verticesToDraw[0], GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
-		glBufferData(GL_ARRAY_BUFFER, m_NumCubesToDraw * sizeof(glm::vec3), &verticesToDraw[0], GL_STATIC_DRAW);
+			glBindVertexArray(m_CubeInstancedVAO);
 
-		glBindVertexArray(m_CubeInstancedVAO);
+			// Cube model space position
+			glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+			// Transform position of each instance
+			glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+			glVertexAttribDivisor(1, 1);
 
-		// Cube model space position
-		glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		// Transform position of each instance
-		glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		glVertexAttribDivisor(1, 1);
-
-		glBindVertexArray(0);
+			glBindVertexArray(0);
+		}
 	}
 
 	void NavigationMesh::DrawMesh(ICamera* camera) {
@@ -143,8 +150,10 @@ namespace arcane
 		m_DebugShader->setUniformMat4("projection", camera->getProjectionMatrix());
 
 		// Draw our cube
-		glBindVertexArray(m_CubeInstancedVAO);
-		glDrawArraysInstanced(GL_TRIANGLES, 0, m_Cube.GetPositions().size(), m_NumCubesToDraw);
+		if (m_NumCubesToDraw != 0) {
+			glBindVertexArray(m_CubeInstancedVAO);
+			glDrawArraysInstanced(GL_TRIANGLES, 0, m_Cube.GetPositions().size(), m_NumCubesToDraw);
+		}
 	}
 
 	void NavigationMesh::GenerateNavigationMesh()
