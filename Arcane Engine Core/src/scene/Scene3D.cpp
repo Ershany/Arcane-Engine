@@ -31,6 +31,9 @@ namespace arcane {
 		m_Agent = new PathfindingAgent(&m_Terrain, agentsRenderable);
 		m_RenderableModels.push_back(agentsRenderable);
 
+		m_RaycastCollisionDebugModel = new RenderableModel(glm::vec3(5000.0f, 5000.0f, 5000.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, new Model(Sphere()), nullptr);
+		m_RenderableModels.push_back(m_RaycastCollisionDebugModel);
+
 		// Skybox
 		std::vector<std::string> skyboxFilePaths;
 		skyboxFilePaths.push_back("res/skybox/right.png");
@@ -43,22 +46,45 @@ namespace arcane {
 		m_ProbeManager.init(m_Skybox);
 	}
 
-	void Scene3D::checkRaycast() {
-		glm::vec3 rayOrigin = m_SceneCamera.getPosition();
+	int maxRaySteps = 600;
+	void Scene3D::shootRaycast() {
+		// Step by step process, going from NDC -> world space when shooting the ray
 		glm::vec3 rayMousePosNDCSpace((2.0f * InputManager::getMouseX()) / Window::getWidth() - 1.0f, 
 								  1.0f - (2.0f * InputManager::getMouseY()) / Window::getHeight(), 
 								  1.0f);
 		glm::vec4 rayMousePosClipSpace(rayMousePosNDCSpace.x, rayMousePosNDCSpace.y, -1.0f, 1.0f);
 		glm::vec4 rayCameraSpace(glm::inverse(m_SceneCamera.getProjectionMatrix()) * rayMousePosClipSpace);
+		rayCameraSpace = glm::vec4(rayCameraSpace.x, rayCameraSpace.y, -1.0f, 0.0f);
+		glm::vec4 rayWorldSpaceHomo = glm::inverse(m_SceneCamera.getViewMatrix()) * rayCameraSpace;
+
+		// Final ray variables
+		glm::vec3 rayWorldSpaceDir = glm::normalize(glm::vec3(rayWorldSpaceHomo.x, rayWorldSpaceHomo.y, rayWorldSpaceHomo.z));
+		glm::vec3 rayWorldSpaceStepAmount = rayWorldSpaceDir * 2.0f;
+		glm::vec3 rayWorldSpacePos = m_SceneCamera.getPosition();
+		for (int i = 0; i <= maxRaySteps; i++) {
+			// Check for collision on the terrain
+			glm::vec3 collisionPoint;
+			if (m_Terrain.checkPointForIntersection(rayWorldSpacePos, collisionPoint)) {
+				m_RaycastCollisionDebugModel->setPosition(collisionPoint);
+				break;
+			}
+
+			rayWorldSpacePos += rayWorldSpaceStepAmount;
+		}
 	}
 
+	bool firedRay = false;
 	void Scene3D::onUpdate(float deltaTime) {
 		// Camera Update
 		m_SceneCamera.processInput(deltaTime);
 
 		// Check if the player is shooting a ray into the scene
-		if (InputManager::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && !Window::getHideCursor()) {
-			checkRaycast();
+		if (InputManager::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && !Window::getHideCursor() && !firedRay) {
+			shootRaycast();
+			firedRay = true;
+		}
+		if (!InputManager::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
+			firedRay = false;
 		}
 
 		// Entity Update

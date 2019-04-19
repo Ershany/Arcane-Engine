@@ -98,28 +98,40 @@ namespace arcane {
 		m_Mesh->Draw();
 	}
 
+	bool Terrain::checkPointForIntersection(const glm::vec3& worldPos, glm::vec3& outIntersectionPoint) {
+		// Get the closest vertex on the terrain (relative to the xz position)
+		glm::vec3 terrainPos = sampleHeightfieldBilinear(worldPos);
+
+		if (glm::length2(worldPos - terrainPos) < 1.2f) {
+			outIntersectionPoint = terrainPos;
+			return true;
+		}
+
+		return false;
+	}
+
 	// Nearest Neighbor sample for the terrain's vertex position
-	float Terrain::sampleHeightfieldNearest(const glm::vec3& worldPos) {
+	glm::vec3& Terrain::sampleHeightfieldNearest(const glm::vec3& worldPos) {
 		glm::vec2 terrainXZ = glm::vec2(clip(worldPos.x / m_TerrainSize, 0.0f, (float)m_VertexSideCount - 1.0f), clip(worldPos.z / m_TerrainSize, 0.0f, (float)m_VertexSideCount - 1.0f));
-		return m_Mesh->GetPositions()[(int)terrainXZ.x + ((int)terrainXZ.y * m_VertexSideCount)].y;
+		return m_Mesh->GetPositions()[(int)terrainXZ.x + ((int)terrainXZ.y * m_VertexSideCount)];
 	}
 
 	// Bilinear sampling for the terrain's vertex position
-	float Terrain::sampleHeightfieldBilinear(const glm::vec3& worldPos) {
+	glm::vec3& Terrain::sampleHeightfieldBilinear(const glm::vec3& worldPos) {
 		// Get the weights for the bilinear filter
 		glm::vec2 terrainXZ = glm::vec2(worldPos.x / m_TerrainSize, worldPos.z / m_TerrainSize);
 		float xFrac = terrainXZ.x - (int)terrainXZ.x;
 		float zFrac = terrainXZ.y - (int)terrainXZ.y;
 
 		// Get the values that should be lerped
-		float topLeft = sampleHeightfieldNearest(worldPos);
-		float topRight = sampleHeightfieldNearest(worldPos + glm::vec3(m_TerrainSize, 0.0f, 0.0f));
-		float bottomLeft = sampleHeightfieldNearest(worldPos + glm::vec3(0.0f, 0.0f, m_TerrainSize));
-		float bottomRight = sampleHeightfieldNearest(worldPos + glm::vec3(m_TerrainSize, 0.0f, m_TerrainSize));
+		glm::vec3 topLeft = sampleHeightfieldNearest(worldPos);
+		glm::vec3 topRight = sampleHeightfieldNearest(worldPos + glm::vec3(m_TerrainSize, 0.0f, 0.0f));
+		glm::vec3 bottomLeft = sampleHeightfieldNearest(worldPos + glm::vec3(0.0f, 0.0f, m_TerrainSize));
+		glm::vec3 bottomRight = sampleHeightfieldNearest(worldPos + glm::vec3(m_TerrainSize, 0.0f, m_TerrainSize));
 
 		// Do the bilinear filtering
-		float height = glm::mix(glm::mix(topLeft, topRight, xFrac), glm::mix(bottomLeft, bottomRight, xFrac), zFrac);
-		return height;
+		glm::vec3 terrainPos = glm::mix(glm::mix(topLeft, topRight, xFrac), glm::mix(bottomLeft, bottomRight, xFrac), zFrac);
+		return terrainPos;
 	}
 
 	float Terrain::clip(float n, float lower, float upper) {

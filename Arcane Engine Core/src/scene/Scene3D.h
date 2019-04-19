@@ -35,7 +35,7 @@ namespace arcane {
 	private:
 		void init();
 
-		void checkRaycast();
+		void shootRaycast();
 	private:
 		// Global Data
 		GLCache *m_GLCache;
@@ -51,8 +51,9 @@ namespace arcane {
 		DynamicLightManager m_DynamicLightManager;
 		EnvironmentProbeManager m_ProbeManager;
 		std::vector<RenderableModel*> m_RenderableModels;
-		NavigationMesh* m_NavMesh;
+		NavigationMesh *m_NavMesh;
 		PathfindingAgent *m_Agent;
+		RenderableModel *m_RaycastCollisionDebugModel;
 	};
 
 }

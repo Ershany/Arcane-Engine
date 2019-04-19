@@ -14,7 +14,9 @@ namespace arcane {
 
 		void Draw(Shader *shader, RenderPassType pass) const;
 
-		float sampleHeightfieldBilinear(const glm::vec3& worldPos);
+		bool checkPointForIntersection(const glm::vec3& worldPos, glm::vec3 & outIntersectionPoint);
+		glm::vec3& sampleHeightfieldNearest(const glm::vec3& worldPos);
+		glm::vec3& sampleHeightfieldBilinear(const glm::vec3& worldPos);
 
 		inline const glm::vec3& getPosition() const { return m_Position; }
 		inline std::vector<glm::vec3>& GetPoints() { return m_Mesh->GetPositions(); }
@@ -23,7 +25,6 @@ namespace arcane {
 	private:
 		glm::vec3 calculateNormal(unsigned int x, unsigned int z, unsigned char *heightMapData);
 		float getVertexHeight(unsigned int x, unsigned int y, unsigned char *heightMapData);
-		float sampleHeightfieldNearest(const glm::vec3& worldPos);
 		float clip(float n, float lower, float upper);
 
 		float m_TerrainSize;
