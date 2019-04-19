@@ -150,10 +150,8 @@ namespace arcane
 		{
 			// Check for rows there probably is a better way to do this
 			if (i == rowNumber * columnCount)
-			{
 				m_NavigationPolygon.emplace_back();
-				++rowNumber;
-			}
+	
 
 			// Check if there is an obstacle at this point or whether it is in the list if so forget about it
 			if (ObstacleOnPoint(terrainPoints[i]))
@@ -175,7 +173,7 @@ namespace arcane
 					// Check the slope of the 2 points
 					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > m_slopeAngle)
 					{
-						m_NavigationPolygon[rowNumber].push_back(&terrainPoints[i]);
+						m_NavigationPolygon[m_NavigationPolygon.size() - 1].push_back(&terrainPoints[i]);
 						navigable = true;
 						break;
 					}
