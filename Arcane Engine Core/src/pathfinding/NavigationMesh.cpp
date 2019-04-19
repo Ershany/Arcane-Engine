@@ -97,7 +97,7 @@ namespace arcane
 		std::vector<glm::vec3> verticesToDraw;
 		for (int i = 0; i < m_NavigationPolygon.size(); i++) {
 			for (int j = 0; j < m_NavigationPolygon[i].size(); j++) {
-				verticesToDraw.push_back(*m_NavigationPolygon[i][j]);
+				verticesToDraw.push_back(*(m_NavigationPolygon[i][j]));
 			}
 		}
 
@@ -149,7 +149,7 @@ namespace arcane
 		m_TriangulatedPolygon.clear();
 
 		// Filter out the points that we cannot reach
-		std::vector<glm::vec3> terrainPoints = terrain->GetPoints();
+		std::vector<glm::vec3> &terrainPoints = terrain->GetPoints();
 		int rowNumber = 0;
 		int columnCount = terrain->GetVertexCount();
 
