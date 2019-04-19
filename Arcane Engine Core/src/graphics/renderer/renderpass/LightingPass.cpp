@@ -58,10 +58,6 @@ namespace arcane {
 		m_ActiveScene->addModelsToRenderer();
 		modelRenderer->flushOpaque(m_ModelShader, m_RenderPassType);
 
-		// Render the navmesh
-		m_ActiveScene->getNavigationMesh()->DrawVertices(camera);
-		m_ActiveScene->getNavigationMesh()->DrawMesh(camera);
-
 		m_GLCache->switchShader(m_TerrainShader);
 		lightManager->setupLightingUniforms(m_TerrainShader);
 		m_TerrainShader->setUniform3f("viewPos", camera->getPosition());
@@ -74,6 +70,10 @@ namespace arcane {
 		bindShadowmap(m_TerrainShader, shadowmapData);
 
 		terrain->Draw(m_TerrainShader, m_RenderPassType);
+
+		// Render the navmesh
+		m_ActiveScene->getNavigationMesh()->DrawVertices(camera);
+		m_ActiveScene->getNavigationMesh()->DrawMesh(camera);
 
 		skybox->Draw(camera);
 

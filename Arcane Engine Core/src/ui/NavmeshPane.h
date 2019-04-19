@@ -10,12 +10,15 @@ namespace arcane {
 
 		virtual void setupPaneObjects();
 
-		inline static float getNavmeshSlope() { return s_NavmeshSlope; }
-		inline static void setNavmeshSlope(float slope) { s_NavmeshSlope = slope; }
+		inline static float getHeightRestriction() { return s_HeightRestriction; }
+		inline static bool getShowNavmeshVertices() { return s_ShowNavmeshVertices; }
+		inline static bool getShowNavmesh() { return s_ShowNavmesh; }
 		
 		inline static void setRegenerationFunctionPtr(std::function<void()> funcPtr) { s_RegenerationFuncPtr = funcPtr; }
 	private:
-		static float s_NavmeshSlope;
+		static float s_HeightRestriction;
+		static bool s_ShowNavmeshVertices, s_ShowNavmesh;
+
 		static std::function<void()> s_RegenerationFuncPtr;
 	};
 

@@ -70,8 +70,6 @@ namespace arcane
 		void DrawVertices(ICamera* camera);
 		// Get the slope of the 2 pts its mostly the angle between these 2 pts and a reference vector(probably side vector)
 		float GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2);
-		// Set the Slope that the nav mesh will use for generation
-		void SetSlopeMesh(float angle);
 	private:
 		void SetupVertexDebugView();
 		void SetupNavmeshDebugView();
@@ -82,8 +80,7 @@ namespace arcane
 		Cube m_Cube; // Mesh that we perform instancing with
 		unsigned int m_CubeInstancedVAO, m_CubePositionInstancedVBO, m_CubeTransformInstancedVBO; // For vertex debug view
 		unsigned int m_NavmeshVAO, m_NavmeshVBO; // For navmesh debug view
-		float m_NavmeshDebugYOffset = 0.2f;
-		float m_slopeAngle; // A parameter that will hold the slope that we will accept for the navigation mesh
+		float m_NavmeshDebugYOffset = 1.5f;
 
 		std::vector<std::vector<glm::vec3*>> m_NavigationPolygon; 
 		int m_NumCubesToDraw;

@@ -9,7 +9,6 @@ namespace arcane
 {
 	NavigationMesh::NavigationMesh(Terrain* terrain) : terrain(terrain)
 	{
-		SetSlopeMesh(NavmeshPane::getNavmeshSlope()); // Checks the angle given for the slope and calculates the cosine of that angle
 		m_CubePositionInstancedVBO = 0;
 		m_CubeTransformInstancedVBO = 0;
 		m_NavmeshVBO = 0;
@@ -56,11 +55,6 @@ namespace arcane
 		return glm::dot(abCrossap, abCrossac) >= 0;
 	}
 
-	void NavigationMesh::SetSlopeMesh(float angle) 
-	{
-		this->m_slopeAngle = std::cos(angle);
-	}
-	
 	float NavigationMesh::GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2)
 	{
 		glm::vec3 difference = point2 - point1; // Getting the difference vectors
@@ -223,7 +217,7 @@ namespace arcane
 		}
 
 		// Setup
-		SetSlopeMesh(NavmeshPane::getNavmeshSlope());
+		//SetHeight
 		
 		// Regenerate
 		GenerateNavigationMesh();
@@ -234,13 +228,19 @@ namespace arcane
 	}
 
 	void NavigationMesh::DrawMesh(ICamera* camera) {
+		// Check with the UI layer, if it should even be drawn
+		if (!NavmeshPane::getShowNavmesh())
+			return;
+
 		m_GLCache->switchShader(m_DebugNavmeshShader);
 		m_GLCache->setFaceCull(false);
+		m_GLCache->setBlend(true);
+		m_GLCache->setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// Setup colour and also view and projection matrices
 		m_DebugNavmeshShader->setUniformMat4("view", camera->getViewMatrix());
 		m_DebugNavmeshShader->setUniformMat4("projection", camera->getProjectionMatrix());
-		m_DebugNavmeshShader->setUniform3f("colour", glm::vec3(0.0f, 0.0f, 1.0f));
+		m_DebugNavmeshShader->setUniform3f("colour", glm::vec3(0.0f, 1.0f, 1.0f));
 
 		// Draw our navmesh
 		if (m_NumVerticesInNavmesh != 0) {
@@ -248,9 +248,14 @@ namespace arcane
 			glDrawArrays(GL_TRIANGLES, 0, m_NumVerticesInNavmesh);
 		}
 		m_GLCache->setFaceCull(true);
+		m_GLCache->setBlend(false);
 	}
 
 	void NavigationMesh::DrawVertices(ICamera* camera) {
+		// Check with the UI layer, if it should even be drawn
+		if (!NavmeshPane::getShowNavmeshVertices())
+			return;
+
 		m_GLCache->switchShader(m_DebugVerticesShader);
 
 		// Setup colour and also view and projection matrices
@@ -305,7 +310,7 @@ namespace arcane
 						// Check the slope of the 2 points
 						float slope = GetSlopePoints(terrainPoints[col + (row * columnCount)], *neighborPoint);
 						//if (slope > m_slopeAngle)
-						if(terrainPoints[col + (row * columnCount)].y < 114.f)
+						if(terrainPoints[col + (row * columnCount)].y < NavmeshPane::getHeightRestriction())
 						{
 							m_NavigationPolygon[m_NavigationPolygon.size() - 1].push_back(&terrainPoints[col + (row * columnCount)]);
 							navigable = true;
