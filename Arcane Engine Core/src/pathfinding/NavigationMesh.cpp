@@ -17,6 +17,8 @@ namespace arcane
 		// Setup debug drawing
 		m_GLCache = GLCache::getInstance();
 		m_DebugShader = ShaderLoader::loadShader("src/shaders/simple_instanced.vert", "src/shaders/simple_instanced.frag");
+
+		OnRegenerateButtonClick();
 	}
 
 	NavigationMesh::~NavigationMesh()
@@ -87,6 +89,8 @@ namespace arcane
 	void NavigationMesh::OnRegenerateButtonClick() {
 		std::cout << "Regenerating Nav Mesh" << std::endl;
 
+		// TODO: Clean up old instance buffers on the GPU
+
 		// Setup
 		SetSlopeMesh(NavmeshPane::getNavmeshSlope());
 		
@@ -97,9 +101,10 @@ namespace arcane
 		std::vector<glm::vec3> verticesToDraw;
 		for (int i = 0; i < m_NavigationPolygon.size(); i++) {
 			for (int j = 0; j < m_NavigationPolygon[i].size(); j++) {
-				verticesToDraw.push_back(*m_NavigationPolygon[i][j]);
+				verticesToDraw.push_back(*(m_NavigationPolygon[i][j]));
 			}
 		}
+		m_NumCubesToDraw = verticesToDraw.size();
 
 		glGenVertexArrays(1, &m_CubeInstancedVAO);
 		glGenBuffers(1, &m_CubePositionInstancedVBO);
@@ -109,7 +114,7 @@ namespace arcane
 		glBufferData(GL_ARRAY_BUFFER, m_Cube.GetPositions().size() * sizeof(glm::vec3), &m_Cube.GetPositions()[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
-		glBufferData(GL_ARRAY_BUFFER, verticesToDraw.size() * sizeof(glm::vec3), &verticesToDraw[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, m_NumCubesToDraw * sizeof(glm::vec3), &verticesToDraw[0], GL_STATIC_DRAW);
 
 		glBindVertexArray(m_CubeInstancedVAO);
 
@@ -139,7 +144,7 @@ namespace arcane
 
 		// Draw our cube
 		glBindVertexArray(m_CubeInstancedVAO);
-		glDrawArraysInstanced(GL_TRIANGLES, 0, m_Cube.GetPositions().size(), terrain->GetPoints().size());
+		glDrawArraysInstanced(GL_TRIANGLES, 0, m_Cube.GetPositions().size(), m_NumCubesToDraw);
 	}
 
 	void NavigationMesh::GenerateNavigationMesh()
@@ -150,6 +155,7 @@ namespace arcane
 
 		// Filter out the points that we cannot reach
 		std::vector<glm::vec3>& terrainPoints = terrain->GetPoints();
+
 		int rowNumber = 0;
 		int columnCount = terrain->GetVertexCount();
 
