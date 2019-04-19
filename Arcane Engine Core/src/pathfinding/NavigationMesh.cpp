@@ -87,6 +87,8 @@ namespace arcane
 	void NavigationMesh::OnRegenerateButtonClick() {
 		std::cout << "Regenerating Nav Mesh" << std::endl;
 
+		// TODO: Clean up old instance buffers on the GPU
+
 		// Setup
 		SetSlopeMesh(NavmeshPane::getNavmeshSlope());
 		
@@ -100,6 +102,7 @@ namespace arcane
 				verticesToDraw.push_back(*(m_NavigationPolygon[i][j]));
 			}
 		}
+		m_NumCubesToDraw = verticesToDraw.size();
 
 		glGenVertexArrays(1, &m_CubeInstancedVAO);
 		glGenBuffers(1, &m_CubePositionInstancedVBO);
@@ -109,7 +112,7 @@ namespace arcane
 		glBufferData(GL_ARRAY_BUFFER, m_Cube.GetPositions().size() * sizeof(glm::vec3), &m_Cube.GetPositions()[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
-		glBufferData(GL_ARRAY_BUFFER, verticesToDraw.size() * sizeof(glm::vec3), &verticesToDraw[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, m_NumCubesToDraw * sizeof(glm::vec3), &verticesToDraw[0], GL_STATIC_DRAW);
 
 		glBindVertexArray(m_CubeInstancedVAO);
 
@@ -139,7 +142,7 @@ namespace arcane
 
 		// Draw our cube
 		glBindVertexArray(m_CubeInstancedVAO);
-		glDrawArraysInstanced(GL_TRIANGLES, 0, m_Cube.GetPositions().size(), terrain->GetPoints().size());
+		glDrawArraysInstanced(GL_TRIANGLES, 0, m_Cube.GetPositions().size(), m_NumCubesToDraw);
 	}
 
 	void NavigationMesh::GenerateNavigationMesh()
