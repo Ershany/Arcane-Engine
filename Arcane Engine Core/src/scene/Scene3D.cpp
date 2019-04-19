@@ -43,9 +43,23 @@ namespace arcane {
 		m_ProbeManager.init(m_Skybox);
 	}
 
+	void Scene3D::checkRaycast() {
+		glm::vec3 rayOrigin = m_SceneCamera.getPosition();
+		glm::vec3 rayMousePosNDCSpace((2.0f * InputManager::getMouseX()) / Window::getWidth() - 1.0f, 
+								  1.0f - (2.0f * InputManager::getMouseY()) / Window::getHeight(), 
+								  1.0f);
+		glm::vec4 rayMousePosClipSpace(rayMousePosNDCSpace.x, rayMousePosNDCSpace.y, -1.0f, 1.0f);
+		glm::vec4 rayCameraSpace(glm::inverse(m_SceneCamera.getProjectionMatrix()) * rayMousePosClipSpace);
+	}
+
 	void Scene3D::onUpdate(float deltaTime) {
 		// Camera Update
 		m_SceneCamera.processInput(deltaTime);
+
+		// Check if the player is shooting a ray into the scene
+		if (InputManager::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && !Window::getHideCursor()) {
+			checkRaycast();
+		}
 
 		// Entity Update
 		m_Agent->update(deltaTime);

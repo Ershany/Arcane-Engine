@@ -17,21 +17,25 @@ namespace arcane
 		union
 		{
 			std::array<glm::vec3*, 3> v;
-			glm::vec3* a;
-			glm::vec3* b;
-			glm::vec3* c;
+			struct {
+				glm::vec3* a;
+				glm::vec3* b;
+				glm::vec3* c;
+			};
 		};
 	};
 
-	struct QuadPrim
+	struct QuadPrim 
 	{
 		union
 		{
 			std::array<glm::vec3*, 4> v;
-			glm::vec3* a;
-			glm::vec3* b;
-			glm::vec3* c;
-			glm::vec3* d;
+			struct {
+				glm::vec3* a;
+				glm::vec3* b;
+				glm::vec3* c;
+				glm::vec3* d;
+			};
 		};
 	};
 
@@ -69,13 +73,22 @@ namespace arcane
 		// Set the Slope that the nav mesh will use for generation
 		void SetSlopeMesh(float angle);
 	private:
+		void SetupVertexDebugView();
+		void SetupNavmeshDebugView();
+	private:
 		GLCache *m_GLCache;
-		Shader *m_DebugShader;
+		ICamera *m_Camera;
+		Shader* m_DebugVerticesShader, *m_DebugNavmeshShader;
 		Cube m_Cube; // Mesh that we perform instancing with
-		unsigned int m_CubeInstancedVAO, m_CubePositionInstancedVBO, m_CubeTransformInstancedVBO;
+		unsigned int m_CubeInstancedVAO, m_CubePositionInstancedVBO, m_CubeTransformInstancedVBO; // For vertex debug view
+		unsigned int m_NavmeshVAO, m_NavmeshVBO; // For navmesh debug view
+		float m_NavmeshDebugYOffset = 0.2f;
 		float m_slopeAngle; // A parameter that will hold the slope that we will accept for the navigation mesh
+
 		std::vector<std::vector<glm::vec3*>> m_NavigationPolygon; 
 		int m_NumCubesToDraw;
+
 		std::vector<TrianglePrim> m_TriangulatedPolygon;
+		int m_NumVerticesInNavmesh;
 	};
 }
