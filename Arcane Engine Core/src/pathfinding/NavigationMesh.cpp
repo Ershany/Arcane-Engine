@@ -94,6 +94,13 @@ namespace arcane
 		GenerateNavigationMesh();
 
 		// Post generation setup
+		std::vector<glm::vec3> verticesToDraw;
+		for (int i = 0; i < m_NavigationPolygon.size(); i++) {
+			for (int j = 0; j < m_NavigationPolygon[i].size(); j++) {
+				verticesToDraw.push_back(*m_NavigationPolygon[i][j]);
+			}
+		}
+
 		glGenVertexArrays(1, &m_CubeInstancedVAO);
 		glGenBuffers(1, &m_CubePositionInstancedVBO);
 		glGenBuffers(1, &m_CubeTransformInstancedVBO);
@@ -102,7 +109,7 @@ namespace arcane
 		glBufferData(GL_ARRAY_BUFFER, m_Cube.GetPositions().size() * sizeof(glm::vec3), &m_Cube.GetPositions()[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
-		glBufferData(GL_ARRAY_BUFFER, terrain->GetPoints().size() * sizeof(glm::vec3), &terrain->GetPoints()[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, verticesToDraw.size() * sizeof(glm::vec3), &verticesToDraw[0], GL_STATIC_DRAW);
 
 		glBindVertexArray(m_CubeInstancedVAO);
 
