@@ -142,6 +142,10 @@ namespace arcane
 						otherTri.a = up;
 						otherTri.b = upRight;
 						otherTri.c = right;
+						for (int i = 0; i < otherTri.v.size(); ++i)
+						{
+							m_PointToTriangle[otherTri.v[i]].insert(&otherTri);
+						}
 						triangles.push_back(otherTri);
 					}
 				}
@@ -151,6 +155,10 @@ namespace arcane
 					currentTriangle.c = right;
 				}
 
+				for (int i = 0; i < currentTriangle.v.size(); ++i)
+				{
+					m_PointToTriangle[currentTriangle.v[i]].insert(&currentTriangle);
+				}
 				triangles.push_back(currentTriangle);
 			}
 		}

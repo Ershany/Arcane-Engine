@@ -85,7 +85,6 @@ namespace arcane
 
 		PathfindingNode* AStar(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& triangleSet)
 		{
-			// Get the starting triangle and ending triangle
 			TrianglePrim* startingTri = NavigationMesh::GetTriangleFromPoint(agentPosition, navmesh);
 			TrianglePrim* destinationTri = NavigationMesh::GetTriangleFromPoint(destination, navmesh);
 			if (!startingTri || !destinationTri)
@@ -95,14 +94,15 @@ namespace arcane
 			std::unordered_map<TrianglePrim*, float> gCost; // The gCost of a certain tile (distance from start point to the tile)
 			std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent relationship for path regeneration
 			PathfindingNode* agentNode = new PathfindingNode(startingTri, 0);
-		
+			
+			// DEALLOCATION???? 
 			tileQueue.push(agentNode);
 			gCost[startingTri] = 0; 
 			while (!tileQueue.empty())
 			{
 				PathfindingNode* currentNode = tileQueue.top();
 				if (currentNode->triangle == destinationTri)
-					return BuildPath(&agentNode, currentNode, tileToParent);
+					return BuildPath(agentNode, currentNode, tileToParent);
 
 				tileQueue.pop();
 				int gCostCurrent = gCost[currentNode->triangle];

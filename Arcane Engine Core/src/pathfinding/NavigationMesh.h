@@ -45,6 +45,8 @@ namespace arcane
 		Terrain* terrain; // Reference terrain that we want to build the navigation mesh on 
 		std::function<void()> regenerationCallback;
 
+		std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>> m_PointToTriangle;
+		
 		NavigationMesh(Terrain* terrain);
 		~NavigationMesh();
 
