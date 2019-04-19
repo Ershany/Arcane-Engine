@@ -14,7 +14,7 @@ namespace arcane
 			{}
 		};
 
-		PathfindingNode* BuildPath(const glm::vec3& spider, PathfindingNode* pathStart, std::unordered_map<PathfindingNode*, PathfindingNode*>& tileToParent);
+		PathfindingNode* BuildPath(const PathfindingNode* agentNode, PathfindingNode* pathStart, std::unordered_map<PathfindingNode*, PathfindingNode*>& tileToParent);
 		//PathfindingNode* DFS(const Spider& spider, const Ant& ant, Assignment1& tileSystem);
 		//PathfindingNode* BFS(const Spider& spider, const Ant& ant, Assignment1& tileSystem);
 		PathfindingNode* AStar(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& pointToTriangle);
