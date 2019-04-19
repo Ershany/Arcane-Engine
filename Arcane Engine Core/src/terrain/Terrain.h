@@ -17,7 +17,7 @@ namespace arcane {
 		float sampleHeightfieldBilinear(const glm::vec3& worldPos);
 
 		inline const glm::vec3& getPosition() const { return m_Position; }
-		inline const std::vector<glm::vec3>& GetPoints() const { return m_Mesh->GetPositions(); }
+		inline std::vector<glm::vec3>& GetPoints() { return m_Mesh->GetPositions(); }
 		inline const unsigned int GetVertexCount() const { return m_VertexSideCount; }
 
 	private:

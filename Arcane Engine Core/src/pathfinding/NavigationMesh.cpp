@@ -149,7 +149,7 @@ namespace arcane
 		m_TriangulatedPolygon.clear();
 
 		// Filter out the points that we cannot reach
-		std::vector<glm::vec3> terrainPoints = terrain->GetPoints();
+		std::vector<glm::vec3>& terrainPoints = terrain->GetPoints();
 		int rowNumber = 0;
 		int columnCount = terrain->GetVertexCount();
 
@@ -159,7 +159,6 @@ namespace arcane
 			if (i == rowNumber * columnCount)
 				m_NavigationPolygon.emplace_back();
 	
-
 			// Check if there is an obstacle at this point or whether it is in the list if so forget about it
 			if (ObstacleOnPoint(terrainPoints[i]))
 				continue; // No obstacles being checked atm
