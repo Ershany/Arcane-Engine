@@ -227,7 +227,8 @@
     <None Include="src\shaders\pointlight.frag" />
     <None Include="src\shaders\shadowmap.frag" />
     <None Include="src\shaders\shadowmap.vert" />
-    <None Include="src\shaders\simple_instanced.frag" />
+    <None Include="src\shaders\simple.frag" />
+    <None Include="src\shaders\simple.vert" />
     <None Include="src\shaders\simple_instanced.vert" />
     <None Include="src\shaders\skybox.frag" />
     <None Include="src\shaders\skybox.vert" />

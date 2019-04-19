@@ -386,8 +386,9 @@
     <None Include="src\shaders\postprocess.frag" />
     <None Include="src\shaders\pbr_model.vert" />
     <None Include="src\shaders\pbr_model.frag" />
-    <None Include="src\shaders\simple_instanced.frag" />
     <None Include="src\shaders\simple_instanced.vert" />
+    <None Include="src\shaders\simple.frag" />
+    <None Include="src\shaders\simple.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

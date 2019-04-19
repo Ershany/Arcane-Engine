@@ -10,13 +10,17 @@ namespace arcane
 	NavigationMesh::NavigationMesh(Terrain* terrain) : terrain(terrain)
 	{
 		SetSlopeMesh(NavmeshPane::getNavmeshSlope()); // Checks the angle given for the slope and calculates the cosine of that angle
+		m_CubePositionInstancedVBO = 0;
+		m_CubeTransformInstancedVBO = 0;
+		m_NavmeshVBO = 0;
 
 		regenerationCallback = [&] { OnRegenerateButtonClick(); };
 		NavmeshPane::setRegenerationFunctionPtr(regenerationCallback);
 
 		// Setup debug drawing
 		m_GLCache = GLCache::getInstance();
-		m_DebugShader = ShaderLoader::loadShader("src/shaders/simple_instanced.vert", "src/shaders/simple_instanced.frag");
+		m_DebugVerticesShader = ShaderLoader::loadShader("src/shaders/simple_instanced.vert", "src/shaders/simple.frag");
+		m_DebugNavmeshShader = ShaderLoader::loadShader("src/shaders/simple.vert", "src/shaders/simple.frag");
 
 		OnRegenerateButtonClick();
 	}
@@ -79,6 +83,7 @@ namespace arcane
 		return false;
 	}
 
+
 	std::vector<TrianglePrim> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
 	{
 		std::vector<TrianglePrim> triangles;
@@ -87,13 +92,29 @@ namespace arcane
 		{
 			for (int j = 0; j < polygon[i].size(); ++j)
 			{
-				TrianglePrim currentTriangle;
-				
-				// DO bounds check
+				TrianglePrim currentTriangle;	
 				glm::vec3* current = polygon[i][j];
-				glm::vec3* up = polygon[i + 1][j] && glm::length2(*current - *polygon[i + 1][j]) == 16.f && polygon[i + 1][j] ? polygon[i + 1][j] : nullptr;
-				glm::vec3* right = polygon[i][j + 1] && glm::length2(*current - *polygon[i][j + 1]) == 16.f ? polygon[i][j + 1] : nullptr;
-				glm::vec3* upRight = polygon[i + 1][j + 1] && glm::length2(*current - *polygon[i + 1][j + 1]) == 32.f ? polygon[i][j + 1] : nullptr; // diagonal
+				glm::vec3* right = j + 1 < polygon[i].size() && (*current - *polygon[i][j + 1]).x == -4.f ? polygon[i][j + 1] : nullptr;
+				glm::vec3* up = nullptr;
+				glm::vec3* upRight = nullptr;
+
+				if (!right)
+					continue;
+
+				if (i + 1 < polygon.size())
+				{
+					for (int w = 0; w < polygon[i + 1].size(); ++w)
+					{
+						glm::vec3 difference = *polygon[i + 1][w] - *current;
+						if (difference.x == 0.f && difference.z == 4)
+							up = polygon[i + 1][w];
+						else if (difference.x == 4.f && difference.z == 4)
+						{
+							upRight = polygon[i + 1][w];
+							break;
+						}
+					}
+				}
 
 				if (!up && !upRight)
 					continue;
@@ -127,18 +148,7 @@ namespace arcane
 		return triangles;
 	}
 
-	void NavigationMesh::OnRegenerateButtonClick() {
-		std::cout << "Regenerating Nav Mesh" << std::endl;
-
-		// TODO: Clean up old instance buffers on the GPU
-
-		// Setup
-		SetSlopeMesh(NavmeshPane::getNavmeshSlope());
-		
-		// Regenerate
-		GenerateNavigationMesh();
-
-		// Post generation setup
+	void NavigationMesh::SetupVertexDebugView() {
 		std::vector<glm::vec3> verticesToDraw;
 		for (int i = 0; i < m_NavigationPolygon.size(); i++) {
 			for (int j = 0; j < m_NavigationPolygon[i].size(); j++) {
@@ -147,45 +157,112 @@ namespace arcane
 		}
 		m_NumCubesToDraw = verticesToDraw.size();
 
-		glGenVertexArrays(1, &m_CubeInstancedVAO);
-		glGenBuffers(1, &m_CubePositionInstancedVBO);
-		glGenBuffers(1, &m_CubeTransformInstancedVBO);
+		if (m_NumCubesToDraw != 0) {
+			glGenVertexArrays(1, &m_CubeInstancedVAO);
+			glGenBuffers(1, &m_CubePositionInstancedVBO);
+			glGenBuffers(1, &m_CubeTransformInstancedVBO);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
-		glBufferData(GL_ARRAY_BUFFER, m_Cube.GetPositions().size() * sizeof(glm::vec3), &m_Cube.GetPositions()[0], GL_STATIC_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
+			glBufferData(GL_ARRAY_BUFFER, m_Cube.GetPositions().size() * sizeof(glm::vec3), &m_Cube.GetPositions()[0], GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
-		glBufferData(GL_ARRAY_BUFFER, m_NumCubesToDraw * sizeof(glm::vec3), &verticesToDraw[0], GL_STATIC_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
+			glBufferData(GL_ARRAY_BUFFER, m_NumCubesToDraw * sizeof(glm::vec3), &verticesToDraw[0], GL_STATIC_DRAW);
 
-		glBindVertexArray(m_CubeInstancedVAO);
+			glBindVertexArray(m_CubeInstancedVAO);
 
-		// Cube model space position
-		glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		// Transform position of each instance
-		glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		glVertexAttribDivisor(1, 1);
+			// Cube model space position
+			glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+			// Transform position of each instance
+			glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+			glVertexAttribDivisor(1, 1);
 
-		glBindVertexArray(0);
+			glBindVertexArray(0);
+		}
+	}
+
+	void NavigationMesh::SetupNavmeshDebugView() {
+		std::vector<glm::vec3> triangleVertices;
+		for (int i = 0; i < m_TriangulatedPolygon.size(); i++) {
+			triangleVertices.push_back(*(m_TriangulatedPolygon[i].a) + glm::vec3(0.0f, m_NavmeshDebugYOffset, 0.0f));
+			triangleVertices.push_back(*(m_TriangulatedPolygon[i].b) + glm::vec3(0.0f, m_NavmeshDebugYOffset, 0.0f));
+			triangleVertices.push_back(*(m_TriangulatedPolygon[i].c) + glm::vec3(0.0f, m_NavmeshDebugYOffset, 0.0f));
+		}
+		m_NumVerticesInNavmesh = triangleVertices.size();
+
+		if (m_NumVerticesInNavmesh != 0) {
+			glGenVertexArrays(1, &m_NavmeshVAO);
+			glGenBuffers(1, &m_NavmeshVBO);
+
+			glBindVertexArray(m_NavmeshVAO);
+			glBindBuffer(GL_ARRAY_BUFFER, m_NavmeshVBO);
+			glBufferData(GL_ARRAY_BUFFER, triangleVertices.size() * sizeof(glm::vec3), &triangleVertices[0], GL_STATIC_DRAW);
+
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+			glBindVertexArray(0);
+		}
+	}
+
+	void NavigationMesh::OnRegenerateButtonClick() {
+		std::cout << "Regenerating Nav Mesh" << std::endl;
+
+		// Clean up old instance buffers on the GPU
+		if (m_CubePositionInstancedVBO != 0 && m_CubeTransformInstancedVBO != 0) {
+			glDeleteVertexArrays(1, &m_CubeInstancedVAO);
+			glDeleteBuffers(1, &m_CubePositionInstancedVBO);
+			glDeleteBuffers(1, &m_CubeTransformInstancedVBO);
+		}
+		if (m_NavmeshVBO != 0) {
+			glDeleteVertexArrays(1, &m_NavmeshVAO);
+			glDeleteBuffers(1, &m_NavmeshVBO);
+		}
+
+		// Setup
+		SetSlopeMesh(NavmeshPane::getNavmeshSlope());
+		
+		// Regenerate
+		GenerateNavigationMesh();
+
+		// Post generation setup
+		SetupVertexDebugView();
+		SetupNavmeshDebugView();
 	}
 
 	void NavigationMesh::DrawMesh(ICamera* camera) {
-	
+		m_GLCache->switchShader(m_DebugNavmeshShader);
+		m_GLCache->setFaceCull(false);
+
+		// Setup colour and also view and projection matrices
+		m_DebugNavmeshShader->setUniformMat4("view", camera->getViewMatrix());
+		m_DebugNavmeshShader->setUniformMat4("projection", camera->getProjectionMatrix());
+		m_DebugNavmeshShader->setUniform3f("colour", glm::vec3(0.0f, 0.0f, 1.0f));
+
+		// Draw our navmesh
+		if (m_NumVerticesInNavmesh != 0) {
+			glBindVertexArray(m_NavmeshVAO);
+			glDrawArrays(GL_TRIANGLES, 0, m_NumVerticesInNavmesh);
+		}
+		m_GLCache->setFaceCull(true);
 	}
 
 	void NavigationMesh::DrawVertices(ICamera* camera) {
-		m_GLCache->switchShader(m_DebugShader->getShaderID());
+		m_GLCache->switchShader(m_DebugVerticesShader);
 
-		// Setup model, view, and projection matrix
-		m_DebugShader->setUniformMat4("view", camera->getViewMatrix());
-		m_DebugShader->setUniformMat4("projection", camera->getProjectionMatrix());
+		// Setup colour and also view and projection matrices
+		m_DebugVerticesShader->setUniformMat4("view", camera->getViewMatrix());
+		m_DebugVerticesShader->setUniformMat4("projection", camera->getProjectionMatrix());
+		m_DebugVerticesShader->setUniform3f("colour", glm::vec3(1.0f, 0.0f, 0.0f));
 
 		// Draw our cube
-		glBindVertexArray(m_CubeInstancedVAO);
-		glDrawArraysInstanced(GL_TRIANGLES, 0, m_Cube.GetPositions().size(), m_NumCubesToDraw);
+		if (m_NumCubesToDraw != 0) {
+			glBindVertexArray(m_CubeInstancedVAO);
+			glDrawArraysInstanced(GL_TRIANGLES, 0, m_Cube.GetPositions().size(), m_NumCubesToDraw);
+		}
 	}
 
 	void NavigationMesh::GenerateNavigationMesh()

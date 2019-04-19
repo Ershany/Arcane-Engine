@@ -60,6 +60,7 @@ namespace arcane {
 
 		// Render the navmesh
 		m_ActiveScene->getNavigationMesh()->DrawVertices(camera);
+		m_ActiveScene->getNavigationMesh()->DrawMesh(camera);
 
 		m_GLCache->switchShader(m_TerrainShader);
 		lightManager->setupLightingUniforms(m_TerrainShader);

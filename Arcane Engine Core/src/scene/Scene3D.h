@@ -34,6 +34,8 @@ namespace arcane {
 		inline NavigationMesh* getNavigationMesh() { return m_NavMesh; }
 	private:
 		void init();
+
+		void checkRaycast();
 	private:
 		// Global Data
 		GLCache *m_GLCache;
