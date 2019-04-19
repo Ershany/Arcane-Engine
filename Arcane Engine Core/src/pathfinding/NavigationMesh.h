@@ -4,7 +4,6 @@
 
 #include "terrain/Terrain.h"
 #include "scene/RenderableModel.h"
-
 #include <graphics/mesh/common/Cube.h>
 #include <graphics/Shader.h>
 #include <graphics/renderer/GLCache.h>
@@ -75,7 +74,8 @@ namespace arcane
 		Cube m_Cube; // Mesh that we perform instancing with
 		unsigned int m_CubeInstancedVAO, m_CubePositionInstancedVBO, m_CubeTransformInstancedVBO;
 		float m_slopeAngle; // A parameter that will hold the slope that we will accept for the navigation mesh
-		std::vector<std::vector<glm::vec3*>> m_NavigationPolygon; int m_NumCubesToDraw;
+		std::vector<std::vector<glm::vec3*>> m_NavigationPolygon; 
+		int m_NumCubesToDraw;
 		std::vector<TrianglePrim> m_TriangulatedPolygon;
 	};
 }

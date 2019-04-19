@@ -155,14 +155,13 @@ namespace arcane
 
 		// Filter out the points that we cannot reach
 		std::vector<glm::vec3>& terrainPoints = terrain->GetPoints();
-
 		int rowNumber = 0;
 		int columnCount = terrain->GetVertexCount();
 
 		for (int i = 0; i < terrainPoints.size(); ++i)
 		{
 			// Check for rows there probably is a better way to do this
-			if (i == rowNumber * columnCount)
+			if (i == m_NavigationPolygon.size() * columnCount)
 				m_NavigationPolygon.emplace_back();
 	
 			// Check if there is an obstacle at this point or whether it is in the list if so forget about it
@@ -171,16 +170,17 @@ namespace arcane
 
 			// Check if any of the points around it can navigate to the point we are currently on 
 			bool navigable = false;
-			for (int j = -1; j < 2; ++j)
+			for (int j = 0; j < 2; ++j)
 			{
 				for (int k = -1; k < 2; ++k)
 				{
-					// Get the neighboring points
 					int index = (i + k) + (j * columnCount);
 					if (index < 0 || index >= terrainPoints.size())
 						continue;
 
 					glm::vec3* neighborPoint = &terrainPoints[index];
+					if (*neighborPoint == terrainPoints[i])
+						continue;
 
 					// Check the slope of the 2 points
 					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > m_slopeAngle)
@@ -201,10 +201,5 @@ namespace arcane
 		m_TriangulatedPolygon = TriangulatePoly(m_NavigationPolygon);
 
 		// Optimize this mesh for pathfinding by attempting to decrease number of triangles
-
-		// Draw vertices 
-		//DrawVertices(m_NavigationPolygon);
-		// Draw this new mesh
-		//DrawMesh(triangulatedPolygon);
 	}
 }
