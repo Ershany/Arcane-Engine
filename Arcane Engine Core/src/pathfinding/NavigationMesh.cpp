@@ -14,9 +14,9 @@ namespace arcane
 		regenerationCallback = [&] {OnRegenerateButtonClick(); };
 		NavmeshPane::setRegenerationFunctionPtr(regenerationCallback);
 
+		// Setup debug drawing
 		m_GLCache = GLCache::getInstance();
 		m_DebugShader = ShaderLoader::loadShader("src/shaders/simple_instanced.vert", "src/shaders/simple_instanced.frag");
-		m_DebugVertexModel = new RenderableModel(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, new Model(Cube()), nullptr);
 	}
 
 	NavigationMesh::~NavigationMesh()
@@ -87,8 +87,36 @@ namespace arcane
 	void NavigationMesh::OnRegenerateButtonClick() {
 		std::cout << "Regenerating Nav Mesh" << std::endl;
 
+		// Setup
 		SetSlopeMesh(NavmeshPane::getNavmeshSlope());
+		
+		// Regenerate
 		GenerateNavigationMesh();
+
+		// Post generation setup
+		glGenVertexArrays(1, &m_CubeInstancedVAO);
+		glGenBuffers(1, &m_CubePositionInstancedVBO);
+		glGenBuffers(1, &m_CubeTransformInstancedVBO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
+		glBufferData(GL_ARRAY_BUFFER, m_Cube.GetPositions().size() * sizeof(glm::vec3), &m_Cube.GetPositions()[0], GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
+		glBufferData(GL_ARRAY_BUFFER, terrain->GetPoints().size() * sizeof(glm::vec3), &terrain->GetPoints()[0], GL_STATIC_DRAW);
+
+		glBindVertexArray(m_CubeInstancedVAO);
+
+		// Cube model space position
+		glBindBuffer(GL_ARRAY_BUFFER, m_CubePositionInstancedVBO);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		// Transform position of each instance
+		glBindBuffer(GL_ARRAY_BUFFER, m_CubeTransformInstancedVBO);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		glVertexAttribDivisor(1, 1);
+
+		glBindVertexArray(0);
 	}
 
 	void NavigationMesh::DrawMesh(ICamera* camera) {
@@ -99,11 +127,12 @@ namespace arcane
 		m_GLCache->switchShader(m_DebugShader->getShaderID());
 
 		// Setup model, view, and projection matrix
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 110.0f, 0.0f));
-		m_DebugShader->setUniformMat4("model", model);
 		m_DebugShader->setUniformMat4("view", camera->getViewMatrix());
 		m_DebugShader->setUniformMat4("projection", camera->getProjectionMatrix());
-		m_DebugVertexModel->draw(m_DebugShader, RenderPassType::ShadowmapPassType);
+
+		// Draw our cube
+		glBindVertexArray(m_CubeInstancedVAO);
+		glDrawArraysInstanced(GL_TRIANGLES, 0, m_Cube.GetPositions().size(), terrain->GetPoints().size());
 	}
 
 	void NavigationMesh::GenerateNavigationMesh()
@@ -120,8 +149,10 @@ namespace arcane
 		for (int i = 0; i < terrainPoints.size(); ++i)
 		{
 			// Check for rows there probably is a better way to do this
-			if (i == rowNumber * columnCount)
+			if (i == rowNumber * columnCount) {
 				++rowNumber;
+				m_NavigationPolygon.emplace_back();
+			}
 
 			// Check if there is an obstacle at this point or whether it is in the list if so forget about it
 			if (ObstacleOnPoint(terrainPoints[i]))
@@ -141,7 +172,7 @@ namespace arcane
 					glm::vec3* neighborPoint = &terrainPoints[index];
 
 					// Check the slope of the 2 points
-					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > COS_30)
+					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > slopeAngle)
 					{
 						m_NavigationPolygon[rowNumber].push_back(&terrainPoints[i]);
 						navigable = true;

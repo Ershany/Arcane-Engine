@@ -5,6 +5,7 @@
 #include "terrain/Terrain.h"
 #include "scene/RenderableModel.h"
 
+#include <graphics/mesh/common/Cube.h>
 #include <graphics/Shader.h>
 #include <graphics/renderer/GLCache.h>
 #include <scene/RenderableModel.h>
@@ -73,7 +74,8 @@ namespace arcane
 	private:
 		GLCache *m_GLCache;
 		Shader *m_DebugShader;
-		RenderableModel *m_DebugVertexModel;
+		Cube m_Cube; // Mesh that we perform instancing with
+		unsigned int m_CubeInstancedVAO, m_CubePositionInstancedVBO, m_CubeTransformInstancedVBO;
 
 		std::vector<std::vector<glm::vec3*>> m_NavigationPolygon;
 		std::vector<TrianglePrim> m_TriangulatedPolygon;
