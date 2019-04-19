@@ -17,6 +17,8 @@ namespace arcane
 		// Setup debug drawing
 		m_GLCache = GLCache::getInstance();
 		m_DebugShader = ShaderLoader::loadShader("src/shaders/simple_instanced.vert", "src/shaders/simple_instanced.frag");
+
+		OnRegenerateButtonClick();
 	}
 
 	NavigationMesh::~NavigationMesh()
