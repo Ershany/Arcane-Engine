@@ -144,7 +144,7 @@ namespace arcane
 					glm::vec3* neighborPoint = &terrainPoints[index];
 
 					// Check the slope of the 2 points
-					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > COS_30)
+					if (GetSlopePoints(terrainPoints[i], *neighborPoint) > m_slopeAngle)
 					{
 						m_NavigationPolygon[rowNumber].push_back(&terrainPoints[i]);
 						navigable = true;
