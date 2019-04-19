@@ -5,7 +5,7 @@ namespace arcane {
 
 	float NavmeshPane::s_HeightRestriction = 115.0f;
 	bool NavmeshPane::s_ShowNavmeshVertices = false;
-	bool NavmeshPane::s_ShowNavmesh = true;
+	bool NavmeshPane::s_ShowNavmesh = false;
 	std::function<void()> NavmeshPane::s_RegenerationFuncPtr = nullptr;
 
 	NavmeshPane::NavmeshPane(glm::vec2& panePosition) : Pane(std::string("Navmesh Controls"), panePosition)
