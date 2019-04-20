@@ -107,6 +107,7 @@
     <ClCompile Include="src\input\InputManager.cpp" />
     <ClCompile Include="src\input\JoystickManager.cpp" />
     <ClCompile Include="src\pathfinding\NavigationMesh.cpp" />
+    <ClCompile Include="src\pathfinding\Obstacle.cpp" />
     <ClCompile Include="src\pathfinding\PathfindingAgent.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -183,6 +184,7 @@
     <ClInclude Include="src\input\InputManager.h" />
     <ClInclude Include="src\input\JoystickManager.h" />
     <ClInclude Include="src\pathfinding\NavigationMesh.h" />
+    <ClInclude Include="src\pathfinding\Obstacle.h" />
     <ClInclude Include="src\pathfinding\PathfindingAgent.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\scene\RenderableModel.h" />

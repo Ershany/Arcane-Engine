@@ -9,6 +9,7 @@
 #include <graphics/renderer/GLCache.h>
 #include <scene/RenderableModel.h>
 #include <graphics/camera/ICamera.h>
+#include <pathfinding/Obstacle.h>
 
 namespace arcane
 {
@@ -73,6 +74,8 @@ namespace arcane
 		void DrawVertices(ICamera* camera);
 		// Get the slope of the 2 pts its mostly the angle between these 2 pts and a reference vector(probably side vector)
 		float GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2);
+		
+		void AddObstacle(const Obstacle& obstacle);
 	private:
 		void SetupVertexDebugView();
 		void SetupNavmeshDebugView();
@@ -90,5 +93,8 @@ namespace arcane
 
 		std::vector<TrianglePrim> m_TriangulatedPolygon;
 		int m_NumVerticesInNavmesh;
+
+		// Obstacles
+		std::vector<Obstacle> m_Obstacles;
 	};
 }

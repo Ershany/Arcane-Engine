@@ -79,10 +79,11 @@ namespace arcane
 
 	bool NavigationMesh::ObstacleOnPoint(const glm::vec3& point)
 	{
-		// DO NOT FORGET ABT THISSSSSS
-		//
-		//
-		//
+		for (int i = 0; i < m_Obstacles.size(); i++) {
+			if (m_Obstacles[i].containsPoint(point))
+				return true;
+		}
+
 		return false;
 	}
 
@@ -317,7 +318,7 @@ namespace arcane
 				//
 				//
 				if (ObstacleOnPoint(terrainPoints[col + (row * columnCount)]))
-					continue; // No obstacles being checked atm
+					continue;
 
 				// Check if any of the points around it can navigate to the point we are currently on 
 				bool navigable = false;
@@ -358,5 +359,9 @@ namespace arcane
 		m_TriangulatedPolygon = TriangulatePoly(m_NavigationPolygon);
 
 		// Optimize this mesh for pathfinding by attempting to decrease number of triangles
+	}
+
+	void NavigationMesh::AddObstacle(const Obstacle& obstacle) {
+		m_Obstacles.push_back(obstacle);
 	}
 }

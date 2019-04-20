@@ -6,6 +6,7 @@
 #include <graphics/mesh/common/Sphere.h>
 #include <graphics/mesh/common/Quad.h>
 #include <pathfinding/PathfindingAgent.h>
+#include <pathfinding/Obstacle.h>
 
 namespace arcane {
 
@@ -30,9 +31,6 @@ namespace arcane {
 		RenderableModel *agentsRenderable = new RenderableModel(glm::vec3(50.0f, 0.0f, 50.0f), glm::vec3(3.0f, 10.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, new Model(Cube()), nullptr);
 		m_Agent = new PathfindingAgent(&m_Terrain, agentsRenderable);
 		m_RenderableModels.push_back(agentsRenderable);
-
-		m_RaycastCollisionDebugModel = new RenderableModel(glm::vec3(5000.0f, 5000.0f, 5000.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, new Model(Sphere()), nullptr);
-		m_RenderableModels.push_back(m_RaycastCollisionDebugModel);
 
 		// Skybox
 		std::vector<std::string> skyboxFilePaths;
@@ -65,7 +63,12 @@ namespace arcane {
 			// Check for collision on the terrain
 			glm::vec3 collisionPoint;
 			if (m_Terrain.checkPointForIntersection(rayWorldSpacePos, collisionPoint)) {
-				m_RaycastCollisionDebugModel->setPosition(collisionPoint);
+				// Place an obstacle
+				RenderableModel* obstacleRenderable = new RenderableModel(collisionPoint, glm::vec3(30.0f, 30.0f, 30.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, new Model(Cube()), nullptr);
+				m_RenderableModels.push_back(obstacleRenderable);
+
+				Obstacle obstacle(collisionPoint - glm::vec3(15.0f, 15.0f, 15.0f), collisionPoint + glm::vec3(15.0f, 15.0f, 15.0f));
+				m_NavMesh->AddObstacle(obstacle);
 				break;
 			}
 
@@ -79,11 +82,11 @@ namespace arcane {
 		m_SceneCamera.processInput(deltaTime);
 
 		// Check if the player is shooting a ray into the scene
-		if (InputManager::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && !Window::getHideCursor() && !firedRay) {
+		if (InputManager::isMouseButtonPressed(GLFW_MOUSE_BUTTON_2) && !Window::getHideCursor() && !firedRay) {
 			shootRaycast();
 			firedRay = true;
 		}
-		if (!InputManager::isMouseButtonPressed(GLFW_MOUSE_BUTTON_1)) {
+		if (!InputManager::isMouseButtonPressed(GLFW_MOUSE_BUTTON_2)) {
 			firedRay = false;
 		}
 

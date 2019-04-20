@@ -53,7 +53,6 @@ namespace arcane {
 		std::vector<RenderableModel*> m_RenderableModels;
 		NavigationMesh *m_NavMesh;
 		PathfindingAgent *m_Agent;
-		RenderableModel *m_RaycastCollisionDebugModel;
 	};
 
 }
