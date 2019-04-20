@@ -73,8 +73,6 @@ namespace arcane
 		void OnRegenerateButtonClick();
 		// Checks if there is an obstacle at this location
 		bool ObstacleOnPoint(const glm::vec3& point);
-		// Checks if this point is navigable
-		bool ExistsPathToPoint(const glm::vec3& point, const std::vector<glm::vec3>& terrainPoints);
 		// Triangulate the generated polygon
 		std::vector<TrianglePrim> TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon);
 		// Draw the navigation mesh
