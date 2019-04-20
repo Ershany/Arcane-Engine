@@ -9,6 +9,18 @@ namespace arcane {
 		Static_Obstacle = 1,
 	};
 
+	enum SearchAlgo {
+		AStar = 0,
+		BFS = 1,
+		DFS = 2,
+	};
+
+	enum HeuristicChoice {
+		Manhattan = 0,
+		Chebyshev = 1,
+		Euclidean = 2,
+	};
+
 	class NavmeshPane : public Pane {
 	public:
 		NavmeshPane(glm::vec2& panePosition);
@@ -23,6 +35,8 @@ namespace arcane {
 		inline static void setRegenerationFunctionPtr(std::function<void()> funcPtr) { s_RegenerationFuncPtr = funcPtr; }
 	private:
 		static int s_RaycastType;
+		static int s_SearchAlgo;
+		static int s_HeuristicChoice;
 		static float s_HeightRestriction;
 		static bool s_ShowNavmeshVertices, s_ShowNavmesh;
 
