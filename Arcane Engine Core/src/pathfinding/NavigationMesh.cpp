@@ -107,7 +107,8 @@ namespace arcane
 		{
 			for (int j = 0; j < polygon[i].size(); ++j)
 			{
-				TrianglePrim currentTriangle;	
+				// Allocate on heap to fix to memory corruption. We could do this much better (ie use the stack and not have dangling pointers), but with time constraints I do not care :)
+				TrianglePrim *currentTriangle = new TrianglePrim();
 				glm::vec3* current = polygon[i][j];
 				glm::vec3* right = j + 1 < polygon[i].size() && (*current - *polygon[i][j + 1]).x == -4.f ? polygon[i][j + 1] : nullptr;
 				glm::vec3* up = nullptr;
@@ -134,37 +135,38 @@ namespace arcane
 				if (!up && !upRight)
 					continue;
 				
-				currentTriangle.a = current;
+				currentTriangle->a = current;
 				
 				if (up && right)
 				{
-					currentTriangle.b = up;
-					currentTriangle.c = right;
+					currentTriangle->b = up;
+					currentTriangle->c = right;
 
 					if (upRight)
 					{
-						TrianglePrim otherTri;
-						otherTri.a = up;
-						otherTri.b = upRight;
-						otherTri.c = right;
-						for (int w = 0; w < otherTri.v.size(); ++w)
+						// Allocate on heap to fix to memory corruption. We could do this much better (ie use the stack and not have dangling pointers), but with time constraints I do not care :)
+						TrianglePrim *otherTri = new TrianglePrim();
+						otherTri->a = up;
+						otherTri->b = upRight;
+						otherTri->c = right;
+						for (int w = 0; w < otherTri->v.size(); ++w)
 						{
-							m_PointToTriangle[otherTri.v[w]].insert(&otherTri);
+							m_PointToTriangle[otherTri->v[w]].insert(otherTri);
 						}
-						triangles.push_back(otherTri);
+						triangles.push_back(*otherTri);
 					}
 				}
 				else if (!up && upRight && right)
 				{
-					currentTriangle.b = upRight;
-					currentTriangle.c = right;
+					currentTriangle->b = upRight;
+					currentTriangle->c = right;
 				}
 
-				for (int w = 0; w < currentTriangle.v.size(); ++w)
+				for (int w = 0; w < currentTriangle->v.size(); ++w)
 				{
-					m_PointToTriangle[currentTriangle.v[w]].insert(&currentTriangle);
+					m_PointToTriangle[currentTriangle->v[w]].insert(currentTriangle);
 				}
-				triangles.push_back(currentTriangle);
+				triangles.push_back(*currentTriangle);
 			}
 		}
 
