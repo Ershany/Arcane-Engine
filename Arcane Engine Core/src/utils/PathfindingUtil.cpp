@@ -137,9 +137,11 @@ namespace arcane
 		{
 			PathfindingNode* currentNode = pathStart; // In this situation it is the destination node
 			PathfindingNode* previousNode = nullptr;
+			std::vector<PathfindingNode*> path;
 
 			while (currentNode != agentNode)
 			{
+				path.push_back(currentNode);
 				previousNode = currentNode;
 
 				// Get the current Node's parent if it is not there then we will never find the node we want so break
