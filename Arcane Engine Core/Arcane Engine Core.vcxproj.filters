@@ -184,6 +184,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\pathfinding\Obstacle.cpp">
+		<Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\PathfindingUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -375,6 +378,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\pathfinding\Obstacle.h">
+		<Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\PathfindingUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

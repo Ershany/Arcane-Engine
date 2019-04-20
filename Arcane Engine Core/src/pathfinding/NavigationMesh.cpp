@@ -21,7 +21,8 @@ namespace arcane
 		m_DebugVerticesShader = ShaderLoader::loadShader("src/shaders/simple_instanced.vert", "src/shaders/simple.frag");
 		m_DebugNavmeshShader = ShaderLoader::loadShader("src/shaders/simple.vert", "src/shaders/simple.frag");
 
-		OnRegenerateButtonClick();
+		// Do not generate on creation 
+		//OnRegenerateButtonClick();
 	}
 
 	NavigationMesh::~NavigationMesh()
@@ -63,6 +64,17 @@ namespace arcane
 		float dot = glm::dot(glm::normalize(difference), glm::normalize(referenceVec)); // This will give us cos(theta)
 
 		return dot;
+	}
+
+	TrianglePrim* NavigationMesh::GetTriangleFromPoint(const glm::vec3& point, std::vector<TrianglePrim>& triangles)
+	{
+		for (int i = 0; i < triangles.size(); ++i)
+		{
+			if (IsPointOnTriangle(point, triangles[i]))
+				return &triangles[i];
+		}
+
+		return nullptr;
 	}
 
 	bool NavigationMesh::ObstacleOnPoint(const glm::vec3& point)
@@ -131,6 +143,10 @@ namespace arcane
 						otherTri.a = up;
 						otherTri.b = upRight;
 						otherTri.c = right;
+						for (int i = 0; i < otherTri.v.size(); ++i)
+						{
+							m_PointToTriangle[otherTri.v[i]].insert(&otherTri);
+						}
 						triangles.push_back(otherTri);
 					}
 				}
@@ -140,6 +156,10 @@ namespace arcane
 					currentTriangle.c = right;
 				}
 
+				for (int i = 0; i < currentTriangle.v.size(); ++i)
+				{
+					m_PointToTriangle[currentTriangle.v[i]].insert(&currentTriangle);
+				}
 				triangles.push_back(currentTriangle);
 			}
 		}
@@ -227,6 +247,8 @@ namespace arcane
 		// Post generation setup (generate new buffers on the GPU)
 		SetupVertexDebugView();
 		SetupNavmeshDebugView();
+
+		NavmeshPane::setShowNavmesh(true);
 	}
 
 	void NavigationMesh::DrawMesh(ICamera* camera) {
@@ -291,6 +313,10 @@ namespace arcane
 
 			for (int col = 0; col < terrain->GetVertexCount(); ++col)
 			{
+				// DO NOT FORGET ABT THISSSSSS
+				//
+				//
+				//
 				if (ObstacleOnPoint(terrainPoints[col + (row * columnCount)]))
 					continue;
 

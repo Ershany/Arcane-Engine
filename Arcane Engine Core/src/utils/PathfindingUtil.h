@@ -1,24 +1,26 @@
 #pragma once
+#include "pathfinding/NavigationMesh.h"
 
-namespace PathfindingUtil
+namespace arcane
 {
-	struct PathfindingNode
+	namespace PathfindingUtil
 	{
-		const glm::vec3* position;
-		int nodeScore;
-
-		PathfindingNode(const glm::vec3* position, int score) 
+		struct PathfindingNode
 		{
-			this->position = position;
-			nodeScore = score;
-		}
-	};
+			TrianglePrim* triangle;
+			float nodeScore;
 
-	PathfindingNode* BuildPath(const Spider& spider, PathfindingNode* pathStart, std::unordered_map<PathfindingNode*, PathfindingNode*>& tileToParent);
-	PathfindingNode* DFS(const Spider& spider, const Ant& ant, Assignment1& tileSystem);
-	PathfindingNode* BFS(const Spider& spider, const Ant& ant, Assignment1& tileSystem);
-	PathfindingNode* AStar(const Spider& spider, const Ant& ant, Assignment1& tileSystem);
-	int ManhattanDistanceHeuristic(const PathfindingNode& node1, const PathfindingNode& node2);
-	int ChebyshevDistanceHeuristic(const PathfindingNode& node1, const PathfindingNode& node2);
-	int EuclideanDistanceHeuristic(const PathfindingNode& node1, const PathfindingNode& node2);
-};
+			PathfindingNode(TrianglePrim* tri, int score) : triangle(tri), nodeScore(score)
+			{}
+		};
+
+		PathfindingNode* BuildPath(const PathfindingNode* agentNode, PathfindingNode* pathStart, std::unordered_map<PathfindingNode*, PathfindingNode*>& tileToParent);
+		//PathfindingNode* DFS(const Spider& spider, const Ant& ant, Assignment1& tileSystem);
+		//PathfindingNode* BFS(const Spider& spider, const Ant& ant, Assignment1& tileSystem);
+		PathfindingNode* AStar(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& pointToTriangle);
+		//int ManhattanDistanceHeuristic(const PathfindingNode& node1, const PathfindingNode& node2);
+		//int ChebyshevDistanceHeuristic(const PathfindingNode& node1, const PathfindingNode& node2);
+		//int EuclideanDistanceHeuristic(const PathfindingNode& node1, const PathfindingNode& node2); // USE EUCLIDEAN SQUARED
+		glm::vec3 FindCenterTriangle(const TrianglePrim& triangle);
+	};
+}
