@@ -30,11 +30,9 @@ namespace arcane
 
 	bool NavigationMesh::IsPointInTriangle(const glm::vec3& point, const TrianglePrim& triangle)
 	{
-		if (SameSide(point, *(triangle.a), *(triangle.b), *(triangle.c)) && SameSide(point, *(triangle.b), *(triangle.a), *(triangle.c)) && SameSide(point, *(triangle.c), *(triangle.a), *(triangle.b))) {
-			return true;
-		}
-
-		return false;
+		return SameSide(point, *(triangle.a), *(triangle.b), *(triangle.c)) && 
+			SameSide(point, *(triangle.b), *(triangle.a), *(triangle.c)) && 
+			SameSide(point, *(triangle.c), *(triangle.a), *(triangle.b));
 	}
 
 	bool NavigationMesh::SameSide(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& a, const glm::vec3& b) {
@@ -149,9 +147,9 @@ namespace arcane
 						otherTri.a = up;
 						otherTri.b = upRight;
 						otherTri.c = right;
-						for (int i = 0; i < otherTri.v.size(); ++i)
+						for (int w = 0; w < otherTri.v.size(); ++w)
 						{
-							m_PointToTriangle[otherTri.v[i]].insert(&otherTri);
+							m_PointToTriangle[otherTri.v[w]].insert(&otherTri);
 						}
 						triangles.push_back(otherTri);
 					}
@@ -162,9 +160,9 @@ namespace arcane
 					currentTriangle.c = right;
 				}
 
-				for (int i = 0; i < currentTriangle.v.size(); ++i)
+				for (int w = 0; w < currentTriangle.v.size(); ++w)
 				{
-					m_PointToTriangle[currentTriangle.v[i]].insert(&currentTriangle);
+					m_PointToTriangle[currentTriangle.v[w]].insert(&currentTriangle);
 				}
 				triangles.push_back(currentTriangle);
 			}

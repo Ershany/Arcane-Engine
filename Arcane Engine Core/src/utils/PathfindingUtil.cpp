@@ -111,6 +111,9 @@ namespace arcane
 				// Get the triangles that are neighbors of the 3 points of the triangle
 				for (int i = 0; i < currentNode->triangle->v.size(); ++i)
 				{
+					if (triangleSet.count(currentNode->triangle->v[i]) == 0)
+						continue;
+
 					std::unordered_set<TrianglePrim*>& neighborTris = triangleSet[currentNode->triangle->v[i]];
 					for (auto iter = neighborTris.begin(); iter != neighborTris.end(); ++iter)
 					{
@@ -237,7 +240,7 @@ namespace arcane
 
 		glm::vec3 FindCenterTriangle(const TrianglePrim& triangle)
 		{
-			glm::vec3 center;
+			glm::vec3 center = glm::vec3(0,0,0);
 			for (auto iter = triangle.v.begin(); iter != triangle.v.end(); ++iter)
 			{
 				center += *(*iter);
