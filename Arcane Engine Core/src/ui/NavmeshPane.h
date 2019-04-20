@@ -4,18 +4,25 @@
 
 namespace arcane {
 
+	enum RaycastType {
+		Movement = 0,
+		Static_Obstacle = 1,
+	};
+
 	class NavmeshPane : public Pane {
 	public:
 		NavmeshPane(glm::vec2& panePosition);
 
 		virtual void setupPaneObjects();
 
+		inline static int getRaycastType() { return s_RaycastType; }
 		inline static float getHeightRestriction() { return s_HeightRestriction; }
 		inline static bool getShowNavmeshVertices() { return s_ShowNavmeshVertices; }
 		inline static bool getShowNavmesh() { return s_ShowNavmesh; }
 		inline static void setShowNavmesh(bool showMesh) { s_ShowNavmesh = showMesh; }
 		inline static void setRegenerationFunctionPtr(std::function<void()> funcPtr) { s_RegenerationFuncPtr = funcPtr; }
 	private:
+		static int s_RaycastType;
 		static float s_HeightRestriction;
 		static bool s_ShowNavmeshVertices, s_ShowNavmesh;
 

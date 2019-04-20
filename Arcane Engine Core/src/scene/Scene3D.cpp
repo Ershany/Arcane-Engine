@@ -7,6 +7,8 @@
 #include <graphics/mesh/common/Quad.h>
 #include <pathfinding/PathfindingAgent.h>
 #include <pathfinding/Obstacle.h>
+#include <ui/NavmeshPane.h>
+#include <utils/PathfindingUtil.h>
 
 namespace arcane {
 
@@ -63,12 +65,19 @@ namespace arcane {
 			// Check for collision on the terrain
 			glm::vec3 collisionPoint;
 			if (m_Terrain.checkPointForIntersection(rayWorldSpacePos, collisionPoint)) {
-				// Place an obstacle
-				RenderableModel* obstacleRenderable = new RenderableModel(collisionPoint, glm::vec3(30.0f, 30.0f, 30.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, new Model(Cube()), nullptr);
-				m_RenderableModels.push_back(obstacleRenderable);
+				// Determine what we should do
+				if (NavmeshPane::getRaycastType() == RaycastType::Movement) {
+					PathfindingUtil::AStar(m_Terrain.sampleHeightfieldNearest(m_Agent->getPosition()), m_Terrain.sampleHeightfieldNearest(collisionPoint), m_NavMesh->getTriangulatedPolygon(), m_NavMesh->getPointToTriangle());
+				}
+				else if (NavmeshPane::getRaycastType() == RaycastType::Static_Obstacle) {
+					// Place an obstacle
+					RenderableModel* obstacleRenderable = new RenderableModel(collisionPoint, glm::vec3(30.0f, 30.0f, 30.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, new Model(Cube()), nullptr);
+					m_RenderableModels.push_back(obstacleRenderable);
 
-				Obstacle obstacle(collisionPoint - glm::vec3(15.0f, 15.0f, 15.0f), collisionPoint + glm::vec3(15.0f, 15.0f, 15.0f));
-				m_NavMesh->AddObstacle(obstacle);
+					Obstacle obstacle(collisionPoint - glm::vec3(15.0f, 15.0f, 15.0f), collisionPoint + glm::vec3(15.0f, 15.0f, 15.0f));
+					m_NavMesh->AddObstacle(obstacle);
+				}
+				
 				break;
 			}
 

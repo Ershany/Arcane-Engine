@@ -76,6 +76,10 @@ namespace arcane
 		float GetSlopePoints(const glm::vec3& point1, const glm::vec3& point2);
 		
 		void AddObstacle(const Obstacle& obstacle);
+
+
+		inline std::vector<TrianglePrim>& getTriangulatedPolygon() { return m_TriangulatedPolygon; }
+		inline std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& getPointToTriangle() { return m_PointToTriangle; }
 	private:
 		void SetupVertexDebugView();
 		void SetupNavmeshDebugView();

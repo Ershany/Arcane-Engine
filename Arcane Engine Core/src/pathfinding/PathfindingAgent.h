@@ -16,6 +16,7 @@ namespace arcane
 		
 		void update(float deltaTime);
 
+		inline const glm::vec3& getPosition() { return m_Model->getPosition(); }
 	private:
 		Terrain* m_Terrain;
 		RenderableModel *m_Model;
