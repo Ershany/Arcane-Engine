@@ -101,7 +101,7 @@ namespace arcane
 			while (!tileQueue.empty())
 			{
 				PathfindingNode* currentNode = tileQueue.top();
-				if (currentNode->triangle == destinationTri)
+				if (*currentNode->triangle == *destinationTri)
 					return BuildPath(agentNode, currentNode, tileToParent);
 
 				tileQueue.pop();
@@ -201,7 +201,7 @@ namespace arcane
 			// Setup colour and also view and projection matrices
 			pathShader->setUniformMat4("view", camera->getViewMatrix());
 			pathShader->setUniformMat4("projection", camera->getProjectionMatrix());
-			pathShader->setUniform3f("colour", glm::vec3(1.0f, 1.0f, 1.0f));
+			pathShader->setUniform3f("colour", glm::vec3(1.0f, 0.0f, 0.0f));
 
 			// Draw our navmesh
 			if (g_NumVerticesInPath != 0) {

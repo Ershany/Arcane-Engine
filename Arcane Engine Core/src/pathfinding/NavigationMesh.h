@@ -24,6 +24,14 @@ namespace arcane
 				glm::vec3* c;
 			};
 		};
+
+		bool operator==(const TrianglePrim& other) {
+			if (*(this->a) == *(other.a) && *(this->b) == *(other.b) && *(this->c) == *(other.c)) {
+				return true;
+			}
+
+			return false;
+		}
 	};
 
 	struct QuadPrim 
