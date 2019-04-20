@@ -184,7 +184,7 @@ namespace arcane
 			glm::vec3 center;
 			for (auto iter = triangle.v.begin(); iter != triangle.v.end(); ++iter)
 			{
-				center += *iter;
+				center += *(*iter);
 			}
 
 			return center * 0.33333333f; // Find the average of the 3 vertices
