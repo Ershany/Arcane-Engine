@@ -133,6 +133,8 @@ namespace arcane
 			return nullptr;
 		}
 
+		int g_NumVerticesInPath;
+		unsigned int g_PathVAO = 0, g_PathVBO = 0;
 		PathfindingNode* BuildPath(const PathfindingNode* agentNode, PathfindingNode* pathStart, std::unordered_map<PathfindingNode*, PathfindingNode*> & tileToParent)
 		{
 			PathfindingNode* currentNode = pathStart; // In this situation it is the destination node
@@ -151,7 +153,59 @@ namespace arcane
 					return nullptr; // something wrong happened if we let this go it will run infinitely
 			}
 
+
+			// Clean up old data on the GPU if it exists
+			if (g_PathVAO != 0 && g_PathVBO != 0) {
+				glDeleteVertexArrays(1, &g_PathVAO);
+				glDeleteBuffers(1, &g_PathVBO);
+			}
+
+			// Create buffers on the GPU to render the data (debug)
+			std::vector<glm::vec3> triangleVertices;
+			for (int i = 0; i < path.size(); i++) {
+				triangleVertices.push_back(*(path[i]->triangle->a) + glm::vec3(0.0f, 1.5f, 0.0f));
+				triangleVertices.push_back(*(path[i]->triangle->b) + glm::vec3(0.0f, 1.5f, 0.0f));
+				triangleVertices.push_back(*(path[i]->triangle->c) + glm::vec3(0.0f, 1.5f, 0.0f));
+			}
+			g_NumVerticesInPath = triangleVertices.size();
+
+			glGenVertexArrays(1, &g_PathVAO);
+			glGenBuffers(1, &g_PathVBO);
+
+			glBindVertexArray(g_PathVAO);
+			glBindBuffer(GL_ARRAY_BUFFER, g_PathVBO);
+			glBufferData(GL_ARRAY_BUFFER, triangleVertices.size() * sizeof(glm::vec3), &triangleVertices[0], GL_STATIC_DRAW);
+
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+			glBindVertexArray(0);
+
+			// Finally return
 			return previousNode; // This is the next position that the unit should be moving to
+		}
+
+		void PathfindingUtil::drawPath(ICamera* camera) {
+			static Shader* pathShader = ShaderLoader::loadShader("src/shaders/simple.vert", "src/shaders/simple.frag");
+
+			GLCache* cache = GLCache::getInstance();
+			cache->switchShader(pathShader);
+			cache->setFaceCull(false);
+			cache->setBlend(true);
+			cache->setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			// Setup colour and also view and projection matrices
+			pathShader->setUniformMat4("view", camera->getViewMatrix());
+			pathShader->setUniformMat4("projection", camera->getProjectionMatrix());
+			pathShader->setUniform3f("colour", glm::vec3(1.0f, 1.0f, 1.0f));
+
+			// Draw our navmesh
+			if (g_NumVerticesInPath != 0) {
+				glBindVertexArray(g_PathVAO);
+				glDrawArrays(GL_TRIANGLES, 0, g_NumVerticesInPath);
+			}
+			cache->setFaceCull(true);
+			cache->setBlend(false);
 		}
 
 		//int ManhattanDistanceHeuristic(const PathfindingNode & node1, const PathfindingNode & node2)

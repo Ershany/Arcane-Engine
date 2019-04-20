@@ -1,5 +1,7 @@
 #pragma once
 #include "pathfinding/NavigationMesh.h"
+#include <graphics/Shader.h>
+#include <utils/loaders/ShaderLoader.h>
 
 namespace arcane
 {
@@ -22,5 +24,7 @@ namespace arcane
 		//int ChebyshevDistanceHeuristic(const PathfindingNode& node1, const PathfindingNode& node2);
 		//int EuclideanDistanceHeuristic(const PathfindingNode& node1, const PathfindingNode& node2); // USE EUCLIDEAN SQUARED
 		glm::vec3 FindCenterTriangle(const TrianglePrim& triangle);
+
+		void drawPath(ICamera *camera);
 	};
 }

@@ -2,6 +2,7 @@
 #include "LightingPass.h"
 
 #include <utils/loaders/ShaderLoader.h>
+#include <utils/PathfindingUtil.h>
 
 namespace arcane {
 
@@ -74,6 +75,7 @@ namespace arcane {
 		// Render the navmesh
 		m_ActiveScene->getNavigationMesh()->DrawVertices(camera);
 		m_ActiveScene->getNavigationMesh()->DrawMesh(camera);
+		PathfindingUtil::drawPath(camera);
 
 		skybox->Draw(camera);
 
