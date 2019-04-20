@@ -51,7 +51,8 @@ namespace arcane
 		NavigationMesh(Terrain* terrain);
 		~NavigationMesh();
 
-		static bool IsPointOnTriangle(const glm::vec3& point, const TrianglePrim& triangle);
+		static bool IsPointInTriangle(const glm::vec3& point, const TrianglePrim& triangle);
+		static bool SameSide(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& a, const glm::vec3& b);
 		static bool IsPointOnPlane(const glm::vec3& point, const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3);
 		static bool SameSideTriangle(const glm::vec3& point, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c);
 		static TrianglePrim* GetTriangleFromPoint(const glm::vec3& point, std::vector<TrianglePrim>& triangles);

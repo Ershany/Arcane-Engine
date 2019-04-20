@@ -28,16 +28,22 @@ namespace arcane
 	NavigationMesh::~NavigationMesh()
 	{}
 
-	bool NavigationMesh::IsPointOnTriangle(const glm::vec3& point, const TrianglePrim& triangle)
+	bool NavigationMesh::IsPointInTriangle(const glm::vec3& point, const TrianglePrim& triangle)
 	{
-		// Check if point is on the same plane as the triangle
-		if (!IsPointOnPlane(point, *triangle.a, *triangle.b, *triangle.c))
-			return false;
+		if (SameSide(point, *(triangle.a), *(triangle.b), *(triangle.c)) && SameSide(point, *(triangle.b), *(triangle.a), *(triangle.c)) && SameSide(point, *(triangle.c), *(triangle.a), *(triangle.b))) {
+			return true;
+		}
 
-		// Check if point is inside the triangle or outside within the plane they share
-		return SameSideTriangle(point, *triangle.a, *triangle.b, *triangle.c) ||
-			SameSideTriangle(point, *triangle.b, *triangle.a, *triangle.c) || 
-			SameSideTriangle(point, *triangle.c, *triangle.a, *triangle.b);
+		return false;
+	}
+
+	bool NavigationMesh::SameSide(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& a, const glm::vec3& b) {
+		glm::vec3 cp1 = glm::cross(b - a, p1 - a);
+		glm::vec3 cp2 = glm::cross(b - a, p2 - a);
+
+		if (glm::dot(cp1, cp2) >= 0) return true;
+		
+		return false;
 	}
 
 	bool NavigationMesh::IsPointOnPlane(const glm::vec3& point, const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3)
@@ -70,7 +76,7 @@ namespace arcane
 	{
 		for (int i = 0; i < triangles.size(); ++i)
 		{
-			if (IsPointOnTriangle(point, triangles[i]))
+			if (IsPointInTriangle(point, triangles[i]))
 				return &triangles[i];
 		}
 
