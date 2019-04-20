@@ -28,7 +28,7 @@ namespace arcane {
 		ImGui::RadioButton("BFS", &s_SearchAlgo, 1); ImGui::SameLine();
 		ImGui::RadioButton("DFS", &s_SearchAlgo, 2);
 
-		if (s_SearchAlgo != SearchAlgo::AStar) {
+		if (s_SearchAlgo == SearchAlgo::AStar) {
 			ImGui::RadioButton("Manhattan", &s_HeuristicChoice, 0); ImGui::SameLine();
 			ImGui::RadioButton("Chebyshev", &s_HeuristicChoice, 1); ImGui::SameLine();
 			ImGui::RadioButton("Euclidean", &s_HeuristicChoice, 2);
