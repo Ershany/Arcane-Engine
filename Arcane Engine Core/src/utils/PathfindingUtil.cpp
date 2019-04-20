@@ -191,6 +191,7 @@ namespace arcane
 			GLCache* cache = GLCache::getInstance();
 			cache->switchShader(pathShader);
 			cache->setFaceCull(false);
+			cache->setDepthTest(false);
 			cache->setBlend(true);
 			cache->setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -205,6 +206,7 @@ namespace arcane
 				glDrawArrays(GL_TRIANGLES, 0, g_NumVerticesInPath);
 			}
 			cache->setFaceCull(true);
+			cache->setDepthTest(true);
 			cache->setBlend(false);
 		}
 
