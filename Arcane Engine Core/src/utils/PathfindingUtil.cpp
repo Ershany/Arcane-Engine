@@ -10,78 +10,97 @@ namespace arcane
 			return node1->nodeScore > node2->nodeScore;
 		};
 
-		//PathfindingNode* BFS(const glm::vec3& agentPosition, const glm::vec3& destination, Graph& tileSystem)
-		//{
-		//	std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent
-		//	std::deque<PathfindingNode*> currentTiles; // Current tiles
-		//	std::unordered_set<const PathfindingNode*> closedList; // CLosed list of tiles
+		PathfindingNode* BFS(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& triangleSet)
+		{
+			TrianglePrim* startingTri = NavigationMesh::GetTriangleFromPoint(agentPosition, navmesh);
+			TrianglePrim* destinationTri = NavigationMesh::GetTriangleFromPoint(destination, navmesh);
+			if (!startingTri || !destinationTri)
+				return nullptr;
 
-		//	PathfindingNode agentNode = PathfindingNode(&agentPosition, 0);
-		//	currentTiles.push_back(&agentNode); // Add the first tile
-		//	closedList.insert(&agentNode); // Add to query set
-		//	while (!currentTiles.empty())
-		//	{
-		//		PathfindingNode* currentNode = currentTiles.front();
-		//		if (*currentNode->position == destination)
-		//			return BuildPath(&agentNode, currentNode, tileToParent);
-		//	
-		//		currentTiles.pop_front();
-		//		//int currentX = currentTile->position.first;
-		//		//int currentY = currentTile->position.second;
-		//		
-		//		//for (int i = 0; i < spider.spiderMoveSpread.size(); i++)
-		//		//{
-		//		//	int directionX = spider.spiderMoveSpread[i].first;
-		//		//	int directionY = spider.spiderMoveSpread[i].second;
+			std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent
+			std::deque<PathfindingNode*> currentTiles; // Current tiles
+			std::unordered_set<const TrianglePrim*> closedList; // Closed list of tiles
+			PathfindingNode agentNode = PathfindingNode(startingTri, 0);
 
-		//			PathfindingNode* neighborNode = nullptr;
-		//			if (!neighborNode || closedList.count(neighborNode) != 0)
-		//				continue;
-		//
-		//			tileToParent[neighborNode] = currentNode; // Establish parent child relationship
-		//			currentTiles.push_back(neighborNode); // Add tile to the queue
-		//			closedList.insert(neighborNode); // Add tile to retrieval set 
-		//		//}
-		//	}
+			currentTiles.push_back(&agentNode); // Add the first tile
+			closedList.insert(startingTri); // Add to query set
+			while (!currentTiles.empty())
+			{
+				PathfindingNode* currentNode = currentTiles.front();
+				if (currentNode->triangle == destinationTri)
+					return BuildPath(&agentNode, currentNode, tileToParent);
 
-		//	return nullptr;
-		//}
+				currentTiles.pop_front();
 
-		//PathfindingNode* DFS(const glm::vec3& agentPosition, const glm::vec3& destination, Graph& tileSystem)
-		//{
-		//	std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent
-		//	std::deque<PathfindingNode*> currentTiles; // Current tiles
-		//	std::unordered_set<const PathfindingNode*> closedList; // Closed list
+				// Get the triangles that are neighbors of the 3 points of the triangle
+				for (int i = 0; i < currentNode->triangle->v.size(); ++i)
+				{
+					if (triangleSet.count(currentNode->triangle->v[i]) == 0)
+						continue;
 
-		//	PathfindingNode agentNode = PathfindingNode(&agentPosition, 0);
-		//	currentTiles.push_front(&agentNode); // Add the first tile
-		//	closedList.insert(&agentNode); // This node should never be visited again
-		//	while (!currentTiles.empty())
-		//	{
-		//		PathfindingNode* currentNode = currentTiles.front();
-		//		if (*currentNode->position == destination)
-		//			return BuildPath(&agentNode, currentNode, tileToParent);
+					std::unordered_set<TrianglePrim*> & neighborTris = triangleSet[currentNode->triangle->v[i]];
+					for (auto iter = neighborTris.begin(); iter != neighborTris.end(); ++iter)
+					{
+						TrianglePrim* neighborTri = *iter;
+						if (closedList.count(neighborTri) != 0)
+							continue;
 
-		//		currentTiles.pop_front();
-		//		//int currentX = currentTile->position.first;
-		//		//int currentY = currentTile->position.second;
+						PathfindingNode nextNode = PathfindingNode(neighborTri, 0);
+						currentTiles.push_back(&nextNode); // Add the new unexplored tile
+						closedList.insert(neighborTri);
+						tileToParent[&nextNode] = currentNode; // tile parent relationship
+					}
+				}
+			}
 
-		//		//for (int i = 0; i < spider.spiderMoveSpread.size(); i++)
-		//		//{
-		//		//	int directionX = spider.spiderMoveSpread[i].first;
-		//		//	int directionY = spider.spiderMoveSpread[i].second;
-		//			PathfindingNode* neighborNode = nullptr;
-		//			if (!neighborNode || closedList.count(neighborNode) != 0)
-		//				continue;
+			return nullptr;
+		}
 
-		//			tileToParent[neighborNode] = currentNode; // Establish parent child relationship
-		//			currentTiles.push_front(neighborNode); // Add tile to the queue
-		//			closedList.insert(neighborNode); // Tiles that we should never visit or add to out deque again
-		//		//}
-		//	}
+		PathfindingNode* DFS(const glm::vec3 & agentPosition, const glm::vec3 & destination, std::vector<TrianglePrim> & navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>> & triangleSet)
+		{
+			TrianglePrim* startingTri = NavigationMesh::GetTriangleFromPoint(agentPosition, navmesh);
+			TrianglePrim* destinationTri = NavigationMesh::GetTriangleFromPoint(destination, navmesh);
+			if (!startingTri || !destinationTri)
+				return nullptr;
 
-		//	return nullptr;
-		//}
+			std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent
+			std::deque<PathfindingNode*> currentTiles; // Current tiles
+			std::unordered_set<const TrianglePrim*> closedList; // Closed list of tiles
+			PathfindingNode agentNode = PathfindingNode(startingTri, 0);
+
+			currentTiles.push_front(&agentNode); // Add the first tile
+			closedList.insert(startingTri); // Add to query set
+			while (!currentTiles.empty())
+			{
+				PathfindingNode* currentNode = currentTiles.front();
+				if (currentNode->triangle == destinationTri)
+					return BuildPath(&agentNode, currentNode, tileToParent);
+
+				currentTiles.pop_front();
+
+				// Get the triangles that are neighbors of the 3 points of the triangle
+				for (int i = 0; i < currentNode->triangle->v.size(); ++i)
+				{
+					if (triangleSet.count(currentNode->triangle->v[i]) == 0)
+						continue;
+
+					std::unordered_set<TrianglePrim*> & neighborTris = triangleSet[currentNode->triangle->v[i]];
+					for (auto iter = neighborTris.begin(); iter != neighborTris.end(); ++iter)
+					{
+						TrianglePrim* neighborTri = *iter;
+						if (closedList.count(neighborTri) != 0)
+							continue;
+
+						PathfindingNode nextNode = PathfindingNode(neighborTri, 0);
+						currentTiles.push_front(&nextNode); // Add the new unexplored tile
+						closedList.insert(neighborTri);
+						tileToParent[&nextNode] = currentNode; // tile parent relationship
+					}
+				}
+			}
+
+			return nullptr;
+		}
 
 		PathfindingNode* AStar(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& triangleSet)
 		{
