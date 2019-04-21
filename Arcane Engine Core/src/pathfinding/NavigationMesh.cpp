@@ -91,6 +91,14 @@ namespace arcane
 		return false;
 	}
 
+	bool NavigationMesh::ExistsPathToPoint(const glm::vec3& point, const std::vector<glm::vec3>& terrainPoints)
+	{
+		// Check if we can go from this point to any of the others around it
+		unsigned int columnNumber = terrain->GetVertexCount();
+		return false;
+	}
+
+
 	std::vector<TrianglePrim> NavigationMesh::TriangulatePoly(std::vector<std::vector<glm::vec3*>>& polygon)
 	{
 		std::vector<TrianglePrim> triangles;
@@ -312,6 +320,10 @@ namespace arcane
 
 			for (int col = 0; col < terrain->GetVertexCount(); ++col)
 			{
+				// DO NOT FORGET ABT THISSSSSS
+				//
+				//
+				//
 				if (ObstacleOnPoint(terrainPoints[col + (row * columnCount)]))
 					continue;
 
@@ -352,6 +364,8 @@ namespace arcane
 
 		// Triangulate these new points to form a new mesh
 		m_TriangulatedPolygon = TriangulatePoly(m_NavigationPolygon);
+
+		// Optimize this mesh for pathfinding by attempting to decrease number of triangles
 	}
 
 	void NavigationMesh::AddObstacle(const Obstacle& obstacle) {
