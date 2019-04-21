@@ -299,6 +299,7 @@ namespace arcane
 		// Clear the old nav mesh stuff
 		m_NavigationPolygon.clear();
 		m_TriangulatedPolygon.clear();
+		m_PointToTriangle.clear();
 
 		// Filter out the points that we cannot reach
 		std::vector<glm::vec3>& terrainPoints = terrain->GetPoints();
