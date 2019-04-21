@@ -16,7 +16,7 @@ namespace arcane
 	}
 
 	void PathfindingAgent::update(float deltaTime) {
-		if (m_ShouldMove) {
+		if (m_ShouldMove && PathfindingUtil::s_Path.size() > 0) {
 			glm::vec3 dest = PathfindingUtil::FindCenterTriangle(*PathfindingUtil::s_Path[m_MovementIndex]->triangle);
 
 			// Do movement
