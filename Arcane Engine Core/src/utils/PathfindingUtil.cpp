@@ -21,16 +21,16 @@ namespace arcane
 
 		std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent
 		std::deque<PathfindingNode*> currentTiles; // Current tiles
-		std::unordered_set<const TrianglePrim*> closedList; // Closed list of tiles
-		PathfindingNode agentNode = PathfindingNode(startingTri, 0);
+		std::unordered_set<TrianglePrim*> closedList; // Closed list of tiles
+		PathfindingNode* agentNode = new PathfindingNode(startingTri, 0);
 
-		currentTiles.push_back(&agentNode); // Add the first tile
+		currentTiles.push_back(agentNode); // Add the first tile
 		closedList.insert(startingTri); // Add to query set
 		while (!currentTiles.empty())
 		{
 			PathfindingNode* currentNode = currentTiles.front();
 			if (*currentNode->triangle == *destinationTri)
-				return BuildPath(&agentNode, currentNode, tileToParent);
+				return BuildPath(agentNode, currentNode, tileToParent);
 
 			currentTiles.pop_front();
 
@@ -40,17 +40,17 @@ namespace arcane
 				if (triangleSet.count(currentNode->triangle->v[i]) == 0)
 					continue;
 
-				std::unordered_set<TrianglePrim*> & neighborTris = triangleSet[currentNode->triangle->v[i]];
+				std::unordered_set<TrianglePrim*>& neighborTris = triangleSet[currentNode->triangle->v[i]];
 				for (auto iter = neighborTris.begin(); iter != neighborTris.end(); ++iter)
 				{
 					TrianglePrim* neighborTri = *iter;
 					if (closedList.count(neighborTri) != 0)
 						continue;
 
-					PathfindingNode nextNode = PathfindingNode(neighborTri, 0);
-					currentTiles.push_back(&nextNode); // Add the new unexplored tile
+					PathfindingNode* nextNode = new PathfindingNode(neighborTri, 0);
+					currentTiles.push_back(nextNode); // Add the new unexplored tile
 					closedList.insert(neighborTri);
-					tileToParent[&nextNode] = currentNode; // tile parent relationship
+					tileToParent[nextNode] = currentNode; // tile parent relationship
 				}
 			}
 		}
@@ -67,16 +67,16 @@ namespace arcane
 
 		std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent
 		std::deque<PathfindingNode*> currentTiles; // Current tiles
-		std::unordered_set<const TrianglePrim*> closedList; // Closed list of tiles
-		PathfindingNode agentNode = PathfindingNode(startingTri, 0);
+		std::unordered_set<TrianglePrim*> closedList; // Closed list of tiles
+		PathfindingNode* agentNode = new PathfindingNode(startingTri, 0);
 
-		currentTiles.push_front(&agentNode); // Add the first tile
+		currentTiles.push_front(agentNode); // Add the first tile
 		closedList.insert(startingTri); // Add to query set
 		while (!currentTiles.empty())
 		{
 			PathfindingNode* currentNode = currentTiles.front();
 			if (*currentNode->triangle == *destinationTri)
-				return BuildPath(&agentNode, currentNode, tileToParent);
+				return BuildPath(agentNode, currentNode, tileToParent);
 
 			currentTiles.pop_front();
 
@@ -93,10 +93,10 @@ namespace arcane
 					if (closedList.count(neighborTri) != 0)
 						continue;
 
-					PathfindingNode nextNode = PathfindingNode(neighborTri, 0);
-					currentTiles.push_front(&nextNode); // Add the new unexplored tile
+					PathfindingNode* nextNode = new PathfindingNode(neighborTri, 0);
+					currentTiles.push_front(nextNode); // Add the new unexplored tile
 					closedList.insert(neighborTri);
-					tileToParent[&nextNode] = currentNode; // tile parent relationship
+					tileToParent[nextNode] = currentNode; // tile parent relationship
 				}
 			}
 		}
@@ -135,7 +135,7 @@ namespace arcane
 				if (triangleSet.count(currentNode->triangle->v[i]) == 0)
 					continue;
 
-				std::unordered_set<TrianglePrim*> & neighborTris = triangleSet[currentNode->triangle->v[i]];
+				std::unordered_set<TrianglePrim*>& neighborTris = triangleSet[currentNode->triangle->v[i]];
 				for (auto iter = neighborTris.begin(); iter != neighborTris.end(); ++iter)
 				{
 					TrianglePrim* neighborTri = *iter;
