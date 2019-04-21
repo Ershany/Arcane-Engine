@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "PathfindingUtil.h"
 
+#include <ui/NavmeshPane.h>
+
 namespace arcane
 {
 	namespace PathfindingUtil
@@ -123,7 +125,18 @@ namespace arcane
 
 						glm::vec3 centerNeighbor = FindCenterTriangle(*neighborTri);
 						float gCostNext = gCostCurrent + glm::length2(currentTriCenter - centerNeighbor);
-						float hCostNext = glm::length2(centerNeighbor - destination);
+						// Heuristic Choice
+						float hCostNext = 0.0f;
+						if (NavmeshPane::getHeuristicChoice() == HeuristicChoice::Manhattan) {
+							hCostNext = ManhattanDistanceHeuristic(centerNeighbor, destination);
+						}
+						else if (NavmeshPane::getHeuristicChoice() == HeuristicChoice::Euclidean) {
+							hCostNext = EuclideanDistanceHeuristic(centerNeighbor, destination);
+						}
+						else if (NavmeshPane::getHeuristicChoice() == HeuristicChoice::Chebyshev) {
+							hCostNext = ChebyshevDistanceHeuristic(centerNeighbor, destination);
+						}
+						
 						PathfindingNode* nextNode = new PathfindingNode(neighborTri, gCostNext + hCostNext);
 
 						gCost[neighborTri] = gCostNext;
@@ -213,30 +226,29 @@ namespace arcane
 			cache->setBlend(false);
 		}
 
-		//int ManhattanDistanceHeuristic(const PathfindingNode & node1, const PathfindingNode & node2)
-		//{
-		//	// Manhattan distance is used for grid distance when we have 4 way movement and no diagonal movement
-		//	int absDx = abs(node1.position->x - node2.position->x);
-		//	int absDy = abs(node1.position->y - node2.position->y);
-		//	return absDx + absDy;
-		//}
+		float PathfindingUtil::ManhattanDistanceHeuristic(const glm::vec3& node1, const glm::vec3& node2)
+		{
+			// Manhattan distance is used for grid distance when we have 4 way movement and no diagonal movement
+			int absDx = abs(node1.x - node2.x);
+			int absDy = abs(node1.y - node2.y);
+			int absDz = abs(node1.z - node2.z);
+			return absDx + absDy + absDz;
+		}
 
-		//int ChebyshevDistanceHeuristic(const PathfindingNode & node1, const PathfindingNode & node2)
-		//{
-		//	// Used when we have 8 way movement
-		//	int absDx = std::abs(node1.position->x - node2.position->x);
-		//	int absDy = std::abs(node1.position->y - node2.position->y);
-		//	return std::max(absDx, absDy);
-		//}
+		float PathfindingUtil::ChebyshevDistanceHeuristic(const glm::vec3& node1, const glm::vec3& node2)
+		{
+			// Used when we have 8 way movement
+			int absDx = abs(node1.x - node2.x);
+			int absDy = abs(node1.y - node2.y);
+			int absDz = abs(node1.z - node2.z);
+			return std::max(std::max(absDx, absDy), absDz);
+		}
 
-		//// This is probably what we need to do (OBVIOUSLY SQUARED)
-		//int EuclideanDistanceHeuristic(const PathfindingNode & node1, const PathfindingNode & node2)
-		//{
-		//	// Using the euclidean distance squared allows us to not use sqrt which is an expensive operation
-		//	int differenceX = node1.position->x - node2.position->x;
-		//	int differenceY = node1.position->y - node2.position->y;;
-		//	return sqrt(differenceX * differenceX + differenceY * differenceY);
-		//}
+		float PathfindingUtil::EuclideanDistanceHeuristic(const glm::vec3& node1, const glm::vec3& node2)
+		{
+			// Using the euclidean distance squared allows us to not use sqrt which is an expensive operation
+			return glm::length2(node1 - node2);
+		}
 
 		glm::vec3 FindCenterTriangle(const TrianglePrim& triangle)
 		{

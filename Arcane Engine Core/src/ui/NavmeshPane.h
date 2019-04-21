@@ -28,6 +28,8 @@ namespace arcane {
 		virtual void setupPaneObjects();
 
 		inline static int getRaycastType() { return s_RaycastType; }
+		inline static int getSearchAlgo() { return s_SearchAlgo; }
+		inline static int getHeuristicChoice() { return s_HeuristicChoice; }
 		inline static float getHeightRestriction() { return s_HeightRestriction; }
 		inline static bool getShowNavmeshVertices() { return s_ShowNavmeshVertices; }
 		inline static bool getShowNavmesh() { return s_ShowNavmesh; }
