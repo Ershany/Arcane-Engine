@@ -67,7 +67,15 @@ namespace arcane {
 			if (m_Terrain.checkPointForIntersection(rayWorldSpacePos, collisionPoint)) {
 				// Determine what we should do
 				if (NavmeshPane::getRaycastType() == RaycastType::Movement) {
-					PathfindingUtil::AStar(m_Terrain.sampleHeightfieldNearest(m_Agent->getPosition()), m_Terrain.sampleHeightfieldNearest(collisionPoint), m_NavMesh->getTriangulatedPolygon(), m_NavMesh->getPointToTriangle());
+					if (NavmeshPane::getSearchAlgo() == SearchAlgo::AStar) {
+						PathfindingUtil::AStar(m_Terrain.sampleHeightfieldNearest(m_Agent->getPosition()), m_Terrain.sampleHeightfieldNearest(collisionPoint), m_NavMesh->getTriangulatedPolygon(), m_NavMesh->getPointToTriangle());
+					}
+					else if (NavmeshPane::getSearchAlgo() == SearchAlgo::BFS) {
+						PathfindingUtil::BFS(m_Terrain.sampleHeightfieldNearest(m_Agent->getPosition()), m_Terrain.sampleHeightfieldNearest(collisionPoint), m_NavMesh->getTriangulatedPolygon(), m_NavMesh->getPointToTriangle());
+					}
+					else if (NavmeshPane::getSearchAlgo() == SearchAlgo::DFS) {
+						PathfindingUtil::DFS(m_Terrain.sampleHeightfieldNearest(m_Agent->getPosition()), m_Terrain.sampleHeightfieldNearest(collisionPoint), m_NavMesh->getTriangulatedPolygon(), m_NavMesh->getPointToTriangle());
+					}
 				}
 				else if (NavmeshPane::getRaycastType() == RaycastType::Static_Obstacle) {
 					// Place an obstacle

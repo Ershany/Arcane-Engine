@@ -29,7 +29,7 @@ namespace arcane
 			while (!currentTiles.empty())
 			{
 				PathfindingNode* currentNode = currentTiles.front();
-				if (currentNode->triangle == destinationTri)
+				if (*currentNode->triangle == *destinationTri)
 					return BuildPath(&agentNode, currentNode, tileToParent);
 
 				currentTiles.pop_front();
@@ -75,7 +75,7 @@ namespace arcane
 			while (!currentTiles.empty())
 			{
 				PathfindingNode* currentNode = currentTiles.front();
-				if (currentNode->triangle == destinationTri)
+				if (*currentNode->triangle == *destinationTri)
 					return BuildPath(&agentNode, currentNode, tileToParent);
 
 				currentTiles.pop_front();
