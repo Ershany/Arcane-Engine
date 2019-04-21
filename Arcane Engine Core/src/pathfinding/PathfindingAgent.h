@@ -22,5 +22,6 @@ namespace arcane
 		RenderableModel *m_Model;
 
 		float m_MovementSpeedPerSec = 20.0f;
+		int m_MovementIndex;
 	};
 }
