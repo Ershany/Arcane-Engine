@@ -15,13 +15,15 @@ namespace arcane
 		~PathfindingAgent();
 		
 		void update(float deltaTime);
+		void resetPath();
 
 		inline const glm::vec3& getPosition() { return m_Model->getPosition(); }
 	private:
 		Terrain* m_Terrain;
 		RenderableModel *m_Model;
 
-		float m_MovementSpeedPerSec = 20.0f;
+		float m_MovementSpeed = 0.5f;
 		int m_MovementIndex;
+		bool m_ShouldMove;
 	};
 }
