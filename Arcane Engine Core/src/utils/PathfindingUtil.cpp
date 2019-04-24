@@ -181,6 +181,74 @@ namespace arcane
 		return nullptr;
 	}
 
+	PathfindingNode* PathfindingUtil::BestFirstSearch(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& triangleSet)
+	{
+		TrianglePrim* startingTri = NavigationMesh::GetTriangleFromPoint(agentPosition, navmesh);
+		TrianglePrim* destinationTri = NavigationMesh::GetTriangleFromPoint(destination, navmesh);
+		if (!startingTri || !destinationTri)
+			return nullptr;
+
+		s_TrianglesSearched.clear();
+
+		std::priority_queue<PathfindingNode*, std::vector<PathfindingNode*>, decltype(comparatorLambda)> tileQueue(comparatorLambda); // The tiles that we have queued to be searched
+		std::unordered_map<TrianglePrim*, float> gCost; // The gCost of a certain tile (distance from start point to the tile)
+		std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent relationship for path regeneration
+		PathfindingNode * agentNode = new PathfindingNode(startingTri, 0);
+
+		// DEALLOCATION???? 
+		tileQueue.push(agentNode);
+		gCost[startingTri] = 0;
+		while (!tileQueue.empty())
+		{
+			PathfindingNode* currentNode = tileQueue.top();
+			s_TrianglesSearched.push_back(currentNode->triangle);
+
+			if (*currentNode->triangle == *destinationTri)
+				return BuildPath(agentNode, currentNode, tileToParent);
+
+			tileQueue.pop();
+			int gCostCurrent = gCost[currentNode->triangle];
+			glm::vec3 currentTriCenter = FindCenterTriangle(*currentNode->triangle);
+
+			// Get the triangles that are neighbors of the 3 points of the triangle
+			for (int i = 0; i < currentNode->triangle->v.size(); ++i)
+			{
+				if (triangleSet.count(currentNode->triangle->v[i]) == 0)
+					continue;
+
+				std::unordered_set<TrianglePrim*> & neighborTris = triangleSet[currentNode->triangle->v[i]];
+				for (auto iter = neighborTris.begin(); iter != neighborTris.end(); ++iter)
+				{
+					TrianglePrim* neighborTri = *iter;
+					if (gCost.count(neighborTri) != 0)
+						continue;
+
+					glm::vec3 centerNeighbor = FindCenterTriangle(*neighborTri);
+					float gCostNext = gCostCurrent + glm::length2(currentTriCenter - centerNeighbor);
+					// Heuristic Choice
+					float hCostNext = 0.0f;
+					if (NavmeshPane::getHeuristicChoice() == HeuristicChoice::Manhattan) {
+						hCostNext = ManhattanDistanceHeuristic(centerNeighbor, destination);
+					}
+					else if (NavmeshPane::getHeuristicChoice() == HeuristicChoice::Euclidean) {
+						hCostNext = EuclideanDistanceHeuristic(centerNeighbor, destination);
+					}
+					else if (NavmeshPane::getHeuristicChoice() == HeuristicChoice::Chebyshev) {
+						hCostNext = ChebyshevDistanceHeuristic(centerNeighbor, destination);
+					}
+
+					PathfindingNode* nextNode = new PathfindingNode(neighborTri, hCostNext);
+
+					gCost[neighborTri] = gCostNext;
+					tileQueue.push(nextNode); // Add the new unexplored tile
+					tileToParent[nextNode] = currentNode; // tile parent relationship
+				}
+			}
+		}
+
+		return nullptr;
+	}
+
 	int g_NumVerticesInPath;
 	int g_NumVerticesInSearch;
 	unsigned int g_PathVAO = 0, g_PathVBO = 0;

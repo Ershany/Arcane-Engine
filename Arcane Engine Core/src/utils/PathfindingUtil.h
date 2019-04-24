@@ -21,6 +21,7 @@ namespace arcane
 		static PathfindingNode* DFS(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& pointToTriangle);
 		static PathfindingNode* BFS(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& pointToTriangle);
 		static PathfindingNode* AStar(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& pointToTriangle);
+		static PathfindingNode* BestFirstSearch(const glm::vec3& agentPosition, const glm::vec3& destination, std::vector<TrianglePrim>& navmesh, std::unordered_map<glm::vec3*, std::unordered_set<TrianglePrim*>>& triangleSet);
 		static float ManhattanDistanceHeuristic(const glm::vec3& node1, const glm::vec3& node2);
 		static float ChebyshevDistanceHeuristic(const glm::vec3& node1, const glm::vec3& node2);
 		static float EuclideanDistanceHeuristic(const glm::vec3& node1, const glm::vec3& node2); // USE EUCLIDEAN SQUARED
