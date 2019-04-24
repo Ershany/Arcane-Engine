@@ -255,6 +255,7 @@ namespace arcane
 		SetupNavmeshDebugView();
 
 		NavmeshPane::setShowNavmesh(true);
+		NavmeshPane::setShowSearch(true);
 	}
 
 	void NavigationMesh::DrawMesh(ICamera* camera) {
@@ -271,6 +272,7 @@ namespace arcane
 		m_DebugNavmeshShader->setUniformMat4("view", camera->getViewMatrix());
 		m_DebugNavmeshShader->setUniformMat4("projection", camera->getProjectionMatrix());
 		m_DebugNavmeshShader->setUniform3f("colour", glm::vec3(0.0f, 1.0f, 1.0f));
+		m_DebugNavmeshShader->setUniform1f("alpha", 0.4f);
 
 		// Draw our navmesh
 		if (m_NumVerticesInNavmesh != 0) {
@@ -293,6 +295,7 @@ namespace arcane
 		m_DebugVerticesShader->setUniformMat4("projection", camera->getProjectionMatrix());
 		m_DebugVerticesShader->setUniform3f("colour", glm::vec3(1.0f, 0.0f, 0.0f));
 		m_DebugVerticesShader->setUniform1f("yOffset", m_NavmeshDebugYOffset);
+		m_DebugVerticesShader->setUniform1f("alpha", 0.4f);
 		
 
 		// Draw our cube

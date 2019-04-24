@@ -34,13 +34,15 @@ namespace arcane {
 		inline static bool getShowNavmeshVertices() { return s_ShowNavmeshVertices; }
 		inline static bool getShowNavmesh() { return s_ShowNavmesh; }
 		inline static void setShowNavmesh(bool showMesh) { s_ShowNavmesh = showMesh; }
+		inline static bool getShowSearch() { return s_ShowSearch; }
+		inline static void setShowSearch(bool show) { s_ShowSearch = show; }
 		inline static void setRegenerationFunctionPtr(std::function<void()> funcPtr) { s_RegenerationFuncPtr = funcPtr; }
 	private:
 		static int s_RaycastType;
 		static int s_SearchAlgo;
 		static int s_HeuristicChoice;
 		static float s_HeightRestriction;
-		static bool s_ShowNavmeshVertices, s_ShowNavmesh;
+		static bool s_ShowNavmeshVertices, s_ShowNavmesh, s_ShowSearch;
 
 		static std::function<void()> s_RegenerationFuncPtr;
 	};

@@ -6,6 +6,7 @@
 namespace arcane
 {
 	std::vector<PathfindingNode*> PathfindingUtil::s_Path;
+	std::vector<TrianglePrim*> PathfindingUtil::s_TrianglesSearched;
 
 	// Comparator lambda for priority queue
 	auto comparatorLambda = [](PathfindingNode * node1, PathfindingNode * node2) -> bool {
@@ -19,6 +20,8 @@ namespace arcane
 		if (!startingTri || !destinationTri)
 			return nullptr;
 
+		s_TrianglesSearched.clear();
+
 		std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent
 		std::deque<PathfindingNode*> currentTiles; // Current tiles
 		std::unordered_set<TrianglePrim*> closedList; // Closed list of tiles
@@ -29,6 +32,8 @@ namespace arcane
 		while (!currentTiles.empty())
 		{
 			PathfindingNode* currentNode = currentTiles.front();
+			s_TrianglesSearched.push_back(currentNode->triangle);
+
 			if (*currentNode->triangle == *destinationTri)
 				return BuildPath(agentNode, currentNode, tileToParent);
 
@@ -65,6 +70,8 @@ namespace arcane
 		if (!startingTri || !destinationTri)
 			return nullptr;
 
+		s_TrianglesSearched.clear();
+
 		std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent
 		std::deque<PathfindingNode*> currentTiles; // Current tiles
 		std::unordered_set<TrianglePrim*> closedList; // Closed list of tiles
@@ -75,6 +82,8 @@ namespace arcane
 		while (!currentTiles.empty())
 		{
 			PathfindingNode* currentNode = currentTiles.front();
+			s_TrianglesSearched.push_back(currentNode->triangle);
+
 			if (*currentNode->triangle == *destinationTri)
 				return BuildPath(agentNode, currentNode, tileToParent);
 
@@ -111,6 +120,8 @@ namespace arcane
 		if (!startingTri || !destinationTri)
 			return nullptr;
 
+		s_TrianglesSearched.clear();
+
 		std::priority_queue<PathfindingNode*, std::vector<PathfindingNode*>, decltype(comparatorLambda)> tileQueue(comparatorLambda); // The tiles that we have queued to be searched
 		std::unordered_map<TrianglePrim*, float> gCost; // The gCost of a certain tile (distance from start point to the tile)
 		std::unordered_map<PathfindingNode*, PathfindingNode*> tileToParent; // Tile to parent relationship for path regeneration
@@ -122,6 +133,8 @@ namespace arcane
 		while (!tileQueue.empty())
 		{
 			PathfindingNode* currentNode = tileQueue.top();
+			s_TrianglesSearched.push_back(currentNode->triangle);
+
 			if (*currentNode->triangle == *destinationTri)
 				return BuildPath(agentNode, currentNode, tileToParent);
 
@@ -169,7 +182,9 @@ namespace arcane
 	}
 
 	int g_NumVerticesInPath;
+	int g_NumVerticesInSearch;
 	unsigned int g_PathVAO = 0, g_PathVBO = 0;
+	unsigned int g_SearchedVAO = 0, g_SearchedVBO = 0;
 	PathfindingNode* PathfindingUtil::BuildPath(const PathfindingNode * agentNode, PathfindingNode * pathStart, std::unordered_map<PathfindingNode*, PathfindingNode*> & tileToParent)
 	{
 		PathfindingNode* currentNode = pathStart; // In this situation it is the destination node
@@ -194,6 +209,10 @@ namespace arcane
 			glDeleteVertexArrays(1, &g_PathVAO);
 			glDeleteBuffers(1, &g_PathVBO);
 		}
+		if (g_SearchedVAO != 0 && g_SearchedVBO != 0) {
+			glDeleteVertexArrays(1, &g_SearchedVAO);
+			glDeleteBuffers(1, &g_SearchedVBO);
+		}
 
 		// Create buffers on the GPU to render the data (debug)
 		std::vector<glm::vec3> triangleVertices;
@@ -204,13 +223,28 @@ namespace arcane
 		}
 		g_NumVerticesInPath = triangleVertices.size();
 
+		std::vector<glm::vec3> searchedVertices;
+		for (int i = 0; i < s_TrianglesSearched.size(); i++) {
+			searchedVertices.push_back(*s_TrianglesSearched[i]->a);
+			searchedVertices.push_back(*s_TrianglesSearched[i]->b);
+			searchedVertices.push_back(*s_TrianglesSearched[i]->c);
+		}
+		g_NumVerticesInSearch = searchedVertices.size();
+
 		glGenVertexArrays(1, &g_PathVAO);
 		glGenBuffers(1, &g_PathVBO);
-
 		glBindVertexArray(g_PathVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, g_PathVBO);
 		glBufferData(GL_ARRAY_BUFFER, triangleVertices.size() * sizeof(glm::vec3), &triangleVertices[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		glBindVertexArray(0);
 
+		glGenVertexArrays(1, &g_SearchedVAO);
+		glGenBuffers(1, &g_SearchedVBO);
+		glBindVertexArray(g_SearchedVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, g_SearchedVBO);
+		glBufferData(GL_ARRAY_BUFFER, searchedVertices.size() * sizeof(glm::vec3), &searchedVertices[0], GL_STATIC_DRAW);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
@@ -220,7 +254,7 @@ namespace arcane
 		return previousNode; // This is the next position that the unit should be moving to
 	}
 
-	void PathfindingUtil::drawPath(ICamera * camera) {
+	void PathfindingUtil::draw(ICamera * camera) {
 		static Shader* pathShader = ShaderLoader::loadShader("src/shaders/simple.vert", "src/shaders/simple.frag");
 
 		GLCache* cache = GLCache::getInstance();
@@ -234,12 +268,22 @@ namespace arcane
 		pathShader->setUniformMat4("view", camera->getViewMatrix());
 		pathShader->setUniformMat4("projection", camera->getProjectionMatrix());
 		pathShader->setUniform3f("colour", glm::vec3(1.0f, 0.0f, 0.0f));
+		pathShader->setUniform1f("alpha", 1.0f);
 
 		// Draw our navmesh
 		if (g_NumVerticesInPath != 0) {
 			glBindVertexArray(g_PathVAO);
 			glDrawArrays(GL_TRIANGLES, 0, g_NumVerticesInPath);
 		}
+
+		// Draw our search mesh
+		pathShader->setUniform1f("alpha", 0.5f);
+		pathShader->setUniform3f("colour", glm::vec3(0.5f, 0.0f, 0.5f));
+		if (NavmeshPane::getShowSearch() && g_NumVerticesInSearch != 0) {
+			glBindVertexArray(g_SearchedVAO);
+			glDrawArrays(GL_TRIANGLES, 0, g_NumVerticesInSearch);
+		}
+
 		cache->setFaceCull(true);
 		cache->setDepthTest(true);
 		cache->setBlend(false);

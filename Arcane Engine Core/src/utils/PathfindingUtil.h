@@ -26,8 +26,9 @@ namespace arcane
 		static float EuclideanDistanceHeuristic(const glm::vec3& node1, const glm::vec3& node2); // USE EUCLIDEAN SQUARED
 		static glm::vec3 FindCenterTriangle(const TrianglePrim& triangle);
 
-		static void drawPath(ICamera *camera);
+		static void draw(ICamera *camera);
 	public:
 		static std::vector<PathfindingNode*> s_Path;
+		static std::vector<TrianglePrim*> s_TrianglesSearched;
 	};
 }

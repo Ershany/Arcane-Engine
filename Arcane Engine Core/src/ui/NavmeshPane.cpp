@@ -9,6 +9,7 @@ namespace arcane {
 	float NavmeshPane::s_HeightRestriction = 115.0f;
 	bool NavmeshPane::s_ShowNavmeshVertices = false;
 	bool NavmeshPane::s_ShowNavmesh = false;
+	bool NavmeshPane::s_ShowSearch = false;
 	std::function<void()> NavmeshPane::s_RegenerationFuncPtr = nullptr;
 
 	NavmeshPane::NavmeshPane(glm::vec2& panePosition) : Pane(std::string("Navmesh Controls"), panePosition)
@@ -20,6 +21,7 @@ namespace arcane {
 
 		ImGui::Checkbox("Show Navmesh Vertices", &s_ShowNavmeshVertices);
 		ImGui::Checkbox("Show Navmesh", &s_ShowNavmesh);
+		ImGui::Checkbox("Show Nodes Searched", &s_ShowSearch);
 
 		ImGui::RadioButton("Move Agent", &s_RaycastType, 0); ImGui::SameLine();
 		ImGui::RadioButton("Static Obstacle", &s_RaycastType, 1);

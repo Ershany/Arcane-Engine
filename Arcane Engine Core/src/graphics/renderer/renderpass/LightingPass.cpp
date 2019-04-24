@@ -75,7 +75,7 @@ namespace arcane {
 		// Render the navmesh
 		m_ActiveScene->getNavigationMesh()->DrawVertices(camera);
 		m_ActiveScene->getNavigationMesh()->DrawMesh(camera);
-		PathfindingUtil::drawPath(camera);
+		PathfindingUtil::draw(camera);
 
 		skybox->Draw(camera);
 
