@@ -26,14 +26,15 @@ namespace arcane {
 		ImGui::RadioButton("Move Agent", &s_RaycastType, 0); ImGui::SameLine();
 		ImGui::RadioButton("Static Obstacle", &s_RaycastType, 1);
 
-		ImGui::RadioButton("A*", &s_SearchAlgo, 0); ImGui::SameLine();
-		ImGui::RadioButton("BFS", &s_SearchAlgo, 1); ImGui::SameLine();
-		ImGui::RadioButton("DFS", &s_SearchAlgo, 2);
+		ImGui::RadioButton("A*", &s_SearchAlgo, SearchAlgo::AStar); ImGui::SameLine();
+		ImGui::RadioButton("Greedy Search", &s_SearchAlgo, SearchAlgo::Greedy); ImGui::SameLine();
+		ImGui::RadioButton("BFS", &s_SearchAlgo, SearchAlgo::BFS); ImGui::SameLine();
+		ImGui::RadioButton("DFS", &s_SearchAlgo, SearchAlgo::DFS);
 
-		if (s_SearchAlgo == SearchAlgo::AStar) {
-			ImGui::RadioButton("Manhattan", &s_HeuristicChoice, 0); ImGui::SameLine();
-			ImGui::RadioButton("Chebyshev", &s_HeuristicChoice, 1); ImGui::SameLine();
-			ImGui::RadioButton("Euclidean", &s_HeuristicChoice, 2);
+		if (s_SearchAlgo == SearchAlgo::AStar || s_SearchAlgo == SearchAlgo::Greedy) {
+			ImGui::RadioButton("Manhattan", &s_HeuristicChoice, HeuristicChoice::Manhattan); ImGui::SameLine();
+			ImGui::RadioButton("Chebyshev", &s_HeuristicChoice, HeuristicChoice::Chebyshev); ImGui::SameLine();
+			ImGui::RadioButton("Euclidean", &s_HeuristicChoice, HeuristicChoice::Euclidean);
 		}
 
 		if (ImGui::Button("Regenerate", ImVec2(240, 20))) {

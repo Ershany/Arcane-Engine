@@ -13,6 +13,7 @@ namespace arcane {
 		AStar = 0,
 		BFS = 1,
 		DFS = 2,
+		Greedy = 3,
 	};
 
 	enum HeuristicChoice {

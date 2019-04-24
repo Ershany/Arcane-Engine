@@ -83,6 +83,11 @@ namespace arcane {
 						if (node != nullptr)
 							pathSuccess = true;
 					}
+					else if (NavmeshPane::getSearchAlgo() == SearchAlgo::Greedy) {
+						PathfindingNode* node = PathfindingUtil::BestFirstSearch(m_Terrain.sampleHeightfieldNearest(m_Agent->getPosition()), m_Terrain.sampleHeightfieldNearest(collisionPoint), m_NavMesh->getTriangulatedPolygon(), m_NavMesh->getPointToTriangle());
+						if (node != nullptr)
+							pathSuccess = true;
+					}
 					// Tell the agent the path was updated
 					if (pathSuccess)
 						m_Agent->resetPath();
