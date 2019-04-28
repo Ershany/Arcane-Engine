@@ -48,6 +48,7 @@ uniform samplerCube irradianceMap;
 uniform samplerCube prefilterMap;
 uniform sampler2D brdfLUT;
 
+// Lighting
 uniform sampler2D shadowmap;
 uniform int numPointLights;
 uniform DirLight dirLight;

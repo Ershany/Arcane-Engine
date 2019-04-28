@@ -20,7 +20,7 @@ namespace arcane
 		Framebuffer shadowmapFramebuffer(DEFAULT_IBL_RESOLUTION, DEFAULT_IBL_RESOLUTION);
 		shadowmapFramebuffer.addDepthAttachment(false).createFramebuffer();
 		Framebuffer lightingFramebuffer(DEFAULT_IBL_RESOLUTION, DEFAULT_IBL_RESOLUTION);
-		lightingFramebuffer.addTexture2DColorAttachment(false).addDepthStencilRBO(false).createFramebuffer(); // TODO CLEAN: Needs to be created with colour or it will be considered depthmap, thanks to Framebuffer
+		lightingFramebuffer.addTexture2DColorAttachment(false).addDepthStencilRBO(false).createFramebuffer();
 		
 		// Generate the cubemap for the probe
 		glm::vec3 probePosition = glm::vec3(67.0f, 92.0f, 133.0f);
@@ -41,7 +41,6 @@ namespace arcane
 			ShadowmapPassOutput shadowpassOutput = shadowPass.generateShadowmaps(&m_CubemapCamera);
 
 			// Light pass
-			iblProbe->getIrradianceMap()->bind();
 			lightingFramebuffer.bind();
 			lightingFramebuffer.setColorAttachment(iblProbe->getIrradianceMap()->getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			lightingPass.executeRenderPass(shadowpassOutput, &m_CubemapCamera);
