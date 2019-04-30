@@ -13,6 +13,7 @@ int main() {
 	arcane::TextureLoader::initializeDefaultTextures();
 	arcane::Scene3D scene(&window);
 	arcane::MasterRenderer renderer(&scene);
+	arcane::InputManager manager;
 
 	// Prepare the UI
 	arcane::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));
@@ -34,6 +35,8 @@ int main() {
 
 		window.clear();
 		ImGui_ImplGlfwGL3_NewFrame();
+
+		manager.Update();
 
 		scene.onUpdate((float)deltaTime.getDeltaTime());
 		renderer.render();

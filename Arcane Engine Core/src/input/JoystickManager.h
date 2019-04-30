@@ -21,6 +21,5 @@ namespace arcane {
 
 	private:
 		static JoystickInputData s_JoystickData[MAX_JOYSTICKS]; // We can use a map if we don't want to create 16 values
-
 	};
 }

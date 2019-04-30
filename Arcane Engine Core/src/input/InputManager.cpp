@@ -58,7 +58,6 @@ namespace arcane {
 		}
 	}
 
-
 	void InputManager::keyCallback(int key, int scancode, int action, int mods) {
 		s_Keys[key] = action != GLFW_RELEASE;
 		s_KeyPressure[key] = s_Keys[key];
