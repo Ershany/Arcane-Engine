@@ -20,7 +20,7 @@ namespace arcane {
 			if (!s_JoystickData[i].IsConnected())
 				continue;
 
-			// Get axis positions 
+			// Get axis positions (might want to store this a little better)
 			int count;
 			const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1 + i, &count);
 			if (count != 6)
@@ -33,13 +33,12 @@ namespace arcane {
 			s_JoystickData[i].m_LeftTrigger = axes[4] * 0.5f + 0.5f;
 			s_JoystickData[i].m_RightTrigger = axes[5] * 0.5f + 0.5f;
 
-			// Get button state on joystick
+			// Get button states on joystick
 			int buttonCount;
 			const unsigned char* states = glfwGetJoystickButtons(GLFW_JOYSTICK_1 + i, &buttonCount);
-			//if (buttonCount != )
-				//continue;
+			s_JoystickData[i].m_ButtonStates = (unsigned char*)states;
 
-
+			std::cout << "Number of joystick buttons: " << buttonCount << std::endl;
 		}
 	}
 
