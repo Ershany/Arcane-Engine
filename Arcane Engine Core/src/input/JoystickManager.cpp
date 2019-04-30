@@ -20,6 +20,7 @@ namespace arcane {
 			if (!s_JoystickData[i].IsConnected())
 				continue;
 
+			// Get axis positions 
 			int count;
 			const float *axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1 + i, &count);
 			if (count != 6)
@@ -31,6 +32,14 @@ namespace arcane {
 			s_JoystickData[i].m_RightStickVertical = axes[3];
 			s_JoystickData[i].m_LeftTrigger = axes[4] * 0.5f + 0.5f;
 			s_JoystickData[i].m_RightTrigger = axes[5] * 0.5f + 0.5f;
+
+			// Get button state on joystick
+			int buttonCount;
+			const unsigned char* states = glfwGetJoystickButtons(GLFW_JOYSTICK_1 + i, &buttonCount);
+			//if (buttonCount != )
+				//continue;
+
+
 		}
 	}
 
@@ -67,18 +76,16 @@ namespace arcane {
 		if (!controller || buttonCode < 0 || buttonCode >= NUM_JOYSTICK_BUTTONS)
 			return false;
 
-		return controller->m_ButtonStates[buttonCode];
+		return controller->m_ButtonStates[buttonCode] != GLFW_RELEASE;
 	}
 
 	bool JoystickManager::GetButtonDown(int joystickId, int buttonCode)
 	{
 		JoystickInputData* controller = getJoystickInfo(joystickId);
-
 		if (!controller || buttonCode < 0 || buttonCode >= NUM_JOYSTICK_BUTTONS)
 			return false;
 
 		// Check if the button has been pressed once and if it has return false for later presses until we get a release call(might need to store previous presses) 
-
-		return false;
+		return controller->m_ButtonStates[buttonCode] == GLFW_PRESS;
 	}
 }
