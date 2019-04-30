@@ -6,6 +6,8 @@
 
 #pragma once
 
+#define NUM_JOYSTICK_BUTTONS 16
+
 class JoystickInputData
 {
 public:
@@ -18,6 +20,9 @@ public:
 	// Range [0, 1] R1 and l1
 	float m_LeftTrigger;
 	float m_RightTrigger;
+
+	// Store the state of each joytick button to be queried
+	bool m_ButtonStates[NUM_JOYSTICK_BUTTONS];
 
 	JoystickInputData();
 	~JoystickInputData();

@@ -53,11 +53,32 @@ namespace arcane {
 	}
 
 	JoystickInputData* JoystickManager::getJoystickInfo(int joystick) {
-		if (joystick >= MAX_JOYSTICKS) {
+		if (joystick < 0 || joystick >= MAX_JOYSTICKS) {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Joystick Check", "Joystick data requested does not exist");
 			return nullptr;
 		}
 
 		return &s_JoystickData[joystick];
+	}
+
+	bool JoystickManager::GetButton(int joystickId, int buttonCode)
+	{
+		JoystickInputData* controller = getJoystickInfo(joystickId);
+		if (!controller || buttonCode < 0 || buttonCode >= NUM_JOYSTICK_BUTTONS)
+			return false;
+
+		return controller->m_ButtonStates[buttonCode];
+	}
+
+	bool JoystickManager::GetButtonDown(int joystickId, int buttonCode)
+	{
+		JoystickInputData* controller = getJoystickInfo(joystickId);
+
+		if (!controller || buttonCode < 0 || buttonCode >= NUM_JOYSTICK_BUTTONS)
+			return false;
+
+		// Check if the button has been pressed once and if it has return false for later presses until we get a release call(might need to store previous presses) 
+
+		return false;
 	}
 }

@@ -14,11 +14,11 @@ namespace arcane {
 	
 		static JoystickInputData* getJoystickInfo(int joystick);
 
-		void update();
 		void joystickConnectionCallback(int joystick, int event);
-		
-		bool GetButton(int buttonCode); // Get the state of a certain button 
-		//Get first button press
+		void update();		
+		bool GetButton(int joystickId, int buttonCode); // Get the state of a certain button 
+		bool GetButtonDown(int joystickId, int buttonCode); // Get first button press
+
 	private:
 		static JoystickInputData s_JoystickData[MAX_JOYSTICKS]; // We can use a map if we don't want to create 16 values
 

@@ -174,7 +174,7 @@
     <ClCompile Include="src\graphics\ibl\EnvironmentProbeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\input\InputSource.cpp">
+    <ClCompile Include="src\input\JoystickInputData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -356,7 +356,7 @@
     <ClInclude Include="src\graphics\ibl\EnvironmentProbeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\input\InputSource.h">
+    <ClInclude Include="src\input\JoystickInputData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
