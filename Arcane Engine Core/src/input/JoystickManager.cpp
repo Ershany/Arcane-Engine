@@ -26,7 +26,7 @@ namespace arcane {
 	}
 
 	void JoystickManager::joystickConnectionCallback(int joystick, int event) {
-		if (joystick > MAX_JOYSTICKS) {
+		if (joystick >= MAX_JOYSTICKS) {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Joystick Check", "Too many Joysticks connected");
 			return;
 		}
