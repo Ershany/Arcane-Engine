@@ -13,19 +13,19 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FDA7B389-08B8-4B2B-A0F9-1488FB7AAB92}</ProjectGuid>
     <RootNamespace>ArcaneEngineCore</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -214,6 +214,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\directionalLight.frag" />
+    <None Include="src\shaders\lightprobe_convolution.frag" />
+    <None Include="src\shaders\lightprobe_convolution.vert" />
     <None Include="src\shaders\pbr_model.frag" />
     <None Include="src\shaders\pbr_model.vert" />
     <None Include="src\shaders\postprocess.frag" />

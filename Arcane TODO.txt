@@ -10,9 +10,15 @@ PBR:
 -Make the terrain use a PBR shader
 -Terrain needs multiple light support (only supports 1 atm)
 
+Skybox:
+-Should be HDR
+
 IBL:
 -Implement Diffuse IBL in the shader (and work around when nothing is bound)
 -Implement Specular IBL in the shader (and work around when nothing is bound)
 -Finish probes and their convolution + usage
 -Should split the probe system into two separate. Light Probes (indirect diffuse irradiance) and Reflection Probes (specular IBL)
+-Make sure probes use HDR types for the cubemap
 -Proper probe blending will need to be implemented (fallback methods too)
+-Store an environmentCube for rendering, kind of like we do for the NDC_Plane for rendering an offscreen texture to the screen
+-RenderPassType should be looked at

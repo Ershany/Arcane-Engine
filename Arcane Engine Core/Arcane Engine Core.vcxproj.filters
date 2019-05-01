@@ -370,6 +370,8 @@
     <None Include="src\shaders\postprocess.frag" />
     <None Include="src\shaders\pbr_model.vert" />
     <None Include="src\shaders\pbr_model.frag" />
+    <None Include="src\shaders\lightprobe_convolution.vert" />
+    <None Include="src\shaders\lightprobe_convolution.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
