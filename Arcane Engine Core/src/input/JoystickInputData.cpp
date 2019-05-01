@@ -3,7 +3,7 @@
 
 namespace arcane
 {
-	JoystickInputData::JoystickInputData(char id) : m_Id(id)
+	JoystickInputData::JoystickInputData(char id) : m_Id(id), m_Connected(false)
 	{}
 
 	JoystickInputData::~JoystickInputData()
@@ -17,6 +17,7 @@ namespace arcane
 		if (count < 6)
 		{
 			// something is wrong
+			return;
 		}
 
 		m_LeftStickHorizontal = axes[0];
@@ -43,7 +44,7 @@ namespace arcane
 		std::cout << std::endl;
 		for (int w = 0; w < m_NumButtons; ++w)
 		{
-			std::cout << +m_ButtonStates << std::endl;
+			std::cout << w << ": " << +m_ButtonStates << std::endl;
 		}
 		std::cout << std::endl;
 		std::cout << std::endl;

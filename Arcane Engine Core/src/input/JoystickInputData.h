@@ -26,13 +26,14 @@ namespace arcane
 		// Store the state of each joytick button to be queried
 		unsigned char* m_ButtonStates;
 
-		JoystickInputData(char id);
+		JoystickInputData(char id = 0);
 		~JoystickInputData();
 
 		inline void SetConnection(bool isConnected) { m_Connected = isConnected; }
-		inline bool IsConnected() { return m_Connected; }
+		inline void SetId(char id) { m_Id = id; }
 		inline char GetNumButtons() { return m_NumButtons; }
-		
+		inline bool IsConnected() { return m_Connected; }
+
 		void Update();
 
 	private:

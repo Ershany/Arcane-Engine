@@ -3,18 +3,21 @@
 
 namespace arcane {
 
+	JoystickInputData JoystickManager::s_JoystickData[MAX_JOYSTICKS];
+
 	JoystickManager::JoystickManager() 
 	{
 		for (int i = 0; i < MAX_JOYSTICKS; ++i)
 		{
-			s_JoystickData[i] = JoystickInputData(GLFW_JOYSTICK_1 + i); // Store the joystick id 
+			s_JoystickData[i].SetId(i); // Set the joystick id
+			s_JoystickData[i].SetConnection(glfwJoystickPresent(i)); // for joysticks that are already connected 
 		}
 	}
 
 	JoystickManager::~JoystickManager() {}
 
-	void JoystickManager::update() {
-		for (int i = 0; i < MAX_JOYSTICKS; i++) {
+	void JoystickManager::Update() {
+		for (int i = 0; i < MAX_JOYSTICKS; ++i) {
 			if (!s_JoystickData[i].IsConnected())
 				continue;
 
@@ -23,7 +26,7 @@ namespace arcane {
 	}
 
 	void JoystickManager::joystickConnectionCallback(int joystick, int event) {
-		if (joystick >= MAX_JOYSTICKS) {
+		if (joystick > MAX_JOYSTICKS) {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Joystick Check", "Too many Joysticks connected");
 			return;
 		}

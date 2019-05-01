@@ -25,7 +25,7 @@ namespace arcane {
 		s_MouseXDelta = s_MouseYDelta = 0;
 		s_ScrollX = 0; s_ScrollY = 0;
 
-		m_JoystickManager.update();
+		m_JoystickManager.Update();
 	}
 
 	bool InputManager::isKeyPressed(unsigned int keycode) {
