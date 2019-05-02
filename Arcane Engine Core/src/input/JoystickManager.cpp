@@ -57,7 +57,7 @@ namespace arcane {
 		if (!controller || buttonCode < 0 || buttonCode >= controller->GetNumButtons())
 			return false;
 
-		return controller->m_ButtonStates[buttonCode] != GLFW_REPEAT;
+		return controller->m_ButtonStates[buttonCode] != GLFW_RELEASE;
 	}
 
 	bool JoystickManager::GetButtonDown(int joystickId, int buttonCode)
