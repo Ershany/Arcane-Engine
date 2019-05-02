@@ -17,6 +17,8 @@ namespace arcane {
 		void joystickConnectionCallback(int joystick, int event);
 		void Update();		
 		
+		static inline bool IsConnected(int joystickId) { return s_JoystickData[joystickId].IsConnected(); }
+		
 		// Getters
 		static bool GetButton(int joystickId, int buttonCode);
 		static bool GetButtonDown(int joystickId, int buttonCode);
