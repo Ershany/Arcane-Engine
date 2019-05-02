@@ -35,15 +35,12 @@ namespace arcane
 
 		// Get button states on joystick
 		const unsigned char* states = glfwGetJoystickButtons(m_Id, &m_NumButtons);
-		unsigned char* temp = m_ButtonStates;
-
-		m_ButtonStates = new unsigned char[m_NumButtons];
 
 		std::cout << std::endl;
 		std::cout << std::endl;
 		for (int w = 0; w < m_NumButtons; ++w)
 		{
-			if (temp && (temp[w] != GLFW_RELEASE && states[w] == GLFW_PRESS))
+			if (m_ButtonStates[w] != GLFW_RELEASE && states[w] == GLFW_PRESS)
 				m_ButtonStates[w] = GLFW_REPEAT;
 			else
 				m_ButtonStates[w] = states[w];
@@ -52,8 +49,5 @@ namespace arcane
 		}
 		std::cout << std::endl;
 		std::cout << std::endl;
-		
-		if (temp)
-			delete[] temp;
 	}
 }

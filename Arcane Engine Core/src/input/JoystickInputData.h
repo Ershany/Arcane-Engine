@@ -7,6 +7,7 @@
 #pragma once
 
 #define NUM_JOYSTICK_BUTTONS 16
+#define MAX_JOYSTICK_BUTTONS 18
 
 namespace arcane
 {
@@ -19,7 +20,7 @@ namespace arcane
 		// Values of the left and right triggers
 		glm::vec2 m_Triggers;
 		// Store the state of each joytick button to be queried
-		unsigned char* m_ButtonStates;
+		unsigned char m_ButtonStates[MAX_JOYSTICK_BUTTONS];
 
 		JoystickInputData(char id = 0);
 		~JoystickInputData();
