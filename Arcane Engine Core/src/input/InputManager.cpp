@@ -43,9 +43,8 @@ namespace arcane {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
 			return 0.0f;
 		}
-		else {
-			return s_KeyPressure[keycode];
-		}
+
+		return s_KeyPressure[keycode];
 	}
 
 	bool InputManager::isMouseButtonPressed(unsigned int code) {
@@ -53,9 +52,8 @@ namespace arcane {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Mouse button checked is out of bounds (ie not supported)");
 			return false;
 		}
-		else {
-			return s_Buttons[code];
-		}
+
+		return s_Buttons[code];
 	}
 
 	void InputManager::keyCallback(int key, int scancode, int action, int mods) {

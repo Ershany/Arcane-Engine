@@ -25,20 +25,13 @@ namespace arcane
 		m_Triggers.x = axes[4] * 0.5f + 0.5f;
 		m_Triggers.y = axes[5] * 0.5f + 0.5f;
 
-		std::cout << std::endl;
-		std::cout << std::endl;
-		for (int w = 0; w < count; ++w)
-		{
-			std::cout << axes[w] << std::endl;
-		}
-		std::cout << std::endl;
-		std::cout << std::endl;
+		//for (int w = 0; w < count; ++w)
+		//{
+			//std::cout << axes[w] << std::endl;
+		//}
 
 		// Get button states on joystick
 		const unsigned char* states = glfwGetJoystickButtons(m_Id, &m_NumButtons);
-
-		std::cout << std::endl;
-		std::cout << std::endl;
 		for (int w = 0; w < m_NumButtons; ++w)
 		{
 			if (m_ButtonStates[w] != GLFW_RELEASE && states[w] == GLFW_PRESS)
@@ -46,9 +39,7 @@ namespace arcane
 			else
 				m_ButtonStates[w] = states[w];
 
-			std::cout << w << ": " << +m_ButtonStates[w] << std::endl;
+			//std::cout << w << ": " << +m_ButtonStates[w] << std::endl;
 		}
-		std::cout << std::endl;
-		std::cout << std::endl;
 	}
 }
