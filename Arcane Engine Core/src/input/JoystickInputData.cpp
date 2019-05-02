@@ -3,7 +3,7 @@
 
 namespace arcane
 {
-	JoystickInputData::JoystickInputData(char id) : m_Id(id), m_Connected(false)
+	JoystickInputData::JoystickInputData(char id) : m_Id(id), m_Connected(false), m_Deadzone(0.005f)
 	{}
 
 	JoystickInputData::~JoystickInputData()
