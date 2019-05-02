@@ -6,7 +6,6 @@
 
 #pragma once
 
-#define NUM_JOYSTICK_BUTTONS 16
 #define MAX_JOYSTICK_BUTTONS 18
 
 namespace arcane
@@ -29,6 +28,8 @@ namespace arcane
 		inline void SetConnection(bool isConnected) { m_Connected = isConnected; }
 		// Set the joystick id that we want to query
 		inline void SetId(char id) { m_Id = id; }
+		// Set the deadzone of the joystick
+		inline void SetDeadzone(float dead) { m_Deadzone = dead; }
 		// Get the number of buttons that this joystick has
 		inline char GetNumButtons() { return m_NumButtons; }
 		// Get the left stick values
@@ -50,5 +51,7 @@ namespace arcane
 		char m_Id; 
 		// The number of buttons is different between controllers
 		int m_NumButtons; 
+		// DeadZone value for the analog buttons (range 0-1)
+		float m_Deadzone;
 	};
 }

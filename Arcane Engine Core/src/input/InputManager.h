@@ -17,6 +17,8 @@ namespace arcane {
 		static bool isKeyPressed(unsigned int keycode);
 		static float getKeyPressure(unsigned int keycode);
 		static bool isMouseButtonPressed(unsigned int code);
+		static bool GetButton(int keyCode);
+		static bool GetButtonDown(int keyCode);
 
 		void keyCallback(int key, int scancode, int action, int mods);
 		void mouseButtonCallback(int button, int action, int mods);

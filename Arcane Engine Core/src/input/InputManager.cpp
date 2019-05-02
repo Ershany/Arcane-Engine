@@ -29,7 +29,7 @@ namespace arcane {
 	}
 
 	bool InputManager::isKeyPressed(unsigned int keycode) {
-		if (keycode >= MAX_KEYS) {
+		if (keycode < 0 || keycode >= MAX_KEYS) {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
 			return false;
 		}
@@ -39,7 +39,7 @@ namespace arcane {
 	}
 
 	float InputManager::getKeyPressure(unsigned int keycode) {
-		if (keycode >= MAX_KEYS) {
+		if (keycode < 0 || keycode >= MAX_KEYS) {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
 			return 0.0f;
 		}
@@ -49,7 +49,7 @@ namespace arcane {
 	}
 
 	bool InputManager::isMouseButtonPressed(unsigned int code) {
-		if (code >= MAX_BUTTONS) {
+		if (code < 0 || code >= MAX_BUTTONS) {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Mouse button checked is out of bounds (ie not supported)");
 			return false;
 		}
@@ -83,5 +83,26 @@ namespace arcane {
 		m_JoystickManager.joystickConnectionCallback(joystick, event);
 	}
 
+	bool InputManager::GetButton(int keyCode)
+	{
+		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
+		{
+			Logger::getInstance().error("logged_files/input_errors.txt", "Input Get button", "Button get is out of bounds (ie not supported)");
+			return false;
+		}
+
+		return s_Keys[keyCode] != GLFW_RELEASE;
+	}
+
+	bool InputManager::GetButtonDown(int keyCode)
+	{
+		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
+		{
+			Logger::getInstance().error("logged_files/input_errors.txt", "Input Get button", "Button get is out of bounds (ie not supported)");
+			return false;
+		}
+
+		return s_Keys[keyCode] == GLFW_PRESS;
+	}
 }
 

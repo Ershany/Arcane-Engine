@@ -17,6 +17,7 @@ namespace arcane
 		if (count < 6)
 			return;
 
+		// Deadzone can be checked here 
 		m_LeftStick.x = axes[0];
 		m_LeftStick.y = axes[1];
 		m_RightStick.x = axes[2];
