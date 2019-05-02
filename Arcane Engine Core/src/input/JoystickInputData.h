@@ -30,6 +30,12 @@ namespace arcane
 		inline void SetId(char id) { m_Id = id; }
 		// Get the number of buttons that this joystick has
 		inline char GetNumButtons() { return m_NumButtons; }
+		// Get the left stick values
+		inline glm::vec2& GetLeftStick() { return m_LeftStick; }
+		// Get Right stick values
+		inline glm::vec2& GetRightStick() { return m_RightStick; }
+		// Get Triggers
+		inline glm::vec2& GetTriggers() { return m_Triggers; }
 		// Check if the joystick is connected
 		inline bool IsConnected() { return m_Connected; }
 
