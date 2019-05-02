@@ -1,7 +1,7 @@
 /*
 	Author: Mohamed Kazma
 	Descriptions: Holds joystick data and handles events sent from the joystick manager via glfw
-	and updates the corresponding data it i holding
+	and updates the corresponding data it is holding
 */
 
 #pragma once
@@ -13,32 +13,35 @@ namespace arcane
 	class JoystickInputData
 	{
 	public:
-		// Range [-1, 1]
-		float m_LeftStickHorizontal;
-		float m_LeftStickVertical;
-		float m_RightStickHorizontal;
-		float m_RightStickVertical;
-
-		// Range [0, 1] R1 and l1
-		float m_LeftTrigger;
-		float m_RightTrigger;
-
+		// Axis positions of the left and right analog sticks
+		glm::vec2 m_LeftStick;
+		glm::vec2 m_RightStick;
+		// Values of the left and right triggers
+		glm::vec2 m_Triggers;
 		// Store the state of each joytick button to be queried
 		unsigned char* m_ButtonStates;
 
 		JoystickInputData(char id = 0);
 		~JoystickInputData();
 
+		// Update the joystick's connection status
 		inline void SetConnection(bool isConnected) { m_Connected = isConnected; }
+		// Set the joystick id that we want to query
 		inline void SetId(char id) { m_Id = id; }
+		// Get the number of buttons that this joystick has
 		inline char GetNumButtons() { return m_NumButtons; }
+		// Check if the joystick is connected
 		inline bool IsConnected() { return m_Connected; }
 
+		// Update the joystick values by querying for button states
 		void Update();
 
 	private:
-		bool m_Connected;
-		char m_Id;
-		int m_NumButtons; // The number of buttons is different between controllers
+		// Is the joystick connected
+		bool m_Connected; 
+		// The id that we will use to query for button states
+		char m_Id; 
+		// The number of buttons is different between controllers
+		int m_NumButtons; 
 	};
 }

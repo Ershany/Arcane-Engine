@@ -57,7 +57,7 @@ namespace arcane {
 		if (!controller || buttonCode < 0 || buttonCode >= controller->GetNumButtons())
 			return false;
 
-		return controller->m_ButtonStates[buttonCode] != GLFW_RELEASE;
+		return controller->m_ButtonStates[buttonCode] != GLFW_REPEAT;
 	}
 
 	bool JoystickManager::GetButtonDown(int joystickId, int buttonCode)
@@ -65,8 +65,8 @@ namespace arcane {
 		JoystickInputData* controller = getJoystickInfo(joystickId);
 		if (!controller || buttonCode < 0 || buttonCode >= controller->GetNumButtons())
 			return false;
-
-		// Check if the button has been pressed once and if it has return false for later presses until we get a release call(might need to store previous presses) 
+		
+		// Check that a certain button is pressed and wasn't pressed before to get the first frame that was pressed 
 		return controller->m_ButtonStates[buttonCode] == GLFW_PRESS;
 	}
 }
