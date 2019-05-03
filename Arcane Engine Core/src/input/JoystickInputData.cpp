@@ -9,7 +9,7 @@ namespace arcane
 	JoystickInputData::~JoystickInputData()
 	{}
 
-	void JoystickInputData::Update()
+	void JoystickInputData::update()
 	{
 		// Get axis positions (might want to store this a little better glm::vec2s)
 		int count;
@@ -24,10 +24,10 @@ namespace arcane
 		m_RightStick.y = axes[3];
 		m_Triggers.x = axes[4] * 0.5f + 0.5f;
 		m_Triggers.y = axes[5] * 0.5f + 0.5f;
-
+		
 		//for (int w = 0; w < count; ++w)
 		//{
-			//std::cout << axes[w] << std::endl;
+		//	std::cout << axes[w] << std::endl;
 		//}
 
 		// Get button states on joystick

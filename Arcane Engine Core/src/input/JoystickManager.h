@@ -15,16 +15,16 @@ namespace arcane {
 		static JoystickInputData* getJoystickInfo(int joystick);
 
 		void joystickConnectionCallback(int joystick, int event);
-		void Update();		
+		void update();		
 		
-		static inline bool IsConnected(int joystickId) { return s_JoystickData[joystickId].IsConnected(); }
+		static inline bool IsConnected(int joystickId) { return s_JoystickData[joystickId].isConnected(); }
 		
 		// Getters
-		static bool GetButton(int joystickId, int buttonCode);
-		static bool GetButtonDown(int joystickId, int buttonCode);
-		static inline glm::vec2& GetLeftStick(int joystickId) { return s_JoystickData[joystickId].GetLeftStick(); }
-		static inline glm::vec2& GetRightStick(int joystickId) { return s_JoystickData[joystickId].GetRightStick(); }
-		static inline glm::vec2& GetTriggers(int joystickId) { return s_JoystickData[joystickId].GetTriggers(); }
+		static bool getButton(int joystickId, int buttonCode);
+		static bool getButtonDown(int joystickId, int buttonCode);
+		static inline glm::vec2& getLeftStick(int joystickId) { return s_JoystickData[joystickId].getLeftStick(); }
+		static inline glm::vec2& getRightStick(int joystickId) { return s_JoystickData[joystickId].getRightStick(); }
+		static inline glm::vec2& getTriggers(int joystickId) { return s_JoystickData[joystickId].getTriggers(); }
 
 	private:
 		static JoystickInputData s_JoystickData[MAX_JOYSTICKS];

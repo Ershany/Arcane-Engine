@@ -9,19 +9,19 @@ namespace arcane {
 	{
 		for (int i = 0; i < MAX_JOYSTICKS; ++i)
 		{
-			s_JoystickData[i].SetId(i); // Set the joystick id
-			s_JoystickData[i].SetConnection(glfwJoystickPresent(i)); // for joysticks that are already connected 
+			s_JoystickData[i].setId(i); // Set the joystick id
+			s_JoystickData[i].setConnection(glfwJoystickPresent(i)); // for joysticks that are already connected 
 		}
 	}
 
 	JoystickManager::~JoystickManager() {}
 
-	void JoystickManager::Update() {
+	void JoystickManager::update() {
 		for (int i = 0; i < MAX_JOYSTICKS; ++i) {
-			if (!s_JoystickData[i].IsConnected())
+			if (!s_JoystickData[i].isConnected())
 				continue;
 
-			s_JoystickData[i].Update(); // Update each joystick that is connected
+			s_JoystickData[i].update(); // Update each joystick that is connected
 		}
 	}
 
@@ -33,11 +33,11 @@ namespace arcane {
 
 		if (event == GLFW_CONNECTED) {
 			// Maybe get controller name and store for more debugging of controller information
-			s_JoystickData[joystick].SetConnection(true);
+			s_JoystickData[joystick].setConnection(true);
 			std::cout << "joystick " << joystick << "has connected successfully" << std::endl;
 		}
 		else if (event == GLFW_DISCONNECTED) {
-			s_JoystickData[joystick].SetConnection(false);
+			s_JoystickData[joystick].setConnection(false);
 			std::cout << "joystick " << joystick << "has disconnected successfully" << std::endl;
 		}
 	}
@@ -51,19 +51,19 @@ namespace arcane {
 		return &s_JoystickData[joystick];
 	}
 
-	bool JoystickManager::GetButton(int joystickId, int buttonCode)
+	bool JoystickManager::getButton(int joystickId, int buttonCode)
 	{
 		JoystickInputData* controller = getJoystickInfo(joystickId);
-		if (!controller || buttonCode < 0 || buttonCode >= controller->GetNumButtons())
+		if (!controller || buttonCode < 0 || buttonCode >= controller->getNumButtons())
 			return false;
 
 		return controller->m_ButtonStates[buttonCode] != GLFW_RELEASE;
 	}
 
-	bool JoystickManager::GetButtonDown(int joystickId, int buttonCode)
+	bool JoystickManager::getButtonDown(int joystickId, int buttonCode)
 	{
 		JoystickInputData* controller = getJoystickInfo(joystickId);
-		if (!controller || buttonCode < 0 || buttonCode >= controller->GetNumButtons())
+		if (!controller || buttonCode < 0 || buttonCode >= controller->getNumButtons())
 			return false;
 		
 		// Check that a certain button is pressed and wasn't pressed before to get the first frame that was pressed 
