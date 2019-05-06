@@ -21,9 +21,9 @@ void main() {
 	vec3 hemisphereIrradiance = vec3(0.0, 0.0, 0.0);
 	float numSamples = 0;
 
-	float delta = 0.025;
-	for (float phi = 0.0; phi < PI * 2.0; phi += delta) {
-		for (float theta = 0.0; theta < PI * 0.5; theta += delta) {
+	float delta = 0.05; // 0.05 results in about 126 * 32 = 4032 samples
+	for (float phi = 0.0; phi < PI * 2.0; phi += delta) { // Ring of the hemisphere
+		for (float theta = 0.0; theta < PI * 0.5; theta += delta) { // For the increasing rings on the hemisphere
 			// Tangent Space
 			vec3 tangentSample = vec3(sin(theta) * cos(phi),  sin(theta) * sin(phi), cos(theta));
 
