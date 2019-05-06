@@ -128,7 +128,7 @@ namespace arcane {
 		}
 
 		// Input handling
-		g_InputManager.Update();
+		g_InputManager.update();
 
 		// Handle Window updating
 		glfwSwapBuffers(m_Window);

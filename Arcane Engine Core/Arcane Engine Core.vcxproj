@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\input\JoystickInputData.cpp" />
     <ClCompile Include="src\graphics\camera\FPSCamera.cpp" />
     <ClCompile Include="src\graphics\camera\CubemapCamera.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\DirectionalLight.cpp" />
@@ -152,6 +153,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\input\JoystickInputData.h" />
     <ClInclude Include="src\Defs.h" />
     <ClInclude Include="src\graphics\camera\FPSCamera.h" />
     <ClInclude Include="src\graphics\camera\CubemapCamera.h" />

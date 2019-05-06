@@ -12,11 +12,13 @@ namespace arcane {
 		InputManager();
 		~InputManager();
 
-		void Update();
+		void update();
 
 		static bool isKeyPressed(unsigned int keycode);
 		static float getKeyPressure(unsigned int keycode);
 		static bool isMouseButtonPressed(unsigned int code);
+		static bool getButton(int keyCode);
+		static bool getButtonDown(int keyCode);
 
 		void keyCallback(int key, int scancode, int action, int mods);
 		void mouseButtonCallback(int button, int action, int mods);
@@ -29,8 +31,8 @@ namespace arcane {
 		static inline double getMouseY() { return s_MouseY; }
 		static inline double getMouseXDelta() { return s_MouseXDelta; }
 		static inline double getMouseYDelta() { return s_MouseYDelta; }
-		static inline double getScrollX() { return s_ScrollX; }
-		static inline double getScrollY() { return s_ScrollY; }
+		static inline double getScrollXDelta() { return s_ScrollXDelta; }
+		static inline double getScrollYDelta() { return s_ScrollYDelta; }
 		static inline void getMousePosition(double &x, double &y) { x = s_MouseX; y = s_MouseY; }
 
 		static inline void setMouseX(double value) { s_MouseX = value; }
@@ -43,7 +45,7 @@ namespace arcane {
 		static float s_KeyPressure[MAX_KEYS];
 		static bool s_Buttons[MAX_BUTTONS];
 		static double s_MouseX, s_MouseY, s_MouseXDelta, s_MouseYDelta;
-		static double s_ScrollX, s_ScrollY;
+		static double s_ScrollXDelta, s_ScrollYDelta;
 	};
 
 }
