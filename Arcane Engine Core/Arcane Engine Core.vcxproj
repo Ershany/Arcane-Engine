@@ -222,8 +222,6 @@
     <None Include="src\shaders\pbr_model.vert" />
     <None Include="src\shaders\postprocess.frag" />
     <None Include="src\shaders\postprocess.vert" />
-    <None Include="src\shaders\modelReflection.frag" />
-    <None Include="src\shaders\modelRefraction.frag" />
     <None Include="src\shaders\pointlight.frag" />
     <None Include="src\shaders\shadowmap.frag" />
     <None Include="src\shaders\shadowmap.vert" />

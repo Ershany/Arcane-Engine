@@ -103,10 +103,8 @@ void main() {
 		vec3 specularRatio = FresnelSchlick(max(dot(normal, fragToView), 0.0), baseReflectivity);
 		vec3 diffuseRatio = vec3(1.0) - specularRatio;
 		diffuseRatio *= 1.0 - metallic;
-		vec3 indirectIrradiance = texture(irradianceMap, normal).rgb;
-		vec3 indirectDiffuse = indirectIrradiance * albedo;
-		vec3 indirectSpecular = texture(irradianceMap, reflect(-fragToView, normal)).rgb;
-		ambient = (diffuseRatio * indirectDiffuse + specularRatio * indirectSpecular) * ao;
+		vec3 indirectDiffuse = texture(irradianceMap, normal).rgb * albedo;
+		ambient = (diffuseRatio * indirectDiffuse) * ao;
 	}
 
 	color = vec4(ambient + directLightIrradiance, albedoAlpha);
