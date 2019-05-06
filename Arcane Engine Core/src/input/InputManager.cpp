@@ -21,7 +21,7 @@ namespace arcane {
 
 	InputManager::~InputManager() {}
 
-	void InputManager::Update() {
+	void InputManager::update() {
 		s_MouseXDelta = s_MouseYDelta = 0;
 		s_ScrollX = 0; s_ScrollY = 0;
 
@@ -81,10 +81,8 @@ namespace arcane {
 		m_JoystickManager.joystickConnectionCallback(joystick, event);
 	}
 
-	bool InputManager::GetButton(int keyCode)
-	{
-		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
-		{
+	bool InputManager::getButton(int keyCode) {
+		if (keyCode < 0 || keyCode >= MAX_BUTTONS) {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Input Get button", "Button get is out of bounds (ie not supported)");
 			return false;
 		}
@@ -92,10 +90,8 @@ namespace arcane {
 		return s_Keys[keyCode] != GLFW_RELEASE;
 	}
 
-	bool InputManager::GetButtonDown(int keyCode)
-	{
-		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
-		{
+	bool InputManager::getButtonDown(int keyCode) {
+		if (keyCode < 0 || keyCode >= MAX_BUTTONS) {
 			Logger::getInstance().error("logged_files/input_errors.txt", "Input Get button", "Button get is out of bounds (ie not supported)");
 			return false;
 		}

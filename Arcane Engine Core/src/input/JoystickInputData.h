@@ -1,5 +1,7 @@
 #pragma once
 
+namespace arcane {
+
 #define MAX_JOYSTICK_BUTTONS 18
 
 #define ARCANE_GAMEPAD_A 0
@@ -23,15 +25,13 @@
 #define ARCANE_GAMEPAD_SQUARE   ARCANE_GAMEPAD_X
 #define ARCANE_GAMEPAD_TRIANGLE   ARCANE_GAMEPAD_Y
 
-namespace arcane
-{
-	class JoystickInputData
-	{
+	class JoystickInputData {
+		friend class JoystickManager;
 	public:
-		unsigned char m_ButtonStates[MAX_JOYSTICK_BUTTONS];
-
 		JoystickInputData(char id = 0);
 		~JoystickInputData();
+
+		void update();
 
 		inline void setConnection(bool isConnected) { m_Connected = isConnected; }
 		inline void setId(char id) { m_Id = id; }
@@ -41,10 +41,9 @@ namespace arcane
 		inline glm::vec2& getRightStick() { return m_RightStick; }
 		inline glm::vec2& getTriggers() { return m_Triggers; }
 		inline bool isConnected() { return m_Connected; }
-
-		void update();
-
 	private:
+		unsigned char m_ButtonStates[MAX_JOYSTICK_BUTTONS];
+
 		bool m_Connected; 
 		char m_Id; 
 		int m_NumButtons; 
@@ -53,4 +52,5 @@ namespace arcane
 		glm::vec2 m_RightStick;
 		glm::vec2 m_Triggers;
 	};
+
 }

@@ -5,12 +5,10 @@ namespace arcane {
 
 	JoystickInputData JoystickManager::s_JoystickData[MAX_JOYSTICKS];
 
-	JoystickManager::JoystickManager() 
-	{
-		for (int i = 0; i < MAX_JOYSTICKS; ++i)
-		{
-			s_JoystickData[i].setId(i); // Set the joystick id
-			s_JoystickData[i].setConnection(glfwJoystickPresent(i)); // for joysticks that are already connected 
+	JoystickManager::JoystickManager() {
+		for (int i = 0; i < MAX_JOYSTICKS; i++) {
+			s_JoystickData[i].setId(i);
+			s_JoystickData[i].setConnection(glfwJoystickPresent(i)); // Check for joysticks that are already connected
 		}
 	}
 
@@ -21,7 +19,8 @@ namespace arcane {
 			if (!s_JoystickData[i].isConnected())
 				continue;
 
-			s_JoystickData[i].update(); // Update each joystick that is connected
+			// Update each joystick that is connected
+			s_JoystickData[i].update();
 		}
 	}
 
@@ -32,7 +31,7 @@ namespace arcane {
 		}
 
 		if (event == GLFW_CONNECTED) {
-			// Maybe get controller name and store for more debugging of controller information
+			// TODO: Maybe get controller name and store for more debugging of controller information
 			s_JoystickData[joystick].setConnection(true);
 			std::cout << "joystick " << joystick << "has connected successfully" << std::endl;
 		}
@@ -51,8 +50,7 @@ namespace arcane {
 		return &s_JoystickData[joystick];
 	}
 
-	bool JoystickManager::getButton(int joystickId, int buttonCode)
-	{
+	bool JoystickManager::getButton(int joystickId, int buttonCode) {
 		JoystickInputData* controller = getJoystickInfo(joystickId);
 		if (!controller || buttonCode < 0 || buttonCode >= controller->getNumButtons())
 			return false;
@@ -60,8 +58,7 @@ namespace arcane {
 		return controller->m_ButtonStates[buttonCode] != GLFW_RELEASE;
 	}
 
-	bool JoystickManager::getButtonDown(int joystickId, int buttonCode)
-	{
+	bool JoystickManager::getButtonDown(int joystickId, int buttonCode) {
 		JoystickInputData* controller = getJoystickInfo(joystickId);
 		if (!controller || buttonCode < 0 || buttonCode >= controller->getNumButtons())
 			return false;
