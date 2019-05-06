@@ -30,6 +30,7 @@ void main() {
 			// Tangent to World Space
 			vec3 worldSample = tangentSample.x * right + tangentSample.y * up + tangentSample.z * normal;
 
+			// Scaled by sin(theta) to account for smaller sample areas in the higher hemipshere rings, and scaled by cos(theta) due to light being weaker at larger angles
 			hemisphereIrradiance += texture(sceneCaptureCubemap, worldSample).rgb * cos(theta) * sin(theta);
 			++numSamples;
 		}
