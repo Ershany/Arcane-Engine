@@ -4,7 +4,7 @@
 namespace arcane {
 
 	LightProbe::LightProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution)
-		: m_Position(probePosition), m_ProbeResolution(probeResolution), m_IrradianceMap(nullptr)
+		: m_Position(probePosition), m_ProbeResolution(probeResolution), m_IrradianceMap(nullptr), m_Generated(false)
 	{}
 
 	LightProbe::~LightProbe() {

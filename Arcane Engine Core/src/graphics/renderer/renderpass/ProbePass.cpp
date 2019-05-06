@@ -55,16 +55,15 @@ namespace arcane {
 			m_SceneCaptureLightingFramebuffer.setColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 
-		/*
 		// Take the capture and apply convolution for the irradiance map (indirect diffuse liing)
-		// Since we are rendering by sampling a cubemap, use a cube
-		Model cubeModel = Model(Cube());
-		RenderableModel renderable(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, &cubeModel, nullptr);
 		m_GLCache->switchShader(m_ConvolutionShader);
 		m_GLCache->setFaceCull(false);
+		m_GLCache->setDepthTest(false);
+
 		m_ConvolutionShader->setUniformMat4("projection", m_CubemapCamera.getProjectionMatrix());
 		m_SceneCaptureCubemap.bind(0);
 		m_ConvolutionShader->setUniform1i("sceneCaptureCubemap", 0);
+
 		m_LightProbeConvolutionFramebuffer.bind();
 		glViewport(0, 0, m_LightProbeConvolutionFramebuffer.getWidth(), m_LightProbeConvolutionFramebuffer.getHeight());
 		for (int i = 0; i < 6; i++) {
@@ -74,11 +73,11 @@ namespace arcane {
 
 			// Convolute the scene's capture and store it in the Light Probe's cubemap
 			m_LightProbeConvolutionFramebuffer.setColorAttachment(lightProbe->getIrradianceMap()->getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			renderable.draw(m_ConvolutionShader, RenderPassType::ShadowmapPassType);
+			m_ActiveScene->getModelRenderer()->NDC_Cube.Draw(); // Since we are sampling a cubemap, just use a cube in NDC space
 			m_LightProbeConvolutionFramebuffer.setColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 		m_GLCache->setFaceCull(true);
-		*/
+		m_GLCache->setDepthTest(true);
 
 		ProbeManager* probeManager = m_ActiveScene->getProbeManager();
 		probeManager->addProbe(lightProbe);

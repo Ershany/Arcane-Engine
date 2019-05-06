@@ -4,7 +4,7 @@
 namespace arcane {
 
 	ModelRenderer::ModelRenderer(FPSCamera *camera) :
-		m_Camera(camera), NDC_Plane()
+		m_Camera(camera), NDC_Plane(), NDC_Cube()
 	{
 		// Configure and cache OpenGL state
 		m_GLCache = GLCache::getInstance();
