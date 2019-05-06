@@ -8,10 +8,10 @@ namespace arcane {
 	float InputManager::s_KeyPressure[MAX_KEYS];
 	bool InputManager::s_Buttons[MAX_BUTTONS];
 	double InputManager::s_MouseX, InputManager::s_MouseY, InputManager::s_MouseXDelta, InputManager::s_MouseYDelta;
-	double InputManager::s_ScrollX, InputManager::s_ScrollY;
+	double InputManager::s_ScrollXDelta, InputManager::s_ScrollYDelta;
 
 	InputManager::InputManager() {
-		s_ScrollX = s_ScrollY = 0;
+		s_ScrollXDelta = s_ScrollYDelta = 0;
 		s_MouseXDelta = s_MouseYDelta = 0;
 
 		memset(s_Keys, 0, sizeof(bool) * MAX_KEYS);
@@ -23,7 +23,7 @@ namespace arcane {
 
 	void InputManager::update() {
 		s_MouseXDelta = s_MouseYDelta = 0;
-		s_ScrollX = 0; s_ScrollY = 0;
+		s_ScrollXDelta = 0; s_ScrollYDelta = 0;
 
 		m_JoystickManager.update();
 	}
@@ -73,8 +73,8 @@ namespace arcane {
 	}
 
 	void InputManager::scrollCallback(double xoffset, double yoffset) {
-		s_ScrollX = xoffset;
-		s_ScrollY = yoffset;
+		s_ScrollXDelta = xoffset;
+		s_ScrollYDelta = yoffset;
 	}
 
 	void InputManager::joystickCallback(int joystick, int event) {
