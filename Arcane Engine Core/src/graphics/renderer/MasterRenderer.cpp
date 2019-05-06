@@ -42,7 +42,7 @@ namespace arcane
 		RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
 #endif
 		// TEMP CODE
-		//m_EnvironmentProbePass.pregenerateProbes();
+		m_EnvironmentProbePass.pregenerateProbes();
 	}
 
 }

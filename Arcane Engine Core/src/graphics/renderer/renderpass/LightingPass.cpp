@@ -33,7 +33,7 @@ namespace arcane {
 		Terrain *terrain = m_ActiveScene->getTerrain();
 		DynamicLightManager *lightManager = m_ActiveScene->getDynamicLightManager();
 		Skybox *skybox = m_ActiveScene->getSkybox();
-		EnvironmentProbeManager *probeManager = m_ActiveScene->getProbeManager();
+		ProbeManager *probeManager = m_ActiveScene->getProbeManager();
 
 		// View setup + lighting setup
 		m_GLCache->switchShader(m_ModelShader);

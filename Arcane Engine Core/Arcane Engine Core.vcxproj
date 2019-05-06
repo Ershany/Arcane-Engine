@@ -13,19 +13,19 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FDA7B389-08B8-4B2B-A0F9-1488FB7AAB92}</ProjectGuid>
     <RootNamespace>ArcaneEngineCore</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -89,8 +89,9 @@
     <ClCompile Include="src\graphics\dynamic lights\DynamicLightManager.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\PointLight.cpp" />
     <ClCompile Include="src\graphics\dynamic lights\SpotLight.cpp" />
-    <ClCompile Include="src\graphics\ibl\EnvironmentProbe.cpp" />
-    <ClCompile Include="src\graphics\ibl\EnvironmentProbeManager.cpp" />
+    <ClCompile Include="src\graphics\ibl\ProbeManager.cpp" />
+    <ClCompile Include="src\graphics\ibl\LightProbe.cpp" />
+    <ClCompile Include="src\graphics\ibl\ReflectionProbe.cpp" />
     <ClCompile Include="src\graphics\mesh\common\Cube.cpp" />
     <ClCompile Include="src\graphics\mesh\common\Quad.cpp" />
     <ClCompile Include="src\graphics\mesh\common\Sphere.cpp" />
@@ -99,7 +100,7 @@
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\renderer\GLCache.cpp" />
     <ClCompile Include="src\graphics\renderer\MasterRenderer.cpp" />
-    <ClCompile Include="src\graphics\renderer\renderpass\EnvironmentProbePass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\ProbePass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\LightingPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\PostProcessPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\RenderPass.cpp" />
@@ -161,8 +162,9 @@
     <ClInclude Include="src\graphics\dynamic lights\DynamicLightManager.h" />
     <ClInclude Include="src\graphics\dynamic lights\PointLight.h" />
     <ClInclude Include="src\graphics\dynamic lights\SpotLight.h" />
-    <ClInclude Include="src\graphics\ibl\EnvironmentProbe.h" />
-    <ClInclude Include="src\graphics\ibl\EnvironmentProbeManager.h" />
+    <ClInclude Include="src\graphics\ibl\ProbeManager.h" />
+    <ClInclude Include="src\graphics\ibl\LightProbe.h" />
+    <ClInclude Include="src\graphics\ibl\ReflectionProbe.h" />
     <ClInclude Include="src\graphics\mesh\common\Cube.h" />
     <ClInclude Include="src\graphics\mesh\common\Quad.h" />
     <ClInclude Include="src\graphics\mesh\common\Sphere.h" />
@@ -171,7 +173,7 @@
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\graphics\renderer\GLCache.h" />
     <ClInclude Include="src\graphics\renderer\MasterRenderer.h" />
-    <ClInclude Include="src\graphics\renderer\renderpass\EnvironmentProbePass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\ProbePass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\LightingPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\PostProcessPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\RenderPassType.h" />

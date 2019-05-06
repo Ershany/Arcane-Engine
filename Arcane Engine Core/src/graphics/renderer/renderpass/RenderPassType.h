@@ -9,7 +9,7 @@ namespace arcane {
 		ShadowmapPassType,
 		LightingPassType,
 		PostProcessPassType,
-		EnvironmentProbePassType
+		ProbePassType
 	};
 
 	struct ShadowmapPassOutput
