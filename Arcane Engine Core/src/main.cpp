@@ -36,8 +36,6 @@ int main() {
 		window.clear();
 		ImGui_ImplGlfwGL3_NewFrame();
 
-		manager.Update();
-
 		scene.onUpdate((float)deltaTime.getDeltaTime());
 		renderer.render();
 
@@ -48,6 +46,7 @@ int main() {
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
+		// Window and input updating
 		window.update();
 	}
 	return 0;
