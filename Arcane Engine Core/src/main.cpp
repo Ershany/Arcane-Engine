@@ -13,6 +13,7 @@ int main() {
 	arcane::TextureLoader::initializeDefaultTextures();
 	arcane::Scene3D scene(&window);
 	arcane::MasterRenderer renderer(&scene);
+	arcane::InputManager manager;
 
 	// Prepare the UI
 	arcane::RuntimePane runtimePane(glm::vec2(256.0f, 90.0f));
@@ -45,6 +46,7 @@ int main() {
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
+		// Window and input updating
 		window.update();
 	}
 	return 0;
