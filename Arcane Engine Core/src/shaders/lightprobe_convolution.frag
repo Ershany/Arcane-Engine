@@ -6,12 +6,35 @@ in vec3 SampleDirection;
 
 uniform samplerCube sceneCaptureCubemap;
 
+const float PI = 3.14159265359;
+
 void main() {
 	// Sample direction is the hemisphere's orientation for convolution
 	vec3 normal = normalize(SampleDirection);
 
-	// Do the convolution (ie search the hemisphere and sample)
-	vec3 hemisphereIrradiance = texture(sceneCaptureCubemap, normal).rgb;
+	// We need the axis to convert our vector from tangent to world space (since the cubemap we took is in world space)
+	vec3 up = vec3(0.0, 1.0, 0.0);
+	vec3 right = cross(up, normal);
+	up = cross(normal, right);
 
-	FragColour = vec4(hemisphereIrradiance, 1.0);
+	// Search the hemisphere and sample for the convolution
+	vec3 hemisphereIrradiance = vec3(0.0, 0.0, 0.0);
+	float numSamples = 0;
+
+	float delta = 0.025;
+	for (float phi = 0.0; phi < PI * 2.0; phi += delta) {
+		for (float theta = 0.0; theta < PI * 0.5; theta += delta) {
+			// Tangent Space
+			vec3 tangentSample = vec3(sin(theta) * cos(phi),  sin(theta) * sin(phi), cos(theta));
+
+			// Tangent to World Space
+			vec3 worldSample = tangentSample.x * right + tangentSample.y * up + tangentSample.z * normal;
+
+			hemisphereIrradiance += texture(sceneCaptureCubemap, worldSample).rgb * cos(theta) * sin(theta);
+			++numSamples;
+		}
+	}
+
+	vec3 irradiance = PI * hemisphereIrradiance * (1.0 / float(numSamples));
+	FragColour = vec4(irradiance, 1.0);
 }

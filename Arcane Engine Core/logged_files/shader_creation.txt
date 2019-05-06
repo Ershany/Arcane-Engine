@@ -1,1 +1,1 @@
-(shader initialization): t shader
+(shader initialization): ed to compile fragment shader
