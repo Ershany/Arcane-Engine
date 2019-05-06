@@ -83,9 +83,9 @@ namespace arcane {
 	}
 
 	void LightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
-		shader->setUniform1i("shadowmap", 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, shadowmapData.shadowmapFramebuffer->getDepthTexture());
+		shader->setUniform1i("shadowmap", 0);
 		shader->setUniformMat4("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 	}
 

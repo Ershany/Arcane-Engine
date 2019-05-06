@@ -39,8 +39,8 @@ namespace arcane {
 			}
 			else {
 				// Fallback to skybox
-				shader->setUniform1i("irradianceMap", 1);
 				m_Skybox->getSkyboxCubemap()->bind(1);
+				shader->setUniform1i("irradianceMap", 1);
 			}
 
 			// Reflection Probes
@@ -49,19 +49,19 @@ namespace arcane {
 			}
 			else {
 				// Fallback to skybox
-				shader->setUniform1i("prefilterMap", 2);
 				m_Skybox->getSkyboxCubemap()->bind(2);
+				shader->setUniform1i("prefilterMap", 2);
 			}
 		}
 		// If probes are disabled just use the skybox
 		else if (m_ProbeBlendSetting == PROBES_DISABLED) {
 			// Light Probes
-			shader->setUniform1i("irradianceMap", 1);
 			m_Skybox->getSkyboxCubemap()->bind(1);
+			shader->setUniform1i("irradianceMap", 1);
 
 			// Reflection Probes
-			shader->setUniform1i("prefilterMap", 2);
 			m_Skybox->getSkyboxCubemap()->bind(2);
+			shader->setUniform1i("prefilterMap", 2);
 		}
 	}
 
