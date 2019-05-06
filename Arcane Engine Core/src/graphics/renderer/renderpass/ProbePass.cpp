@@ -29,55 +29,6 @@ namespace arcane {
 	void ProbePass::pregenerateProbes() {
 		glm::vec3 probePosition = glm::vec3(67.0f, 92.0f, 133.0f);
 		generateLightProbe(probePosition);
-		/*
-		// Generate the cubemap for the probe
-		glm::vec3 probePosition = glm::vec3(67.0f, 92.0f, 133.0f);
-		LightProbe *lightProbe = new LightProbe(probePosition, glm::vec2(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION));
-		lightProbe->generate();
-
-		// Initialize step before rendering to the probe's cubemap
-		m_CubemapCamera.setCenterPosition(probePosition);
-		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
-		LightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer, false);
-
-		// Render the environment to the probe's cubemap
-		for (int i = 0; i < 6; i++) {
-			// Setup the camera's view
-			m_CubemapCamera.switchCameraToFace(i);
-
-			// Shadow pass
-			ShadowmapPassOutput shadowpassOutput = shadowPass.generateShadowmaps(&m_CubemapCamera);
-
-			// Light pass
-			m_SceneCaptureLightingFramebuffer.bind();
-			m_SceneCaptureLightingFramebuffer.setColorAttachment(lightProbe->getIrradianceMap()->getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			lightingPass.executeRenderPass(shadowpassOutput, &m_CubemapCamera);
-			m_SceneCaptureLightingFramebuffer.setColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-		}
-
-		// Take the capture and apply convolution for the irradiance map (indirect diffuse lighting)
-		// Since we are rendering to and from a cubemap, use a cube for this process
-		Model cubeModel = Model(Cube());
-		RenderableModel renderable(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, &cubeModel, nullptr);
-		m_GLCache->switchShader(m_ConvolutionShader);
-		m_ConvolutionShader->setUniformMat4("projection", m_CubemapCamera.getProjectionMatrix());
-		m_LightProbeConvolutionFramebuffer.bind();
-		for (int i = 0; i < 6; i++) {
-			// Setup the camera's view
-			m_CubemapCamera.switchCameraToFace(i);
-			m_ConvolutionShader->setUniformMat4("view", m_CubemapCamera.getViewMatrix());
-
-			// Set the probe's irradiance cubemap face as the render target on the framebuffer
-			//m_LightProbeConvolutionFramebuffer.setColorAttachment(iblProbe->getIrradianceMap()->getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			//todo: send the samplerCube to the shader
-
-			// Finally convolute the captured scene
-			//renderable.draw(m_ConvolutionShader, RenderPassType::ShadowmapPassType);
-		}
-
-		ProbeManager *probeManager = m_ActiveScene->getProbeManager();
-		probeManager->addProbe(lightProbe);
-		*/
 	}
 
 	void ProbePass::generateLightProbe(glm::vec3 &probePosition) {
@@ -104,6 +55,7 @@ namespace arcane {
 			m_SceneCaptureLightingFramebuffer.setColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 
+		/*
 		// Take the capture and apply convolution for the irradiance map (indirect diffuse liing)
 		// Since we are rendering by sampling a cubemap, use a cube
 		Model cubeModel = Model(Cube());
@@ -114,6 +66,7 @@ namespace arcane {
 		m_SceneCaptureCubemap.bind(0);
 		m_ConvolutionShader->setUniform1i("sceneCaptureCubemap", 0);
 		m_LightProbeConvolutionFramebuffer.bind();
+		glViewport(0, 0, m_LightProbeConvolutionFramebuffer.getWidth(), m_LightProbeConvolutionFramebuffer.getHeight());
 		for (int i = 0; i < 6; i++) {
 			// Setup the camera's view
 			m_CubemapCamera.switchCameraToFace(i);
@@ -125,6 +78,7 @@ namespace arcane {
 			m_LightProbeConvolutionFramebuffer.setColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 		m_GLCache->setFaceCull(true);
+		*/
 
 		ProbeManager* probeManager = m_ActiveScene->getProbeManager();
 		probeManager->addProbe(lightProbe);
