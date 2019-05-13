@@ -29,10 +29,11 @@ namespace arcane {
 	void ProbePass::pregenerateProbes() {
 		glm::vec3 probePosition = glm::vec3(67.0f, 92.0f, 133.0f);
 		generateLightProbe(probePosition);
+		generateReflectionProbe(probePosition);
 	}
 
 	void ProbePass::generateLightProbe(glm::vec3 &probePosition) {
-		LightProbe* lightProbe = new LightProbe(probePosition, glm::vec2(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION));
+		LightProbe *lightProbe = new LightProbe(probePosition, glm::vec2(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION));
 		lightProbe->generate();
 
 		// Initialize step before rendering to the probe's cubemap
@@ -79,12 +80,36 @@ namespace arcane {
 		m_GLCache->setFaceCull(true);
 		m_GLCache->setDepthTest(true);
 
-		ProbeManager* probeManager = m_ActiveScene->getProbeManager();
+		ProbeManager *probeManager = m_ActiveScene->getProbeManager();
 		probeManager->addProbe(lightProbe);
 	}
 
 	void ProbePass::generateReflectionProbe(glm::vec3 &probePosition) {
+		ReflectionProbe *reflectionProbe = new ReflectionProbe(probePosition, glm::vec2(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION), true);
+		reflectionProbe->generate();
 
+		// Initialize step before rendering to the probe's cubemap
+		m_CubemapCamera.setCenterPosition(probePosition);
+		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
+		LightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer, false);
+
+		// Render the scene to the probe's cubemap
+		for (int i = 0; i < 6; i++) {
+			// Setup the camera's view
+			m_CubemapCamera.switchCameraToFace(i);
+
+			// Shadow pass
+			ShadowmapPassOutput shadowpassOutput = shadowPass.generateShadowmaps(&m_CubemapCamera);
+
+			// Light pass
+			m_SceneCaptureLightingFramebuffer.bind();
+			m_SceneCaptureLightingFramebuffer.setColorAttachment(m_SceneCaptureCubemap.getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
+			lightingPass.executeRenderPass(shadowpassOutput, &m_CubemapCamera);
+			m_SceneCaptureLightingFramebuffer.setColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
+		}
+
+		ProbeManager *probeManager = m_ActiveScene->getProbeManager();
+		probeManager->addProbe(reflectionProbe);
 	}
 
 }
