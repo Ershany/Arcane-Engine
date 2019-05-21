@@ -4,21 +4,27 @@
 #define DEBUG_ENABLED 1
 
 
-// Graphical Options
+// Window Settings
 #define WINDOW_X_RESOLUTION 1366
 #define WINDOW_Y_RESOLUTION 768
 #define V_SYNC 1
 #define FULLSCREEN_MODE 0
-#define MSAA_SAMPLE_AMOUNT 4
-#define ANISOTROPIC_FILTERING_LEVEL 8.0f
-#define LIGHT_PROBE_RESOLUTION 32
-#define IBL_CAPTURE_RESOLUTION 256
 
+// AA Settings
+#define MSAA_SAMPLE_AMOUNT 4
+
+// Texture Filtering Settings
+#define ANISOTROPIC_FILTERING_LEVEL 8.0f
+
+// IBL Settings
+#define LIGHT_PROBE_RESOLUTION 32
+#define REFLECTION_PROBE_MIP_COUNT 5
+#define REFLECTION_PROBE_RESOLUTION 128
+#define IBL_CAPTURE_RESOLUTION 256
 
 // Frustum Options
 #define NEAR_PLANE 0.1f
 #define FAR_PLANE 1000.0f
-
 
 // Shadowmap Options
 #define SHADOWMAP_RESOLUTION_X 2048

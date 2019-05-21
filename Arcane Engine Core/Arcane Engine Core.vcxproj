@@ -225,6 +225,8 @@
     <None Include="src\shaders\postprocess.frag" />
     <None Include="src\shaders\postprocess.vert" />
     <None Include="src\shaders\pointlight.frag" />
+    <None Include="src\shaders\reflectionprobe_importance_sampling.frag" />
+    <None Include="src\shaders\reflectionprobe_importance_sampling.vert" />
     <None Include="src\shaders\shadowmap.frag" />
     <None Include="src\shaders\shadowmap.vert" />
     <None Include="src\shaders\skybox.frag" />

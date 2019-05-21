@@ -12,6 +12,7 @@ namespace arcane {
 		// Creation functions
 		void createFramebuffer();
 		Framebuffer& addTexture2DColorAttachment(bool multisampledBuffer);
+		Framebuffer& addDepthRBO(bool multisampledBuffer);
 		Framebuffer& addDepthStencilRBO(bool multisampledBuffer);
 		Framebuffer& addDepthAttachment(bool multisampledBuffer);
 
@@ -19,7 +20,7 @@ namespace arcane {
 		void unbind();
 
 		// Assumes framebuffer is bound
-		void setColorAttachment(unsigned int target, unsigned int targetType);
+		void setColorAttachment(unsigned int target, unsigned int targetType, int mipToWriteTo = 0);
 		void clear();
 
 		inline unsigned int getWidth() { return m_Width; }
@@ -27,6 +28,8 @@ namespace arcane {
 
 		inline unsigned int getFramebuffer() { return m_FBO; }
 		inline unsigned int getColourBufferTexture() { return m_ColourTexture; }
+		inline unsigned int getDepthRBO() { return m_DepthRBO; }
+		inline unsigned int getDepthStencilRBO() { return m_DepthStencilRBO; }
 		inline unsigned int getDepthTexture() { return m_DepthTexture; }
 
 		inline bool isMultisampledColourBuffer() { return m_IsMultisampledColourBuffer; }
@@ -37,6 +40,7 @@ namespace arcane {
 		
 		// Render Targets (Attachments)
 		unsigned int m_ColourTexture;
+		unsigned int m_DepthRBO;
 		unsigned int m_DepthStencilRBO;
 		unsigned int m_DepthTexture;
 		

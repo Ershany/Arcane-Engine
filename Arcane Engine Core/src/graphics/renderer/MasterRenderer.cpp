@@ -41,6 +41,8 @@ namespace arcane
 		glFinish();
 		RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
 #endif
+		// Testing IBL Code
+		//m_EnvironmentProbePass.pregenerateProbes();
 	}
 
 }

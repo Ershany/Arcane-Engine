@@ -17,12 +17,12 @@ namespace arcane {
 		void generateLightProbe(glm::vec3& probePosition);
 		void generateReflectionProbe(glm::vec3& probePosition);
 	private:
-		Framebuffer m_SceneCaptureShadowFramebuffer, m_SceneCaptureLightingFramebuffer, m_LightProbeConvolutionFramebuffer;
+		Framebuffer m_SceneCaptureShadowFramebuffer, m_SceneCaptureLightingFramebuffer, m_LightProbeConvolutionFramebuffer, m_ReflectionProbeSamplingFramebuffer;
 		CubemapCamera m_CubemapCamera;
 		CubemapSettings m_SceneCaptureSettings;
 		Cubemap m_SceneCaptureCubemap;
 
-		Shader *m_ConvolutionShader;
+		Shader *m_ConvolutionShader, *m_ImportanceSamplingShader;
 	};
 
 }

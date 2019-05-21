@@ -3,7 +3,7 @@
 
 namespace arcane {
 
-	Cubemap::Cubemap() : m_CubemapID(0) {}
+	Cubemap::Cubemap() : m_CubemapID(0), m_CubemapSettings() {}
 
 	Cubemap::Cubemap(CubemapSettings &settings) : m_CubemapID(0), m_CubemapSettings(settings) {}
 
@@ -16,23 +16,29 @@ namespace arcane {
 		// Generate cubemap if this is the first face being generated
 		if (m_CubemapID == 0) {
 			glGenTextures(1, &m_CubemapID);
+			bind();
+
 			m_TextureFormat = textureFormat;
 			m_FaceWidth = faceWidth;
 			m_FaceHeight = faceHeight;
+
+			// Texture filtering
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, m_CubemapSettings.TextureMagnificationFilterMode);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, m_CubemapSettings.TextureMinificationFilterMode);
+
+			// Texture wrapping
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, m_CubemapSettings.TextureWrapSMode);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, m_CubemapSettings.TextureWrapTMode);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, m_CubemapSettings.TextureWrapRMode);
+
+			// Mip settings
+			if (m_CubemapSettings.GenerateMips)
+				glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 		}
 
 		bind();
 
 		glTexImage2D(face, 0, m_TextureFormat, m_FaceWidth, m_FaceHeight, 0, dataFormat, GL_UNSIGNED_BYTE, data);
-
-		// Texture filtering
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, m_CubemapSettings.TextureMagnificationFilterMode);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, m_CubemapSettings.TextureMinificationFilterMode);
-
-		// Texture wrapping
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, m_CubemapSettings.TextureWrapSMode);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, m_CubemapSettings.TextureWrapTMode);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, m_CubemapSettings.TextureWrapRMode);
 
 		unbind();
 	}

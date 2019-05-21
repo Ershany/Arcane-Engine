@@ -11,6 +11,9 @@ namespace arcane {
 		// Texture filtering options
 		GLenum TextureMinificationFilterMode = GL_LINEAR; // Filtering mode when the texture moves further away and multiple texels map to one pixel (trilinear for best quality)
 		GLenum TextureMagnificationFilterMode = GL_LINEAR; // Filtering mode when the texture gets closer and multiple pixels map to a single texel (Never needs to be more than bilinear because that is as accurate as it gets in this sitation)
+	
+		// Mip Settings
+		bool GenerateMips = false;
 	};
 
 	class Cubemap {
