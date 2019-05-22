@@ -13,7 +13,7 @@ namespace arcane {
 		GLenum TextureMagnificationFilterMode = GL_LINEAR; // Filtering mode when the texture gets closer and multiple pixels map to a single texel (Never needs to be more than bilinear because that is as accurate as it gets in this sitation)
 	
 		// Mip Settings
-		bool GenerateMips = false;
+		bool HasMips = false;
 	};
 
 	class Cubemap {
@@ -33,10 +33,10 @@ namespace arcane {
 		// Getters
 		unsigned int getCubemapID() { return m_CubemapID; }
 	private:
-		// TODO: Look into better filtering like anisotropic support and also look into proper mips for cubemaps
 		unsigned int m_CubemapID;
 
 		unsigned int m_FaceWidth, m_FaceHeight;
+		unsigned int m_FacesGenerated;
 		GLenum m_TextureFormat;
 
 		CubemapSettings m_CubemapSettings;

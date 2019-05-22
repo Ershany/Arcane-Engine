@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "ProbePass.h"
 
 #include <graphics/mesh/common/Cube.h>
@@ -62,7 +62,7 @@ namespace arcane {
 		// Take the capture and apply convolution for the irradiance map (indirect diffuse liing)
 		m_GLCache->switchShader(m_ConvolutionShader);
 		m_GLCache->setFaceCull(false);
-		m_GLCache->setDepthTest(false); // Important cause the depth buffer isn't cleared so it zero depth
+		m_GLCache->setDepthTest(false); // Important cause the depth buffer isn't cleared so it has zero depth
 
 		m_ConvolutionShader->setUniformMat4("projection", m_CubemapCamera.getProjectionMatrix());
 		m_SceneCaptureCubemap.bind(0);
@@ -114,7 +114,7 @@ namespace arcane {
 		// Take the capture and perform importance sampling on the cubemap's mips that represent increased roughness levels
 		m_GLCache->switchShader(m_ImportanceSamplingShader);
 		m_GLCache->setFaceCull(false);
-		m_GLCache->setDepthTest(false); // Important cause the depth buffer isn't cleared so it zero depth
+		m_GLCache->setDepthTest(false); // Important cause the depth buffer isn't cleared so it has zero depth
 
 		m_ImportanceSamplingShader->setUniformMat4("projection", m_CubemapCamera.getProjectionMatrix());
 		m_SceneCaptureCubemap.bind(0);
@@ -123,8 +123,8 @@ namespace arcane {
 		m_ReflectionProbeSamplingFramebuffer.bind();
 		for (int mip = 0; mip < REFLECTION_PROBE_MIP_COUNT; mip++) {
 			// Calculate the size of this mip and resize
-			unsigned int mipWidth = m_ReflectionProbeSamplingFramebuffer.getWidth() * std::pow(0.5, mip);
-			unsigned int mipHeight = m_ReflectionProbeSamplingFramebuffer.getHeight() * std::pow(0.5, mip);
+			unsigned int mipWidth = m_ReflectionProbeSamplingFramebuffer.getWidth() >> mip;
+			unsigned int mipHeight = m_ReflectionProbeSamplingFramebuffer.getHeight() >> mip;
 
 			glBindRenderbuffer(GL_RENDERBUFFER, m_ReflectionProbeSamplingFramebuffer.getDepthRBO());
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);

@@ -14,7 +14,8 @@ namespace arcane {
 	void ReflectionProbe::generate() {
 		// Generate the HDR environment probe and set the generated flag
 		CubemapSettings settings;
-		settings.GenerateMips = true;
+		settings.TextureMinificationFilterMode = GL_LINEAR_MIPMAP_LINEAR;
+		settings.HasMips = true;
 
 		m_PrefilterMap = new Cubemap(settings);
 		for (int i = 0; i < 6; i++) {
