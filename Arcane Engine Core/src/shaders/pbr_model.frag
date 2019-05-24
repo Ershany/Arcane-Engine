@@ -79,7 +79,8 @@ void main() {
 	float albedoAlpha = texture(material.texture_albedo, TexCoords).w;
 	vec3 normal = texture(material.texture_normal, TexCoords).rgb;
 	float metallic = texture(material.texture_metallic, TexCoords).r;
-	float roughness = max(texture(material.texture_roughness, TexCoords).r, 0.04);
+	float unclampedRoughness = texture(material.texture_roughness, TexCoords).r; // Used for indirect specular (reflections)
+	float roughness = max(unclampedRoughness, 0.04); // Used for calculations since specular highlights will be too fine, and will cause flicker
 	float ao = texture(material.texture_ao, TexCoords).r;
 
 	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
@@ -108,7 +109,7 @@ void main() {
 
 		vec3 indirectDiffuse = texture(irradianceMap, normal).rgb * albedo;
 
-		vec3 prefilterColour = textureLod(prefilterMap, reflectionVec, roughness * (reflectionProbeMipCount - 1)).rgb;
+		vec3 prefilterColour = textureLod(prefilterMap, reflectionVec, unclampedRoughness * (reflectionProbeMipCount - 1)).rgb;
 		vec2 brdfIntegration = texture(brdfLUT, vec2(max(dot(normal, fragToView), 0.0), roughness)).rg;
 		vec3 indirectSpecular = prefilterColour * (specularRatio * brdfIntegration.x + brdfIntegration.y);
 
