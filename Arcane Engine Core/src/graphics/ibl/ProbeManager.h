@@ -19,19 +19,24 @@ namespace arcane {
 		ProbeManager(ProbeBlendSetting sceneProbeBlendSetting);
 		~ProbeManager();
 
-		void init(Skybox *skybox);
-
 		void addProbe(LightProbe *probe);
 		void addProbe(ReflectionProbe *probe);
+
+		inline void setLightProbeFallback(LightProbe *probe) { m_LightProbeFallback = probe; }
+		inline void setReflectionProbeFallback(ReflectionProbe *probe) { m_ReflectionProbeFallback = probe; }
 
 		// Assumes shader is bound
 		void bindProbe(glm::vec3 &renderPosition, Shader *shader);
 	private:
 		ProbeBlendSetting m_ProbeBlendSetting;
+		
+		// Scene probes
 		std::vector<LightProbe*> m_LightProbes;
 		std::vector<ReflectionProbe*> m_ReflectionProbes;
 
-		Skybox *m_Skybox;
+		// Fallback probes
+		LightProbe *m_LightProbeFallback;
+		ReflectionProbe *m_ReflectionProbeFallback;
 	};
 
 }

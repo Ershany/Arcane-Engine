@@ -4,7 +4,7 @@
 namespace arcane {
 
 	ProbeManager::ProbeManager(ProbeBlendSetting sceneProbeBlendSetting)
-		: m_ProbeBlendSetting(sceneProbeBlendSetting), m_Skybox(nullptr)
+		: m_ProbeBlendSetting(sceneProbeBlendSetting), m_LightProbeFallback(nullptr), m_ReflectionProbeFallback(nullptr)
 	{}
 
 	ProbeManager::~ProbeManager() {
@@ -16,10 +16,9 @@ namespace arcane {
 		}
 		m_LightProbes.clear();
 		m_ReflectionProbes.clear();
-	}
 
-	void ProbeManager::init(Skybox *skybox) {
-		m_Skybox = skybox;
+		delete m_LightProbeFallback;
+		delete m_ReflectionProbeFallback;
 	}
 
 	void ProbeManager::addProbe(LightProbe *probe) {
@@ -37,37 +36,27 @@ namespace arcane {
 			if (m_LightProbes.size() > 0) {
 				m_LightProbes[0]->bind(shader);
 			}
+			// Light probe fallback
 			else {
-				// Fallback to skybox
-				m_Skybox->getSkyboxCubemap()->bind(1);
-				shader->setUniform1i("irradianceMap", 1);
+				m_LightProbeFallback->bind(shader);
 			}
 
 			// Reflection Probes
 			if (m_ReflectionProbes.size() > 0) {
 				m_ReflectionProbes[0]->bind(shader);
 			}
+			// Reflection probe fallback
 			else {
-				// Fallback to skybox
-				shader->setUniform1i("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
-				m_Skybox->getSkyboxCubemap()->bind(2);
-				shader->setUniform1i("prefilterMap", 2);
-				ReflectionProbe::getBRDFLUT()->bind(3);
-				shader->setUniform1i("brdfLUT", 3);
+				m_ReflectionProbeFallback->bind(shader);
 			}
 		}
 		// If probes are disabled just use the skybox
 		else if (m_ProbeBlendSetting == PROBES_DISABLED) {
-			// Light Probes
-			m_Skybox->getSkyboxCubemap()->bind(1);
-			shader->setUniform1i("irradianceMap", 1);
+			// Light probe fallback
+			m_LightProbeFallback->bind(shader);
 
-			// Reflection Probes
-			shader->setUniform1i("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
-			m_Skybox->getSkyboxCubemap()->bind(2);
-			shader->setUniform1i("prefilterMap", 2);
-			ReflectionProbe::getBRDFLUT()->bind(3);
-			shader->setUniform1i("brdfLUT", 3);
+			// Reflection probe fallback
+			m_ReflectionProbeFallback->bind(shader);
 		}
 	}
 

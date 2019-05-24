@@ -15,6 +15,7 @@ namespace arcane {
 
 		void pregenerateProbes();
 		void generateBRDFLUT();
+		void generateFallbackProbes();
 		void generateLightProbe(glm::vec3& probePosition);
 		void generateReflectionProbe(glm::vec3& probePosition);
 	private:
