@@ -43,6 +43,7 @@ out vec4 color;
 uniform vec3 viewPos;
 
 // IBL
+uniform int reflectionProbeMipCount;
 uniform bool computeIBL;
 uniform samplerCube irradianceMap;
 uniform samplerCube prefilterMap;
@@ -86,6 +87,7 @@ void main() {
 	normal = normalize(TBN * normal);
 	
 	vec3 fragToView = normalize(viewPos - FragPos);
+	vec3 reflectionVec = reflect(-fragToView, normal);
 
 	// Dielectrics have an average base specular reflectivity around 0.04, and metals absorb all of their diffuse (refraction) lighting so their albedo is used instead for their specular lighting (reflection)
 	vec3 baseReflectivity = vec3(0.04);
@@ -103,8 +105,14 @@ void main() {
 		vec3 specularRatio = FresnelSchlick(max(dot(normal, fragToView), 0.0), baseReflectivity);
 		vec3 diffuseRatio = vec3(1.0) - specularRatio;
 		diffuseRatio *= 1.0 - metallic;
+
 		vec3 indirectDiffuse = texture(irradianceMap, normal).rgb * albedo;
-		ambient = (diffuseRatio * indirectDiffuse) * ao;
+
+		vec3 prefilterColour = textureLod(prefilterMap, reflectionVec, roughness * (reflectionProbeMipCount - 1)).rgb;
+		vec2 brdfIntegration = texture(brdfLUT, vec2(max(dot(normal, fragToView), 0.0), roughness)).rg;
+		vec3 indirectSpecular = prefilterColour * (specularRatio * brdfIntegration.x + brdfIntegration.y);
+
+		ambient = (diffuseRatio * indirectDiffuse + indirectSpecular) * ao;
 	}
 
 	color = vec4(ambient + directLightIrradiance, albedoAlpha);

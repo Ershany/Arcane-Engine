@@ -32,6 +32,8 @@ namespace arcane {
 
 		// Getters
 		unsigned int getCubemapID() { return m_CubemapID; }
+		inline unsigned int getFaceWidth() { return m_FaceWidth; }
+		inline unsigned int getFaceHeight() { return m_FaceHeight; }
 	private:
 		unsigned int m_CubemapID;
 

@@ -49,8 +49,11 @@ namespace arcane {
 			}
 			else {
 				// Fallback to skybox
+				shader->setUniform1i("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
 				m_Skybox->getSkyboxCubemap()->bind(2);
 				shader->setUniform1i("prefilterMap", 2);
+				ReflectionProbe::getBRDFLUT()->bind(3);
+				shader->setUniform1i("brdfLUT", 3);
 			}
 		}
 		// If probes are disabled just use the skybox
@@ -60,8 +63,11 @@ namespace arcane {
 			shader->setUniform1i("irradianceMap", 1);
 
 			// Reflection Probes
+			shader->setUniform1i("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
 			m_Skybox->getSkyboxCubemap()->bind(2);
 			shader->setUniform1i("prefilterMap", 2);
+			ReflectionProbe::getBRDFLUT()->bind(3);
+			shader->setUniform1i("brdfLUT", 3);
 		}
 	}
 

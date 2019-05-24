@@ -30,9 +30,48 @@ namespace arcane {
 	ProbePass::~ProbePass() {}
 
 	void ProbePass::pregenerateProbes() {
+		generateBRDFLUT();
+
 		glm::vec3 probePosition = glm::vec3(67.0f, 92.0f, 133.0f);
 		generateLightProbe(probePosition);
 		generateReflectionProbe(probePosition);
+	}
+
+	void ProbePass::generateBRDFLUT() {
+		Shader *brdfIntegrationShader = ShaderLoader::loadShader("src/shaders/brdf_integration.vert", "src/shaders/brdf_integration.frag");
+		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
+		
+		// Texture settings for the BRDF LUT
+		TextureSettings textureSettings;
+		textureSettings.TextureWrapSMode = GL_CLAMP_TO_EDGE;
+		textureSettings.TextureWrapTMode = GL_CLAMP_TO_EDGE;
+		textureSettings.TextureMinificationFilterMode = GL_LINEAR;
+		textureSettings.TextureMagnificationFilterMode = GL_LINEAR;
+		textureSettings.TextureAnisotropyLevel = 1.0f;
+		textureSettings.HasMips = false;
+
+		Texture *brdfLUT = new Texture(textureSettings);
+		brdfLUT->generate2DTexture(BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION, GL_RG16F, GL_RG, 0);
+
+		// Setup the framebuffer that we are using to generate our BRDF LUT
+		Framebuffer brdfFramebuffer(BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION);
+		brdfFramebuffer.addTexture2DColorAttachment(false).addDepthRBO(false).createFramebuffer();
+		brdfFramebuffer.bind();
+
+		// Render state
+		m_GLCache->switchShader(brdfIntegrationShader);
+		m_GLCache->setDepthTest(false); // Important cause the depth buffer isn't cleared so it has zero depth
+
+		// Render an NDC quad to the screen so we can generate the BRDF LUT
+		glViewport(0, 0, BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION);
+		brdfFramebuffer.setColorAttachment(brdfLUT->getTextureId(), GL_TEXTURE_2D);
+		modelRenderer->NDC_Plane.Draw();
+		brdfFramebuffer.setColorAttachment(0, GL_TEXTURE_2D);
+
+		m_GLCache->setDepthTest(true);
+
+		// Set the BRDF LUT for all reflection probes
+		ReflectionProbe::setBRDFLUT(brdfLUT);
 	}
 
 	void ProbePass::generateLightProbe(glm::vec3 &probePosition) {

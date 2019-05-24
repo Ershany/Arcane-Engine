@@ -1,1 +1,1 @@
-(shader initialization): mpile fragment shader
+(shader initialization): ed to compile fragment shader

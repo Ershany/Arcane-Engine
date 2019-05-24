@@ -13,6 +13,9 @@ namespace arcane
 	}
 
 	void MasterRenderer::init() {
+		// State that should never change
+		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
 		m_EnvironmentProbePass.pregenerateProbes();
 	}
 

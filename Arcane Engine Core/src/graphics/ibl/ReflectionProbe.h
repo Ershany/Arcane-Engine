@@ -1,6 +1,7 @@
 #pragma once
 
 #include <graphics/Shader.h>
+#include <graphics/texture/Texture.h>
 #include <graphics/texture/Cubemap.h>
 
 namespace arcane {
@@ -17,9 +18,13 @@ namespace arcane {
 
 		// Getters
 		inline Cubemap* getPrefilterMap() { return m_PrefilterMap; }
+		static inline Texture* getBRDFLUT() { return s_BRDF_LUT; }
+
+		// Setters
+		static void setBRDFLUT(Texture *texture) { s_BRDF_LUT = texture; }
 	private:
 		Cubemap *m_PrefilterMap;
-		//static Cubemap *m_BRDF_LUT;
+		static Texture *s_BRDF_LUT;
 
 		glm::vec3 m_Position;
 		glm::vec2 m_ProbeResolution;

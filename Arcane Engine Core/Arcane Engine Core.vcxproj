@@ -217,6 +217,8 @@
     <ClInclude Include="src\vendor\imgui\stb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\shaders\brdf_integration.frag" />
+    <None Include="src\shaders\brdf_integration.vert" />
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\lightprobe_convolution.frag" />
     <None Include="src\shaders\lightprobe_convolution.vert" />

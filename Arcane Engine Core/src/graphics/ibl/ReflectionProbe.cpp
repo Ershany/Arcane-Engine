@@ -3,8 +3,10 @@
 
 namespace arcane {
 
+	Texture* ReflectionProbe::s_BRDF_LUT = nullptr;
+
 	ReflectionProbe::ReflectionProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution, bool isStatic)
-		: m_Position(probePosition), m_ProbeResolution(probeResolution), m_IsStatic(isStatic), m_PrefilterMap(nullptr)
+		: m_Position(probePosition), m_ProbeResolution(probeResolution), m_IsStatic(isStatic), m_Generated(false), m_PrefilterMap(nullptr)
 	{}
 
 	ReflectionProbe::~ReflectionProbe() {
@@ -26,10 +28,12 @@ namespace arcane {
 	}
 
 	void ReflectionProbe::bind(Shader *shader) {
+		shader->setUniform1i("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
+		
 		m_PrefilterMap->bind(2);
 		shader->setUniform1i("prefilterMap", 2);
-		//m_BRDF_LUT->bind(3);
-		//shader->setUniform1i("brdfLUT", 3);
+		s_BRDF_LUT->bind(3);
+		shader->setUniform1i("brdfLUT", 3);
 	}
 
 }

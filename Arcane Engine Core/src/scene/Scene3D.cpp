@@ -61,7 +61,7 @@ namespace arcane {
 				mat.setAlbedoMap(TextureLoader::getDefaultAO());
 				mat.setNormalMap(TextureLoader::getDefaultNormal());
 				mat.setAmbientOcclusionMap(TextureLoader::getDefaultAO());
-				mat.setMetallicMap(TextureLoader::getNoMetallic());
+				mat.setMetallicMap(TextureLoader::getFullMetallic());
 				mat.setRoughnessMap(TextureLoader::getNoRoughness());
 				m_RenderableModels.push_back(new RenderableModel(glm::vec3((float)(col - (nrColumns / 2)) * spacing + 60,
 					(float)(row - (nrRows / 2)) * spacing + 90, 130.0f), glm::vec3(20.0f, 20.0f, 20.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, sphere, nullptr, false, false));

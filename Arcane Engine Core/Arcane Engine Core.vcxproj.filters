@@ -384,6 +384,8 @@
     <None Include="src\shaders\lightprobe_convolution.frag" />
     <None Include="src\shaders\reflectionprobe_importance_sampling.vert" />
     <None Include="src\shaders\reflectionprobe_importance_sampling.frag" />
+    <None Include="src\shaders\brdf_integration.vert" />
+    <None Include="src\shaders\brdf_integration.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

@@ -14,6 +14,7 @@ namespace arcane {
 		virtual ~ProbePass() override;
 
 		void pregenerateProbes();
+		void generateBRDFLUT();
 		void generateLightProbe(glm::vec3& probePosition);
 		void generateReflectionProbe(glm::vec3& probePosition);
 	private:
