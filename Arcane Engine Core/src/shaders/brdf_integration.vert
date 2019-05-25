@@ -1,5 +1,9 @@
 #version 430 core
 
+/*
+	This IBL - BRDF Integration approach is based on the approach Epic made in their paper "Real Shading in Unreal Engine 4"
+*/
+
 layout (location = 0) in vec3 position;
 layout (location = 2) in vec2 texCoord;
 

@@ -1,5 +1,9 @@
 #version 430 core
 
+/*
+	This IBL - Reflection Probe Importance Sampling approach is based on the approach Epic made in their paper "Real Shading in Unreal Engine 4"
+*/
+
 out vec4 FragColor;
 
 in vec3 SampleDirection;
@@ -22,6 +26,8 @@ void main() {
 	float totalWeight = 0.0;
 	vec3 prefilteredColor = vec3(0.0);
 	for(uint i = 0u; i < SAMPLE_COUNT; ++i) {
+		// generates a sample vector that's biased towards the
+		// preferred alignment direction (importance sampling).
 		vec2 Xi = Hammersley(i, SAMPLE_COUNT);
 		vec3 H  = ImportanceSampleGGX(Xi, N, roughness);
 		vec3 L  = normalize(2.0 * dot(V, H) * H - V);
