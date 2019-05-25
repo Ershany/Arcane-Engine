@@ -15,6 +15,7 @@ namespace arcane {
 
 		ShadowmapPassOutput generateShadowmaps(ICamera *camera);
 	private:
+		bool m_AllocatedFramebuffer;
 		Framebuffer *m_ShadowmapFramebuffer;
 		Shader *m_ShadowmapShader;
 	};

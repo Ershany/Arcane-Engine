@@ -5,7 +5,7 @@
 
 namespace arcane {
 
-	LightingPass::LightingPass(Scene3D *scene) : RenderPass(scene, RenderPassType::LightingPassType)
+	LightingPass::LightingPass(Scene3D *scene) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(true)
 	{
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/pbr_model.vert", "src/shaders/pbr_model.frag");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/terrain.vert", "src/shaders/terrain.frag");
@@ -15,13 +15,16 @@ namespace arcane {
 		m_Framebuffer->addTexture2DColorAttachment(shouldMultisample).addDepthStencilRBO(shouldMultisample).createFramebuffer();
 	}
 
-	LightingPass::LightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene, RenderPassType::LightingPassType), m_Framebuffer(customFramebuffer)
+	LightingPass::LightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/pbr_model.vert", "src/shaders/pbr_model.frag");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/terrain.vert", "src/shaders/terrain.frag");
 	}
 
-	LightingPass::~LightingPass() {}
+	LightingPass::~LightingPass() {
+		if (m_AllocatedFramebuffer)
+			delete m_Framebuffer;
+	}
 
 	LightingPassOutput LightingPass::executeRenderPass(ShadowmapPassOutput &shadowmapData, ICamera *camera, bool useIBL) {
 		glViewport(0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight());

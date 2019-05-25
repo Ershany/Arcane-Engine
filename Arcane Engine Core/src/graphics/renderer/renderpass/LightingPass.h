@@ -16,7 +16,8 @@ namespace arcane {
 	private:
 		void bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData);
 	private:
-		Framebuffer *m_Framebuffer = nullptr;
+		bool m_AllocatedFramebuffer;
+		Framebuffer *m_Framebuffer;
 		Shader *m_ModelShader, *m_TerrainShader;
 	};
 
