@@ -1,1 +1,0 @@
-(shader initialization): ed to compile fragment shader

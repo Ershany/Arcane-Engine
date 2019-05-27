@@ -31,6 +31,7 @@ struct SpotLight {
 };
 
 #define MAX_POINT_LIGHTS 5
+#define MAX_SPOT_LIGHTS 5
 const float PI = 3.14159265359;
 
 in mat3 TBN;
@@ -52,9 +53,10 @@ uniform sampler2D brdfLUT;
 // Lighting
 uniform sampler2D shadowmap;
 uniform int numPointLights;
+uniform int numSpotLights;
 uniform DirLight dirLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
-uniform SpotLight spotLight;
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 uniform Material material;
 
@@ -185,37 +187,43 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 
 
 vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity) {
-	vec3 fragToLight = normalize(spotLight.position - FragPos);
-	vec3 halfway = normalize(fragToView + fragToLight);
-	float fragToLightDistance = length(spotLight.position - FragPos);
+	vec3 spotLightIrradiance = vec3(0.0);
 
-	// Check if it is in the spotlight's circle
-	float theta = dot(normalize(spotLight.direction), -fragToLight);
-	float difference = spotLight.cutOff - spotLight.outerCutOff;
-	float intensity = clamp((theta - spotLight.outerCutOff) / difference, 0.0, 1.0);
-	float attenuation = intensity * (1.0 / (fragToLightDistance * fragToLightDistance));
-	vec3 radiance = spotLight.lightColour * attenuation;
+	for (int i = 0; i < numSpotLights; ++i) {
+		vec3 fragToLight = normalize(spotLights[i].position - FragPos);
+		vec3 halfway = normalize(fragToView + fragToLight);
+		float fragToLightDistance = length(spotLights[i].position - FragPos);
 
-	// Cook-Torrance Specular BRDF calculations
-	float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
-	vec3 fresnel = FresnelSchlick(max(dot(halfway, fragToView), 0.0), baseReflectivity);
-	float geometry = GeometrySmith(normal, fragToView, fragToLight, roughness);
+		// Check if it is in the spotlight's circle
+		float theta = dot(normalize(spotLights[i].direction), -fragToLight);
+		float difference = spotLights[i].cutOff - spotLights[i].outerCutOff;
+		float intensity = clamp((theta - spotLights[i].outerCutOff) / difference, 0.0, 1.0);
+		float attenuation = intensity * (1.0 / (fragToLightDistance * fragToLightDistance));
+		vec3 radiance = spotLights[i].lightColour * attenuation;
 
-	// Calculate reflected and refracted light respectively, and since metals absorb all refracted light, we nullify the diffuse lighting based on the metallic parameter
-	vec3 specularRatio = fresnel;
-	vec3 diffuseRatio = vec3(1.0) - specularRatio;
-	diffuseRatio *= 1.0 - metallic;
+		// Cook-Torrance Specular BRDF calculations
+		float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
+		vec3 fresnel = FresnelSchlick(max(dot(halfway, fragToView), 0.0), baseReflectivity);
+		float geometry = GeometrySmith(normal, fragToView, fragToLight, roughness);
 
-	// Finally calculate the specular part of the Cook-Torrance BRDF (max 0.1 stops any visual artifacts)
-	vec3 numerator = specularRatio * normalDistribution * geometry;
-	float denominator = 4 * max(dot(fragToView, normal), 0.1) * max(dot(fragToLight, normal), 0.0) + 0.001; // Prevents any division by zero
-	vec3 specular = numerator / denominator;
+		// Calculate reflected and refracted light respectively, and since metals absorb all refracted light, we nullify the diffuse lighting based on the metallic parameter
+		vec3 specularRatio = fresnel;
+		vec3 diffuseRatio = vec3(1.0) - specularRatio;
+		diffuseRatio *= 1.0 - metallic;
 
-	// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
-	vec3 diffuse = diffuseRatio * albedo / PI;
+		// Finally calculate the specular part of the Cook-Torrance BRDF (max 0.1 stops any visual artifacts)
+		vec3 numerator = specularRatio * normalDistribution * geometry;
+		float denominator = 4 * max(dot(fragToView, normal), 0.1) * max(dot(fragToLight, normal), 0.0) + 0.001; // Prevents any division by zero
+		vec3 specular = numerator / denominator;
 
-	// Add the light's radiance to the irradiance sum
-	return (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0);
+		// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
+		vec3 diffuse = diffuseRatio * albedo / PI;
+
+		// Add the light's radiance to the irradiance sum
+		spotLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0);
+	}
+
+	return spotLightIrradiance;
 }
 
 

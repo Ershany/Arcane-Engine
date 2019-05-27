@@ -4,14 +4,14 @@
 
 namespace arcane {
 
-	struct DynamicLight {
-		DynamicLight(glm::vec3 &lightColour);
+	class Light {
+	public:
+		Light(glm::vec3 &lightColour);
 
 		virtual void setupUniforms(Shader *shader, int currentLightIndex) = 0;
-
-
-		glm::vec3 lightColour;
-		bool isActive;
+	protected:
+		glm::vec3 m_LightColour;
+		bool m_IsActive;
 	};
 
 }

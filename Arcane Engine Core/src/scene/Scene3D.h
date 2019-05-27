@@ -3,7 +3,7 @@
 #include <graphics/Skybox.h>
 #include <graphics/Window.h>
 #include <graphics/camera/FPSCamera.h>
-#include <graphics/dynamic lights/DynamicLightManager.h>
+#include <graphics/lights/DynamicLightManager.h>
 #include <graphics/ibl/ProbeManager.h>
 #include <graphics/renderer/GLCache.h>
 #include <graphics/renderer/ModelRenderer.h>

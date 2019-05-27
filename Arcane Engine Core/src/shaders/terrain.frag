@@ -37,6 +37,7 @@ struct SpotLight {
 };
 
 #define MAX_POINT_LIGHTS 5
+#define MAX_SPOT_LIGHTS 5
 
 in vec2 TexCoords;
 in vec3 Normal;
@@ -47,9 +48,10 @@ out vec4 color;
 
 uniform sampler2D shadowmap;
 uniform int numPointLights;
+uniform int numSpotLights;
 uniform DirLight dirLight;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
-uniform SpotLight spotLight;
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 uniform Material material;
 uniform vec3 viewPos;
@@ -73,14 +75,22 @@ void main() {
 	vec3 rTextureColour = texture(material.texture_diffuse2, tiledCoords).rgb * blendMapColour.r;
 	vec3 gTextureColour = texture(material.texture_diffuse3, tiledCoords).rgb * blendMapColour.g;
 	vec3 bTextureColour = texture(material.texture_diffuse4, tiledCoords).rgb * blendMapColour.b;
+	vec3 blendedTexture = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
+
+	vec3 terrainColour = vec3(0.0);
+
+	terrainColour += CalcDirLight(dirLight, norm, fragToCam);
+	for (int i = 0; i < numPointLights; ++i) {
+		terrainColour += CalcPointLight(pointLights[i], norm, FragPos, fragToCam);
+	}
+	for (int i = 0; i < numSpotLights; ++i) {
+		terrainColour += CalcSpotLight(spotLights[i], norm, FragPos);
+	}
 	
-	vec3 terrainColour = (backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour) * 
-						 (CalcDirLight(dirLight, norm, fragToCam) + CalcSpotLight(spotLight, norm, FragPos) + CalcPointLight(pointLights[0], norm, FragPos, fragToCam));
-	
+	terrainColour = terrainColour * blendedTexture;
 	
 	// Result
 	color = vec4(terrainColour, 1.0);
-	//color = vec4(Normal, 1.0);
 	//color = vec4(vec3(gl_FragCoord.z), 1.0); //depth buffer display
 }
 
