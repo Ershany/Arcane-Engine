@@ -30,6 +30,7 @@ struct SpotLight {
 	vec3 lightColour; // radiant flux
 };
 
+#define MAX_DIR_LIGHTS 5
 #define MAX_POINT_LIGHTS 5
 #define MAX_SPOT_LIGHTS 5
 const float PI = 3.14159265359;
@@ -41,8 +42,6 @@ in vec2 TexCoords;
 
 out vec4 color;
 
-uniform vec3 viewPos;
-
 // IBL
 uniform int reflectionProbeMipCount;
 uniform bool computeIBL;
@@ -52,14 +51,15 @@ uniform sampler2D brdfLUT;
 
 // Lighting
 uniform sampler2D shadowmap;
+uniform int numDirLights;
 uniform int numPointLights;
 uniform int numSpotLights;
-uniform DirLight dirLight;
+uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 uniform Material material;
-
+uniform vec3 viewPos;
 
 // Light radiance calculations
 vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity);
@@ -121,32 +121,38 @@ void main() {
 	color = vec4(ambient + directLightIrradiance, albedoAlpha);
 }
 
-
+// TODO: Need to also add multiple shadow support
 vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity) {
-	vec3 lightDir = normalize(-dirLight.direction);
-	vec3 halfway = normalize(lightDir + fragToView);
-	vec3 radiance = dirLight.lightColour;
+	vec3 directLightIrradiance = vec3(0.0);
 
-	// Cook-Torrance Specular BRDF calculations
-	float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
-	vec3 fresnel = FresnelSchlick(max(dot(halfway, fragToView), 0.0), baseReflectivity);
-	float geometry = GeometrySmith(normal, fragToView, lightDir, roughness);
+	for (int i = 0; i < numDirLights; ++i) {
+		vec3 lightDir = normalize(-dirLights[i].direction);
+		vec3 halfway = normalize(lightDir + fragToView);
+		vec3 radiance = dirLights[i].lightColour;
 
-	// Calculate reflected and refracted light respectively, and since metals absorb all refracted light, we nullify the diffuse lighting based on the metallic parameter
-	vec3 specularRatio = fresnel;
-	vec3 diffuseRatio = vec3(1.0) - specularRatio;
-	diffuseRatio *= 1.0 - metallic;
+		// Cook-Torrance Specular BRDF calculations
+		float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
+		vec3 fresnel = FresnelSchlick(max(dot(halfway, fragToView), 0.0), baseReflectivity);
+		float geometry = GeometrySmith(normal, fragToView, lightDir, roughness);
 
-	// Finally calculate the specular part of the Cook-Torrance BRDF (max 0.1 stops any visual artifacts)
-	vec3 numerator = specularRatio * normalDistribution * geometry;
-	float denominator = 4 * max(dot(fragToView, normal), 0.1) * max(dot(lightDir, normal), 0.0) + 0.001;  // Prevents any division by zero
-	vec3 specular = numerator / denominator;
+		// Calculate reflected and refracted light respectively, and since metals absorb all refracted light, we nullify the diffuse lighting based on the metallic parameter
+		vec3 specularRatio = fresnel;
+		vec3 diffuseRatio = vec3(1.0) - specularRatio;
+		diffuseRatio *= 1.0 - metallic;
 
-	// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
-	vec3 diffuse = diffuseRatio * albedo / PI;
+		// Finally calculate the specular part of the Cook-Torrance BRDF (max 0.1 stops any visual artifacts)
+		vec3 numerator = specularRatio * normalDistribution * geometry;
+		float denominator = 4 * max(dot(fragToView, normal), 0.1) * max(dot(lightDir, normal), 0.0) + 0.001;  // Prevents any division by zero
+		vec3 specular = numerator / denominator;
 
-	// Add the light's radiance to the irradiance sum
-	return (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0) * (1.0 - CalculateShadow(normal, lightDir));
+		// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
+		vec3 diffuse = diffuseRatio * albedo / PI;
+
+		// Add the light's radiance to the irradiance sum
+		directLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0) * (1.0 - CalculateShadow(normal, lightDir));
+	}
+
+	return directLightIrradiance;
 }
 
 

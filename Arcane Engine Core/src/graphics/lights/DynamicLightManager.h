@@ -10,26 +10,32 @@ namespace arcane {
 	public:
 		DynamicLightManager();
 
-		void setupLightingUniforms(Shader *shader);
-		void addSpotLight(SpotLight &spotLight);
+		void bindLightingUniforms(Shader *shader);
+		void bindStaticLightingUniforms(Shader *shader);
+
+		void addDirectionalLight(DirectionalLight &directionalLight);
 		void addPointLight(PointLight &pointLight);
+		void addSpotLight(SpotLight &spotLight);
 
-		// Control functions
-		inline void setSpotLightPosition(int index, const glm::vec3 &pos) { m_SpotLights[index].m_Position = pos; }
-		inline void setSpotLightDirection(int index, const glm::vec3 &dir) { m_SpotLights[index].m_Direction = dir; }
+		// Control functions for directional lights
+		void setDirectionalLightDirection(unsigned int index, const glm::vec3 &dir);
 
-		inline void setDirectionalLightDirection(const glm::vec3 &dir) { m_DirectionalLight.m_Direction = dir; }
+		// Control functions for point lights
+		void setPointLightPosition(unsigned int index, const glm::vec3 &pos);
 
-		inline void setPointLightPosition(int index, const glm::vec3 &pos) { m_PointLights[index].m_Position = pos; }
+		// Control functions for spot lights
+		void setSpotLightPosition(unsigned int index, const glm::vec3 &pos);
+		void setSpotLightDirection(unsigned int index, const glm::vec3 &dir);
+
 
 		// Getters
-		inline const glm::vec3& getDirectionalLightDirection() { return m_DirectionalLight.m_Direction; }
+		const glm::vec3& getDirectionalLightDirection(unsigned int index);
 	private:
 		void init();
 		
-		DirectionalLight m_DirectionalLight;
-		std::vector<SpotLight> m_SpotLights;
+		std::vector<DirectionalLight> m_DirectionalLights;
 		std::vector<PointLight> m_PointLights;
+		std::vector<SpotLight> m_SpotLights;
 	};
 
 }

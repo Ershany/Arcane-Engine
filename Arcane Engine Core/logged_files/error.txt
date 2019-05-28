@@ -1,0 +1,1 @@
+(DynamicLightManager Error): directional light at index is out of bounds

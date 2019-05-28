@@ -36,6 +36,7 @@ struct SpotLight {
 	vec3 lightColour; // radiant flux
 };
 
+#define MAX_DIR_LIGHTS 5
 #define MAX_POINT_LIGHTS 5
 #define MAX_SPOT_LIGHTS 5
 
@@ -47,9 +48,10 @@ in vec4 FragPosLightClipSpace;
 out vec4 color;
 
 uniform sampler2D shadowmap;
+uniform int numDirLights;
 uniform int numPointLights;
 uniform int numSpotLights;
-uniform DirLight dirLight;
+uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
@@ -79,7 +81,9 @@ void main() {
 
 	vec3 terrainColour = vec3(0.0);
 
-	terrainColour += CalcDirLight(dirLight, norm, fragToCam);
+	for (int i = 0; i < numDirLights; ++i) {
+		terrainColour += CalcDirLight(dirLights[i], norm, fragToCam);
+	}
 	for (int i = 0; i < numPointLights; ++i) {
 		terrainColour += CalcPointLight(pointLights[i], norm, FragPos, fragToCam);
 	}
@@ -91,9 +95,9 @@ void main() {
 	
 	// Result
 	color = vec4(terrainColour, 1.0);
-	//color = vec4(vec3(gl_FragCoord.z), 1.0); //depth buffer display
 }
 
+// TODO: Need to also add multiple shadow support
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam) {
 	vec3 fragToLight = normalize(-light.direction);
 
