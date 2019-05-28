@@ -152,6 +152,10 @@ namespace arcane {
 		glUniform4f(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
 	}
 
+	void Shader::setUniform4i(const char* name, const glm::ivec4& vector) {
+		glUniform4i(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
+	}
+
 	void Shader::setUniformMat3(const char* name, const glm::mat3& matrix) {
 		glUniformMatrix3fv(glGetUniformLocation(m_ShaderID, name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}

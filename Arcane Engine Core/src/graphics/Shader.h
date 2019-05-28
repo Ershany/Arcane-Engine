@@ -21,6 +21,7 @@ namespace arcane {
 		void setUniform2f(const char* name, const glm::vec2& vector);
 		void setUniform3f(const char* name, const glm::vec3& vector);
 		void setUniform4f(const char* name, const glm::vec4& vector);
+		void setUniform4i(const char* name, const glm::ivec4& vector);
 		void setUniformMat3(const char* name, const glm::mat3& matrix);
 		void setUniformMat4(const char* name, const glm::mat4& matrix);
 

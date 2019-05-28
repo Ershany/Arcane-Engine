@@ -51,9 +51,7 @@ uniform sampler2D brdfLUT;
 
 // Lighting
 uniform sampler2D shadowmap;
-uniform int numDirLights;
-uniform int numPointLights;
-uniform int numSpotLights;
+uniform ivec4 numDirPointSpotLights;
 uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
@@ -125,7 +123,7 @@ void main() {
 vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity) {
 	vec3 directLightIrradiance = vec3(0.0);
 
-	for (int i = 0; i < numDirLights; ++i) {
+	for (int i = 0; i < numDirPointSpotLights.x; ++i) {
 		vec3 lightDir = normalize(-dirLights[i].direction);
 		vec3 halfway = normalize(lightDir + fragToView);
 		vec3 radiance = dirLights[i].lightColour;
@@ -159,7 +157,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity) {
 	vec3 pointLightIrradiance = vec3(0.0);
 
-	for (int i = 0; i < numPointLights; ++i) {
+	for (int i = 0; i < numDirPointSpotLights.y; ++i) {
 		vec3 fragToLight = normalize(pointLights[i].position - FragPos);
 		vec3 halfway = normalize(fragToView + fragToLight);
 		float fragToLightDistance = length(pointLights[i].position - FragPos);
@@ -195,7 +193,7 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity) {
 	vec3 spotLightIrradiance = vec3(0.0);
 
-	for (int i = 0; i < numSpotLights; ++i) {
+	for (int i = 0; i < numDirPointSpotLights.z; ++i) {
 		vec3 fragToLight = normalize(spotLights[i].position - FragPos);
 		vec3 halfway = normalize(fragToView + fragToLight);
 		float fragToLightDistance = length(spotLights[i].position - FragPos);

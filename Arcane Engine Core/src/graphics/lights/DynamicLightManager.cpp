@@ -27,9 +27,7 @@ namespace arcane {
 	}
 
 	void DynamicLightManager::bindLightingUniforms(Shader *shader) {
-		shader->setUniform1i("numDirLights", m_DirectionalLights.size());
-		shader->setUniform1i("numPointLights", m_PointLights.size());
-		shader->setUniform1i("numSpotLights", m_SpotLights.size());
+		shader->setUniform4i("numDirPointSpotLights", glm::ivec4(m_DirectionalLights.size(), m_PointLights.size(), m_SpotLights.size(), 0));
 
 		int i = 0;
 		for (auto iter = m_DirectionalLights.begin(); iter != m_DirectionalLights.end(); iter++) {
@@ -48,27 +46,25 @@ namespace arcane {
 	}
 
 	void DynamicLightManager::bindStaticLightingUniforms(Shader *shader) {
-		int numStaticLights = 0;
-
+		int numStaticDirLights = 0;
 		for (auto iter = m_DirectionalLights.begin(); iter != m_DirectionalLights.end(); iter++) {
 			if (iter->m_IsStatic) 
-				iter->setupUniforms(shader, numStaticLights++);
+				iter->setupUniforms(shader, numStaticDirLights++);
 		}
-		shader->setUniform1i("numDirLights", numStaticLights);
 
-		numStaticLights = 0;
+		int numStaticPointLights = 0;
 		for (auto iter = m_PointLights.begin(); iter != m_PointLights.end(); iter++) {
 			if (iter->m_IsStatic)
-				iter->setupUniforms(shader, numStaticLights++);
+				iter->setupUniforms(shader, numStaticPointLights++);
 		}
-		shader->setUniform1i("numPointLights", numStaticLights);
 
-		numStaticLights = 0;
+		int numStaticSpotLights = 0;
 		for (auto iter = m_SpotLights.begin(); iter != m_SpotLights.end(); iter++) {
 			if (iter->m_IsStatic) 
-				iter->setupUniforms(shader, numStaticLights++);
+				iter->setupUniforms(shader, numStaticSpotLights++);
 		}
-		shader->setUniform1i("numSpotLights", numStaticLights);
+
+		shader->setUniform4i("numDirPointSpotLights", glm::ivec4(numStaticDirLights, numStaticPointLights, numStaticSpotLights, 0));
 	}
 
 
