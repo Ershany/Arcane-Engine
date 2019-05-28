@@ -20,7 +20,7 @@
 #define LIGHT_PROBE_RESOLUTION 32
 #define REFLECTION_PROBE_MIP_COUNT 5
 #define REFLECTION_PROBE_RESOLUTION 128
-#define IBL_CAPTURE_RESOLUTION 256
+#define IBL_CAPTURE_RESOLUTION 256 // Should always be greater than the light and reflection probe resolution
 #define BRDF_LUT_RESOLUTION 512
 
 // Frustum Options

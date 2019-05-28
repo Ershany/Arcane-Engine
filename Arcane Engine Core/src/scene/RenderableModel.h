@@ -21,6 +21,7 @@ namespace arcane {
 		inline const glm::quat& getOrientation() const { return m_Orientation; }
 		inline const RenderableModel* getParent() const { return m_Parent; }
 		inline bool getTransparent() const { return m_IsTransparent; }
+		inline bool getStatic() const { return m_IsStatic; }
 
 		inline void setPosition(glm::vec3 &other) { m_Position = other; }
 		inline void setScale(glm::vec3 &other) { m_Scale = other; }

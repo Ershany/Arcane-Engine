@@ -23,7 +23,7 @@ namespace arcane {
 			delete m_ShadowmapFramebuffer;
 	}
 
-	ShadowmapPassOutput ShadowmapPass::generateShadowmaps(ICamera *camera) {
+	ShadowmapPassOutput ShadowmapPass::generateShadowmaps(ICamera *camera, bool renderOnlyStatic) {
 		// TODO: Add rendering state changes (to ensure proper state)
 		glViewport(0, 0, m_ShadowmapFramebuffer->getWidth(), m_ShadowmapFramebuffer->getHeight());
 		m_ShadowmapFramebuffer->bind();
@@ -43,8 +43,15 @@ namespace arcane {
 		glm::mat4 directionalLightViewProjMatrix = directionalLightProjection * directionalLightView;
 		m_ShadowmapShader->setUniformMat4("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);
 
+		// Setup model renderer
+		if (renderOnlyStatic) {
+			m_ActiveScene->addStaticModelsToRenderer();
+		}
+		else {
+			m_ActiveScene->addModelsToRenderer();
+		}
+
 		// Render models
-		m_ActiveScene->addModelsToRenderer();
 		modelRenderer->flushOpaque(m_ShadowmapShader, m_RenderPassType);
 		modelRenderer->flushTransparent(m_ShadowmapShader, m_RenderPassType);
 

@@ -13,7 +13,7 @@ namespace arcane {
 		ShadowmapPass(Scene3D *scene, Framebuffer *customFramebuffer);
 		virtual ~ShadowmapPass() override;
 
-		ShadowmapPassOutput generateShadowmaps(ICamera *camera);
+		ShadowmapPassOutput generateShadowmaps(ICamera *camera, bool renderOnlyStatic);
 	private:
 		bool m_AllocatedFramebuffer;
 		Framebuffer *m_ShadowmapFramebuffer;

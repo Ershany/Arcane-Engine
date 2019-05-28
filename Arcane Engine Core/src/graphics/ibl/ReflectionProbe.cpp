@@ -5,8 +5,8 @@ namespace arcane {
 
 	Texture* ReflectionProbe::s_BRDF_LUT = nullptr;
 
-	ReflectionProbe::ReflectionProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution, bool isStatic)
-		: m_Position(probePosition), m_ProbeResolution(probeResolution), m_IsStatic(isStatic), m_Generated(false), m_PrefilterMap(nullptr)
+	ReflectionProbe::ReflectionProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution)
+		: m_Position(probePosition), m_ProbeResolution(probeResolution), m_Generated(false), m_PrefilterMap(nullptr)
 	{}
 
 	ReflectionProbe::~ReflectionProbe() {

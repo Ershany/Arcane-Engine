@@ -4,6 +4,6 @@
 namespace arcane {
 
 	Light::Light(glm::vec3 &lightColour) 
-		: m_LightColour(lightColour), m_IsActive(true), m_IsStatic(false) {}
+		: m_LightColour(lightColour), m_IsStatic(false) {}
 
 }

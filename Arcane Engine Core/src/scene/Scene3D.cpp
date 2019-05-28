@@ -43,7 +43,7 @@ namespace arcane {
 
 		// Temp code until I rewrite the model loader
 		Model *pbrGun = new arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
-		m_RenderableModels.push_back(new RenderableModel(glm::vec3(120.0f, 75.0f, 120.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), pbrGun, nullptr, false, false));
+		m_RenderableModels.push_back(new RenderableModel(glm::vec3(120.0f, 75.0f, 120.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), pbrGun, nullptr, true, false));
 		//pbrGun->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_A.tga"), true));
 		//pbrGun->getMeshes()[0].getMaterial().setNormalMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga"), false));
 		//pbrGun->getMeshes()[0].getMaterial().setMetallicMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga"), false));
@@ -58,7 +58,7 @@ namespace arcane {
 			for (int col = 0; col < nrColumns; col++) {
 				Model *sphere = new arcane::Model("res/3D_Models/Sphere/globe-sphere.obj");
 				Material &mat = sphere->getMeshes()[0].getMaterial();
-				//mat.setAlbedoMap(TextureLoader::getDefaultAO());
+				mat.setAlbedoMap(TextureLoader::getDefaultAO());
 				mat.setNormalMap(TextureLoader::getDefaultNormal());
 				mat.setAmbientOcclusionMap(TextureLoader::getDefaultAO());
 				mat.setMetallicMap(TextureLoader::getFullMetallic());
@@ -87,21 +87,32 @@ namespace arcane {
 		m_DynamicLightManager.setSpotLightPosition(0, m_SceneCamera.getPosition());
 	}
 
-	void Scene3D::onRender() {
-
-	}
-
 	void Scene3D::addModelsToRenderer() {
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
 			if (curr->getTransparent()) {
-				m_ModelRenderer.submitTransparent(curr);
+				m_ModelRenderer.submitTransparent(curr); 
 			}
 			else {
 				m_ModelRenderer.submitOpaque(curr);
 			}
+			iter++;
+		}
+	}
 
+	void Scene3D::addStaticModelsToRenderer() {
+		auto iter = m_RenderableModels.begin();
+		while (iter != m_RenderableModels.end()) {
+			RenderableModel *curr = *iter;
+			if (curr->getStatic()) {
+				if (curr->getTransparent()) {
+					m_ModelRenderer.submitTransparent(curr);
+				}
+				else {
+					m_ModelRenderer.submitOpaque(curr);
+				}
+			}
 			iter++;
 		}
 	}

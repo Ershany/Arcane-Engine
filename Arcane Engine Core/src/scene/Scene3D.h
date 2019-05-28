@@ -19,9 +19,9 @@ namespace arcane {
 		~Scene3D();
 
 		void onUpdate(float deltaTime);
-		void onRender();
 
 		void addModelsToRenderer();
+		void addStaticModelsToRenderer();
 
 		inline ModelRenderer* getModelRenderer() { return &m_ModelRenderer; }
 		inline Terrain* getTerrain() { return &m_Terrain; }

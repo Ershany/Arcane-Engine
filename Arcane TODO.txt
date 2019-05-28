@@ -14,7 +14,6 @@ Skybox:
 -Should be HDR
 
 IBL:
--Should only render static entities (models and lights atm) to each reflection and light probe. This also means each entity needs a static class or type that shouldn't let you change it's properties. Lights also need to be optional when using the PBR fragment shader cause right now directional and spotlight are required
 -Also should ensure proper state is set (ie multisample etc)
 -Also look into RenderPassType and see if that is the best way or if we should just do render specific stuff (ie NOMATERIAL)
 -Proper probe blending will need to be implemented
