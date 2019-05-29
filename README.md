@@ -16,5 +16,12 @@ Arcane Engine uses:
 
 Below are images showcasing the current state of the engine:
 ![sponza](https://user-images.githubusercontent.com/11170417/44693363-60dec180-aa35-11e8-8e06-8f305222a724.png)
+![ArcanePBR+IBL](https://user-images.githubusercontent.com/11170417/58596408-f7007c00-8241-11e9-895c-cab452548672.png)
 
-This README will be updated in the future with more information.
+
+## Contributing
+1. Fork it (https://github.com/Ershany/Arcane-Engine.git)
+1. Create your feature branch (`git checkout -b new-feature-branch`)
+1. Commit your changes (`git commit -m "A description for your feature"`)
+1. Push to the branch (`git push origin new-feature-branch`)
+1. Create a new Pull Request
