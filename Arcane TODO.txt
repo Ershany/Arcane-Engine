@@ -1,6 +1,6 @@
 Nice To Have:
+-Also should ensure proper state is set (ie multisample etc)
 -Move Anistropic amount querying to the defs.h or something instead of querying the driver for every texture
--Better define the render passes with names so RenderDoc can easily see the passes
 
 Normal mapping:
 -Make normal mapping code work on terrain (need to calculate tangents and bitangents for terrain vertices)
@@ -8,12 +8,10 @@ Normal mapping:
 
 PBR:
 -Make the terrain use a PBR shader
--Terrain needs multiple light support (only supports 1 atm)
 
 Skybox:
 -Should be HDR
 
 IBL:
--Also should ensure proper state is set (ie multisample etc)
--Also look into RenderPassType and see if that is the best way or if we should just do render specific stuff (ie NOMATERIAL)
 -Proper probe blending will need to be implemented
+-Better system for binding
