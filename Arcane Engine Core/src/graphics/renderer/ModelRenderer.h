@@ -6,6 +6,7 @@
 #include <graphics/camera/FPSCamera.h>
 #include <graphics/mesh/Model.h>
 #include <graphics/mesh/common/Quad.h>
+#include <graphics/mesh/common/Cube.h>
 #include <graphics/renderer/renderpass/RenderPassType.h>
 
 namespace arcane {
@@ -21,6 +22,7 @@ namespace arcane {
 		void flushTransparent(Shader *shader, RenderPassType pass);
 	public:
 		Quad NDC_Plane;
+		Cube NDC_Cube;
 	private:
 		void ModelRenderer::setupModelMatrix(RenderableModel *renderable, Shader *shader, RenderPassType pass);
 

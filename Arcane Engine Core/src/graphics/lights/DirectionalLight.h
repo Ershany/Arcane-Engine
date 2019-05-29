@@ -1,16 +1,19 @@
 #pragma once
 
-#include "DynamicLight.h"
+#include "Light.h"
 
 namespace arcane {
+	
+	class DynamicLightManager;
 
-	struct DirectionalLight : public DynamicLight {
+	class DirectionalLight : public Light {
+		friend DynamicLightManager;
+	public:
 		DirectionalLight(glm::vec3 &lightColour, glm::vec3 &dir);
 
 		virtual void setupUniforms(Shader *shader, int currentLightIndex) override;
-
-
-		glm::vec3 direction;
+	private:
+		glm::vec3 m_Direction;
 	};
 
 }

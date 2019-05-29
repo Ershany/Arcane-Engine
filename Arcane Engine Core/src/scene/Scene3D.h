@@ -3,8 +3,8 @@
 #include <graphics/Skybox.h>
 #include <graphics/Window.h>
 #include <graphics/camera/FPSCamera.h>
-#include <graphics/dynamic lights/DynamicLightManager.h>
-#include <graphics/ibl/EnvironmentProbeManager.h>
+#include <graphics/lights/DynamicLightManager.h>
+#include <graphics/ibl/ProbeManager.h>
 #include <graphics/renderer/GLCache.h>
 #include <graphics/renderer/ModelRenderer.h>
 #include <scene/RenderableModel.h>
@@ -19,14 +19,14 @@ namespace arcane {
 		~Scene3D();
 
 		void onUpdate(float deltaTime);
-		void onRender();
 
 		void addModelsToRenderer();
+		void addStaticModelsToRenderer();
 
 		inline ModelRenderer* getModelRenderer() { return &m_ModelRenderer; }
 		inline Terrain* getTerrain() { return &m_Terrain; }
 		inline DynamicLightManager* getDynamicLightManager() { return &m_DynamicLightManager; }
-		inline EnvironmentProbeManager* getProbeManager() { return &m_ProbeManager; }
+		inline ProbeManager* getProbeManager() { return &m_ProbeManager; }
 		inline FPSCamera* getCamera() { return &m_SceneCamera; }
 		inline Skybox* getSkybox() { return m_Skybox; }
 	private:
@@ -36,7 +36,7 @@ namespace arcane {
 		GLCache *m_GLCache;
 
 		// Scene parameters
-		EnvironmentProbeBlendSetting m_SceneProbeBlendSetting = PROBES_SIMPLE;
+		ProbeBlendSetting m_SceneProbeBlendSetting = PROBES_SIMPLE;
 
 		// Scene Specific Data
 		FPSCamera m_SceneCamera;
@@ -44,7 +44,7 @@ namespace arcane {
 		ModelRenderer m_ModelRenderer;
 		Terrain m_Terrain;
 		DynamicLightManager m_DynamicLightManager;
-		EnvironmentProbeManager m_ProbeManager;
+		ProbeManager m_ProbeManager;
 		std::vector<RenderableModel*> m_RenderableModels;
 	};
 

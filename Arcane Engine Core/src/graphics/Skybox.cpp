@@ -51,7 +51,7 @@ namespace arcane {
 	}
 
 	void Skybox::Draw(ICamera *camera) {
-		m_SkyboxShader->enable();
+		m_GLCache->switchShader(m_SkyboxShader);
 
 		// Pass the texture to the shader
 		m_SkyboxCubemap->bind(0);
@@ -69,7 +69,7 @@ namespace arcane {
 		m_SkyboxIBO.unbind();
 		m_GLCache->setDepthFunc(GL_LESS);
 
-		m_SkyboxShader->disable();
+		m_SkyboxCubemap->unbind();
 	}
 
 }

@@ -42,6 +42,8 @@ namespace arcane {
 
 		// Don't use this to bind the texture and use it. Call the Bind() function instead
 		inline unsigned int getTextureId() { return m_TextureId; }
+		inline unsigned int getWidth() { return m_Width; }
+		inline unsigned int getHeight() { return m_Height; }
 	private:
 		unsigned int m_TextureId;
 		GLenum m_TextureTarget;

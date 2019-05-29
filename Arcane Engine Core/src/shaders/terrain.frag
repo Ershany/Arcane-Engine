@@ -36,7 +36,9 @@ struct SpotLight {
 	vec3 lightColour; // radiant flux
 };
 
+#define MAX_DIR_LIGHTS 5
 #define MAX_POINT_LIGHTS 5
+#define MAX_SPOT_LIGHTS 5
 
 in vec2 TexCoords;
 in vec3 Normal;
@@ -46,10 +48,10 @@ in vec4 FragPosLightClipSpace;
 out vec4 color;
 
 uniform sampler2D shadowmap;
-uniform int numPointLights;
-uniform DirLight dirLight;
+uniform ivec4 numDirPointSpotLights;
+uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
-uniform SpotLight spotLight;
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 uniform Material material;
 uniform vec3 viewPos;
@@ -73,17 +75,27 @@ void main() {
 	vec3 rTextureColour = texture(material.texture_diffuse2, tiledCoords).rgb * blendMapColour.r;
 	vec3 gTextureColour = texture(material.texture_diffuse3, tiledCoords).rgb * blendMapColour.g;
 	vec3 bTextureColour = texture(material.texture_diffuse4, tiledCoords).rgb * blendMapColour.b;
+	vec3 blendedTexture = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
+
+	vec3 terrainColour = vec3(0.0);
+
+	for (int i = 0; i < numDirPointSpotLights.x; ++i) {
+		terrainColour += CalcDirLight(dirLights[i], norm, fragToCam);
+	}
+	for (int i = 0; i < numDirPointSpotLights.y; ++i) {
+		terrainColour += CalcPointLight(pointLights[i], norm, FragPos, fragToCam);
+	}
+	for (int i = 0; i < numDirPointSpotLights.z; ++i) {
+		terrainColour += CalcSpotLight(spotLights[i], norm, FragPos);
+	}
 	
-	vec3 terrainColour = (backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour) * 
-						 (CalcDirLight(dirLight, norm, fragToCam) + CalcSpotLight(spotLight, norm, FragPos) + CalcPointLight(pointLights[0], norm, FragPos, fragToCam));
-	
+	terrainColour = terrainColour * blendedTexture;
 	
 	// Result
 	color = vec4(terrainColour, 1.0);
-	//color = vec4(Normal, 1.0);
-	//color = vec4(vec3(gl_FragCoord.z), 1.0); //depth buffer display
 }
 
+// TODO: Need to also add multiple shadow support
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam) {
 	vec3 fragToLight = normalize(-light.direction);
 

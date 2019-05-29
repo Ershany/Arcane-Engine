@@ -21,6 +21,7 @@ namespace arcane {
 		inline const glm::quat& getOrientation() const { return m_Orientation; }
 		inline const RenderableModel* getParent() const { return m_Parent; }
 		inline bool getTransparent() const { return m_IsTransparent; }
+		inline bool getStatic() const { return m_IsStatic; }
 
 		inline void setPosition(glm::vec3 &other) { m_Position = other; }
 		inline void setScale(glm::vec3 &other) { m_Scale = other; }
@@ -28,15 +29,16 @@ namespace arcane {
 		inline void setTransparent(bool choice) { m_IsTransparent = choice; }
 		inline void setParent(RenderableModel *parent) { m_Parent = parent; }
 	private:
+		// Transformation data
 		glm::vec3 m_Position, m_Scale;
 		glm::quat m_Orientation;
 
 		RenderableModel *m_Parent;
 		std::vector<RenderableModel*> m_Children;
-
-		bool m_IsTransparent;
-		bool m_IsStatic;
 		Model *m_Model;
+
+		bool m_IsTransparent; // Should be true if the model contains any translucent material
+		bool m_IsStatic;	  // Should be true if the model will never have its transform modified
 	};
 
 }

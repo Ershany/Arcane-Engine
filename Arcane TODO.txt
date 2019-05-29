@@ -1,13 +1,6 @@
-TODO:
--Implement a proper scene graph
--Need support for textures/cubemaps de-allocation/cleanup. So streaming support can be easier integrated into the engine in the future. This would also allowing the streaming of environment probes
-
 Nice To Have:
+-Also should ensure proper state is set (ie multisample etc)
 -Move Anistropic amount querying to the defs.h or something instead of querying the driver for every texture
--Better define the render passes with names so RenderDoc can easily see the passes
-
-Shadow mapping:
--Investigate crappy shadows
 
 Normal mapping:
 -Make normal mapping code work on terrain (need to calculate tangents and bitangents for terrain vertices)
@@ -15,11 +8,10 @@ Normal mapping:
 
 PBR:
 -Make the terrain use a PBR shader
--Terrain needs multiple light support (only supports 1 atm)
+
+Skybox:
+-Should be HDR
 
 IBL:
--Implement Diffuse IBL in the shader (and work around when nothing is bound)
--Implement Specular IBL in the shader (and work around when nothing is bound)
--Might need support for asset pipelines, since baked IBL probes will need to be stored on disk and procesed
--Implement environment probes that will generate all of the needed stuff offline
 -Proper probe blending will need to be implemented
+-Better system for binding

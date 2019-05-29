@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <array>
 #include <iterator>
+#include <fstream>
 
 #include <gl/glew.h>
 
