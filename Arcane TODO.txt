@@ -14,4 +14,4 @@ Skybox:
 
 IBL:
 -Proper probe blending will need to be implemented
--Better system for binding
+-A more efficient system for selecting which probes to blend (ideally using a quadtree)

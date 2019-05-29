@@ -17,6 +17,7 @@ namespace arcane {
 		void bind(Shader *shader);
 
 		// Getters
+		inline glm::vec3& getPosition() { return m_Position; }
 		inline Cubemap* getPrefilterMap() { return m_PrefilterMap; }
 		static inline Texture* getBRDFLUT() { return s_BRDF_LUT; }
 

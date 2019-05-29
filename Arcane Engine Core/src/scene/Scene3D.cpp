@@ -50,23 +50,13 @@ namespace arcane {
 		//pbrGun->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga"), false));
 		//pbrGun->getMeshes()[0].getMaterial().setAmbientOcclusionMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga"), false));
 
-		// Temp testing code
-		int nrRows = 1;
-		int nrColumns = 1;
-		float spacing = 2.5;
-		for (int row = 0; row < nrRows; row++) {
-			for (int col = 0; col < nrColumns; col++) {
-				Model *sphere = new arcane::Model("res/3D_Models/Sphere/globe-sphere.obj");
-				Material &mat = sphere->getMeshes()[0].getMaterial();
-				mat.setAlbedoMap(TextureLoader::getDefaultAO());
-				mat.setNormalMap(TextureLoader::getDefaultNormal());
-				mat.setAmbientOcclusionMap(TextureLoader::getDefaultAO());
-				mat.setMetallicMap(TextureLoader::getFullMetallic());
-				mat.setRoughnessMap(TextureLoader::getNoRoughness());
-				m_RenderableModels.push_back(new RenderableModel(glm::vec3((float)(col - (nrColumns / 2)) * spacing + 60,
-					(float)(row - (nrRows / 2)) * spacing + 90, 130.0f), glm::vec3(20.0f, 20.0f, 20.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, sphere, nullptr, false, false));
-			}
-		}
+		Model *hyruleShield = new arcane::Model("res/3D_Models/Hyrule_Shield/HShield.obj");
+		m_RenderableModels.push_back(new RenderableModel(glm::vec3(67.0f, 92.0f, 133.0f), glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), hyruleShield, nullptr, false, false));
+		//hyruleShield->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Albedo].tga"), true));
+		//hyruleShield->getMeshes()[0].getMaterial().setNormalMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Normal].tga"), false));
+		//hyruleShield->getMeshes()[0].getMaterial().setMetallicMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Metallic].tga"), false));
+		//hyruleShield->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Roughness].tga"), false));
+		//hyruleShield->getMeshes()[0].getMaterial().setAmbientOcclusionMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Occlusion].tga"), false));
 
 		// Skybox
 		std::vector<std::string> skyboxFilePaths;
