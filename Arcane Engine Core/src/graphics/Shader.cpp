@@ -4,13 +4,25 @@
 namespace arcane {
 
 	Shader::Shader(const char *vertPath, const char *fragPath)
-		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath("")
+		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(""), m_HullShader(""), m_DomainShader("")
 	{
 		m_ShaderID = load();
 	}
 
 	Shader::Shader(const char *vertPath, const char *fragPath, const char *geoPath)
-		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(geoPath)
+		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(geoPath), m_HullShader(""), m_DomainShader("")
+	{
+		m_ShaderID = load();
+	}
+
+	Shader::Shader(const char *vertPath, const char *fragPath, const char *hullPath, const char *domainPath)
+		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(""), m_HullShader(hullPath), m_DomainShader(domainPath)
+	{
+		m_ShaderID = load();
+	}
+
+	Shader::Shader(const char *vertPath, const char *fragPath, const char *geoPath, const char *hullPath, const char *domainPath)
+		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(geoPath), m_HullShader(hullPath), m_DomainShader(domainPath)
 	{
 		m_ShaderID = load();
 	}
@@ -20,21 +32,17 @@ namespace arcane {
 	}
 
 	unsigned int Shader::load() {
-		// Create the program and shaders
+		// Create the program
 		unsigned int program = glCreateProgram();
-		unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
-		unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
-
-		// Variables need to be declared or the character pointers will become dangling pointers
-		std::string vertSourceString = FileUtils::readFile(m_VertPath);
-		std::string fragSourceString = FileUtils::readFile(m_FragPath);
-		const char *vertSource = vertSourceString.c_str();
-		const char *fragSource = fragSourceString.c_str();
+		int result;
 
 		// Vertex Shader
+		unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
+		std::string vertSourceString = FileUtils::readFile(m_VertPath);
+		const char *vertSource = vertSourceString.c_str();
+
 		glShaderSource(vertex, 1, &vertSource, NULL);
 		glCompileShader(vertex);
-		int result;
 
 		// Check to see if it was successful
 		glGetShaderiv(vertex, GL_COMPILE_STATUS, &result);
@@ -56,6 +64,10 @@ namespace arcane {
 		}
 
 		//Fragment Shader
+		unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
+		std::string fragSourceString = FileUtils::readFile(m_FragPath);
+		const char *fragSource = fragSourceString.c_str();
+
 		glShaderSource(fragment, 1, &fragSource, NULL);
 		glCompileShader(fragment);
 
@@ -78,17 +90,15 @@ namespace arcane {
 			return 0;
 		}
 
+		// Geometry shader (optional)
 		unsigned int geometry;
-		// Check to see if a geometry shader was supplied
 		if (m_GeomPath != "") {
 			geometry = glCreateShader(GL_GEOMETRY_SHADER);
 			std::string geomSourceString = FileUtils::readFile(m_GeomPath);
 			const char *geomSource = geomSourceString.c_str();
 
-			// Geometry Shader
 			glShaderSource(geometry, 1, &geomSource, NULL);
 			glCompileShader(geometry);
-			int result;
 
 			// Check to see if it was successful
 			glGetShaderiv(geometry, GL_COMPILE_STATUS, &result);
@@ -110,11 +120,74 @@ namespace arcane {
 			}
 		}
 
+		// Hull Shader (optional)
+		unsigned int hull;
+		if (m_HullShader != "") {
+			hull = glCreateShader(GL_TESS_CONTROL_SHADER);
+			std::string hullSourceString = FileUtils::readFile(m_HullShader);
+			const char *hullSource = hullSourceString.c_str();
+
+			glShaderSource(hull, 1, &hullSource, NULL);
+			glCompileShader(hull);
+
+			glGetShaderiv(hull, GL_COMPILE_STATUS, &result);
+			if (result == GL_FALSE) {
+				int length;
+				glGetShaderiv(hull, GL_INFO_LOG_LENGTH, &length);
+				if (length > 0) {
+					std::vector<char> error(length);
+					glGetShaderInfoLog(hull, length, &length, &error[0]);
+					std::string errorString(error.begin(), error.end());
+
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_HullShader, errorString);
+				}
+				else {
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_HullShader, "error unknown");
+				}
+				glDeleteShader(hull);
+				return 0;
+			}
+		}
+
+		// Domain Shader (optional)
+		unsigned int domain;
+		if (m_DomainShader != "") {
+			domain = glCreateShader(GL_TESS_EVALUATION_SHADER);
+			std::string domainSourceString = FileUtils::readFile(m_DomainShader);
+			const char *domainSource = domainSourceString.c_str();
+
+			glShaderSource(domain, 1, &domainSource, NULL);
+			glCompileShader(domain);
+
+			glGetShaderiv(domain, GL_COMPILE_STATUS, &result);
+			if (result == GL_FALSE) {
+				int length;
+				glGetShaderiv(domain, GL_INFO_LOG_LENGTH, &length);
+				if (length > 0) {
+					std::vector<char> error(length);
+					glGetShaderInfoLog(domain, length, &length, &error[0]);
+					std::string errorString(error.begin(), error.end());
+
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_DomainShader, errorString);
+				}
+				else {
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_DomainShader, "error unknown");
+				}
+				glDeleteShader(domain);
+				return 0;
+			}
+		}
+
 		// Attach the shaders to the program and link them
 		glAttachShader(program, vertex);
 		glAttachShader(program, fragment);
 		if (m_GeomPath != "")
 			glAttachShader(program, geometry);
+		if (m_HullShader != "")
+			glAttachShader(program, hull);
+		if (m_DomainShader != "")
+			glAttachShader(program, domain);
+
 		glLinkProgram(program);
 		glValidateProgram(program);
 
@@ -123,6 +196,10 @@ namespace arcane {
 		glDeleteShader(fragment);
 		if (m_GeomPath != "")
 			glDeleteShader(geometry);
+		if (m_HullShader != "")
+			glDeleteShader(hull);
+		if (m_DomainShader != "")
+			glDeleteShader(domain);
 
 		// Return the program id
 		return program;

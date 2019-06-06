@@ -126,6 +126,8 @@
     <ClCompile Include="src\platform\OpenGL\VertexArray.cpp" />
     <ClCompile Include="src\scene\Scene3D.cpp" />
     <ClCompile Include="src\terrain\Terrain.cpp" />
+    <ClCompile Include="src\terrain\TerrainNode.cpp" />
+    <ClCompile Include="src\terrain\TerrainQuadtree.cpp" />
     <ClCompile Include="src\ui\DebugPane.cpp" />
     <ClCompile Include="src\ui\Pane.cpp" />
     <ClCompile Include="src\ui\RuntimePane.cpp" />
@@ -197,6 +199,8 @@
     <ClInclude Include="src\platform\OpenGL\VertexArray.h" />
     <ClInclude Include="src\scene\Scene3D.h" />
     <ClInclude Include="src\terrain\Terrain.h" />
+    <ClInclude Include="src\terrain\TerrainNode.h" />
+    <ClInclude Include="src\terrain\TerrainQuadtree.h" />
     <ClInclude Include="src\ui\DebugPane.h" />
     <ClInclude Include="src\ui\Pane.h" />
     <ClInclude Include="src\ui\RuntimePane.h" />
@@ -236,6 +240,8 @@
     <None Include="src\shaders\spotlight.frag" />
     <None Include="src\shaders\terrain.vert" />
     <None Include="src\shaders\terrain.frag" />
+    <None Include="src\shaders\terrain\pbr_terrain.frag" />
+    <None Include="src\shaders\terrain\pbr_terrain.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

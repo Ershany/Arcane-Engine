@@ -180,6 +180,12 @@
     <ClCompile Include="src\graphics\lights\Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\terrain\TerrainQuadtree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\terrain\TerrainNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\Window.h">
@@ -365,6 +371,12 @@
     <ClInclude Include="src\graphics\lights\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\terrain\TerrainQuadtree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\terrain\TerrainNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\spotlight.frag" />
@@ -386,6 +398,8 @@
     <None Include="src\shaders\reflectionprobe_importance_sampling.frag" />
     <None Include="src\shaders\brdf_integration.vert" />
     <None Include="src\shaders\brdf_integration.frag" />
+    <None Include="src\shaders\terrain\pbr_terrain.frag" />
+    <None Include="src\shaders\terrain\pbr_terrain.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
