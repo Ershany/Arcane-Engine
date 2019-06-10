@@ -16,12 +16,18 @@ namespace arcane {
 
 		inline const glm::vec3& getPosition() const { return m_Position; }
 	private:
-		glm::vec3 calculateNormal(unsigned int x, unsigned int z, unsigned char *heightMapData);
-		float getVertexHeight(unsigned int x, unsigned int y, unsigned char *heightMapData);
+		glm::vec3 calculateNormal(float worldPosX, float worldPosZ, unsigned char *heightMapData);
 
-		float m_TerrainSize;
-		unsigned int m_VertexSideCount;
-		GLushort m_HeightMapScale;
+		float sampleHeightfieldBilinear(float worldPosX, float worldPosZ, unsigned char *heightMapData);
+		float sampleHeightfieldNearest(float worldPosX, float worldPosZ, unsigned char *heightMapData);
+
+		float Terrain::clamp(float n, float lower, float upper);
+	private:
+		float m_TerrainSizeXZ, m_TerrainSizeY;
+		float m_SpaceBetweenVertices;
+		float m_TerrainToHeightfieldTextureConversion;
+		unsigned int m_HeightfieldTextureSize;
+		unsigned int m_SideVertexCount;
 
 		glm::mat4 m_ModelMatrix;
 		glm::vec3 m_Position;
