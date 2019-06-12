@@ -1,2 +1,2 @@
-(src/shaders/terrain.frag): 0(86) : error C1020: invalid operands to "<"
+(src/shaders/terrain.frag): 0(74) : error C1503: undefined variable "tilingAmount"
 

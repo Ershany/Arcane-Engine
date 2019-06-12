@@ -12,6 +12,7 @@ struct Material {
 	sampler2D texture_normal4; // b texture
 	sampler2D blendmap;
 	float shininess;
+	float tilingAmount;
 };
 
 struct DirLight {
@@ -70,7 +71,7 @@ void main() {
 	
 	float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
 	
-	vec2 tiledCoords = TexCoords * 64;
+	vec2 tiledCoords = TexCoords * material.tilingAmount;
 	vec3 backgroundTextureColour = texture(material.texture_diffuse1, tiledCoords).rgb * backTextureAmount;
 	vec3 rTextureColour = texture(material.texture_diffuse2, tiledCoords).rgb * blendMapColour.r;
 	vec3 gTextureColour = texture(material.texture_diffuse3, tiledCoords).rgb * blendMapColour.g;

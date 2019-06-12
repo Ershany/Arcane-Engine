@@ -23,11 +23,15 @@ namespace arcane {
 
 		float Terrain::clamp(float n, float lower, float upper);
 	private:
+		// Tweakable Terrain Variables
+		float m_TextureTilingAmount;
 		float m_TerrainSizeXZ, m_TerrainSizeY;
+		unsigned int m_SideVertexCount;
+
+		// Non-Tweakable Terrain Varialbes
 		float m_SpaceBetweenVertices;
 		float m_TerrainToHeightfieldTextureConversion;
 		unsigned int m_HeightfieldTextureSize;
-		unsigned int m_SideVertexCount;
 
 		glm::mat4 m_ModelMatrix;
 		glm::vec3 m_Position;

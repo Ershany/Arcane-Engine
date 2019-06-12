@@ -16,6 +16,7 @@ namespace arcane {
 		}
 
 		// Terrain information
+		m_TextureTilingAmount = 128;
 		m_HeightfieldTextureSize = mapWidth;
 		m_SideVertexCount = mapWidth * 0.25f;
 		m_TerrainSizeXZ = 2048.0;
@@ -82,6 +83,8 @@ namespace arcane {
 	void Terrain::Draw(Shader *shader, RenderPassType pass) const {
 		// Texture unit 0 is reserved for the shadowmap
 		if (pass != RenderPassType::ShadowmapPassType) {
+			shader->setUniform1f("material.tilingAmount", m_TextureTilingAmount);
+
 			m_Textures[0]->bind(1);
 			shader->setUniform1i("material.texture_diffuse1", 1);
 			m_Textures[1]->bind(2);
