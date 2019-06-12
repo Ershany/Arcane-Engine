@@ -41,8 +41,8 @@ struct SpotLight {
 #define MAX_POINT_LIGHTS 5
 #define MAX_SPOT_LIGHTS 5
 
+in mat3 TBN;
 in vec2 TexCoords;
-in vec3 Normal;
 in vec3 FragPos;
 in vec4 FragPosLightClipSpace;
 
@@ -61,36 +61,44 @@ uniform vec3 viewPos;
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 fragToCam);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 fragToCam);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos);
+vec3 UnpackNormal(vec3 textureNormal);
 float CalculateShadow(vec3 normal, vec3 fragToDirLight);
 
 void main() {
-	vec3 norm = normalize(Normal);
-	vec3 fragToCam = normalize(viewPos - FragPos);
-
 	vec4 blendMapColour = texture(material.blendmap, TexCoords);
 	
-	float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
+	float backTextureWeight = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
 	
 	vec2 tiledCoords = TexCoords * material.tilingAmount;
-	vec3 backgroundTextureColour = texture(material.texture_diffuse1, tiledCoords).rgb * backTextureAmount;
+
+	vec3 backgroundTextureColour = texture(material.texture_diffuse1, tiledCoords).rgb * backTextureWeight;
 	vec3 rTextureColour = texture(material.texture_diffuse2, tiledCoords).rgb * blendMapColour.r;
 	vec3 gTextureColour = texture(material.texture_diffuse3, tiledCoords).rgb * blendMapColour.g;
 	vec3 bTextureColour = texture(material.texture_diffuse4, tiledCoords).rgb * blendMapColour.b;
-	vec3 blendedTexture = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
+	vec3 blendedTextureColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
 
+	vec3 backgroundTextureNormal = UnpackNormal(texture(material.texture_normal1, tiledCoords).rgb) * backTextureWeight;
+	vec3 rTextureNormal = UnpackNormal(texture(material.texture_normal2, tiledCoords).rgb) * blendMapColour.r;
+	vec3 gTextureNormal = UnpackNormal(texture(material.texture_normal3, tiledCoords).rgb) * blendMapColour.g;
+	vec3 bTextureNormal = UnpackNormal(texture(material.texture_normal4, tiledCoords).rgb) * blendMapColour.b;
+	vec3 blendedTextureNormal = normalize(backgroundTextureNormal + rTextureNormal + gTextureNormal + bTextureNormal);
+
+	// Perform lighting on the terrain
+	vec3 normal = normalize(TBN * blendedTextureNormal);
+	vec3 fragToCam = normalize(viewPos - FragPos);
 	vec3 terrainColour = vec3(0.0);
 
 	for (int i = 0; i < numDirPointSpotLights.x; ++i) {
-		terrainColour += CalcDirLight(dirLights[i], norm, fragToCam);
+		terrainColour += CalcDirLight(dirLights[i], normal, fragToCam);
 	}
 	for (int i = 0; i < numDirPointSpotLights.y; ++i) {
-		terrainColour += CalcPointLight(pointLights[i], norm, FragPos, fragToCam);
+		terrainColour += CalcPointLight(pointLights[i], normal, FragPos, fragToCam);
 	}
 	for (int i = 0; i < numDirPointSpotLights.z; ++i) {
-		terrainColour += CalcSpotLight(spotLights[i], norm, FragPos);
+		terrainColour += CalcSpotLight(spotLights[i], normal, FragPos);
 	}
 	
-	terrainColour = terrainColour * blendedTexture;
+	terrainColour = terrainColour * blendedTextureColour;
 	
 	// Result
 	color = vec4(terrainColour, 1.0);
@@ -139,6 +147,11 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos) {
 	vec3 diffuse = light.lightColour * intensity * attenuation;
 
 	return ambient + diffuse;
+}
+
+// Unpacks the normal from the texture and returns the normal in tangent space
+vec3 UnpackNormal(vec3 textureNormal) {
+	return normalize(textureNormal * 2.0 - 1.0);
 }
 
 float CalculateShadow(vec3 normal, vec3 fragToLight) {

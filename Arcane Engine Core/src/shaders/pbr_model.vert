@@ -7,9 +7,9 @@ layout (location = 3) in vec3 tangent;
 layout (location = 4) in vec3 bitangent;
 
 out mat3 TBN;
+out vec2 TexCoords;
 out vec3 FragPos;
 out vec4 FragPosLightClipSpace;
-out vec2 TexCoords;
 
 uniform mat3 normalMatrix;
 uniform mat4 model;
@@ -28,5 +28,5 @@ void main() {
 	FragPosLightClipSpace = lightSpaceViewProjectionMatrix * vec4(FragPos, 1.0);
 	TexCoords = texCoords;
 
-	gl_Position = projection * view * vec4(FragPos, 1.0f);
+	gl_Position = projection * view * vec4(FragPos, 1.0);
 }
