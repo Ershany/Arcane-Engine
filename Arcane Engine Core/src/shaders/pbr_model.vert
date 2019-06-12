@@ -21,8 +21,8 @@ void main() {
 	// Use the normal matrix to maintain the orthogonal property of a vector when it is scaled non-uniformly
 	vec3 T = normalize(normalMatrix * tangent);
 	vec3 B = normalize(normalMatrix * bitangent);
-    vec3 N = normalize(normalMatrix * normal);
-    TBN = mat3(T, B, N);
+	vec3 N = normalize(normalMatrix * normal);
+	TBN = mat3(T, B, N);
 
 	FragPos = vec3(model * vec4(position, 1.0f));
 	FragPosLightClipSpace = lightSpaceViewProjectionMatrix * vec4(FragPos, 1.0);
