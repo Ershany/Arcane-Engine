@@ -1,2 +1,0 @@
-(src/shaders/terrain.frag): 0(80) : error C1115: unable to find compatible overloaded function "texture(sampler2D)"
-

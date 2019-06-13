@@ -1,4 +1,1 @@
-(texture load fail - path:): res/3D_Models/Hyrule_Shield/Textures/HShield_[Normal].tga
-(texture load fail - path:): res/3D_Models/Hyrule_Shield/Textures/HShield_[Metallic].tga
-(texture load fail - path:): res/3D_Models/Hyrule_Shield/Textures/HShield_[Roughness].tga
-(texture load fail - path:): res/3D_Models/Hyrule_Shield/Textures/HShield_[Occlusion].tga
+(texture load fail - path:): res/terrain/rock/rockRoughness.png

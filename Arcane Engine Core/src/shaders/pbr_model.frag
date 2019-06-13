@@ -1,5 +1,6 @@
 #version 430 core
 
+// Does AMD support sampler2D in a struct?
 struct Material {
 	sampler2D texture_albedo;
 	sampler2D texture_normal;
@@ -11,13 +12,13 @@ struct Material {
 struct DirLight {
 	vec3 direction;
 
-	vec3 lightColour; // radiant flux
+	vec3 lightColour;
 };
 
 struct PointLight {
 	vec3 position;
 
-	vec3 lightColour; // radiant flux
+	vec3 lightColour;
 };
 
 struct SpotLight {
@@ -27,7 +28,7 @@ struct SpotLight {
 	float cutOff;
 	float outerCutOff;
 
-	vec3 lightColour; // radiant flux
+	vec3 lightColour;
 };
 
 #define MAX_DIR_LIGHTS 5

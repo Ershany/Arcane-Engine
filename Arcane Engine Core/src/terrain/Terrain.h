@@ -36,7 +36,7 @@ namespace arcane {
 		glm::mat4 m_ModelMatrix;
 		glm::vec3 m_Position;
 		Mesh *m_Mesh;
-		std::array<Texture*, 9> m_Textures; // Represents all the textures supported by the terrain's texure splatting (rgba and the default value)
+		std::array<Texture*, 21> m_Textures; // Represents all the textures supported by the terrain's texure splatting (rgba and the default value)
 	};
 
 }
