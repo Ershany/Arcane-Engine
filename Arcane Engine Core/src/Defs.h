@@ -25,7 +25,7 @@
 
 // Frustum Options
 #define NEAR_PLANE 0.1f
-#define FAR_PLANE 1000.0f
+#define FAR_PLANE 2000.0f
 
 // Shadowmap Options
 #define SHADOWMAP_RESOLUTION_X 2048

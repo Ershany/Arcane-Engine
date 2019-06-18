@@ -1,5 +1,6 @@
 #version 430 core
 
+// Does AMD support sampler2D in a struct?
 struct Material {
 	sampler2D texture_albedo;
 	sampler2D texture_normal;
@@ -11,13 +12,13 @@ struct Material {
 struct DirLight {
 	vec3 direction;
 
-	vec3 lightColour; // radiant flux
+	vec3 lightColour;
 };
 
 struct PointLight {
 	vec3 position;
 
-	vec3 lightColour; // radiant flux
+	vec3 lightColour;
 };
 
 struct SpotLight {
@@ -27,7 +28,7 @@ struct SpotLight {
 	float cutOff;
 	float outerCutOff;
 
-	vec3 lightColour; // radiant flux
+	vec3 lightColour;
 };
 
 #define MAX_DIR_LIGHTS 5
@@ -71,6 +72,7 @@ float GeometrySchlickGGX(float cosTheta, float roughness);
 vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity);
 
 // Other function prototypes
+vec3 UnpackNormal(vec3 textureNormal);
 float CalculateShadow(vec3 normal, vec3 fragToDirLight);
 
 void main() {
@@ -84,8 +86,7 @@ void main() {
 	float ao = texture(material.texture_ao, TexCoords).r;
 
 	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
-	normal = normalize(normal * 2.0f - 1.0f);
-	normal = normalize(TBN * normal);
+	normal = normalize(TBN * UnpackNormal(normal));
 	
 	vec3 fragToView = normalize(viewPos - FragPos);
 	vec3 reflectionVec = reflect(-fragToView, normal);
@@ -266,6 +267,12 @@ float GeometrySchlickGGX(float cosTheta, float roughness) {
 // Taken from UE4's implementation which is faster and basically identical to the usual Fresnel calculations: https://blog.selfshadow.com/publications/s2013-shading-course/karis/s2013_pbs_epic_notes_v2.pdf
 vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity) {
 	return max(baseReflectivity + (1.0 - baseReflectivity) * pow(2, (-5.55473 * cosTheta - 6.98316) * cosTheta), 0.0);
+}
+
+
+// Unpacks the normal from the texture and returns the normal in tangent space
+vec3 UnpackNormal(vec3 textureNormal) {
+	return normalize(textureNormal * 2.0 - 1.0);
 }
 
 

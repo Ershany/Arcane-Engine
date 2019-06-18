@@ -370,8 +370,6 @@
     <None Include="src\shaders\spotlight.frag" />
     <None Include="src\shaders\pointlight.frag" />
     <None Include="src\shaders\directionalLight.frag" />
-    <None Include="src\shaders\terrain.vert" />
-    <None Include="src\shaders\terrain.frag" />
     <None Include="src\shaders\skybox.frag" />
     <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\shadowmap.vert" />
@@ -386,6 +384,8 @@
     <None Include="src\shaders\reflectionprobe_importance_sampling.frag" />
     <None Include="src\shaders\brdf_integration.vert" />
     <None Include="src\shaders\brdf_integration.frag" />
+    <None Include="src\shaders\pbr_terrain.frag" />
+    <None Include="src\shaders\pbr_terrain.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

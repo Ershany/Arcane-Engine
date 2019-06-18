@@ -34,8 +34,8 @@ namespace arcane {
 		if (m_ProbeBlendSetting == PROBES_SIMPLE) {
 			// Light Probes
 			if (m_LightProbes.size() > 0) {
-				int closestIndex = 0;
-				for (int i = 1; i < m_LightProbes.size(); i++) {
+				unsigned int closestIndex = 0;
+				for (unsigned int i = 1; i < m_LightProbes.size(); i++) {
 					if (glm::length2(m_LightProbes[i]->getPosition() - renderPosition) < glm::length2(m_LightProbes[closestIndex]->getPosition() - renderPosition))
 						closestIndex = i;
 				}
@@ -48,8 +48,8 @@ namespace arcane {
 
 			// Reflection Probes
 			if (m_ReflectionProbes.size() > 0) {
-				int closestIndex = 0;
-				for (int i = 1; i < m_ReflectionProbes.size(); i++) {
+				unsigned int closestIndex = 0;
+				for (unsigned int i = 1; i < m_ReflectionProbes.size(); i++) {
 					if (glm::length2(m_ReflectionProbes[i]->getPosition() - renderPosition) < glm::length2(m_ReflectionProbes[closestIndex]->getPosition() - renderPosition))
 						closestIndex = i;
 				}

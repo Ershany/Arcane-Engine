@@ -234,8 +234,8 @@
     <None Include="src\shaders\skybox.frag" />
     <None Include="src\shaders\skybox.vert" />
     <None Include="src\shaders\spotlight.frag" />
-    <None Include="src\shaders\terrain.vert" />
-    <None Include="src\shaders\terrain.frag" />
+    <None Include="src\shaders\pbr_terrain.vert" />
+    <None Include="src\shaders\pbr_terrain.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

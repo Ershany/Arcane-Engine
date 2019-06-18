@@ -16,17 +16,27 @@ namespace arcane {
 
 		inline const glm::vec3& getPosition() const { return m_Position; }
 	private:
-		glm::vec3 calculateNormal(unsigned int x, unsigned int z, unsigned char *heightMapData);
-		float getVertexHeight(unsigned int x, unsigned int y, unsigned char *heightMapData);
+		glm::vec3 calculateNormal(float worldPosX, float worldPosZ, unsigned char *heightMapData);
 
-		float m_TerrainSize;
-		unsigned int m_VertexSideCount;
-		GLushort m_HeightMapScale;
+		float sampleHeightfieldBilinear(float worldPosX, float worldPosZ, unsigned char *heightMapData);
+		float sampleHeightfieldNearest(float worldPosX, float worldPosZ, unsigned char *heightMapData);
+
+		float Terrain::clamp(float n, float lower, float upper);
+	private:
+		// Tweakable Terrain Variables
+		float m_TextureTilingAmount;
+		float m_TerrainSizeXZ, m_TerrainSizeY;
+		unsigned int m_SideVertexCount;
+
+		// Non-Tweakable Terrain Varialbes
+		float m_SpaceBetweenVertices;
+		float m_TerrainToHeightfieldTextureConversion;
+		unsigned int m_HeightfieldTextureSize;
 
 		glm::mat4 m_ModelMatrix;
 		glm::vec3 m_Position;
 		Mesh *m_Mesh;
-		std::array<Texture*, 9> m_Textures; // Represents all the textures supported by the terrain's texure splatting (rgba and the default value)
+		std::array<Texture*, 21> m_Textures; // Represents all the textures supported by the terrain's texure splatting (rgba and the default value)
 	};
 
 }

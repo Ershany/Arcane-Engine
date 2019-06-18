@@ -1,2 +1,0 @@
-(src/shaders/terrain.frag): 0(86) : error C1020: invalid operands to "<"
-
