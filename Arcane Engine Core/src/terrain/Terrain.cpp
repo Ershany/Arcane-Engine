@@ -153,6 +153,7 @@ namespace arcane {
 	void Terrain::Draw(Shader *shader, RenderPassType pass) const {
 		// Texture unit 0 is reserved for the shadowmap
 		if (pass != RenderPassType::ShadowmapPassType) {
+			// Textures
 			m_Textures[0]->bind(1);
 			shader->setUniform1i("material.texture_albedo1", 1);
 			m_Textures[1]->bind(2);
@@ -201,6 +202,11 @@ namespace arcane {
  			m_Textures[20]->bind(21);
  			shader->setUniform1i("material.blendmap", 21);
 
+			// Normal matrix
+			glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(m_ModelMatrix)));
+			shader->setUniformMat3("normalMatrix", normalMatrix);
+
+			// Tiling amount
 			shader->setUniform1f("material.tilingAmount", m_TextureTilingAmount);
 		}
 
