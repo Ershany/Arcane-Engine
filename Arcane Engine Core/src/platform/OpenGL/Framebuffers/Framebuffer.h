@@ -40,9 +40,9 @@ namespace arcane {
 		
 		// Render Targets (Attachments)
 		unsigned int m_ColourTexture;
+		unsigned int m_DepthTexture;
 		unsigned int m_DepthRBO;
 		unsigned int m_DepthStencilRBO;
-		unsigned int m_DepthTexture;
 		
 		unsigned int m_Width, m_Height;
 	};

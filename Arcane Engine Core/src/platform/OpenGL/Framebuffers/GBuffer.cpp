@@ -8,7 +8,11 @@ namespace arcane {
 	}
 
 	GBuffer::~GBuffer() {
-
+		for (size_t i = 0; i < m_GBufferRTs.size(); i++) {
+			if (m_GBufferRTs[i] != 0) {
+				glDeleteTextures(1, &m_GBufferRTs[i]);
+			}
+		}
 	}
 
 	void GBuffer::init() {

@@ -4,7 +4,7 @@
 namespace arcane {
 
 	Framebuffer::Framebuffer(unsigned int width, unsigned int height)
-		: m_Width(width), m_Height(height), m_FBO(0), m_IsMultisampledColourBuffer(false), m_ColourTexture(0), m_DepthRBO(0), m_DepthStencilRBO(0), m_DepthTexture(0)
+		: m_Width(width), m_Height(height), m_FBO(0), m_IsMultisampledColourBuffer(false), m_ColourTexture(0), m_DepthTexture(0), m_DepthRBO(0), m_DepthStencilRBO(0)
 	{
 		glGenFramebuffers(1, &m_FBO);
 	}
@@ -15,6 +15,9 @@ namespace arcane {
 		}
 		if (m_DepthTexture != 0) {
 			glDeleteTextures(1, &m_DepthTexture);
+		}
+		if (m_DepthRBO != 0) {
+			glDeleteRenderbuffers(1, &m_DepthRBO);
 		}
 		if (m_DepthStencilRBO != 0) {
 			glDeleteRenderbuffers(1, &m_DepthStencilRBO);

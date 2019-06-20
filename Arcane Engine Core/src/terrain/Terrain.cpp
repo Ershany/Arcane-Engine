@@ -18,7 +18,7 @@ namespace arcane {
 		// Terrain information
 		m_TextureTilingAmount = 64;
 		m_HeightfieldTextureSize = mapWidth;
-		m_SideVertexCount = mapWidth * 0.25f;
+		m_SideVertexCount = (unsigned int)(mapWidth * 0.25f);
 		m_TerrainSizeXZ = 2048.0;
 		m_TerrainSizeY = 400.0f;
 		m_SpaceBetweenVertices = m_TerrainSizeXZ / (float)m_SideVertexCount;
