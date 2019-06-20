@@ -8,10 +8,10 @@
 
 namespace arcane {
 
-	class ProbePass : public RenderPass {
+	class ForwardProbePass : public RenderPass {
 	public:
-		ProbePass(Scene3D *scene);
-		virtual ~ProbePass() override;
+		ForwardProbePass(Scene3D *scene);
+		virtual ~ForwardProbePass() override;
 
 		void pregenerateIBL();
 		void pregenerateProbes();

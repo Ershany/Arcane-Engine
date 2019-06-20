@@ -132,12 +132,6 @@
     <ClCompile Include="src\graphics\renderer\MasterRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderer\renderpass\LightingPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\renderer\renderpass\ShadowmapPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\renderer\renderpass\RenderPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -159,9 +153,6 @@
     <ClCompile Include="src\graphics\ibl\ProbeManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderer\renderpass\ProbePass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\input\JoystickInputData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -178,6 +169,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\lights\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\forward\ForwardProbePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\forward\ForwardLightingPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\ShadowmapPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\OpenGL\Framebuffers\GBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -311,13 +314,7 @@
     <ClInclude Include="src\graphics\renderer\MasterRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderer\renderpass\LightingPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\renderer\renderpass\RenderPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\renderer\renderpass\ShadowmapPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\renderer\ModelRenderer.h">
@@ -344,9 +341,6 @@
     <ClInclude Include="src\graphics\ibl\ProbeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderer\renderpass\ProbePass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\input\JoystickInputData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -365,6 +359,18 @@
     <ClInclude Include="src\graphics\lights\Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\forward\ForwardProbePass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\forward\ForwardLightingPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\ShadowmapPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\OpenGL\Framebuffers\GBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\spotlight.frag" />
@@ -376,16 +382,20 @@
     <None Include="src\shaders\shadowmap.frag" />
     <None Include="src\shaders\postprocess.vert" />
     <None Include="src\shaders\postprocess.frag" />
-    <None Include="src\shaders\pbr_model.vert" />
-    <None Include="src\shaders\pbr_model.frag" />
     <None Include="src\shaders\lightprobe_convolution.vert" />
     <None Include="src\shaders\lightprobe_convolution.frag" />
     <None Include="src\shaders\reflectionprobe_importance_sampling.vert" />
     <None Include="src\shaders\reflectionprobe_importance_sampling.frag" />
     <None Include="src\shaders\brdf_integration.vert" />
     <None Include="src\shaders\brdf_integration.frag" />
-    <None Include="src\shaders\pbr_terrain.frag" />
-    <None Include="src\shaders\pbr_terrain.vert" />
+    <None Include="src\shaders\forward\pbr_terrain.vert" />
+    <None Include="src\shaders\forward\pbr_terrain.frag" />
+    <None Include="src\shaders\forward\pbr_model.frag" />
+    <None Include="src\shaders\forward\pbr_model.vert" />
+    <None Include="src\shaders\deferred\pbr_model.vert" />
+    <None Include="src\shaders\deferred\pbr_model.frag" />
+    <None Include="src\shaders\deferred\pbr_terrain.vert" />
+    <None Include="src\shaders\deferred\pbr_terrain.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

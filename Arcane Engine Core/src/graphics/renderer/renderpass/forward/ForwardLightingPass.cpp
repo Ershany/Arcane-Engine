@@ -1,34 +1,40 @@
 #include "pch.h"
-#include "LightingPass.h"
+#include "ForwardLightingPass.h"
 
 #include <utils/loaders/ShaderLoader.h>
 
 namespace arcane {
 
-	LightingPass::LightingPass(Scene3D *scene, bool shouldMultisample) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(true)
+	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, bool shouldMultisample) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(true)
 	{
-		m_ModelShader = ShaderLoader::loadShader("src/shaders/pbr_model.vert", "src/shaders/pbr_model.frag");
-		m_TerrainShader = ShaderLoader::loadShader("src/shaders/pbr_terrain.vert", "src/shaders/pbr_terrain.frag");
+		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/pbr_model.vert", "src/shaders/forward/pbr_model.frag");
+		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/pbr_terrain.vert", "src/shaders/forward/pbr_terrain.frag");
 
 		m_Framebuffer = new Framebuffer(Window::getWidth(), Window::getHeight());
 		m_Framebuffer->addTexture2DColorAttachment(shouldMultisample).addDepthStencilRBO(shouldMultisample).createFramebuffer();
 	}
 
-	LightingPass::LightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
+	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
-		m_ModelShader = ShaderLoader::loadShader("src/shaders/pbr_model.vert", "src/shaders/pbr_model.frag");
-		m_TerrainShader = ShaderLoader::loadShader("src/shaders/pbr_terrain.vert", "src/shaders/pbr_terrain.frag");
+		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/pbr_model.vert", "src/shaders/forward/pbr_model.frag");
+		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/pbr_terrain.vert", "src/shaders/forward/pbr_terrain.frag");
 	}
 
-	LightingPass::~LightingPass() {
+	ForwardLightingPass::~ForwardLightingPass() {
 		if (m_AllocatedFramebuffer)
 			delete m_Framebuffer;
 	}
 
-	LightingPassOutput LightingPass::executeRenderPass(ShadowmapPassOutput &shadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
+	LightingPassOutput ForwardLightingPass::executeRenderPass(ShadowmapPassOutput &shadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
 		glViewport(0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight());
 		m_Framebuffer->bind();
 		m_Framebuffer->clear();
+		if (m_Framebuffer->isMultisampledColourBuffer()) {
+			m_GLCache->setMultisample(true);
+		}
+		else {
+			m_GLCache->setMultisample(false);
+		}
 
 		// Setup
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
@@ -93,7 +99,7 @@ namespace arcane {
 		return passOutput;
 	}
 
-	void LightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
+	void ForwardLightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, shadowmapData.shadowmapFramebuffer->getDepthTexture());
 		shader->setUniform1i("shadowmap", 0);

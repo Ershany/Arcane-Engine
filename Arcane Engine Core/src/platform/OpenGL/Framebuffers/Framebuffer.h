@@ -7,7 +7,7 @@ namespace arcane {
 	class Framebuffer {
 	public:
 		Framebuffer(unsigned int width, unsigned int height);
-		~Framebuffer();
+		virtual ~Framebuffer();
 
 		// Creation functions
 		void createFramebuffer();
@@ -33,7 +33,7 @@ namespace arcane {
 		inline unsigned int getDepthTexture() { return m_DepthTexture; }
 
 		inline bool isMultisampledColourBuffer() { return m_IsMultisampledColourBuffer; }
-	private:
+	protected:
 		unsigned int m_FBO;
 
 		bool m_IsMultisampledColourBuffer;

@@ -1,1 +1,2 @@
-(DynamicLightManager Error): directional light at index is out of bounds
+(Framebuffer initialization): Could not initialize the framebuffer
+(Framebuffer initialization): Could not initialize the framebuffer

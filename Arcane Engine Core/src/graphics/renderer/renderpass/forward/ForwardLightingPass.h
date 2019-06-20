@@ -6,11 +6,11 @@
 
 namespace arcane {
 
-	class LightingPass : public RenderPass {
+	class ForwardLightingPass : public RenderPass {
 	public:
-		LightingPass(Scene3D *scene, bool shouldMultisample);
-		LightingPass(Scene3D *scene, Framebuffer *customFramebuffer);
-		virtual ~LightingPass() override;
+		ForwardLightingPass(Scene3D *scene, bool shouldMultisample);
+		ForwardLightingPass(Scene3D *scene, Framebuffer *customFramebuffer);
+		virtual ~ForwardLightingPass() override;
 
 		LightingPassOutput executeRenderPass(ShadowmapPassOutput &shadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL);
 	private:

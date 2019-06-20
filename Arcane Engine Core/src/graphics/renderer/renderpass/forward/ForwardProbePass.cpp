@@ -1,15 +1,15 @@
 ﻿#include "pch.h"
-#include "ProbePass.h"
+#include "ForwardProbePass.h"
 
 #include <graphics/mesh/common/Cube.h>
 #include <graphics/ibl/ProbeManager.h>
-#include <graphics/renderer/renderpass/LightingPass.h>
+#include <graphics/renderer/renderpass/forward/ForwardLightingPass.h>
 #include <graphics/renderer/renderpass/ShadowmapPass.h>
 #include <utils/loaders/ShaderLoader.h>
 
 namespace arcane {
 
-	ProbePass::ProbePass(Scene3D *scene) : RenderPass(scene, RenderPassType::ProbePassType),
+	ForwardProbePass::ForwardProbePass(Scene3D *scene) : RenderPass(scene, RenderPassType::ProbePassType),
 		m_SceneCaptureShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION),
 		m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION), 
 		m_SceneCaptureSettings(), m_SceneCaptureCubemap(m_SceneCaptureSettings)
@@ -27,20 +27,20 @@ namespace arcane {
 		m_ImportanceSamplingShader = ShaderLoader::loadShader("src/shaders/reflectionprobe_importance_sampling.vert", "src/shaders/reflectionprobe_importance_sampling.frag");
 	}
 
-	ProbePass::~ProbePass() {}
+	ForwardProbePass::~ForwardProbePass() {}
 
-	void ProbePass::pregenerateIBL() {
+	void ForwardProbePass::pregenerateIBL() {
 		generateBRDFLUT();
 		generateFallbackProbes();
 	}
 
-	void ProbePass::pregenerateProbes() {
+	void ForwardProbePass::pregenerateProbes() {
 		glm::vec3 probePosition = glm::vec3(67.0f, 92.0f, 133.0f);
 		generateLightProbe(probePosition);
 		generateReflectionProbe(probePosition);
 	}
 
-	void ProbePass::generateBRDFLUT() {
+	void ForwardProbePass::generateBRDFLUT() {
 		Shader *brdfIntegrationShader = ShaderLoader::loadShader("src/shaders/brdf_integration.vert", "src/shaders/brdf_integration.frag");
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
 		
@@ -77,7 +77,7 @@ namespace arcane {
 		ReflectionProbe::setBRDFLUT(brdfLUT);
 	}
 
-	void ProbePass::generateFallbackProbes() {
+	void ForwardProbePass::generateFallbackProbes() {
 		ProbeManager *probeManager = m_ActiveScene->getProbeManager();
 		glm::vec3 origin(0.0f, 0.0f, 0.0f);
 		m_CubemapCamera.setCenterPosition(origin);
@@ -155,14 +155,14 @@ namespace arcane {
 		probeManager->setReflectionProbeFallback(fallbackReflectionProbe);
 	}
 
-	void ProbePass::generateLightProbe(glm::vec3 &probePosition) {
+	void ForwardProbePass::generateLightProbe(glm::vec3 &probePosition) {
 		LightProbe *lightProbe = new LightProbe(probePosition, glm::vec2(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION));
 		lightProbe->generate();
 
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.setCenterPosition(probePosition);
 		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
-		LightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer);
+		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer);
 
 		// Render the scene to the probe's cubemap
 		for (int i = 0; i < 6; i++) {
@@ -207,14 +207,14 @@ namespace arcane {
 		probeManager->addProbe(lightProbe);
 	}
 
-	void ProbePass::generateReflectionProbe(glm::vec3 &probePosition) {
+	void ForwardProbePass::generateReflectionProbe(glm::vec3 &probePosition) {
 		ReflectionProbe *reflectionProbe = new ReflectionProbe(probePosition, glm::vec2(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION));
 		reflectionProbe->generate();
 
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.setCenterPosition(probePosition);
 		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
-		LightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer);
+		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer);
 
 		// Render the scene to the probe's cubemap
 		for (int i = 0; i < 6; i++) {

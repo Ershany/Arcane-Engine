@@ -4,7 +4,7 @@
 namespace arcane {
 
 	Framebuffer::Framebuffer(unsigned int width, unsigned int height)
-		: m_Width(width), m_Height(height), m_FBO(0), m_ColourTexture(0), m_DepthRBO(0), m_DepthStencilRBO(0), m_DepthTexture(0)
+		: m_Width(width), m_Height(height), m_FBO(0), m_IsMultisampledColourBuffer(false), m_ColourTexture(0), m_DepthRBO(0), m_DepthStencilRBO(0), m_DepthTexture(0)
 	{
 		glGenFramebuffers(1, &m_FBO);
 	}
@@ -88,9 +88,9 @@ namespace arcane {
 		glGenRenderbuffers(1, &m_DepthRBO);
 		glBindRenderbuffer(GL_RENDERBUFFER, m_DepthRBO);
 		if (multisampledBuffer)
-			glRenderbufferStorageMultisample(GL_RENDERBUFFER, MSAA_SAMPLE_AMOUNT, GL_DEPTH_COMPONENT24, m_Width, m_Height);
+			glRenderbufferStorageMultisample(GL_RENDERBUFFER, MSAA_SAMPLE_AMOUNT, GL_DEPTH_COMPONENT32, m_Width, m_Height);
 		else
-			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_Width, m_Height);
+			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, m_Width, m_Height);
 
 		// Attach the depth rbo attachment
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthRBO);
@@ -112,10 +112,12 @@ namespace arcane {
 		// Generate depth+stencil rbo attachment
 		glGenRenderbuffers(1, &m_DepthStencilRBO);
 		glBindRenderbuffer(GL_RENDERBUFFER, m_DepthStencilRBO);
-		if (multisampledBuffer)
+		if (multisampledBuffer) {
 			glRenderbufferStorageMultisample(GL_RENDERBUFFER, MSAA_SAMPLE_AMOUNT, GL_DEPTH24_STENCIL8, m_Width, m_Height);
-		else
+		}
+		else {
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height);
+		}
 
 		// Attach depth+stencil attachment
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_DepthStencilRBO);
@@ -139,14 +141,14 @@ namespace arcane {
 
 		if (multisampled) {
 			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_DepthTexture);
-			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, MSAA_SAMPLE_AMOUNT, GL_DEPTH_COMPONENT, m_Width, m_Height, GL_TRUE);
+			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, MSAA_SAMPLE_AMOUNT, GL_DEPTH_COMPONENT32, m_Width, m_Height, GL_TRUE);
 			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
 
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D_MULTISAMPLE, m_DepthTexture, 0);
 		}
 		else {
 			glBindTexture(GL_TEXTURE_2D, m_DepthTexture);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
