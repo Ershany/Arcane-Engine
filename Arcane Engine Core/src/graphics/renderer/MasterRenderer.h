@@ -1,5 +1,6 @@
 #pragma once
 
+#include <graphics/renderer/renderpass/deferred/GeometryPass.h>
 #include <graphics/renderer/renderpass/forward/ForwardProbePass.h>
 #include <graphics/renderer/renderpass/forward/ForwardLightingPass.h>
 #include <graphics/renderer/renderpass/PostProcessPass.h>
@@ -26,6 +27,9 @@ namespace arcane
 		ForwardLightingPass m_LightingPass;
 		PostProcessPass m_PostProcessPass;
 		ForwardProbePass m_EnvironmentProbePass;
+
+		// Deferred passes
+		GeometryPass m_GeometryPass;
 
 		Timer m_Timer;
 	};

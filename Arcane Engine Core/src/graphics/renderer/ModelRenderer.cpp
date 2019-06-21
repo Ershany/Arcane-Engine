@@ -25,7 +25,6 @@ namespace arcane {
 		m_GLCache->switchShader(shader);
 		m_GLCache->setDepthTest(true);
 		m_GLCache->setBlend(false);
-		m_GLCache->setStencilTest(false);
 		m_GLCache->setFaceCull(true);
 		m_GLCache->setCullFace(GL_BACK);
 
@@ -44,7 +43,6 @@ namespace arcane {
 		m_GLCache->switchShader(shader);
 		m_GLCache->setDepthTest(true);
 		m_GLCache->setBlend(true);
-		m_GLCache->setStencilTest(false);
 		m_GLCache->setFaceCull(false);
 
 		// Sort then render transparent objects (from back to front, does not account for rotations or scaling)

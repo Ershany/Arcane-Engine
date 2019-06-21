@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\GeometryPass.cpp" />
     <ClCompile Include="src\input\JoystickInputData.cpp" />
     <ClCompile Include="src\graphics\camera\FPSCamera.cpp" />
     <ClCompile Include="src\graphics\camera\CubemapCamera.cpp" />
@@ -155,6 +156,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\GeometryPass.h" />
     <ClInclude Include="src\input\JoystickInputData.h" />
     <ClInclude Include="src\Defs.h" />
     <ClInclude Include="src\graphics\camera\FPSCamera.h" />

@@ -21,8 +21,9 @@ namespace arcane {
 	}
 
 	ForwardLightingPass::~ForwardLightingPass() {
-		if (m_AllocatedFramebuffer)
+		if (m_AllocatedFramebuffer) {
 			delete m_Framebuffer;
+		}
 	}
 
 	LightingPassOutput ForwardLightingPass::executeRenderPass(ShadowmapPassOutput &shadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
