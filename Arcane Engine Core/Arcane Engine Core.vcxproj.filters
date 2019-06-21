@@ -183,6 +183,9 @@
     <ClCompile Include="src\platform\OpenGL\Framebuffers\GBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\GeometryPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\Window.h">
@@ -371,6 +374,9 @@
     <ClInclude Include="src\platform\OpenGL\Framebuffers\GBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\GeometryPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\spotlight.frag" />
@@ -392,10 +398,10 @@
     <None Include="src\shaders\forward\pbr_terrain.frag" />
     <None Include="src\shaders\forward\pbr_model.frag" />
     <None Include="src\shaders\forward\pbr_model.vert" />
-    <None Include="src\shaders\deferred\pbr_model.vert" />
-    <None Include="src\shaders\deferred\pbr_model.frag" />
-    <None Include="src\shaders\deferred\pbr_terrain.vert" />
-    <None Include="src\shaders\deferred\pbr_terrain.frag" />
+    <None Include="src\shaders\deferred\pbr_model_geometry.frag" />
+    <None Include="src\shaders\deferred\pbr_model_geometry.vert" />
+    <None Include="src\shaders\deferred\pbr_terrain_geometry.frag" />
+    <None Include="src\shaders\deferred\pbr_terrain_geometry.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

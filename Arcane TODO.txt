@@ -1,13 +1,8 @@
 Nice To Have:
--Also should ensure proper state is set (ie multisample etc)
 -Move Anistropic amount querying to the defs.h or something instead of querying the driver for every texture
 
 Normal mapping:
--Make normal mapping code work on terrain (need to calculate tangents and bitangents for terrain vertices)
 -Specify tangents and bitangents for a cube and sphere
-
-PBR:
--Make the terrain use a PBR shader
 
 Skybox:
 -Should be HDR
@@ -15,3 +10,6 @@ Skybox:
 IBL:
 -Proper probe blending will need to be implemented
 -A more efficient system for selecting which probes to blend (ideally using a quadtree)
+
+Deferred:
+-Rewrite Framebuffer's so forward framebuffers and the GBuffer work nicely together

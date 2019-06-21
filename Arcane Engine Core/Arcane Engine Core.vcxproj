@@ -223,10 +223,10 @@
   <ItemGroup>
     <None Include="src\shaders\brdf_integration.frag" />
     <None Include="src\shaders\brdf_integration.vert" />
-    <None Include="src\shaders\deferred\pbr_model.frag" />
-    <None Include="src\shaders\deferred\pbr_model.vert" />
-    <None Include="src\shaders\deferred\pbr_terrain.frag" />
-    <None Include="src\shaders\deferred\pbr_terrain.vert" />
+    <None Include="src\shaders\deferred\pbr_model_geometry.frag" />
+    <None Include="src\shaders\deferred\pbr_model_geometry.vert" />
+    <None Include="src\shaders\deferred\pbr_terrain_geometry.frag" />
+    <None Include="src\shaders\deferred\pbr_terrain_geometry.vert" />
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\lightprobe_convolution.frag" />
     <None Include="src\shaders\lightprobe_convolution.vert" />

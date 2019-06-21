@@ -45,6 +45,8 @@ namespace arcane
 		glFinish();
 		RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
 #endif
+
+		m_GeometryPass.executeRenderPass(m_ActiveScene->getCamera(), false);
 	}
 
 }
