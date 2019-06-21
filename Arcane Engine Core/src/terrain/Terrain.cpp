@@ -5,6 +5,8 @@ namespace arcane {
 
 	Terrain::Terrain(glm::vec3 &worldPosition) : m_Position(worldPosition)
 	{
+		m_GLCache = GLCache::getInstance();
+
 		m_ModelMatrix = glm::translate(m_ModelMatrix, worldPosition);
 
 		// Height map
@@ -212,6 +214,11 @@ namespace arcane {
 
 		// Only set normal matrix for non shadowmap pass
 		shader->setUniformMat4("model", m_ModelMatrix);
+
+		m_GLCache->setDepthTest(true);
+		m_GLCache->setBlend(false);
+		m_GLCache->setFaceCull(true);
+		m_GLCache->setCullFace(GL_BACK);
 		m_Mesh->Draw();
 	}
 

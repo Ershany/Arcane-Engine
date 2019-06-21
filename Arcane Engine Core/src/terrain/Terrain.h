@@ -1,8 +1,9 @@
 #pragma once
 
-#include <graphics/Shader.h>
 #include <graphics/mesh/Mesh.h>
 #include <graphics/mesh/Model.h>
+#include <graphics/renderer/GLCache.h>
+#include <graphics/Shader.h>
 #include <utils/loaders/TextureLoader.h>
 
 namespace arcane {
@@ -23,6 +24,8 @@ namespace arcane {
 
 		float Terrain::clamp(float n, float lower, float upper);
 	private:
+		GLCache *m_GLCache;
+
 		// Tweakable Terrain Variables
 		float m_TextureTilingAmount;
 		float m_TerrainSizeXZ, m_TerrainSizeY;

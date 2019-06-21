@@ -10,8 +10,6 @@ namespace arcane {
 		~GBuffer();
 	private:
 		void init();
-
-
 	private:
 		// 0 RGBA8  ->       albedo.r     albedo.g        albedo.b     albedo's alpha
 		// 1 RGB16F ->       normal.x     normal.y        normal.z
