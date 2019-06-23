@@ -1,9 +1,10 @@
 #pragma once
 
-#include <graphics/renderer/renderpass/deferred/GeometryPass.h>
+#include <graphics/renderer/renderpass/deferred/DeferredGeometryPass.h>
+#include <graphics/renderer/renderpass/deferred/DeferredLightingPass.h>
 #include <graphics/renderer/renderpass/forward/ForwardProbePass.h>
 #include <graphics/renderer/renderpass/forward/ForwardLightingPass.h>
-#include <graphics/renderer/renderpass/PostProcessPass.h>
+#include <graphics/renderer/renderpass/forward/ForwardPostProcessPass.h>
 #include <graphics/renderer/renderpass/ShadowmapPass.h>
 #include <scene/Scene3D.h>
 #include <utils/Timer.h>
@@ -22,14 +23,17 @@ namespace arcane
 		GLCache *m_GLCache;
 		Scene3D *m_ActiveScene;
 
-		// Render passes
+		// passes
 		ShadowmapPass m_ShadowmapPass;
-		ForwardLightingPass m_LightingPass;
-		PostProcessPass m_PostProcessPass;
 		ForwardProbePass m_EnvironmentProbePass;
 
+		// Forward passes
+		ForwardLightingPass m_ForwardLightingPass;
+		ForwardPostProcessPass m_ForwardPostProcessPass;
+
 		// Deferred passes
-		GeometryPass m_GeometryPass;
+		DeferredGeometryPass m_DeferredGeometryPass;
+		DeferredLightingPass m_DeferredLightingPass;
 
 		Timer m_Timer;
 	};

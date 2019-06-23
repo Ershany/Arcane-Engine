@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "GeometryPass.h"
+#include "DeferredGeometryPass.h"
 
 #include <utils/loaders/ShaderLoader.h>
 
@@ -27,6 +27,7 @@ namespace arcane {
 		glViewport(0, 0, m_GBuffer->getWidth(), m_GBuffer->getHeight());
 		m_GBuffer->bind();
 		m_GBuffer->clear();
+		m_GLCache->setMultisample(false);
 
 		// Setup
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();

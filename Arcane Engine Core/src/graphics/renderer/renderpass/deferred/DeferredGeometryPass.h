@@ -6,11 +6,11 @@
 
 namespace arcane {
 
-	class GeometryPass : public RenderPass {
+	class DeferredGeometryPass : public RenderPass {
 	public:
-		GeometryPass(Scene3D *scene);
-		GeometryPass(Scene3D *scene, GBuffer *customGBuffer);
-		virtual ~GeometryPass() override;
+		DeferredGeometryPass(Scene3D *scene);
+		DeferredGeometryPass(Scene3D *scene, GBuffer *customGBuffer);
+		virtual ~DeferredGeometryPass() override;
 
 		GeometryPassOutput executeRenderPass(ICamera *camera, bool renderOnlyStatic);
 	private:

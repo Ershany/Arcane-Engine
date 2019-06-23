@@ -1,1 +1,5 @@
-(src/shaders/pbr_model.vert): unknown error
+(src/shaders/deferred/pbr_lighting_pass.frag): 0(80) : error C1503: undefined variable "normalTexture"
+0(151) : error C1503: undefined variable "fragPos"
+0(275) : error C1503: undefined variable "FragPosLightClipSpace"
+0(275) : error C1503: undefined variable "FragPosLightClipSpace"
+

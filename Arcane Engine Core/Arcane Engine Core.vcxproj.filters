@@ -138,9 +138,6 @@
     <ClCompile Include="src\graphics\renderer\ModelRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderer\renderpass\PostProcessPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\utils\loaders\ShaderLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -183,7 +180,16 @@
     <ClCompile Include="src\platform\OpenGL\Framebuffers\GBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderer\renderpass\deferred\GeometryPass.cpp">
+    <ClCompile Include="src\graphics\renderer\renderpass\forward\ForwardPostProcessPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredPostProcessPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -326,9 +332,6 @@
     <ClInclude Include="src\graphics\renderer\renderpass\RenderPassType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderer\renderpass\PostProcessPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\camera\ICamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -374,7 +377,16 @@
     <ClInclude Include="src\platform\OpenGL\Framebuffers\GBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderer\renderpass\deferred\GeometryPass.h">
+    <ClInclude Include="src\graphics\renderer\renderpass\forward\ForwardPostProcessPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredPostProcessPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -402,6 +414,8 @@
     <None Include="src\shaders\deferred\pbr_model_geometry.vert" />
     <None Include="src\shaders\deferred\pbr_terrain_geometry.frag" />
     <None Include="src\shaders\deferred\pbr_terrain_geometry.vert" />
+    <None Include="src\shaders\deferred\pbr_lighting_pass.vert" />
+    <None Include="src\shaders\deferred\pbr_lighting_pass.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

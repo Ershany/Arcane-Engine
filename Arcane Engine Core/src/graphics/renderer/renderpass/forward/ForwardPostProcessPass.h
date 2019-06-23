@@ -6,10 +6,10 @@
 
 namespace arcane {
 
-	class PostProcessPass : public RenderPass {
+	class ForwardPostProcessPass : public RenderPass {
 	public:
-		PostProcessPass(Scene3D *scene);
-		virtual ~PostProcessPass() override;
+		ForwardPostProcessPass(Scene3D *scene);
+		virtual ~ForwardPostProcessPass() override;
 
 		void executeRenderPass(Framebuffer *framebufferToProcess);
 

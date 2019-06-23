@@ -8,6 +8,10 @@ namespace arcane {
 	public:
 		GBuffer(unsigned int width, unsigned int height);
 		~GBuffer();
+
+		inline unsigned int getAlbedo() { return m_GBufferRenderTargets[0]; }
+		inline unsigned int getNormal() { return m_GBufferRenderTargets[1]; }
+		inline unsigned int getMaterialInfo() { return m_GBufferRenderTargets[2]; }
 	private:
 		void init();
 	private:

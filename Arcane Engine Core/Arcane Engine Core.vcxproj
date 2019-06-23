@@ -82,7 +82,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\graphics\renderer\renderpass\deferred\GeometryPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredPostProcessPass.cpp" />
     <ClCompile Include="src\input\JoystickInputData.cpp" />
     <ClCompile Include="src\graphics\camera\FPSCamera.cpp" />
     <ClCompile Include="src\graphics\camera\CubemapCamera.cpp" />
@@ -104,7 +106,7 @@
     <ClCompile Include="src\graphics\renderer\MasterRenderer.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\forward\ForwardProbePass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\forward\ForwardLightingPass.cpp" />
-    <ClCompile Include="src\graphics\renderer\renderpass\PostProcessPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\forward\ForwardPostProcessPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\RenderPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\ShadowmapPass.cpp" />
     <ClCompile Include="src\input\InputManager.cpp" />
@@ -156,7 +158,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\graphics\renderer\renderpass\deferred\GeometryPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredPostProcessPass.h" />
     <ClInclude Include="src\input\JoystickInputData.h" />
     <ClInclude Include="src\Defs.h" />
     <ClInclude Include="src\graphics\camera\FPSCamera.h" />
@@ -180,7 +184,7 @@
     <ClInclude Include="src\graphics\renderer\MasterRenderer.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\forward\ForwardProbePass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\forward\ForwardLightingPass.h" />
-    <ClInclude Include="src\graphics\renderer\renderpass\PostProcessPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\forward\ForwardPostProcessPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\RenderPassType.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\ShadowmapPass.h" />
     <ClInclude Include="src\input\InputManager.h" />
@@ -223,6 +227,8 @@
   <ItemGroup>
     <None Include="src\shaders\brdf_integration.frag" />
     <None Include="src\shaders\brdf_integration.vert" />
+    <None Include="src\shaders\deferred\pbr_lighting_pass.frag" />
+    <None Include="src\shaders\deferred\pbr_lighting_pass.vert" />
     <None Include="src\shaders\deferred\pbr_model_geometry.frag" />
     <None Include="src\shaders\deferred\pbr_model_geometry.vert" />
     <None Include="src\shaders\deferred\pbr_terrain_geometry.frag" />
