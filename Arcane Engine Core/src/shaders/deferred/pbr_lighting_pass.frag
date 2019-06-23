@@ -95,13 +95,12 @@ void main() {
 
 	// Calculate per light radiance for all of the direct lighting
 	vec3 directLightIrradiance = vec3(0.0);
-	//directLightIrradiance += CalculateDirectionalLightRadiance(albedo, normal, metallic, roughness, fragPos, fragToView, baseReflectivity);
-	//directLightIrradiance += CalculatePointLightRadiance(albedo, normal, metallic, roughness, fragPos, fragToView, baseReflectivity);
-	//directLightIrradiance += CalculateSpotLightRadiance(albedo, normal, metallic, roughness, fragPos, fragToView, baseReflectivity);
+	directLightIrradiance += CalculateDirectionalLightRadiance(albedo, normal, metallic, roughness, fragPos, fragToView, baseReflectivity);
+	directLightIrradiance += CalculatePointLightRadiance(albedo, normal, metallic, roughness, fragPos, fragToView, baseReflectivity);
+	directLightIrradiance += CalculateSpotLightRadiance(albedo, normal, metallic, roughness, fragPos, fragToView, baseReflectivity);
 
 	// Calcualte ambient IBL for both diffuse and specular
-	vec3 ambient = vec3(0.2) * albedo * ao; // TODO: Set ambient back to 0.03
-	/*
+	vec3 ambient = vec3(0.03) * albedo * ao;
 	if (computeIBL) {
 		vec3 specularRatio = FresnelSchlick(max(dot(normal, fragToView), 0.0), baseReflectivity);
 		vec3 diffuseRatio = vec3(1.0) - specularRatio;
@@ -115,7 +114,6 @@ void main() {
 
 		ambient = (diffuseRatio * indirectDiffuse + indirectSpecular) * ao;
 	}
-	*/
 
 	color = vec4(ambient + directLightIrradiance, 1.0);
 }
