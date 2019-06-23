@@ -145,7 +145,6 @@ void main() {
 	
 	// Result
 	color = vec4(ambient + directLightIrradiance, 1.0);
-	color = vec4(texture(material.texture_roughness3, tiledCoords).rgb, 1.0);
 }
 
 // TODO: Need to also add multiple shadow support
