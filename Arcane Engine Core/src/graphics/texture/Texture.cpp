@@ -3,23 +3,32 @@
 
 namespace arcane {
 
-	Texture::Texture() : m_TextureId(0), m_TextureTarget(0), m_Width(0), m_Height(0), m_TextureFormat(0), m_TextureSettings() {}
-
-	Texture::Texture(TextureSettings &settings) : m_TextureId(0), m_TextureTarget(0), m_Width(0), m_Height(0), m_TextureFormat(0), m_TextureSettings(settings) {}
+	Texture::Texture(TextureSettings &settings) : m_TextureId(0), m_TextureTarget(0), m_Width(0), m_Height(0), m_TextureSettings(settings) {}
 
 	Texture::~Texture() {
 		glDeleteTextures(1, &m_TextureId);
 	}
 
-	void Texture::generate2DTexture(unsigned int width, unsigned int height, GLenum textureFormat, GLenum dataFormat, const void *data) {
+	void Texture::generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, const void *data) {
 		m_TextureTarget = GL_TEXTURE_2D;
 		m_Width = width;
 		m_Height = height;
-		m_TextureFormat = textureFormat;
+
+		// If GL_NONE is specified, set the texture format to the data format
+		if (m_TextureSettings.TextureFormat == GL_NONE) {
+			m_TextureSettings.TextureFormat = dataFormat;
+		}
+		// Check if the texture is SRGB, if so change the texture format
+		if (m_TextureSettings.IsSRGB) {
+			switch (dataFormat) {
+			case GL_RGB: m_TextureSettings.TextureFormat = GL_SRGB; break;
+			case GL_RGBA: m_TextureSettings.TextureFormat = GL_SRGB_ALPHA; break;
+			}
+		}
 
 		glGenTextures(1, &m_TextureId);
 		bind();
-		glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, m_TextureSettings.TextureFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		// Texture wrapping
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_TextureSettings.TextureWrapSMode);

@@ -128,7 +128,10 @@ namespace arcane {
 
 			// Assumption made: material stuff is located in the same directory as the model object
 			std::string fileToSearch = (m_Directory + "/" + std::string(str.C_Str())).c_str();
-			return TextureLoader::load2DTexture(fileToSearch, isSRGB);
+
+			TextureSettings textureSettings;
+			textureSettings.IsSRGB = isSRGB;
+			return TextureLoader::load2DTexture(fileToSearch, &textureSettings);
 		}
 
 		return nullptr;

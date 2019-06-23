@@ -3,6 +3,14 @@
 namespace arcane {
 
 	struct TextureSettings {
+		// Texture format
+		GLenum TextureFormat = GL_NONE; // If set to GL_NONE, the data format will be used
+
+		/* isSRGB will let the loader know that the texture needs to be "linearlized" before it is sampled in the shaders (ie the texture is in a non liner space)
+		 * Anything that will be used for colour in a renderer should be linearlized. However textures that contain data (Heightfields, normal maps, metallic maps etc.) should not be,
+		 * thus they are not in SRGB space. Note: If you generate your own data and it is already in linear space (like light probes), be careful */
+		bool IsSRGB = false;
+
 		// Texture wrapping options
 		GLenum TextureWrapSMode = GL_REPEAT;
 		GLenum TextureWrapTMode = GL_REPEAT;
@@ -19,12 +27,12 @@ namespace arcane {
 
 	class Texture {
 	public:
-		Texture();
-		Texture(TextureSettings &settings);
+		// If nothing is supplied, it will construct default settings
+		Texture(TextureSettings &settings = TextureSettings());
 		~Texture();
 
 		// Generation functions
-		void generate2DTexture(unsigned int width, unsigned int height, GLenum textureFormat, GLenum dataFormat, const void *data);
+		void generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, const void *data);
 
 		void bind(int unit = -1);
 		void unbind();
@@ -44,12 +52,12 @@ namespace arcane {
 		inline unsigned int getTextureId() { return m_TextureId; }
 		inline unsigned int getWidth() { return m_Width; }
 		inline unsigned int getHeight() { return m_Height; }
+		const TextureSettings& getTextureSettings() { return m_TextureSettings; }
 	private:
 		unsigned int m_TextureId;
 		GLenum m_TextureTarget;
 
 		unsigned int m_Width, m_Height;
-		GLenum m_TextureFormat;
 
 		TextureSettings m_TextureSettings;
 	};

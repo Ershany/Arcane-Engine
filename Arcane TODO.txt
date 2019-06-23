@@ -21,3 +21,4 @@ Deferred:
 -Look into making framebuffer's hold textures instead of unsigned int
 -Look into extracting near + far in deferred lighting shader (from the projection matrix)
 -Redo render pass type because it is not ideal with a large # of render passes
+-greyscale pngs are loaded as GL_RED and will not work properly. Changing this is fine but then when we load heightmaps we want them to be GL_RED for one channel

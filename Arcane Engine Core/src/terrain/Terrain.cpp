@@ -117,32 +117,39 @@ namespace arcane {
 		}
 
 		// Textures
-		m_Textures[0] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassAlbedo.png"), true);
-		m_Textures[1] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtAlbedo.png"), true);
-		m_Textures[2] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesAlbedo.png"), true);
-		m_Textures[3] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockAlbedo.png"), true);
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
 
-		m_Textures[4] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassNormal.png"), false);
-		m_Textures[5] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtNormal.png"), false);
-		m_Textures[6] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesNormal.png"), false);
-		m_Textures[7] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockNormal.png"), false);
+		m_Textures[0] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassAlbedo.png"), &srgbTextureSettings);
+		m_Textures[1] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtAlbedo.png"), &srgbTextureSettings);
+		m_Textures[2] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesAlbedo.png"), &srgbTextureSettings);
+		m_Textures[3] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockAlbedo.png"), &srgbTextureSettings);
 
-		m_Textures[8] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassRoughness.png"), false);
-		m_Textures[9] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtRoughness.png"), false);
-		m_Textures[10] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesRoughness.png"), false);
-		m_Textures[11] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockRoughness.png"), false);
+		m_Textures[4] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassNormal.png"));
+		m_Textures[5] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtNormal.png"));
+		m_Textures[6] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesNormal.png"));
+		m_Textures[7] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockNormal.png"));
 
-		m_Textures[12] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassMetallic.png"), false);
-		m_Textures[13] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtMetallic.png"), false);
-		m_Textures[14] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesMetallic.png"), false);
-		m_Textures[15] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockMetallic.png"), false);
+		// We do not want these texture treated as one channel so store it as RGB
+		TextureSettings textureSettings;
+		textureSettings.TextureFormat = GL_RGB;
 
-		m_Textures[16] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassAO.png"), false);
-		m_Textures[17] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtAO.png"), false);
-		m_Textures[18] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesAO.png"), false);
-		m_Textures[19] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockAO.png"), false);
+		m_Textures[8] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassRoughness.png"), &textureSettings);
+		m_Textures[9] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtRoughness.png"), &textureSettings);
+		m_Textures[10] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesRoughness.png"), &textureSettings);
+		m_Textures[11] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockRoughness.png"), &textureSettings);
 
-		m_Textures[20] = TextureLoader::load2DTexture(std::string("res/terrain/blendMap.png"), false);
+		m_Textures[12] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassMetallic.png"), &textureSettings);
+		m_Textures[13] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtMetallic.png"), &textureSettings);
+		m_Textures[14] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesMetallic.png"), &textureSettings);
+		m_Textures[15] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockMetallic.png"), &textureSettings);
+
+		m_Textures[16] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassAO.png"), &textureSettings);
+		m_Textures[17] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtAO.png"), &textureSettings);
+		m_Textures[18] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesAO.png"), &textureSettings);
+		m_Textures[19] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockAO.png"), &textureSettings);
+
+		m_Textures[20] = TextureLoader::load2DTexture(std::string("res/terrain/blendMap.png"), &textureSettings);
 
 		m_Mesh = new Mesh(positions, uvs, normals, tangents, bitangents, indices);
 		m_Mesh->LoadData(true);
@@ -154,55 +161,59 @@ namespace arcane {
 
 	void Terrain::Draw(Shader *shader, RenderPassType pass) const {
 		// Texture unit 0 is reserved for the shadowmap
+		// Texture unit 1 is reserved for the irradianceMap used for indirect diffuse IBL
+		// Texture unit 2 is reserved for the prefilterMap
+		// Texture unit 3 is reserved for the brdfLUT
 		if (pass != RenderPassType::ShadowmapPassType) {
+			unsigned int currentTextureUnit = 4;
 			// Textures
-			m_Textures[0]->bind(1);
-			shader->setUniform1i("material.texture_albedo1", 1);
-			m_Textures[1]->bind(2);
-			shader->setUniform1i("material.texture_albedo2", 2);
-			m_Textures[2]->bind(3);
-			shader->setUniform1i("material.texture_albedo3", 3);
-			m_Textures[3]->bind(4);
-			shader->setUniform1i("material.texture_albedo4", 4);
+			m_Textures[0]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_albedo1", currentTextureUnit++);
+			m_Textures[1]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_albedo2", currentTextureUnit++);
+			m_Textures[2]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_albedo3", currentTextureUnit++);
+			m_Textures[3]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_albedo4", currentTextureUnit++);
 
-			m_Textures[4]->bind(5);
-			shader->setUniform1i("material.texture_normal1", 5);
-			m_Textures[5]->bind(6);
-			shader->setUniform1i("material.texture_normal2", 6);
-			m_Textures[6]->bind(7);
-			shader->setUniform1i("material.texture_normal3", 7);
-			m_Textures[7]->bind(8);
-			shader->setUniform1i("material.texture_normal4", 8);
+			m_Textures[4]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_normal1", currentTextureUnit++);
+			m_Textures[5]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_normal2", currentTextureUnit++);
+			m_Textures[6]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_normal3", currentTextureUnit++);
+			m_Textures[7]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_normal4", currentTextureUnit++);
 
-			m_Textures[8]->bind(9);
-			shader->setUniform1i("material.texture_roughness1", 9);
-			m_Textures[9]->bind(10);
-			shader->setUniform1i("material.texture_roughness2", 10);
-			m_Textures[10]->bind(11);
-			shader->setUniform1i("material.texture_roughness3", 11);
-			m_Textures[11]->bind(12);
-			shader->setUniform1i("material.texture_roughness4", 12);
+			m_Textures[8]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_roughness1", currentTextureUnit++);
+			m_Textures[9]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_roughness2", currentTextureUnit++);
+			m_Textures[10]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_roughness3", currentTextureUnit++);
+			m_Textures[11]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_roughness4", currentTextureUnit++);
 
-			m_Textures[12]->bind(13);
-			shader->setUniform1i("material.texture_metallic1", 13);
-			m_Textures[13]->bind(14);
-			shader->setUniform1i("material.texture_metallic2", 14);
-			m_Textures[14]->bind(15);
-			shader->setUniform1i("material.texture_metallic3", 15);
-			m_Textures[15]->bind(16);
-			shader->setUniform1i("material.texture_metallic4", 16);
+			m_Textures[12]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_metallic1", currentTextureUnit++);
+			m_Textures[13]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_metallic2", currentTextureUnit++);
+			m_Textures[14]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_metallic3", currentTextureUnit++);
+			m_Textures[15]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_metallic4", currentTextureUnit++);
 
-			m_Textures[16]->bind(17);
-			shader->setUniform1i("material.texture_metallic1", 17);
-			m_Textures[17]->bind(18);
-			shader->setUniform1i("material.texture_metallic2", 18);
-			m_Textures[18]->bind(19);
-			shader->setUniform1i("material.texture_metallic3", 19);
-			m_Textures[19]->bind(20);
-			shader->setUniform1i("material.texture_metallic4", 20);
+			m_Textures[16]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_metallic1", currentTextureUnit++);
+			m_Textures[17]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_metallic2", currentTextureUnit++);
+			m_Textures[18]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_metallic3", currentTextureUnit++);
+			m_Textures[19]->bind(currentTextureUnit);
+			shader->setUniform1i("material.texture_metallic4", currentTextureUnit++);
 
- 			m_Textures[20]->bind(21);
- 			shader->setUniform1i("material.blendmap", 21);
+ 			m_Textures[20]->bind(currentTextureUnit);
+ 			shader->setUniform1i("material.blendmap", currentTextureUnit++);
 
 			// Normal matrix
 			glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(m_ModelMatrix)));

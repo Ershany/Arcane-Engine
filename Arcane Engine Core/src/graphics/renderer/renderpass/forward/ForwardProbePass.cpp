@@ -46,6 +46,8 @@ namespace arcane {
 		
 		// Texture settings for the BRDF LUT
 		TextureSettings textureSettings;
+		textureSettings.TextureFormat = GL_RG16F;
+		textureSettings.IsSRGB = false;
 		textureSettings.TextureWrapSMode = GL_CLAMP_TO_EDGE;
 		textureSettings.TextureWrapTMode = GL_CLAMP_TO_EDGE;
 		textureSettings.TextureMinificationFilterMode = GL_LINEAR;
@@ -54,7 +56,7 @@ namespace arcane {
 		textureSettings.HasMips = false;
 
 		Texture *brdfLUT = new Texture(textureSettings);
-		brdfLUT->generate2DTexture(BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION, GL_RG16F, GL_RG, 0);
+		brdfLUT->generate2DTexture(BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION, GL_RGB, 0);
 
 		// Setup the framebuffer that we are using to generate our BRDF LUT
 		Framebuffer brdfFramebuffer(BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION);
