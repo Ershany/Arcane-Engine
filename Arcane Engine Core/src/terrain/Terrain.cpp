@@ -227,6 +227,7 @@ namespace arcane {
 		shader->setUniformMat4("model", m_ModelMatrix);
 
 		m_GLCache->setDepthTest(true);
+		m_GLCache->setDepthFunc(GL_LESS);
 		m_GLCache->setBlend(false);
 		m_GLCache->setFaceCull(true);
 		m_GLCache->setCullFace(GL_BACK);

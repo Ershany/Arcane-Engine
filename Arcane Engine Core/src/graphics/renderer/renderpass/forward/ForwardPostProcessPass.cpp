@@ -15,7 +15,7 @@ namespace arcane {
 
 	ForwardPostProcessPass::~ForwardPostProcessPass() {}
 
-	void ForwardPostProcessPass::executeRenderPass(Framebuffer *framebufferToProcess) {
+	void ForwardPostProcessPass::executePostLightingPass(Framebuffer *framebufferToProcess) {
 		glViewport(0, 0, Window::getWidth(), Window::getHeight());
 
 		// If the input RenderTarget is multi-sampled. Resolve it by blitting it to a non-multi-sampled RenderTarget so we can post process it

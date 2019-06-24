@@ -1,5 +1,2 @@
-(src/shaders/deferred/pbr_lighting_pass.frag): 0(80) : error C1503: undefined variable "normalTexture"
-0(151) : error C1503: undefined variable "fragPos"
-0(275) : error C1503: undefined variable "FragPosLightClipSpace"
-0(275) : error C1503: undefined variable "FragPosLightClipSpace"
+(src/shaders/deferred/pbr_lighting_pass.frag): 0(104) : error C7011: implicit cast from "int" to "bool"
 

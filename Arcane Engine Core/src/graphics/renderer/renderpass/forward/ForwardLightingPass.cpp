@@ -26,7 +26,7 @@ namespace arcane {
 		}
 	}
 
-	LightingPassOutput ForwardLightingPass::executeRenderPass(ShadowmapPassOutput &shadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
+	LightingPassOutput ForwardLightingPass::executePostLightingPass(ShadowmapPassOutput &shadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
 		glViewport(0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight());
 		m_Framebuffer->bind();
 		m_Framebuffer->clear();

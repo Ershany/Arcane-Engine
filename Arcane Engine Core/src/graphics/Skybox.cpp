@@ -61,6 +61,9 @@ namespace arcane {
 		m_SkyboxShader->setUniformMat4("projection", camera->getProjectionMatrix());
 
 		// Since the vertex shader is gonna make the depth value 1.0, and the default value in the depth buffer is 1.0 so this is needed to draw the sky  box
+		m_GLCache->setDepthTest(true);
+		m_GLCache->setFaceCull(true);
+		m_GLCache->setCullFace(GL_BACK);
 		m_GLCache->setDepthFunc(GL_LEQUAL);
 		m_SkyboxVAO.bind();
 		m_SkyboxIBO.bind();

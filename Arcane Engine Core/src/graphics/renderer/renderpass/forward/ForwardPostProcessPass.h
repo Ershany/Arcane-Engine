@@ -11,12 +11,11 @@ namespace arcane {
 		ForwardPostProcessPass(Scene3D *scene);
 		virtual ~ForwardPostProcessPass() override;
 
-		void executeRenderPass(Framebuffer *framebufferToProcess);
+		void executePostLightingPass(Framebuffer *framebufferToProcess);
 
 		inline void EnableBlur(bool choice) { m_Blur = choice; }
 	private:
 		Shader *m_PostProcessShader;
-		Quad m_NDC_Plane;
 		Framebuffer m_ScreenRenderTarget; // Only used if multi-sampling is enabled so it can blit to a non-multisampled buffer
 
 		// Post Processing Tweaks
