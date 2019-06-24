@@ -14,6 +14,7 @@ IBL:
 Deferred:
 -Rewrite Framebuffer's so forward framebuffers and the GBuffer work nicely together
 -Master Renderer should own the renderers (ModelRenderer)
+-Skybox should render an NDC cube from the modelRenderer (instead of storing it's own)
 -Move to view space shading (viewPos isn't needed and will save an additonal mat4 multiplication on the fragment's depth in view -> world)
 -also make fragPos named after the space it is in
 -Look into moving shadowmap stuff into light manager

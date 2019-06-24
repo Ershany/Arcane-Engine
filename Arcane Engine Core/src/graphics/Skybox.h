@@ -5,6 +5,7 @@
 
 #include <graphics/camera/FPSCamera.h>
 #include <graphics/renderer/GLCache.h>
+#include <graphics/mesh/common/Cube.h>
 #include <platform/OpenGL/Buffer.h>
 #include <platform/OpenGL/IndexBuffer.h>
 #include <platform/OpenGL/VertexArray.h>
@@ -23,9 +24,7 @@ namespace arcane {
 		Shader *m_SkyboxShader;
 		GLCache *m_GLCache;
 		
-		VertexArray m_SkyboxVAO;
-		IndexBuffer m_SkyboxIBO;
-		Buffer  m_SkyboxVBO;
+		Cube cube;
 		Cubemap *m_SkyboxCubemap;
 	};
 
