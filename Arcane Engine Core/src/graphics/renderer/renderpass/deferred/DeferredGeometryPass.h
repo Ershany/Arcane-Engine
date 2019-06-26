@@ -6,6 +6,11 @@
 
 namespace arcane {
 
+	enum DeferredStencilValue : int {
+		ModelStencilValue = 0x01,
+		TerrainStencilValue = 0x02
+	};
+
 	class DeferredGeometryPass : public RenderPass {
 	public:
 		DeferredGeometryPass(Scene3D *scene);

@@ -61,7 +61,7 @@ namespace arcane {
 		// IBL code
 		if (useIBL) {
 			m_ModelShader->setUniform1i("computeIBL", 1);
-			probeManager->bindProbe(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+			probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 		}
 		else {
 			m_ModelShader->setUniform1i("computeIBL", 0);

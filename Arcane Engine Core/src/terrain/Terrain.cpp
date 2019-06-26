@@ -161,11 +161,8 @@ namespace arcane {
 
 	void Terrain::Draw(Shader *shader, RenderPassType pass) const {
 		// Texture unit 0 is reserved for the shadowmap
-		// Texture unit 1 is reserved for the irradianceMap used for indirect diffuse IBL
-		// Texture unit 2 is reserved for the prefilterMap
-		// Texture unit 3 is reserved for the brdfLUT
 		if (pass != RenderPassType::ShadowmapPassType) {
-			unsigned int currentTextureUnit = 4;
+			unsigned int currentTextureUnit = 1;
 			// Textures
 			m_Textures[0]->bind(currentTextureUnit);
 			shader->setUniform1i("material.texture_albedo1", currentTextureUnit++);

@@ -1,2 +1,2 @@
-(src/shaders/deferred/pbr_lighting_pass.frag): 0(104) : error C7011: implicit cast from "int" to "bool"
+(src/shaders/deferred/pbr_lighting_pass.frag): 0(120) : error C1068: too much data in type constructor
 

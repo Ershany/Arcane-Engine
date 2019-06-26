@@ -29,7 +29,7 @@ namespace arcane {
 		m_ReflectionProbes.push_back(probe);
 	}
 
-	void ProbeManager::bindProbe(glm::vec3 &renderPosition, Shader *shader) {
+	void ProbeManager::bindProbes(glm::vec3 &renderPosition, Shader *shader) {
 		// If simple blending is enabled just use the closest probe
 		if (m_ProbeBlendSetting == PROBES_SIMPLE) {
 			// Light Probes

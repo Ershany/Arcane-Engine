@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "DeferredLightingPass.h"
 
+#include <graphics/renderer/renderpass/deferred/DeferredGeometryPass.h>
 #include <utils/loaders/ShaderLoader.h>
 
 namespace arcane {
@@ -25,12 +26,23 @@ namespace arcane {
 	}
 
 	LightingPassOutput DeferredLightingPass::executePostLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, ICamera *camera, bool useIBL) {
+		// Move the stencil of the GBuffer to the our framebuffer
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, geometryData.outputGBuffer->getFramebuffer());
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer->getFramebuffer());
+		glBlitFramebuffer(0, 0, geometryData.outputGBuffer->getWidth(), geometryData.outputGBuffer->getHeight(), 0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight(), GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+
+		// Framebuffer setup
 		glViewport(0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight());
 		m_Framebuffer->bind();
 		m_Framebuffer->clear();
+		m_GLCache->setDepthTest(false);
 		m_GLCache->setMultisample(false);
 
-		// Setup
+		// Setup initial stencil state
+		m_GLCache->setStencilTest(true);
+		m_GLCache->setStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); // Do not update the stencil values
+		m_GLCache->setStencilWriteMask(0x00);
+
 		DynamicLightManager *lightManager = m_ActiveScene->getDynamicLightManager();
 		ProbeManager *probeManager = m_ActiveScene->getProbeManager();
 
@@ -63,18 +75,28 @@ namespace arcane {
 		// Shadowmap code
 		bindShadowmap(m_LightingShader, shadowmapData);
 
-		// IBL code
+		// Finally perform the lighting using the GBuffer
+		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
+
+		// IBL Binding
+		probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_LightingShader);
+
+		// Perform lighting on the terrain (turn IBL off)
+		m_LightingShader->setUniform1i("computeIBL", 0);
+		glStencilFunc(GL_EQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
+		modelRenderer->NDC_Plane.Draw();
+
+		// Perform lighting on everything else (turn IBL on)
 		if (useIBL) {
 			m_LightingShader->setUniform1i("computeIBL", 1);
-			probeManager->bindProbe(glm::vec3(0.0f, 0.0f, 0.0f), m_LightingShader);
 		}
-		else {
-			m_LightingShader->setUniform1i("computeIBL", 0);
-		}
-    
-		// Render a NDC quad
-		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
+		glStencilFunc(GL_NOTEQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
 		modelRenderer->NDC_Plane.Draw();
+
+
+		// Reset state
+		m_GLCache->setDepthTest(true);
+		m_GLCache->setStencilTest(false);
 
 		// Render pass output
 		LightingPassOutput passOutput;

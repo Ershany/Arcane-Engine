@@ -22,7 +22,8 @@ namespace arcane
 	}
 
 	void MasterRenderer::render() {
-		// Shadow map passs
+		/*
+		// Shadow map pass
 #if DEBUG_ENABLED
 		glFinish();
 		m_Timer.reset();
@@ -46,15 +47,13 @@ namespace arcane
 		glFinish();
 		RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
 #endif
-
+		*/
 
 		// Deferred Testing
-		/*
 		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->getCamera(), false);
 		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.executePostLightingPass(m_ActiveScene->getCamera(), false);
 		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executePostLightingPass(shadowmapOutput, geometryOutput, m_ActiveScene->getCamera(), true);
 		m_DeferredPostProcessPass.executePostLightingPass(deferredLightingOutput.outputFramebuffer);
-		*/
 	}
 
 }

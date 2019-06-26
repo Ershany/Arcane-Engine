@@ -16,7 +16,7 @@ namespace arcane {
 	}
 
 	void GBuffer::init() {
-		addDepthAttachment(false);
+		addDepthStencilAttachment(false);
 
 		bind();
 
