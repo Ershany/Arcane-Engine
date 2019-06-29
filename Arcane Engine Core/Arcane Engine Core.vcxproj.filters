@@ -180,16 +180,16 @@
     <ClCompile Include="src\platform\OpenGL\Framebuffers\GBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderer\renderpass\forward\ForwardPostProcessPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredPostProcessPass.cpp">
+    <ClCompile Include="src\graphics\renderer\renderpass\PostProcessPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -377,16 +377,16 @@
     <ClInclude Include="src\platform\OpenGL\Framebuffers\GBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderer\renderpass\forward\ForwardPostProcessPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredPostProcessPass.h">
+    <ClInclude Include="src\graphics\renderer\renderpass\PostProcessPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

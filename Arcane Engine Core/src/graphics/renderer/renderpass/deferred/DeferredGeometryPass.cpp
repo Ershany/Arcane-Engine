@@ -23,7 +23,7 @@ namespace arcane {
 		}
 	}
 
-	GeometryPassOutput DeferredGeometryPass::executePostLightingPass(ICamera *camera, bool renderOnlyStatic) {
+	GeometryPassOutput DeferredGeometryPass::executeGeometryPass(ICamera *camera, bool renderOnlyStatic) {
 		glViewport(0, 0, m_GBuffer->getWidth(), m_GBuffer->getHeight());
 		m_GBuffer->bind();
 		m_GBuffer->clear();

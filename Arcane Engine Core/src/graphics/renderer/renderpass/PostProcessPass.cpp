@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "ForwardPostProcessPass.h"
+#include "PostProcessPass.h"
 
 #include <utils/loaders/ShaderLoader.h>
 
 namespace arcane {
 
-	ForwardPostProcessPass::ForwardPostProcessPass(Scene3D *scene) : RenderPass(scene, RenderPassType::PostProcessPassType), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight())
+	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene, RenderPassType::PostProcessPassType), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight())
 	{
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
 
@@ -13,9 +13,9 @@ namespace arcane {
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
 	}
 
-	ForwardPostProcessPass::~ForwardPostProcessPass() {}
+	PostProcessPass::~PostProcessPass() {}
 
-	void ForwardPostProcessPass::executePostLightingPass(Framebuffer *framebufferToProcess) {
+	void PostProcessPass::executePostProcessPass(Framebuffer *framebufferToProcess) {
 		glViewport(0, 0, Window::getWidth(), Window::getHeight());
 
 		// If the input RenderTarget is multi-sampled. Resolve it by blitting it to a non-multi-sampled RenderTarget so we can post process it

@@ -17,7 +17,7 @@ namespace arcane {
 		DeferredGeometryPass(Scene3D *scene, GBuffer *customGBuffer);
 		virtual ~DeferredGeometryPass() override;
 
-		GeometryPassOutput executePostLightingPass(ICamera *camera, bool renderOnlyStatic);
+		GeometryPassOutput executeGeometryPass(ICamera *camera, bool renderOnlyStatic);
 	private:
 		bool m_AllocatedGBuffer;
 		GBuffer *m_GBuffer;

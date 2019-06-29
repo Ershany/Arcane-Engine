@@ -11,7 +11,7 @@ namespace arcane {
 		m_LightingShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_lighting_pass.vert", "src/shaders/deferred/pbr_lighting_pass.frag");
 
 		m_Framebuffer = new Framebuffer(Window::getWidth(), Window::getHeight());
-		m_Framebuffer->addTexture2DColorAttachment(false).addDepthStencilRBO(false).createFramebuffer();
+		m_Framebuffer->addTexture2DColorAttachment(false).addDepthStencilAttachment(false).createFramebuffer();
 	}
 
 	DeferredLightingPass::DeferredLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
@@ -25,18 +25,19 @@ namespace arcane {
 		}
 	}
 
-	LightingPassOutput DeferredLightingPass::executePostLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, ICamera *camera, bool useIBL) {
-		// Move the stencil of the GBuffer to the our framebuffer
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, geometryData.outputGBuffer->getFramebuffer());
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer->getFramebuffer());
-		glBlitFramebuffer(0, 0, geometryData.outputGBuffer->getWidth(), geometryData.outputGBuffer->getHeight(), 0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight(), GL_STENCIL_BUFFER_BIT, GL_NEAREST);
-
+	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, ICamera *camera, bool useIBL) {
 		// Framebuffer setup
 		glViewport(0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight());
 		m_Framebuffer->bind();
 		m_Framebuffer->clear();
 		m_GLCache->setDepthTest(false);
 		m_GLCache->setMultisample(false);
+
+		// Move the depth + stencil of the GBuffer to the our framebuffer
+// NOTE: Framebuffers have to have identical depth + stencil formats for this to work
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, geometryData.outputGBuffer->getFramebuffer());
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer->getFramebuffer());
+		glBlitFramebuffer(0, 0, geometryData.outputGBuffer->getWidth(), geometryData.outputGBuffer->getHeight(), 0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight(), GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 
 		// Setup initial stencil state
 		m_GLCache->setStencilTest(true);

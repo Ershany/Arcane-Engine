@@ -27,6 +27,10 @@ namespace arcane {
 		TextureSettings srgbTextureSettings;
 		srgbTextureSettings.IsSRGB = true;
 
+		Model *window = new arcane::Model(Quad());
+		m_RenderableModels.push_back(new RenderableModel(glm::vec3(150.0f, 60.0f, 150.0f), glm::vec3(25.0f, 25.0f, 25.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(90.0f), window, nullptr, true, true));
+		window->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/textures/window.png")));
+
 		Model *pbrGun = new arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
 		m_RenderableModels.push_back(new RenderableModel(glm::vec3(120.0f, 75.0f, 120.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), pbrGun, nullptr, true, false));
 		//pbrGun->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_A.tga"), &srgbTextureSettings));
@@ -87,6 +91,50 @@ namespace arcane {
 				else {
 					m_ModelRenderer.submitOpaque(curr);
 				}
+			}
+			iter++;
+		}
+	}
+
+	void Scene3D::addTransparentModelsToRenderer() {
+		auto iter = m_RenderableModels.begin();
+		while (iter != m_RenderableModels.end()) {
+			RenderableModel *curr = *iter;
+			if (curr->getTransparent()) {
+				m_ModelRenderer.submitTransparent(curr);
+			}
+			iter++;
+		}
+	}
+
+	void Scene3D::addTransparentStaticModelsToRenderer() {
+		auto iter = m_RenderableModels.begin();
+		while (iter != m_RenderableModels.end()) {
+			RenderableModel *curr = *iter;
+			if (curr->getStatic() && curr->getTransparent()) {
+				m_ModelRenderer.submitTransparent(curr);
+			}
+			iter++;
+		}
+	}
+
+	void Scene3D::addOpaqueModelsToRenderer() {
+		auto iter = m_RenderableModels.begin();
+		while (iter != m_RenderableModels.end()) {
+			RenderableModel *curr = *iter;
+			if (!curr->getTransparent()) {
+				m_ModelRenderer.submitOpaque(curr);
+			}
+			iter++;
+		}
+	}
+
+	void Scene3D::addOpaqueStaticModelsToRenderer() {
+		auto iter = m_RenderableModels.begin();
+		while (iter != m_RenderableModels.end()) {
+			RenderableModel *curr = *iter;
+			if (curr->getStatic() && !curr->getTransparent()) {
+				m_ModelRenderer.submitOpaque(curr);
 			}
 			iter++;
 		}

@@ -177,7 +177,7 @@ namespace arcane {
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.bind();
 			m_SceneCaptureLightingFramebuffer.setColorAttachment(m_SceneCaptureCubemap.getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			lightingPass.executePostLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			lightingPass.executeLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
 			m_SceneCaptureLightingFramebuffer.setColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 
@@ -229,7 +229,7 @@ namespace arcane {
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.bind();
 			m_SceneCaptureLightingFramebuffer.setColorAttachment(m_SceneCaptureCubemap.getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			lightingPass.executePostLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			lightingPass.executeLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
 			m_SceneCaptureLightingFramebuffer.setColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 

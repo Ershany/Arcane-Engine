@@ -6,12 +6,12 @@
 
 namespace arcane {
 
-	class ForwardPostProcessPass : public RenderPass {
+	class PostProcessPass : public RenderPass {
 	public:
-		ForwardPostProcessPass(Scene3D *scene);
-		virtual ~ForwardPostProcessPass() override;
+		PostProcessPass(Scene3D *scene);
+		virtual ~PostProcessPass() override;
 
-		void executePostLightingPass(Framebuffer *framebufferToProcess);
+		void executePostProcessPass(Framebuffer *framebufferToProcess);
 
 		inline void EnableBlur(bool choice) { m_Blur = choice; }
 	private:

@@ -7,8 +7,8 @@ namespace arcane
 {
 
 	MasterRenderer::MasterRenderer(Scene3D *scene) : m_ActiveScene(scene),
-		m_ShadowmapPass(scene), m_ForwardLightingPass(scene, true), m_ForwardPostProcessPass(scene), m_EnvironmentProbePass(scene), 
-		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene), m_DeferredPostProcessPass(scene)
+		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_ForwardLightingPass(scene, true), m_EnvironmentProbePass(scene),
+		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene), m_PostGBufferForwardPass(scene)
 	{
 		m_GLCache = GLCache::getInstance();
 	}
@@ -42,7 +42,7 @@ namespace arcane
 		glFinish();
 		m_Timer.reset();
 #endif
-		m_ForwardPostProcessPass.executePostLightingPass(lightingOutput.outputFramebuffer);
+		m_PostProcessPass.executePostLightingPass(lightingOutput.outputFramebuffer);
 #if DEBUG_ENABLED
 		glFinish();
 		RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
@@ -51,9 +51,10 @@ namespace arcane
 
 		// Deferred Testing
 		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->getCamera(), false);
-		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.executePostLightingPass(m_ActiveScene->getCamera(), false);
-		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executePostLightingPass(shadowmapOutput, geometryOutput, m_ActiveScene->getCamera(), true);
-		m_DeferredPostProcessPass.executePostLightingPass(deferredLightingOutput.outputFramebuffer);
+		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.executeGeometryPass(m_ActiveScene->getCamera(), false);
+		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executeLightingPass(shadowmapOutput, geometryOutput, m_ActiveScene->getCamera(), true);
+		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.executeLightingPass(shadowmapOutput, deferredLightingOutput, m_ActiveScene->getCamera(), false, true);
+		m_PostProcessPass.executePostProcessPass(postGBufferForward.outputFramebuffer);
 	}
 
 }
