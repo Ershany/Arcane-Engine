@@ -34,15 +34,14 @@ namespace arcane {
 		m_GLCache->setMultisample(false);
 
 		// Move the depth + stencil of the GBuffer to the our framebuffer
-// NOTE: Framebuffers have to have identical depth + stencil formats for this to work
+		// NOTE: Framebuffers have to have identical depth + stencil formats for this to work
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, geometryData.outputGBuffer->getFramebuffer());
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer->getFramebuffer());
 		glBlitFramebuffer(0, 0, geometryData.outputGBuffer->getWidth(), geometryData.outputGBuffer->getHeight(), 0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight(), GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 
 		// Setup initial stencil state
 		m_GLCache->setStencilTest(true);
-		m_GLCache->setStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); // Do not update the stencil values
-		m_GLCache->setStencilWriteMask(0x00);
+		m_GLCache->setStencilWriteMask(0x00); // Do not update stencil values
 
 		DynamicLightManager *lightManager = m_ActiveScene->getDynamicLightManager();
 		ProbeManager *probeManager = m_ActiveScene->getProbeManager();

@@ -296,7 +296,7 @@ float CalculateShadow(vec3 normal, vec3 fragPos, vec3 fragToLight) {
 }
 
 vec3 WorldPosFromDepth() {
-	float z = 2.0 * texture2D(depthTexture, TexCoords).r - 1.0; // [-1, 1]
+	float z = 2.0 * texture(depthTexture, TexCoords).r - 1.0; // [-1, 1]
 	vec4 clipSpacePos = vec4(TexCoords * 2.0 - 1.0 , z, 1.0);
 	vec4 viewSpacePos = projectionInverse * clipSpacePos;
 

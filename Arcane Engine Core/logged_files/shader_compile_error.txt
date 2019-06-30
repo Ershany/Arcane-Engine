@@ -1,2 +1,5 @@
-(src/shaders/deferred/pbr_lighting_pass.frag): 0(120) : error C1068: too much data in type constructor
+(src/shaders/deferred/pbr_lighting_pass.frag): ERROR: 0:299: 'function' : is removed in Forward Compatible context texture2D
+ERROR: 0:299: 'function' : is removed in Forward Compatible context texture2D
+ERROR: 0:299: 'texture2D' : function is not known 
+
 
