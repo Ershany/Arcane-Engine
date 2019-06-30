@@ -1,0 +1,2 @@
+(Window Initialization): Could not initialize the GLEW
+(Window Initialization): Could not initialize window class
