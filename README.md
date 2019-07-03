@@ -13,15 +13,18 @@ Arcane Engine is a real-time, physically based renderer built with OpenGL. A lar
 - Forward + Deferred Rendering
 - Physically Based
 - Cook Torrance Specular BRDF w/ Lambertian Diffuse
+- PBR Material System
 - Light Probes (IBL)
 - Reflection Probes (IBL)
 - Linear Lighting (w/ Gamma Correction)
 - HDR w/ Reinhard Tonemapper
-- PBR Material System
-- Multisampling Anti Aliasing (MSAA)
+- Screen Space Ambient Occlusion (SSAO)
+- MSAA (Forward Anti-Aliasing)
+- FXAA (Deferred Anti-Aliasing)
 - Directional, Point, and Spot Light Sources
 - Directional Light Shadowmapping
 - Skybox Support
+- Terrain Material Blending
 
 ## Engine
 - OpenGL 4.3+
@@ -31,11 +34,11 @@ Arcane Engine is a real-time, physically based renderer built with OpenGL. A lar
 - SOIL for Image Loading
 
 ## Development
-If you want to see what I am currently working on, check out Arcane's roadmap:
+If you want to see what I am currently working on, check out Arcane's roadmap on Trello:
 
 https://trello.com/b/WzD2bYCD/arcane-engine
 
-I plan on developing adding many different features to the forward & deferred renderers. Here are some of the few things I am really looking forward to adding:
+I plan on adding many different features to the forward & deferred renderers. Here are some of the few things I am really looking forward to adding:
 1. Decals
 1. Particles
 1. SSR
