@@ -43,12 +43,12 @@ namespace arcane {
 		m_ModelShader->setUniformMat4("view", camera->getViewMatrix());
 		m_ModelShader->setUniformMat4("projection", camera->getProjectionMatrix());
 
-		// Setup model renderer
+		// Setup model renderer for opaque objects only
 		if (renderOnlyStatic) {
-			m_ActiveScene->addStaticModelsToRenderer();
+			m_ActiveScene->addOpaqueStaticModelsToRenderer();
 		}
 		else {
-			m_ActiveScene->addModelsToRenderer();
+			m_ActiveScene->addOpaqueModelsToRenderer();
 		}
 
 		// Render opaque objects (use stencil to denote models for the deferred lighting pass)

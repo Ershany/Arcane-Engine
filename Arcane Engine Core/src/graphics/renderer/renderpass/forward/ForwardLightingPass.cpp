@@ -92,6 +92,9 @@ namespace arcane {
 
 		// Render transparent objects
 		m_GLCache->switchShader(m_ModelShader);
+		if (useIBL) {
+			probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+		}
 		modelRenderer->flushTransparent(m_ModelShader, m_RenderPassType);
 
 		// Render pass output
