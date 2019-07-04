@@ -30,7 +30,7 @@ namespace arcane {
 		Cubemap(CubemapSettings &settings = CubemapSettings());
 		~Cubemap();
 
-		void generateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum textureFormat, GLenum dataFormat, const unsigned char *data);
+		void generateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum dataFormat, const unsigned char *data);
 
 		void bind(int unit = -1);
 		void unbind();
@@ -47,7 +47,6 @@ namespace arcane {
 
 		unsigned int m_FaceWidth, m_FaceHeight;
 		unsigned int m_FacesGenerated;
-		GLenum m_TextureFormat;
 
 		CubemapSettings m_CubemapSettings;
 	};

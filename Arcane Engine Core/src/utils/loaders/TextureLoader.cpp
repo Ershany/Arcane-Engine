@@ -49,7 +49,7 @@ namespace arcane {
 		return m_TextureCache[path];
 	}
 
-	Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, bool isSRGB, CubemapSettings *settings) {
+	Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings) {
 		Cubemap *cubemap = new Cubemap();
 		if (settings != nullptr)
 			cubemap->setCubemapSettings(*settings);
@@ -69,15 +69,7 @@ namespace arcane {
 				case 4: dataFormat = GL_RGBA; break;
 				}
 
-				GLenum textureFormat = dataFormat;
-				if (isSRGB) {
-					switch (dataFormat) {
-					case GL_RGB: textureFormat = GL_SRGB; break;
-					case GL_RGBA: textureFormat = GL_SRGB_ALPHA; break;
-					}
-				}
-
-				cubemap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, width, height, textureFormat, dataFormat, data);
+				cubemap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, width, height, dataFormat, data);
 				stbi_image_free(data);
 			}
 			else {

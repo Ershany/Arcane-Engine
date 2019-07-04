@@ -8,7 +8,9 @@ namespace arcane {
 	Skybox::Skybox(const std::vector<std::string> &filePaths) {
 		m_SkyboxShader = ShaderLoader::loadShader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
 
-		m_SkyboxCubemap = TextureLoader::loadCubemapTexture(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5], true);
+		CubemapSettings srgbCubemap;
+		srgbCubemap.IsSRGB = true;
+		m_SkyboxCubemap = TextureLoader::loadCubemapTexture(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5], &srgbCubemap);
 
 		m_GLCache = GLCache::getInstance();
 	}

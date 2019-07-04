@@ -12,11 +12,12 @@ namespace arcane {
 	}
 
 	void LightProbe::generate() {
-		// Generate the HDR environment probe and set the generated flag
+		// Generate the HDR light probe and set the generated flag
 		CubemapSettings settings;
+		settings.TextureFormat = GL_RGBA16F;
 		m_IrradianceMap = new Cubemap(settings);
 		for (int i = 0; i < 6; i++) {
-			m_IrradianceMap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, (unsigned int)m_ProbeResolution.x, (unsigned int)m_ProbeResolution.y, GL_RGBA16F, GL_RGB, nullptr);
+			m_IrradianceMap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, (unsigned int)m_ProbeResolution.x, (unsigned int)m_ProbeResolution.y, GL_RGB, nullptr);
 		}
 
 		m_Generated = true;

@@ -3,19 +3,18 @@
 
 namespace arcane {
 
-	Cubemap::Cubemap(CubemapSettings &settings) : m_CubemapID(0), m_FaceWidth(0), m_FaceHeight(0), m_FacesGenerated(0), m_TextureFormat(0), m_CubemapSettings(settings) {}
+	Cubemap::Cubemap(CubemapSettings &settings) : m_CubemapID(0), m_FaceWidth(0), m_FaceHeight(0), m_FacesGenerated(0), m_CubemapSettings(settings) {}
 
 	Cubemap::~Cubemap() {
 		glDeleteTextures(1, &m_CubemapID);
 	}
 
-	void Cubemap::generateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum textureFormat, GLenum dataFormat, const unsigned char *data)
+	void Cubemap::generateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum dataFormat, const unsigned char *data)
 	{
 		// Generate cubemap if this is the first face being generated
 		if (m_CubemapID == 0) {
 			glGenTextures(1, &m_CubemapID);
 
-			m_TextureFormat = textureFormat;
 			m_FaceWidth = faceWidth;
 			m_FaceHeight = faceHeight;
 
