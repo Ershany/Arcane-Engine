@@ -5,7 +5,7 @@
 
 namespace arcane {
 
-	PostGBufferForward::PostGBufferForward(Scene3D *scene) : RenderPass(scene, RenderPassType::LightingPassType)
+	PostGBufferForward::PostGBufferForward(Scene3D *scene) : RenderPass(scene)
 	{
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/pbr_model.vert", "src/shaders/forward/pbr_model.frag");
 	}
@@ -59,7 +59,7 @@ namespace arcane {
 		}
 
 		// Render transparent objects
-		modelRenderer->flushTransparent(m_ModelShader, m_RenderPassType);
+		modelRenderer->flushTransparent(m_ModelShader, MaterialRequired);
 
 		// Render pass output
 		LightingPassOutput passOutput;

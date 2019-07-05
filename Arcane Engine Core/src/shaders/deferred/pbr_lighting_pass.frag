@@ -36,8 +36,6 @@ uniform sampler2D albedoTexture;
 uniform sampler2D normalTexture;
 uniform sampler2D materialInfoTexture;
 uniform sampler2D depthTexture;
-uniform float nearPlane;
-uniform float farPlane;
 
 // IBL
 uniform int reflectionProbeMipCount;

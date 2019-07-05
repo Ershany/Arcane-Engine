@@ -5,7 +5,7 @@
 
 namespace arcane {
 
-	ShadowmapPass::ShadowmapPass(Scene3D *scene) : RenderPass(scene, RenderPassType::ShadowmapPassType), m_AllocatedFramebuffer(true)
+	ShadowmapPass::ShadowmapPass(Scene3D *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_ShadowmapShader = ShaderLoader::loadShader("src/shaders/shadowmap.vert", "src/shaders/shadowmap.frag");
 
@@ -13,7 +13,7 @@ namespace arcane {
 		m_ShadowmapFramebuffer->addDepthAttachment(false).createFramebuffer();
 	}
 
-	ShadowmapPass::ShadowmapPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene, RenderPassType::ShadowmapPassType), m_AllocatedFramebuffer(false), m_ShadowmapFramebuffer(customFramebuffer)
+	ShadowmapPass::ShadowmapPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_ShadowmapFramebuffer(customFramebuffer)
 	{
 		m_ShadowmapShader = ShaderLoader::loadShader("src/shaders/shadowmap.vert", "src/shaders/shadowmap.frag");
 	}
@@ -52,11 +52,11 @@ namespace arcane {
 		}
 
 		// Render models
-		modelRenderer->flushOpaque(m_ShadowmapShader, m_RenderPassType);
-		modelRenderer->flushTransparent(m_ShadowmapShader, m_RenderPassType);
+		modelRenderer->flushOpaque(m_ShadowmapShader, NoMaterialRequired);
+		modelRenderer->flushTransparent(m_ShadowmapShader, NoMaterialRequired);
 
 		// Render terrain
-		terrain->Draw(m_ShadowmapShader, m_RenderPassType);
+		terrain->Draw(m_ShadowmapShader, NoMaterialRequired);
 
 		// Render pass output
 		ShadowmapPassOutput passOutput;

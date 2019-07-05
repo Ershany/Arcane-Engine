@@ -161,7 +161,7 @@ namespace arcane {
 
 	void Terrain::Draw(Shader *shader, RenderPassType pass) const {
 		// Texture unit 0 is reserved for the shadowmap
-		if (pass != RenderPassType::ShadowmapPassType) {
+		if (pass == MaterialRequired) {
 			unsigned int currentTextureUnit = 1;
 			// Textures
 			m_Textures[0]->bind(currentTextureUnit);

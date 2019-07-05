@@ -8,13 +8,12 @@ namespace arcane {
 
 	class RenderPass {
 	public:
-		RenderPass(Scene3D *scene, RenderPassType passType);
+		RenderPass(Scene3D *scene);
 		virtual ~RenderPass();
 	protected:
 		GLCache *m_GLCache;
 
 		Scene3D *m_ActiveScene;
-		RenderPassType m_RenderPassType;
 	};
 
 }

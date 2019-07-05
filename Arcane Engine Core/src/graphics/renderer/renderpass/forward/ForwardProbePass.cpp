@@ -9,7 +9,7 @@
 
 namespace arcane {
 
-	ForwardProbePass::ForwardProbePass(Scene3D *scene) : RenderPass(scene, RenderPassType::ProbePassType),
+	ForwardProbePass::ForwardProbePass(Scene3D *scene) : RenderPass(scene),
 		m_SceneCaptureShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION),
 		m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION)
 	{

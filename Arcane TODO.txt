@@ -7,6 +7,9 @@ Normal mapping:
 Skybox:
 -Should be HDR
 
+Shadows:
+-Look into moving shadowmap stuff into light manager
+
 IBL:
 -Proper probe blending will need to be implemented
 -A more efficient system for selecting which probes to blend (ideally using a quadtree)
@@ -15,12 +18,9 @@ Deferred:
 -Rewrite Framebuffer's so forward framebuffers and the GBuffer work nicely together
 -New framebuffer system should have more control over the framebuffer's format instead of making everything with a depth buffer use the same precision
 -Functions for has stencil etc need to be added for safety
+-Look into 32 bit depth + stencil
+-Look into making framebuffer's hold textures instead of unsigned int
+-Color attachment adding either adds floating point for MSAA or RGB for a non-msaa. WTF
+
 -Master Renderer should own the renderers (ModelRenderer)
 -Skybox should render an NDC cube from the modelRenderer (instead of storing it's own)
--also make fragPos named after the space it is in
--Also redo Cubemap generation to follow the same texture settings as textures do now
--Look into moving shadowmap stuff into light manager
--Look into making framebuffer's hold textures instead of unsigned int
--Look into extracting near + far in deferred lighting shader (from the projection matrix)
--Redo render pass type because it is not ideal with a large # of render passes
--Look into 32 bit depth + stencil

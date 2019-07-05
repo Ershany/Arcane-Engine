@@ -5,7 +5,7 @@
 
 namespace arcane {
 
-	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, bool shouldMultisample) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(true)
+	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, bool shouldMultisample) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/pbr_model.vert", "src/shaders/forward/pbr_model.frag");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/pbr_terrain.vert", "src/shaders/forward/pbr_terrain.frag");
@@ -14,7 +14,7 @@ namespace arcane {
 		m_Framebuffer->addTexture2DColorAttachment(shouldMultisample).addDepthStencilRBO(shouldMultisample).createFramebuffer();
 	}
 
-	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
+	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/pbr_model.vert", "src/shaders/forward/pbr_model.frag");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/pbr_terrain.vert", "src/shaders/forward/pbr_terrain.frag");
@@ -76,7 +76,7 @@ namespace arcane {
 		}
 
 		// Render opaque objects
-		modelRenderer->flushOpaque(m_ModelShader, m_RenderPassType);
+		modelRenderer->flushOpaque(m_ModelShader, MaterialRequired);
 
 		// Render terrain
 		m_GLCache->switchShader(m_TerrainShader);
@@ -85,7 +85,7 @@ namespace arcane {
 		m_TerrainShader->setUniformMat4("view", camera->getViewMatrix());
 		m_TerrainShader->setUniformMat4("projection", camera->getProjectionMatrix());
 		bindShadowmap(m_TerrainShader, shadowmapData);
-		terrain->Draw(m_TerrainShader, m_RenderPassType);
+		terrain->Draw(m_TerrainShader, MaterialRequired);
 
 		// Render skybox
 		skybox->Draw(camera);
@@ -95,7 +95,7 @@ namespace arcane {
 		if (useIBL) {
 			probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 		}
-		modelRenderer->flushTransparent(m_ModelShader, m_RenderPassType);
+		modelRenderer->flushTransparent(m_ModelShader, MaterialRequired);
 
 		// Render pass output
 		LightingPassOutput passOutput;

@@ -5,7 +5,7 @@
 
 namespace arcane {
 
-	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene, RenderPassType::PostProcessPassType), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight())
+	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight())
 	{
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
 

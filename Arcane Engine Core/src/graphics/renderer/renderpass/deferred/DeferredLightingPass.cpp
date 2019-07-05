@@ -6,7 +6,7 @@
 
 namespace arcane {
 
-	DeferredLightingPass::DeferredLightingPass(Scene3D *scene) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(true)
+	DeferredLightingPass::DeferredLightingPass(Scene3D *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_LightingShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_lighting_pass.vert", "src/shaders/deferred/pbr_lighting_pass.frag");
 
@@ -14,7 +14,7 @@ namespace arcane {
 		m_Framebuffer->addTexture2DColorAttachment(false).addDepthStencilAttachment(false).createFramebuffer();
 	}
 
-	DeferredLightingPass::DeferredLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene, RenderPassType::LightingPassType), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
+	DeferredLightingPass::DeferredLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
 		m_LightingShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_lighting_pass.vert", "src/shaders/deferred/pbr_lighting_pass.frag");
 	}
