@@ -10,16 +10,16 @@
 namespace arcane {
 
 	ForwardProbePass::ForwardProbePass(Scene3D *scene) : RenderPass(scene),
-		m_SceneCaptureShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION),
-		m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION)
+		m_SceneCaptureShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false),
+		m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION, false), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION, false)
 	{
 		m_SceneCaptureSettings.TextureFormat = GL_RGBA16F;
 		m_SceneCaptureCubemap.setCubemapSettings(m_SceneCaptureSettings);
 
-		m_SceneCaptureShadowFramebuffer.addDepthAttachment(false).createFramebuffer();
-		m_SceneCaptureLightingFramebuffer.addTexture2DColorAttachment(false).addDepthStencilRBO(false).createFramebuffer();
-		m_LightProbeConvolutionFramebuffer.addTexture2DColorAttachment(false).addDepthRBO(false).createFramebuffer();
-		m_ReflectionProbeSamplingFramebuffer.addTexture2DColorAttachment(false).addDepthRBO(false).createFramebuffer();
+		m_SceneCaptureShadowFramebuffer.addDepthStencilTexture(NormalizedDepthOnly).createFramebuffer();
+		m_SceneCaptureLightingFramebuffer.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
+		m_LightProbeConvolutionFramebuffer.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
+		m_ReflectionProbeSamplingFramebuffer.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 
 		for (int i = 0; i < 6; i++) {
 			m_SceneCaptureCubemap.generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, GL_RGB, nullptr);
@@ -61,8 +61,8 @@ namespace arcane {
 		brdfLUT->generate2DTexture(BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION, GL_RGB, 0);
 
 		// Setup the framebuffer that we are using to generate our BRDF LUT
-		Framebuffer brdfFramebuffer(BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION);
-		brdfFramebuffer.addTexture2DColorAttachment(false).addDepthRBO(false).createFramebuffer();
+		Framebuffer brdfFramebuffer(BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION, false);
+		brdfFramebuffer.addColorTexture(Normalized8).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		brdfFramebuffer.bind();
 
 		// Render state
@@ -134,7 +134,7 @@ namespace arcane {
 			unsigned int mipWidth = m_ReflectionProbeSamplingFramebuffer.getWidth() >> mip;
 			unsigned int mipHeight = m_ReflectionProbeSamplingFramebuffer.getHeight() >> mip;
 
-			glBindRenderbuffer(GL_RENDERBUFFER, m_ReflectionProbeSamplingFramebuffer.getDepthRBO());
+			glBindRenderbuffer(GL_RENDERBUFFER, m_ReflectionProbeSamplingFramebuffer.getDepthStencilRBO());
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);
 			glViewport(0, 0, mipWidth, mipHeight);
 
@@ -250,7 +250,7 @@ namespace arcane {
 			unsigned int mipWidth = m_ReflectionProbeSamplingFramebuffer.getWidth() >> mip;
 			unsigned int mipHeight = m_ReflectionProbeSamplingFramebuffer.getHeight() >> mip;
 
-			glBindRenderbuffer(GL_RENDERBUFFER, m_ReflectionProbeSamplingFramebuffer.getDepthRBO());
+			glBindRenderbuffer(GL_RENDERBUFFER, m_ReflectionProbeSamplingFramebuffer.getDepthStencilRBO());
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mipWidth, mipHeight);
 			glViewport(0, 0, mipWidth, mipHeight);
 			

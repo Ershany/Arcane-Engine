@@ -3,7 +3,7 @@
 
 namespace arcane {
 
-	GBuffer::GBuffer(unsigned int width, unsigned int height) : Framebuffer(width, height) {
+	GBuffer::GBuffer(unsigned int width, unsigned int height) : Framebuffer(width, height, false) {
 		init();
 	}
 
@@ -16,7 +16,7 @@ namespace arcane {
 	}
 
 	void GBuffer::init() {
-		addDepthStencilAttachment(false);
+		addDepthStencilTexture(NormalizedDepthStencil);
 
 		bind();
 

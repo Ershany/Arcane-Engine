@@ -1,2 +1,5 @@
 (Framebuffer initialization): Could not initialize the framebuffer
 (Framebuffer initialization): Could not initialize the framebuffer
+(Framebuffer initialization): Could not initialize the framebuffer
+(Framebuffer initialization): Could not initialize the framebuffer
+(Framebuffer initialization): Could not initialize the framebuffer

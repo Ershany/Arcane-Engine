@@ -10,8 +10,8 @@ namespace arcane {
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/pbr_model.vert", "src/shaders/forward/pbr_model.frag");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/pbr_terrain.vert", "src/shaders/forward/pbr_terrain.frag");
 
-		m_Framebuffer = new Framebuffer(Window::getWidth(), Window::getHeight());
-		m_Framebuffer->addTexture2DColorAttachment(shouldMultisample).addDepthStencilRBO(shouldMultisample).createFramebuffer();
+		m_Framebuffer = new Framebuffer(Window::getWidth(), Window::getHeight(), shouldMultisample);
+		m_Framebuffer->addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthStencil).createFramebuffer();
 	}
 
 	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
@@ -30,7 +30,7 @@ namespace arcane {
 		glViewport(0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight());
 		m_Framebuffer->bind();
 		m_Framebuffer->clear();
-		if (m_Framebuffer->isMultisampledColourBuffer()) {
+		if (m_Framebuffer->isMultisampled()) {
 			m_GLCache->setMultisample(true);
 		}
 		else {
@@ -105,7 +105,7 @@ namespace arcane {
 
 	void ForwardLightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, shadowmapData.shadowmapFramebuffer->getDepthTexture());
+		glBindTexture(GL_TEXTURE_2D, shadowmapData.shadowmapFramebuffer->getDepthStencilTexture());
 		shader->setUniform1i("shadowmap", 0);
 		shader->setUniformMat4("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 	}
