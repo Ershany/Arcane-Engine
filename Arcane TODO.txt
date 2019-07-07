@@ -9,6 +9,7 @@ Skybox:
 
 Shadows:
 -Look into moving shadowmap stuff into light manager
+-Fix terrain shadows
 
 IBL:
 -IBL shadow resolution should be defined somewhere

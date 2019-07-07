@@ -102,7 +102,7 @@ void main() {
 	directLightIrradiance += CalculateSpotLightRadiance(albedo, normal, metallic, roughness, fragToView, baseReflectivity);
 
 	// Calcualte ambient IBL for both diffuse and specular
-	vec3 ambient = vec3(0.03) * albedo * ao;
+	vec3 ambient = vec3(0.05) * albedo * ao;
 	if (computeIBL) {
 		vec3 specularRatio = FresnelSchlick(max(dot(normal, fragToView), 0.0), baseReflectivity);
 		vec3 diffuseRatio = vec3(1.0) - specularRatio;

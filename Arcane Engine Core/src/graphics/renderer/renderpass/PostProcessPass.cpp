@@ -9,7 +9,7 @@ namespace arcane {
 	{
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
 
-		m_ScreenRenderTarget.addColorTexture(Normalized8).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
+		m_ScreenRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
 	}
 
