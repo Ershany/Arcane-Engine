@@ -14,6 +14,8 @@ namespace arcane {
 		// Texture wrapping options
 		GLenum TextureWrapSMode = GL_REPEAT;
 		GLenum TextureWrapTMode = GL_REPEAT;
+		bool HasBorder = false;
+		glm::vec4 BorderColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 		// Texture filtering options
 		GLenum TextureMinificationFilterMode = GL_LINEAR_MIPMAP_LINEAR; // Filtering mode when the texture moves further away and multiple texels map to one pixel (trilinear for best quality)

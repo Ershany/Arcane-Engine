@@ -6,6 +6,7 @@ Normal mapping:
 
 Skybox:
 -Should be HDR
+-Skybox should render an NDC cube from the modelRenderer (instead of storing it's own)
 
 Shadows:
 -Look into moving shadowmap stuff into light manager
@@ -17,9 +18,8 @@ IBL:
 -A more efficient system for selecting which probes to blend (ideally using a quadtree)
 
 Deferred:
+-Add light volumes (very important for lots of lights in deferred)
+
 -Rewrite Framebuffer's so forward framebuffers and the GBuffer work nicely together
 -Look into making framebuffer's hold textures instead of unsigned int
 -When setting the colour attachment we should call the function we defined
-
--Master Renderer should own the renderers (ModelRenderer)
--Skybox should render an NDC cube from the modelRenderer (instead of storing it's own)
