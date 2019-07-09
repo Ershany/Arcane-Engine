@@ -4,28 +4,20 @@
 namespace arcane {
 
 	Framebuffer::Framebuffer(unsigned int width, unsigned int height, bool isMultisampled)
-		: m_FBO(0), m_Width(width), m_Height(height), m_IsMultisampled(isMultisampled), m_ColourTexture(0), m_DepthStencilTexture(0), m_DepthStencilRBO(0)
+		: m_FBO(0), m_Width(width), m_Height(height), m_IsMultisampled(isMultisampled), m_ColourTexture(), m_DepthStencilTexture(), m_DepthStencilRBO(0)
 	{
 		glGenFramebuffers(1, &m_FBO);
 	}
 
 	Framebuffer::~Framebuffer() {
-		if (m_ColourTexture != 0) {
-			glDeleteTextures(1, &m_ColourTexture);
-		}
-		if (m_DepthStencilTexture != 0) {
-			glDeleteTextures(1, &m_DepthStencilTexture);
-		}
-		if (m_DepthStencilRBO != 0) {
-			glDeleteRenderbuffers(1, &m_DepthStencilRBO);
-		}
+		glDeleteRenderbuffers(1, &m_DepthStencilRBO);
 
 		glDeleteFramebuffers(1, &m_FBO);
 	}
 
 	void Framebuffer::createFramebuffer() {
 		bind();
-		if (m_ColourTexture == 0) {
+		if (!m_ColourTexture.isGenerated()) {
 			// Indicate that there won't be a colour buffer for this FBO
 			glDrawBuffer(GL_NONE);
 			glReadBuffer(GL_NONE);
@@ -41,31 +33,34 @@ namespace arcane {
 
 	Framebuffer& Framebuffer::addColorTexture(ColorAttachmentFormat textureFormat) {
 #if DEBUG_ENABLED
-		if (m_ColourTexture != 0) {
+		if (m_ColourTexture.isGenerated()) {
 			Logger::getInstance().error("logged_files/error.txt", "Framebuffer initialization", "Framebuffer already has a colour attachment");
 			return *this;
 		}
 #endif
 
 		bind();
-		glGenTextures(1, &m_ColourTexture);
+
+		TextureSettings colourTextureSettings;
+		colourTextureSettings.TextureFormat = textureFormat;
+		colourTextureSettings.TextureWrapSMode = GL_CLAMP_TO_EDGE;
+		colourTextureSettings.TextureWrapTMode = GL_CLAMP_TO_EDGE;
+		colourTextureSettings.TextureMinificationFilterMode = GL_LINEAR;
+		colourTextureSettings.TextureMagnificationFilterMode = GL_LINEAR;
+		colourTextureSettings.TextureAnisotropyLevel = 1.0f;
+		colourTextureSettings.HasMips = false;
+		m_ColourTexture.setTextureSettings(colourTextureSettings);
 
 		// Generate colour texture attachment
 		if (m_IsMultisampled) {
-			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_ColourTexture);
-			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, MSAA_SAMPLE_AMOUNT, textureFormat, m_Width, m_Height, GL_TRUE);
+			m_ColourTexture.generate2DMultisampleTexture(m_Width, m_Height);
 
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_ColourTexture, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_ColourTexture.getTextureId(), 0);
 		}
 		else {
-			glBindTexture(GL_TEXTURE_2D, m_ColourTexture);
-			glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			m_ColourTexture.generate2DTexture(m_Width, m_Height, GL_RGB, nullptr);
 
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColourTexture, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColourTexture.getTextureId(), 0);
 		}
 
 		unbind();
@@ -74,41 +69,39 @@ namespace arcane {
 
 	Framebuffer& Framebuffer::addDepthStencilTexture(DepthStencilAttachmentFormat textureFormat) {
 #if DEBUG_ENABLED
-		if (m_DepthStencilTexture != 0) {
+		if (m_DepthStencilTexture.isGenerated()) {
 			Logger::getInstance().error("logged_files/error.txt", "Framebuffer initialization", "Framebuffer already has a depth attachment");
 			return *this;
 		}
 #endif
-
-		bind();
 
 		GLenum attachmentType = GL_DEPTH_STENCIL_ATTACHMENT;
 		if (textureFormat == NormalizedDepthOnly) {
 			attachmentType = GL_DEPTH_ATTACHMENT;
 		}
 
+		bind();
+
+		TextureSettings depthStencilSettings;
+		depthStencilSettings.TextureFormat = textureFormat;
+		depthStencilSettings.TextureWrapSMode = GL_CLAMP_TO_BORDER;
+		depthStencilSettings.TextureWrapTMode = GL_CLAMP_TO_BORDER;
+		depthStencilSettings.TextureMinificationFilterMode = GL_NEAREST;
+		depthStencilSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		depthStencilSettings.TextureAnisotropyLevel = 1.0f;
+		depthStencilSettings.HasBorder = true;
+		depthStencilSettings.BorderColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		depthStencilSettings.HasMips = false;
+		m_DepthStencilTexture.setTextureSettings(depthStencilSettings);
+
 		// Generate depth attachment
-		glGenTextures(1, &m_DepthStencilTexture);
-
 		if (m_IsMultisampled) {
-			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, m_DepthStencilTexture);
-			glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, MSAA_SAMPLE_AMOUNT, textureFormat, m_Width, m_Height, GL_TRUE);
-			glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
-
-			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D_MULTISAMPLE, m_DepthStencilTexture, 0);
+			m_DepthStencilTexture.generate2DMultisampleTexture(m_Width, m_Height);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D_MULTISAMPLE, m_DepthStencilTexture.getTextureId(), 0);
 		}
 		else {
-			glBindTexture(GL_TEXTURE_2D, m_DepthStencilTexture);
-			glTexImage2D(GL_TEXTURE_2D, 0, textureFormat, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-			float borderColour[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColour);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D, m_DepthStencilTexture, 0);
+			m_DepthStencilTexture.generate2DTexture(m_Width, m_Height, GL_DEPTH_COMPONENT, nullptr);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D, m_DepthStencilTexture.getTextureId(), 0);
 		}
 
 		unbind();

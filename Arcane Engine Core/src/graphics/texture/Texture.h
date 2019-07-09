@@ -37,7 +37,7 @@ namespace arcane {
 		void generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, const void *data);
 		void generate2DMultisampleTexture(unsigned int width, unsigned int height);
 
-		void bind(int unit = -1);
+		void bind(int unit = 0);
 		void unbind();
 
 		// Texture Tuning Functions (Works for pre-generation and post-generation)

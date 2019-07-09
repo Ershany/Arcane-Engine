@@ -69,8 +69,7 @@ namespace arcane {
 	}
 
 	void Texture::bind(int unit) {
-		if (unit >= 0)
-			glActiveTexture(GL_TEXTURE0 + unit);
+		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(m_TextureTarget, m_TextureId);
 	}
 

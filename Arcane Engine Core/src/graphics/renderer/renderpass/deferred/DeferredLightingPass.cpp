@@ -65,8 +65,7 @@ namespace arcane {
 		glBindTexture(GL_TEXTURE_2D, geometryData.outputGBuffer->getMaterialInfo());
 		m_LightingShader->setUniform1i("materialInfoTexture", 6);
 
-		glActiveTexture(GL_TEXTURE7);
-		glBindTexture(GL_TEXTURE_2D, geometryData.outputGBuffer->getDepthStencilTexture());
+		geometryData.outputGBuffer->getDepthStencilTexture()->bind(7);
 		m_LightingShader->setUniform1i("depthTexture", 7);
 
 		m_LightingShader->setUniform1f("nearPlane", NEAR_PLANE);
@@ -105,8 +104,7 @@ namespace arcane {
 	}
 
 	void DeferredLightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, shadowmapData.shadowmapFramebuffer->getDepthStencilTexture());
+		shadowmapData.shadowmapFramebuffer->getDepthStencilTexture()->bind();
 		shader->setUniform1i("shadowmap", 0);
 		shader->setUniformMat4("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 	}

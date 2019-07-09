@@ -32,7 +32,7 @@ namespace arcane {
 
 		void generateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum dataFormat, const unsigned char *data);
 
-		void bind(int unit = -1);
+		void bind(int unit = 0);
 		void unbind();
 
 		// Pre-generation controls only

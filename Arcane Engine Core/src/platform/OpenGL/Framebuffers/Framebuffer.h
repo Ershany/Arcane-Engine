@@ -38,14 +38,14 @@ namespace arcane {
 		// Getters
 		inline unsigned int getFramebuffer() { return m_FBO; }
 
-		inline unsigned int getWidth() { return m_Width; }
-		inline unsigned int getHeight() { return m_Height; }
+		inline unsigned int getWidth() const { return m_Width; }
+		inline unsigned int getHeight() const { return m_Height; }
 
-		inline bool isMultisampled() { return m_IsMultisampled; }
+		inline bool isMultisampled() const { return m_IsMultisampled; }
 
-		inline unsigned int getColourTexture() { return m_ColourTexture; }
+		inline Texture* getColourTexture() { return &m_ColourTexture; }
 
-		inline unsigned int getDepthStencilTexture() { return m_DepthStencilTexture; }
+		inline Texture* getDepthStencilTexture() { return &m_DepthStencilTexture; }
 		inline unsigned int getDepthStencilRBO() { return m_DepthStencilRBO; }
 	protected:
 		unsigned int m_FBO;
@@ -54,8 +54,8 @@ namespace arcane {
 		bool m_IsMultisampled;
 		
 		// Render Targets (Attachments)
-		unsigned int m_ColourTexture;
-		unsigned int m_DepthStencilTexture;
+		Texture m_ColourTexture;
+		Texture m_DepthStencilTexture;
 		unsigned int m_DepthStencilRBO;
 	};
 
