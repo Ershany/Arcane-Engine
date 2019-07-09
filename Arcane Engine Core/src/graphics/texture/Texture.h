@@ -35,23 +35,28 @@ namespace arcane {
 
 		// Generation functions
 		void generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, const void *data);
+		void generate2DMultisampleTexture(unsigned int width, unsigned int height);
 
 		void bind(int unit = -1);
 		void unbind();
 
 		// Texture Tuning Functions (Works for pre-generation and post-generation)
-		void setTextureWrapS(GLenum textureWrapMode, bool shouldBind = false);
-		void setTextureWrapT(GLenum textureWrapMode, bool shouldBind = false);
-		void setTextureMinFilter(GLenum textureFilterMode, bool shouldBind = false);
-		void setTextureMagFilter(GLenum textureFilterMode, bool shouldBind = false);
-		void setAnisotropicFilteringMode(float textureAnisotropyLevel, bool shouldBind = false);
+		void setTextureWrapS(GLenum textureWrapMode);
+		void setTextureWrapT(GLenum textureWrapMode);
+		void setHasBorder(bool hasBorder);
+		void setBorderColour(glm::vec4 &borderColour);
+		void setTextureMinFilter(GLenum textureFilterMode);
+		void setTextureMagFilter(GLenum textureFilterMode);
+		void setAnisotropicFilteringMode(float textureAnisotropyLevel);
+		void setMipBias(int mipBias);
 
 		// Pre-generation controls only
-		void setMipMode(bool shouldGenMips, int mipBias);
+		void setHasMips(bool hasMips);
 		inline void setTextureSettings(TextureSettings settings) { m_TextureSettings = settings; }
 
 		// Don't use this to bind the texture and use it. Call the Bind() function instead
 		inline unsigned int getTextureId() { return m_TextureId; }
+		inline bool isGenerated() { return m_TextureId != 0; }
 		inline unsigned int getWidth() { return m_Width; }
 		inline unsigned int getHeight() { return m_Height; }
 		const TextureSettings& getTextureSettings() { return m_TextureSettings; }
