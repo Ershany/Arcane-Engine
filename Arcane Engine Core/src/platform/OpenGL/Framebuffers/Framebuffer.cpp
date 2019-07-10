@@ -54,13 +54,11 @@ namespace arcane {
 		// Generate colour texture attachment
 		if (m_IsMultisampled) {
 			m_ColourTexture.generate2DMultisampleTexture(m_Width, m_Height);
-
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, m_ColourTexture.getTextureId(), 0);
+			setColorAttachment(m_ColourTexture.getTextureId(), GL_TEXTURE_2D_MULTISAMPLE);
 		}
 		else {
 			m_ColourTexture.generate2DTexture(m_Width, m_Height, GL_RGB, nullptr);
-
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColourTexture.getTextureId(), 0);
+			setColorAttachment(m_ColourTexture.getTextureId(), GL_TEXTURE_2D);
 		}
 
 		unbind();
