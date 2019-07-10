@@ -53,16 +53,13 @@ namespace arcane {
 		m_LightingShader->setUniformMat4("projectionInverse", glm::inverse(camera->getProjectionMatrix()));
 
 		// Bind GBuffer data
-		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, geometryData.outputGBuffer->getAlbedo());
+		geometryData.outputGBuffer->getAlbedo()->bind(4);
 		m_LightingShader->setUniform1i("albedoTexture", 4);
 
-		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_2D, geometryData.outputGBuffer->getNormal());
+		geometryData.outputGBuffer->getNormal()->bind(5);
 		m_LightingShader->setUniform1i("normalTexture", 5);
 
-		glActiveTexture(GL_TEXTURE6);
-		glBindTexture(GL_TEXTURE_2D, geometryData.outputGBuffer->getMaterialInfo());
+		geometryData.outputGBuffer->getMaterialInfo()->bind(6);
 		m_LightingShader->setUniform1i("materialInfoTexture", 6);
 
 		geometryData.outputGBuffer->getDepthStencilTexture()->bind(7);

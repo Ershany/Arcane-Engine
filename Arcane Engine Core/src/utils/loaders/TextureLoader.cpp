@@ -46,6 +46,8 @@ namespace arcane {
 		texture->generate2DTexture(width, height, dataFormat, data);
 
 		m_TextureCache.insert(std::pair<std::string, Texture*>(path, texture));
+		stbi_image_free(data);
+
 		return m_TextureCache[path];
 	}
 
