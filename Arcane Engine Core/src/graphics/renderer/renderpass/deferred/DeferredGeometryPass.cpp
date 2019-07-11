@@ -9,7 +9,7 @@ namespace arcane {
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_model_geometry.vert", "src/shaders/deferred/pbr_model_geometry.frag");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_terrain_geometry.vert", "src/shaders/deferred/pbr_terrain_geometry.frag");
 
-		m_GBuffer = new GBuffer(Window::getWidth(), Window::getHeight());
+		m_GBuffer = new GBuffer(Window::getResolutionWidth(), Window::getResolutionHeight());
 	}
 
 	DeferredGeometryPass::DeferredGeometryPass(Scene3D *scene, GBuffer *customGBuffer) : RenderPass(scene), m_AllocatedGBuffer(false), m_GBuffer(customGBuffer) {

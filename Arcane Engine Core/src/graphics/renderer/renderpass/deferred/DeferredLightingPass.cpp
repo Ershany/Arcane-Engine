@@ -10,7 +10,7 @@ namespace arcane {
 	{
 		m_LightingShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_lighting_pass.vert", "src/shaders/deferred/pbr_lighting_pass.frag");
 
-		m_Framebuffer = new Framebuffer(Window::getWidth(), Window::getHeight(), false);
+		m_Framebuffer = new Framebuffer(Window::getResolutionWidth(), Window::getResolutionHeight(), false);
 		m_Framebuffer->addColorTexture(FloatingPoint16).addDepthStencilTexture(NormalizedDepthStencil).createFramebuffer();
 	}
 

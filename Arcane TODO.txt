@@ -19,7 +19,3 @@ IBL:
 
 Deferred:
 -Add light volumes (very important for lots of lights in deferred)
-
--Rewrite Framebuffer's so forward framebuffers and the GBuffer work nicely together
--Look into making framebuffer's hold textures instead of unsigned int
--When setting the colour attachment we should call the function we defined

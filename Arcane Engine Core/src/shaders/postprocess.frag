@@ -1,14 +1,13 @@
 #version 430 core
 
-out vec4 FragColour;
-
 in vec2 TexCoords;
+
+out vec4 FragColour;
 
 uniform sampler2D screen_texture;
 uniform float gamma_inverse;
 uniform vec2 read_offset;
 uniform bool blur_enabled;
-
 
 void main() {
 	// Sample the fragments around the current fragment for post processing using kernels (convulution matrices)

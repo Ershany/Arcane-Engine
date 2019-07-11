@@ -416,6 +416,8 @@
     <None Include="src\shaders\deferred\pbr_terrain_geometry.vert" />
     <None Include="src\shaders\deferred\pbr_lighting_pass.vert" />
     <None Include="src\shaders\deferred\pbr_lighting_pass.frag" />
+    <None Include="src\shaders\fxaa.vert" />
+    <None Include="src\shaders\fxaa.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
