@@ -23,8 +23,8 @@ namespace arcane {
 		static inline bool getHideCursor() { return s_HideCursor; }
 		static inline int getWidth() { return s_Width; }
 		static inline int getHeight() { return s_Height; }
-		static inline int getResolutionWidth() { return s_Width * SUPERSAMPLING_FACTOR; }
-		static inline int getResolutionHeight() { return s_Height * SUPERSAMPLING_FACTOR; }
+		static inline int getResolutionWidth() { return (int)(s_Width * SUPERSAMPLING_FACTOR); }
+		static inline int getResolutionHeight() { return (int)(s_Height * SUPERSAMPLING_FACTOR); }
 	private:
 		bool init();
 

@@ -15,7 +15,7 @@
 
 // AA Settings
 #define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering
-#define SUPERSAMPLING_FACTOR 1 // Should be a multiple of 2 (1 means window resolution will be the render resolution)
+#define SUPERSAMPLING_FACTOR 1 // 1 means window resolution will be the render resolution
 
 // Texture Filtering Settings
 #define ANISOTROPIC_FILTERING_LEVEL 8.0f
