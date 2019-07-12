@@ -8,7 +8,7 @@
 #define WINDOW_X_RESOLUTION 1366
 #define WINDOW_Y_RESOLUTION 768
 #define V_SYNC 1
-#define FULLSCREEN_MODE 0
+#define FULLSCREEN_MODE 0 // If set, window resolution is maximized to your screen resolution
 
 // Render Settings
 #define FORWARD_RENDER 0
