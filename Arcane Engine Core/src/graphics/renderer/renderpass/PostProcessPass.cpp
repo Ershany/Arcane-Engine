@@ -9,6 +9,7 @@ namespace arcane {
 		m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false)
 	{
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
+		m_FxaaShader = ShaderLoader::loadShader("src/shaders/fxaa.vert", "src/shaders/fxaa.frag");
 
 		m_ScreenRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ResolveRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
@@ -50,7 +51,7 @@ namespace arcane {
 		m_PostProcessShader->setUniform2f("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
 		m_PostProcessShader->setUniform1i("blur_enabled", m_Blur);
 		m_PostProcessShader->setUniform1i("screen_texture", 0);
-		target->getColourTexture()->bind();
+		target->getColourTexture()->bind(0);
 
 		Window::clear();
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();

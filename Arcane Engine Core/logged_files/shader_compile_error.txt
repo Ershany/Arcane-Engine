@@ -1,5 +1,2 @@
-(src/shaders/deferred/pbr_lighting_pass.frag): ERROR: 0:299: 'function' : is removed in Forward Compatible context texture2D
-ERROR: 0:299: 'function' : is removed in Forward Compatible context texture2D
-ERROR: 0:299: 'texture2D' : function is not known 
-
+(src/shaders/fxaa.frag): 0(17) : error C7011: implicit cast from "vec4" to "vec3"
 
