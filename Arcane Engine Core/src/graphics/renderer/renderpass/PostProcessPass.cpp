@@ -5,12 +5,13 @@
 
 namespace arcane {
 
-	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), 
-		m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false)
+	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false),
+		m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false)
 	{
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
 		m_FxaaShader = ShaderLoader::loadShader("src/shaders/fxaa.vert", "src/shaders/fxaa.frag");
 
+		m_TonemappedNonLinearTarget.addColorTexture(Normalized8).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ScreenRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ResolveRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
@@ -44,17 +45,31 @@ namespace arcane {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #endif
 
-		// Bind shader and its post processing settings, and also bind the screenspace texture
-		framebufferToProcess->unbind();
+		// Set post process settings and convert our scene from HDR (linear) -> SDR (non-linear)
+		m_TonemappedNonLinearTarget.bind();
+		m_TonemappedNonLinearTarget.clear();
 		GLCache::getInstance()->switchShader(m_PostProcessShader);
 		m_PostProcessShader->setUniform1f("gamma_inverse", 1.0f / m_GammaCorrection);
 		m_PostProcessShader->setUniform2f("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
-		m_PostProcessShader->setUniform1i("blur_enabled", m_Blur);
-		m_PostProcessShader->setUniform1i("screen_texture", 0);
+		m_PostProcessShader->setUniform1i("colour_texture", 0);
 		target->getColourTexture()->bind(0);
 
-		Window::clear();
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
+		modelRenderer->NDC_Plane.Draw();
+
+		// Finally render the scene to the widnow's framebuffer
+		m_TonemappedNonLinearTarget.unbind();
+		Window::clear();
+		GLCache::getInstance()->switchShader(m_FxaaShader);
+		m_FxaaShader->setUniform1i("enableFXAA", FXAA_ENABLE);
+		m_FxaaShader->setUniform1i("showEdges", 0);
+		m_FxaaShader->setUniform1f("lumaThreshold", 0.5f);
+		m_FxaaShader->setUniform1f("mulReduction", 8.0f);
+		m_FxaaShader->setUniform1f("minReduction", 128.0f);
+		m_FxaaShader->setUniform1f("maxSpan", 8.0f);
+		m_FxaaShader->setUniform1i("colour_texture", 0);
+		m_TonemappedNonLinearTarget.getColourTexture()->bind(0);
+
 		modelRenderer->NDC_Plane.Draw();
 	}
 

@@ -1,2 +1,2 @@
-(src/shaders/fxaa.frag): 0(17) : error C7011: implicit cast from "vec4" to "vec3"
+(src/shaders/fxaa.frag): 0(23) : error C0000: syntax error, unexpected reserved word "return", expecting ',' or ';' at token "return"
 

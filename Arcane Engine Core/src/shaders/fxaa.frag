@@ -7,14 +7,22 @@ out vec4 FragColour;
 uniform sampler2D colour_texture;
 
 uniform vec2 read_offset;
+uniform int enableFXAA;
 uniform int showEdges;
 
 uniform float lumaThreshold;
 uniform float mulReduction;
+uniform float minReduction;
 uniform float maxSpan;
 
 void main() {
 	vec3 rgbM = texture(colour_texture, TexCoords).rgb;
+
+	if (enableFXAA == 0) {
+		FragColour = vec4(rgbM, 1.0);
+		return;
+	}
+
 	vec3 rgbNW = texture(colour_texture, TexCoords + vec2(-read_offset.x,	read_offset.y)).rgb;
 	vec3 rgbNE = texture(colour_texture, TexCoords + vec2(read_offset.x,	read_offset.y)).rgb;
 	vec3 rgbSW = texture(colour_texture, TexCoords + vec2(-read_offset.x,	-read_offset.y)).rgb;
@@ -48,7 +56,7 @@ void main() {
 
 	// Sampling step does depend on the luma: The brighter the sampled texels, the smaller the final sampling step
 	// This means that brighter areas are less blurred/more sharper than dark areas
-	float samplingDirectionReduction = max((lumaNW + lumaNE + lumaSW + lumaSE) * 0.25 * mulReduction, mulReduction);
+	float samplingDirectionReduction = max((lumaNW + lumaNE + lumaSW + lumaSE) * 0.25 * mulReduction, minReduction);
 	float minSamplingDirectionFactor = 1.0 / (min(abs(sampleDir.x), abs(sampleDir.y)) + samplingDirectionReduction);
 
 	// Calculate the final sampling direction vector by reducing and clamping to a range and adapt it to the texture size
