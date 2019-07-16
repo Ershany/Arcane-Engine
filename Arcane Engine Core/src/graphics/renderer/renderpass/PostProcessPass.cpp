@@ -63,6 +63,7 @@ namespace arcane {
 		GLCache::getInstance()->switchShader(m_FxaaShader);
 		m_FxaaShader->setUniform1i("enableFXAA", FXAA_ENABLE);
 		m_FxaaShader->setUniform1i("showEdges", 0);
+		m_FxaaShader->setUniform2f("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
 		m_FxaaShader->setUniform1f("lumaThreshold", 0.5f);
 		m_FxaaShader->setUniform1f("mulReduction", 8.0f);
 		m_FxaaShader->setUniform1f("minReduction", 128.0f);
