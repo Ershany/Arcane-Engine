@@ -104,13 +104,13 @@ void main() {
 		vec3 diffuseRatio = vec3(1.0) - specularRatio;
 		diffuseRatio *= 1.0 - metallic;
 
-		vec3 indirectDiffuse = texture(irradianceMap, normal).rgb * albedo;
+		vec3 indirectDiffuse = texture(irradianceMap, normal).rgb * albedo * diffuseRatio;
 
 		vec3 prefilterColour = textureLod(prefilterMap, reflectionVec, unclampedRoughness * (reflectionProbeMipCount - 1)).rgb;
 		vec2 brdfIntegration = texture(brdfLUT, vec2(max(dot(normal, fragToView), 0.0), roughness)).rg;
 		vec3 indirectSpecular = prefilterColour * (specularRatio * brdfIntegration.x + brdfIntegration.y);
 
-		ambient = (diffuseRatio * indirectDiffuse + indirectSpecular) * ao;
+		ambient = (indirectDiffuse + indirectSpecular) * ao;
 	}
 
 	color = vec4(ambient + directLightIrradiance, 1.0);
