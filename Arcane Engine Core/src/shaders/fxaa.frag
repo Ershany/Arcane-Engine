@@ -1,95 +1,55 @@
 #version 430 core
 
+#define FXAA_REDUCE_MIN (1.0 / 128.0)
+#define FXAA_REDUCE_MUL (1.0 / 8.0)
+#define FXAA_SPAN_MAX 8.0
+
 in vec2 TexCoords;
 
 out vec4 FragColour;
 
 uniform sampler2D colour_texture;
-
-uniform vec2 read_offset;
-uniform int enableFXAA;
-uniform int showEdges;
-
-uniform float lumaThreshold;
-uniform float mulReduction;
-uniform float minReduction;
-uniform float maxSpan;
+uniform vec2 inverse_resolution;
+uniform int enable_FXAA;
 
 void main() {
-	vec3 rgbM = texture(colour_texture, TexCoords).rgb;
-
-	if (enableFXAA == 0) {
+	// if FXAA is disabled early out
+	vec3 rgbM  = texture2D(colour_texture, TexCoords).xyz;
+	if (enable_FXAA == 0) {
 		FragColour = vec4(rgbM, 1.0);
 		return;
 	}
 
-	vec3 rgbNW = texture(colour_texture, TexCoords + vec2(-read_offset.x,	read_offset.y)).rgb;
-	vec3 rgbNE = texture(colour_texture, TexCoords + vec2(read_offset.x,	read_offset.y)).rgb;
-	vec3 rgbSW = texture(colour_texture, TexCoords + vec2(-read_offset.x,	-read_offset.y)).rgb;
-	vec3 rgbSE = texture(colour_texture, TexCoords + vec2(read_offset.x,	-read_offset.y)).rgb;
+	// Samples the texels around and calculate their corresponding luminosity
+	vec3 calculateLuma = vec3(0.299, 0.587, 0.114);
+	vec3 rgbNW = texture2D(colour_texture, TexCoords + (vec2(-1.0,-1.0)) * inverse_resolution).xyz;
+	vec3 rgbNE = texture2D(colour_texture, TexCoords + (vec2(1.0,-1.0)) * inverse_resolution).xyz;
+	vec3 rgbSW = texture2D(colour_texture, TexCoords + (vec2(-1.0,1.0)) * inverse_resolution).xyz;
+	vec3 rgbSE = texture2D(colour_texture, TexCoords + (vec2(1.0,1.0)) * inverse_resolution).xyz;
 
-	// https://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
-	const vec3 lumaCalculation = vec3(0.299, 0.587, 0.114);
-
-	// Calculate the perceived luminosity
-	float lumaM = dot(rgbM, lumaCalculation);
-	float lumaNW = dot(rgbNW, lumaCalculation);
-	float lumaNE = dot(rgbNE, lumaCalculation);
-	float lumaSW = dot(rgbSW, lumaCalculation);
-	float lumaSE = dot(rgbSE, lumaCalculation);
-
-	// Calculate the minimum and maximum luma
+	float lumaM  = dot(rgbM,  calculateLuma);
+	float lumaNW = dot(rgbNW, calculateLuma);
+	float lumaNE = dot(rgbNE, calculateLuma);
+	float lumaSW = dot(rgbSW, calculateLuma);
+	float lumaSE = dot(rgbSE, calculateLuma);
 	float lumaMin = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));
-	float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));
+	float lumaMax = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE))); 
 
-	// If the contrast is lower than a maximum, do not perform AA
-	if (lumaMax - lumaMin <= lumaMax * lumaThreshold) {
-		FragColour = vec4(rgbM, 1.0);
-		return;
-	}
+	// Calculate sample direction
+	vec2 dir;
+	dir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));
+	dir.y =  ((lumaNW + lumaSW) - (lumaNE + lumaSE));
+	float dirReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) * (0.25 * FXAA_REDUCE_MUL), FXAA_REDUCE_MIN);
+	float rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);
+	dir = min(vec2(FXAA_SPAN_MAX, FXAA_SPAN_MAX), max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX), dir * rcpDirMin)) * inverse_resolution;
 
-
-	// Perform sampling along the gradient
-	vec2 sampleDir;
-	sampleDir.x = -((lumaNW + lumaNE) - (lumaSW + lumaSE));
-	sampleDir.y = ((lumaNW + lumaSW) - (lumaNE + lumaSE));
-
-	// Sampling step does depend on the luma: The brighter the sampled texels, the smaller the final sampling step
-	// This means that brighter areas are less blurred/more sharper than dark areas
-	float samplingDirectionReduction = max((lumaNW + lumaNE + lumaSW + lumaSE) * 0.25 * mulReduction, minReduction);
-	float minSamplingDirectionFactor = 1.0 / (min(abs(sampleDir.x), abs(sampleDir.y)) + samplingDirectionReduction);
-
-	// Calculate the final sampling direction vector by reducing and clamping to a range and adapt it to the texture size
-	sampleDir = clamp(sampleDir * minSamplingDirectionFactor, vec2(-maxSpan), vec2(maxSpan)) * read_offset;
-
-
-	// Inner samples
-	vec3 rgbSampleNegative = texture(colour_texture, TexCoords + sampleDir * ((1.0 / 3.0) - 0.5)).rgb;
-	vec3 rgbSamplePositive = texture(colour_texture, TexCoords + sampleDir * ((2.0 / 3.0) - 0.5)).rgb;
-
-	vec3 rgbTwoTab = (rgbSampleNegative + rgbSamplePositive) * 0.5;
-
-	// Outer samples on the tab
-	vec3 rgbSampleNegativeOuter = texture(colour_texture, TexCoords + sampleDir * ((0.0/3.0) - 0.5)).rgb;
-	vec3 rgbSamplePositiveOuter = texture(colour_texture, TexCoords + sampleDir * ((3.0/3.0) - 0.5)).rgb;
-	
-	vec3 rgbFourTab = (rgbSampleNegativeOuter + rgbSamplePositiveOuter) * 0.25 + rgbTwoTab * 0.5;
-
-	// Calculate luma for checking against the minimum and maximum value
-	float lumaFourTab = dot(rgbFourTab, lumaCalculation);
-
-	// Are outer samples of the tab beyond the edge?
-	if (lumaFourTab < lumaMin || lumaFourTab > lumaMax) {
-		// Yes it is, so only use the two samples
-		FragColour = vec4(rgbTwoTab, 1.0);
-	}
-	else {
-		// No, so we can use all four samples
-		FragColour = vec4(rgbFourTab, 1.0);
-	}
-
-	// Debug view
-	if (showEdges != 0) {
-		FragColour.r = 1.0;
+	// Perform the samples and calculate the new texel colour
+	vec3 rgbA = 0.5 * (texture2D(colour_texture, TexCoords + dir * ((1.0 / 3.0) - 0.5)).xyz + texture2D(colour_texture, TexCoords + dir * ((2.0 / 3.0) - 0.5)).xyz);
+	vec3 rgbB = rgbA * 0.5 + 0.25 * (texture2D(colour_texture, TexCoords + dir * - 0.5).xyz + texture2D(colour_texture, TexCoords + dir * 0.5).xyz);
+	float lumaB = dot(rgbB, calculateLuma);
+	if ((lumaB < lumaMin) || (lumaB > lumaMax)) {
+		FragColour = vec4(rgbA, 1.0);
+	} else {
+		FragColour = vec4(rgbB, 1.0);
 	}
 }
