@@ -39,4 +39,4 @@
 #define SHADOWMAP_FAR_PLANE 400.0f
 
 // SSAO Options
-#define SSAO_KERNEL_SIZE 32
+#define SSAO_KERNEL_SIZE 32 // Maximum amount is restricted by the shader. Only supports a maximum of 64

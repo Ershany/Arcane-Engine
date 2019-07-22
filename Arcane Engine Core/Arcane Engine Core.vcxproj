@@ -252,6 +252,8 @@
     <None Include="src\shaders\spotlight.frag" />
     <None Include="src\shaders\forward\pbr_terrain.vert" />
     <None Include="src\shaders\forward\pbr_terrain.frag" />
+    <None Include="src\shaders\ssao.frag" />
+    <None Include="src\shaders\ssao.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

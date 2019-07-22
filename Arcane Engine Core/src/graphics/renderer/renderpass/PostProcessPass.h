@@ -18,7 +18,9 @@ namespace arcane {
 	private:
 		Shader *m_PostProcessShader;
 		Shader *m_FxaaShader;
+		Shader *m_SsaoShader;
 
+		Framebuffer m_SsaoRenderTarget;
 		Framebuffer m_TonemappedNonLinearTarget;
 		Framebuffer m_ScreenRenderTarget; // Only used if the render resolution differs from the window resolution
 		Framebuffer m_ResolveRenderTarget; // Only used if multi-sampling is enabled so it can be resolved
@@ -27,8 +29,8 @@ namespace arcane {
 		float m_GammaCorrection = 2.2f;
 
 		// SSAO Tweaks
-		std::array<glm::vec3, SSAO_KERNEL_SIZE> m_KernelSSAO;
-		Texture m_NoiseTextureSSAO;
+		std::array<glm::vec3, SSAO_KERNEL_SIZE> m_SsaoKernel;
+		Texture m_SsaoNoiseTexture;
 	};
 
 }

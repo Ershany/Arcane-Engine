@@ -5,14 +5,16 @@
 
 namespace arcane {
 
-	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false),
+	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false),
 		m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false)
 	{
 		// Shader setup
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
 		m_FxaaShader = ShaderLoader::loadShader("src/shaders/fxaa.vert", "src/shaders/fxaa.frag");
+		m_SsaoShader = ShaderLoader::loadShader("src/shaders/ssao.vert", "src/shaders/ssao.frag");
 
 		// Framebuffer setup
+		m_SsaoRenderTarget.addColorTexture(SingleChannel8).createFramebuffer();
 		m_TonemappedNonLinearTarget.addColorTexture(Normalized8).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ScreenRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ResolveRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
@@ -20,7 +22,7 @@ namespace arcane {
 		// SSAO Hemisphere Sample Generation (tangent space)
 		std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
 		std::default_random_engine generator;
-		for (unsigned int i = 0; i < m_KernelSSAO.size(); i++) {
+		for (unsigned int i = 0; i < m_SsaoKernel.size(); i++) {
 			glm::vec3 hemisphereSample = glm::vec3((randomFloats(generator) * 2.0f) - 1.0f, (randomFloats(generator) * 2.0f) - 1.0f, randomFloats(generator));
 			hemisphereSample = glm::normalize(hemisphereSample);
 
@@ -29,7 +31,7 @@ namespace arcane {
 			scale = lerp(0.1f, 1.0f, scale * scale);
 			hemisphereSample *= scale;
 
-			m_KernelSSAO[i] = hemisphereSample;
+			m_SsaoKernel[i] = hemisphereSample;
 		}
 
 		// SSAO Random Rotation Texture (used to apply a random rotation when constructing the change of basis matrix)
@@ -46,8 +48,8 @@ namespace arcane {
 		ssaoNoiseTextureSettings.TextureMagnificationFilterMode = GL_NEAREST;
 		ssaoNoiseTextureSettings.TextureAnisotropyLevel = 1.0f;
 		ssaoNoiseTextureSettings.HasMips = false;
-		m_NoiseTextureSSAO.setTextureSettings(ssaoNoiseTextureSettings);
-		m_NoiseTextureSSAO.generate2DTexture(4, 4, GL_RGB, &noiseSSAO[0], GL_FLOAT);
+		m_SsaoNoiseTexture.setTextureSettings(ssaoNoiseTextureSettings);
+		m_SsaoNoiseTexture.generate2DTexture(4, 4, GL_RGB, &noiseSSAO[0], GL_FLOAT);
 
 		// Debug stuff
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
@@ -56,7 +58,10 @@ namespace arcane {
 	PostProcessPass::~PostProcessPass() {}
 
 	void PostProcessPass::executePreLightingPass(GeometryPassOutput &geometryData) {
-		
+		// Generate the AO factors for the scene
+		glViewport(0, 0, m_SsaoRenderTarget.getWidth(), m_SsaoRenderTarget.getHeight());
+
+		m_GLCache->switchShader(m_SsaoShader);
 	}
 
 	void PostProcessPass::executePostProcessPass(Framebuffer *framebufferToProcess) {

@@ -1,2 +1,2 @@
-(src/shaders/fxaa.frag): 0(23) : error C0000: syntax error, unexpected reserved word "return", expecting ',' or ';' at token "return"
+(src/shaders/ssao.frag): 0(20) : error C7623: implicit narrowing of type from "vec4" to "float"
 
