@@ -34,7 +34,7 @@ namespace arcane {
 		~Texture();
 
 		// Generation functions
-		void generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, const void *data);
+		void generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, const void *data = nullptr, GLenum pixelDataType = GL_UNSIGNED_BYTE);
 		void generate2DMultisampleTexture(unsigned int width, unsigned int height);
 
 		void bind(int unit = 0);

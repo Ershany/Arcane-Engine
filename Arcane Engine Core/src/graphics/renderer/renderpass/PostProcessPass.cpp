@@ -8,16 +8,56 @@ namespace arcane {
 	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false),
 		m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false)
 	{
+		// Shader setup
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
 		m_FxaaShader = ShaderLoader::loadShader("src/shaders/fxaa.vert", "src/shaders/fxaa.frag");
 
+		// Framebuffer setup
 		m_TonemappedNonLinearTarget.addColorTexture(Normalized8).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ScreenRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ResolveRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
+
+		// SSAO Hemisphere Sample Generation (tangent space)
+		std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
+		std::default_random_engine generator;
+		for (unsigned int i = 0; i < m_KernelSSAO.size(); i++) {
+			glm::vec3 hemisphereSample = glm::vec3((randomFloats(generator) * 2.0f) - 1.0f, (randomFloats(generator) * 2.0f) - 1.0f, randomFloats(generator));
+			hemisphereSample = glm::normalize(hemisphereSample);
+
+			// Generate more samples closer to the origin of the hemisphere. Since these make for better light occlusion tests
+			float scale = (float)i / 64.0f;
+			scale = lerp(0.1f, 1.0f, scale * scale);
+			hemisphereSample *= scale;
+
+			m_KernelSSAO[i] = hemisphereSample;
+		}
+
+		// SSAO Random Rotation Texture (used to apply a random rotation when constructing the change of basis matrix)
+		// Random vectors should be in tangent space
+		std::array<glm::vec3, 16> noiseSSAO;
+		for (unsigned int i = 0; i < noiseSSAO.size(); i++) {
+			noiseSSAO[i] = glm::vec3((randomFloats(generator) * 2.0f) - 1.0f, (randomFloats(generator) * 2.0f) - 1.0f, 0.0f);
+		}
+		TextureSettings ssaoNoiseTextureSettings;
+		ssaoNoiseTextureSettings.TextureFormat = GL_RGB16F;
+		ssaoNoiseTextureSettings.TextureWrapSMode = GL_REPEAT;
+		ssaoNoiseTextureSettings.TextureWrapTMode = GL_REPEAT;
+		ssaoNoiseTextureSettings.TextureMinificationFilterMode = GL_NEAREST;
+		ssaoNoiseTextureSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		ssaoNoiseTextureSettings.TextureAnisotropyLevel = 1.0f;
+		ssaoNoiseTextureSettings.HasMips = false;
+		m_NoiseTextureSSAO.setTextureSettings(ssaoNoiseTextureSettings);
+		m_NoiseTextureSSAO.generate2DTexture(4, 4, GL_RGB, &noiseSSAO[0], GL_FLOAT);
+
+		// Debug stuff
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
 	}
 
 	PostProcessPass::~PostProcessPass() {}
+
+	void PostProcessPass::executePreLightingPass(GeometryPassOutput &geometryData) {
+		
+	}
 
 	void PostProcessPass::executePostProcessPass(Framebuffer *framebufferToProcess) {
 		glViewport(0, 0, m_ScreenRenderTarget.getWidth(), m_ScreenRenderTarget.getHeight());

@@ -19,3 +19,6 @@ IBL:
 
 Deferred:
 -Add light volumes (very important for lots of lights in deferred)
+
+TODO:
+-Framebuffers do not need a depth buffer (stuff like the SSAO framebuffer, convolution framebuffer etc. Do not need a depth attachment so we can remove it and save some VRAM)

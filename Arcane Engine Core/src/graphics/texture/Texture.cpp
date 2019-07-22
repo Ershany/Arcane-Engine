@@ -9,7 +9,7 @@ namespace arcane {
 		glDeleteTextures(1, &m_TextureId);
 	}
 
-	void Texture::generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, const void *data) {
+	void Texture::generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, const void *data, GLenum pixelDataType) {
 		m_TextureTarget = GL_TEXTURE_2D;
 		m_Width = width;
 		m_Height = height;
@@ -28,7 +28,7 @@ namespace arcane {
 
 		glGenTextures(1, &m_TextureId);
 		bind();
-		glTexImage2D(GL_TEXTURE_2D, 0, m_TextureSettings.TextureFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, m_TextureSettings.TextureFormat, width, height, 0, dataFormat, pixelDataType, data);
 
 		// Texture wrapping
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_TextureSettings.TextureWrapSMode);

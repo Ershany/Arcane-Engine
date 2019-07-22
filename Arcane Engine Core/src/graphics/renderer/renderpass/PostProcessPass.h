@@ -11,7 +11,10 @@ namespace arcane {
 		PostProcessPass(Scene3D *scene);
 		virtual ~PostProcessPass() override;
 
+		void executePreLightingPass(GeometryPassOutput &geometryData);
 		void executePostProcessPass(Framebuffer *framebufferToProcess);
+	private:
+		inline float lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:
 		Shader *m_PostProcessShader;
 		Shader *m_FxaaShader;
@@ -22,6 +25,10 @@ namespace arcane {
 
 		// Post Processing Tweaks
 		float m_GammaCorrection = 2.2f;
+
+		// SSAO Tweaks
+		std::array<glm::vec3, SSAO_KERNEL_SIZE> m_KernelSSAO;
+		Texture m_NoiseTextureSSAO;
 	};
 
 }
