@@ -22,3 +22,6 @@ Deferred:
 
 TODO:
 -Framebuffers do not need a depth buffer (stuff like the SSAO framebuffer, convolution framebuffer etc. Do not need a depth attachment so we can remove it and save some VRAM)
+-For the SSAO framebuffer do we need to have pixel data set to GL_FLOAT for the framebuffer (doubt it cause it should have no data initially)
+-Texture::generate(...) should have const *void data as the last arg
+-Look at making a function in shader to set an array of data so LightManager and PostProcessor's SSAO hemipshere sample kernel can be set with one GPU call

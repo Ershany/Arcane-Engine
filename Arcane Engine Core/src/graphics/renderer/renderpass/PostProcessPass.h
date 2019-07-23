@@ -11,7 +11,7 @@ namespace arcane {
 		PostProcessPass(Scene3D *scene);
 		virtual ~PostProcessPass() override;
 
-		void executePreLightingPass(GeometryPassOutput &geometryData);
+		PreLightingPassOutput executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera);
 		void executePostProcessPass(Framebuffer *framebufferToProcess);
 	private:
 		inline float lerp(float a, float b, float amount) { return a + amount * (b - a); }

@@ -14,7 +14,7 @@ namespace arcane {
 		m_SsaoShader = ShaderLoader::loadShader("src/shaders/ssao.vert", "src/shaders/ssao.frag");
 
 		// Framebuffer setup
-		m_SsaoRenderTarget.addColorTexture(SingleChannel8).createFramebuffer();
+		m_SsaoRenderTarget.addColorTexture(NormalizedSingleChannel8).createFramebuffer();
 		m_TonemappedNonLinearTarget.addColorTexture(Normalized8).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ScreenRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ResolveRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
@@ -23,7 +23,7 @@ namespace arcane {
 		std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
 		std::default_random_engine generator;
 		for (unsigned int i = 0; i < m_SsaoKernel.size(); i++) {
-			glm::vec3 hemisphereSample = glm::vec3((randomFloats(generator) * 2.0f) - 1.0f, (randomFloats(generator) * 2.0f) - 1.0f, randomFloats(generator));
+			glm::vec3 hemisphereSample = glm::vec3((randomFloats(generator) * 2.0f) - 1.0f, (randomFloats(generator) * 2.0f) - 1.0f, randomFloats(generator)); // Z = [0, 1] because we want hemisphere in tangent space
 			hemisphereSample = glm::normalize(hemisphereSample);
 
 			// Generate more samples closer to the origin of the hemisphere. Since these make for better light occlusion tests
@@ -57,11 +57,48 @@ namespace arcane {
 
 	PostProcessPass::~PostProcessPass() {}
 
-	void PostProcessPass::executePreLightingPass(GeometryPassOutput &geometryData) {
+	PreLightingPassOutput PostProcessPass::executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera) {
 		// Generate the AO factors for the scene
 		glViewport(0, 0, m_SsaoRenderTarget.getWidth(), m_SsaoRenderTarget.getHeight());
+		m_SsaoRenderTarget.bind();
+		m_GLCache->setDepthTest(false);
+		m_GLCache->setFaceCull(true);
+		m_GLCache->setCullFace(GL_BACK);
 
+		// Setup
+		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
+
+		// Bind the required data to perform SSAO
 		m_GLCache->switchShader(m_SsaoShader);
+
+		// Used to tile the noise texture across the screen every 4 texels (because our noise texture is 4x4)
+		m_SsaoShader->setUniform2f("noiseScale", glm::vec2(m_SsaoRenderTarget.getWidth() / 4.0f, m_SsaoRenderTarget.getHeight() / 4.0f));
+
+		m_SsaoShader->setUniform1i("numKernelSamples", SSAO_KERNEL_SIZE);
+		for (unsigned int i = 0; i < SSAO_KERNEL_SIZE; i++) {
+			m_SsaoShader->setUniform3f(("samples[" + std::to_string(i) + "].position").c_str(), m_SsaoKernel[i]);
+		}
+
+		m_SsaoShader->setUniformMat4("view", camera->getViewMatrix());
+		m_SsaoShader->setUniformMat4("projection", camera->getProjectionMatrix());
+
+		geometryData.outputGBuffer->getNormal()->bind(0);
+		m_SsaoShader->setUniform1i("normalTexture", 0);
+		geometryData.outputGBuffer->getDepthStencilTexture()->bind(1);
+		m_SsaoShader->setUniform1i("depthTexture", 1);
+		m_SsaoNoiseTexture.bind(2);
+		m_SsaoShader->setUniform1i("texNoise", 2);
+
+		// Render our NDC quad to perform SSAO
+		modelRenderer->NDC_Plane.Draw();
+
+		// Reset unusual state
+		m_GLCache->setDepthTest(true);
+
+		// Render pass output
+		PreLightingPassOutput passOutput;
+		passOutput.ssaoFramebuffer = &m_SsaoRenderTarget;
+		return passOutput;
 	}
 
 	void PostProcessPass::executePostProcessPass(Framebuffer *framebufferToProcess) {
