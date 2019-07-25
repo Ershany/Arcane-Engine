@@ -3,6 +3,7 @@
 #include <graphics/renderer/renderpass/RenderPass.h>
 #include <graphics/Shader.h>
 #include <scene/Scene3D.h>
+#include <utils/Timer.h>
 
 namespace arcane {
 
@@ -26,12 +27,15 @@ namespace arcane {
 		Framebuffer m_ResolveRenderTarget; // Only used if multi-sampling is enabled so it can be resolved
 
 		// Post Processing Tweaks
+		bool m_FxaaEnabled = true;
 		float m_GammaCorrection = 2.2f;
 		float m_SsaoSampleRadius = 0.5f;
 
 		// SSAO Tweaks
 		std::array<glm::vec3, SSAO_KERNEL_SIZE> m_SsaoKernel;
 		Texture m_SsaoNoiseTexture;
+
+		Timer m_Timer;
 	};
 
 }

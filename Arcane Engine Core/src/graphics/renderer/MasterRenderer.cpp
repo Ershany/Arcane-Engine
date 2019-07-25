@@ -35,16 +35,7 @@ namespace arcane
 #endif
 
 		LightingPassOutput lightingOutput = m_ForwardLightingPass.executeLightingPass(shadowmapOutput, m_ActiveScene->getCamera(), false, true);
-
-#if DEBUG_ENABLED
-		glFinish();
-		m_Timer.reset();
-#endif
 		m_PostProcessPass.executePostProcessPass(lightingOutput.outputFramebuffer);
-#if DEBUG_ENABLED
-		glFinish();
-		RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
-#endif
 
 
 		/* Deferred Rendering */
@@ -59,22 +50,12 @@ namespace arcane
 		RuntimePane::setShadowmapTimer((float)m_Timer.elapsed());
 #endif
 
-
 		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.executeGeometryPass(m_ActiveScene->getCamera(), false);
 		PreLightingPassOutput preLightingOutput = m_PostProcessPass.executePreLightingPass(geometryOutput, m_ActiveScene->getCamera());
 		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executeLightingPass(shadowmapOutput, geometryOutput, m_ActiveScene->getCamera(), true);
 		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.executeLightingPass(shadowmapOutput, deferredLightingOutput, m_ActiveScene->getCamera(), false, true);
-
-#if DEBUG_ENABLED
-		glFinish();
-		m_Timer.reset();
-#endif
 		m_PostProcessPass.executePostProcessPass(postGBufferForward.outputFramebuffer);
-		m_PostProcessPass.executePostProcessPass(preLightingOutput.ssaoFramebuffer);
-#if DEBUG_ENABLED
-		glFinish();
-		RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
-#endif
+		//m_PostProcessPass.executePostProcessPass(preLightingOutput.ssaoFramebuffer);
 
 #endif
 	}

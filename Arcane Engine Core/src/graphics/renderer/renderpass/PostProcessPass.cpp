@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "PostProcessPass.h"
 
+#include <ui/RuntimePane.h>
 #include <utils/loaders/ShaderLoader.h>
 
 namespace arcane {
 
 	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false),
-		m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false)
+		m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_Timer()
 	{
 		// Shader setup
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
@@ -52,6 +53,7 @@ namespace arcane {
 		m_SsaoNoiseTexture.generate2DTexture(4, 4, GL_RGB, &noiseSSAO[0], GL_FLOAT);
 
 		// Debug stuff
+		DebugPane::bindFxaaEnabled(&m_FxaaEnabled);
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
 		DebugPane::bindSsaoSampleRadiusValue(&m_SsaoSampleRadius);
 	}
@@ -60,6 +62,10 @@ namespace arcane {
 
 	// Generates the AO of the scene using SSAO and stores it in a single channel texture
 	PreLightingPassOutput PostProcessPass::executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera) {
+#if DEBUG_ENABLED
+		glFinish();
+		m_Timer.reset();
+#endif
 		// Generate the AO factors for the scene
 		glViewport(0, 0, m_SsaoRenderTarget.getWidth(), m_SsaoRenderTarget.getHeight());
 		m_SsaoRenderTarget.bind();
@@ -99,6 +105,11 @@ namespace arcane {
 
 		// Reset unusual state
 		m_GLCache->setDepthTest(true);
+
+#if DEBUG_ENABLED
+		glFinish();
+		RuntimePane::setSsaoTimer((float)m_Timer.elapsed());
+#endif
 
 		// Render pass output
 		PreLightingPassOutput passOutput;
@@ -144,16 +155,24 @@ namespace arcane {
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
 		modelRenderer->NDC_Plane.Draw();
 
-		// Finally render the scene to the widnow's framebuffer
+		// Finally render the scene to the window's framebuffer
+#if DEBUG_ENABLED
+		glFinish();
+		m_Timer.reset();
+#endif
 		m_TonemappedNonLinearTarget.unbind();
 		Window::clear();
 		GLCache::getInstance()->switchShader(m_FxaaShader);
-		m_FxaaShader->setUniform1i("enable_FXAA", FXAA_ENABLE);
+		m_FxaaShader->setUniform1i("enable_FXAA", m_FxaaEnabled);
 		m_FxaaShader->setUniform2f("inverse_resolution", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
 		m_FxaaShader->setUniform1i("colour_texture", 0);
 		m_TonemappedNonLinearTarget.getColourTexture()->bind(0);
 
 		modelRenderer->NDC_Plane.Draw();
+#if DEBUG_ENABLED
+		glFinish();
+		RuntimePane::setFxaaTimer((float)m_Timer.elapsed());
+#endif
 	}
 
 }

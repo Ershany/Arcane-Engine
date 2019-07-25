@@ -15,7 +15,6 @@
 
 // AA Settings
 #define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering
-#define FXAA_ENABLE 1 // Used for forward and deferred
 #define SUPERSAMPLING_FACTOR 1 // 1 means window resolution will be the render resolution
 
 // Texture Filtering Settings
