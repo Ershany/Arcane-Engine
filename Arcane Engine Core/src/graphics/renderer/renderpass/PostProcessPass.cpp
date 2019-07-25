@@ -57,6 +57,7 @@ namespace arcane {
 
 	PostProcessPass::~PostProcessPass() {}
 
+	// Generates the AO of the scene using SSAO and stores it in a single channel texture
 	PreLightingPassOutput PostProcessPass::executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera) {
 		// Generate the AO factors for the scene
 		glViewport(0, 0, m_SsaoRenderTarget.getWidth(), m_SsaoRenderTarget.getHeight());
@@ -76,11 +77,13 @@ namespace arcane {
 
 		m_SsaoShader->setUniform1i("numKernelSamples", SSAO_KERNEL_SIZE);
 		for (unsigned int i = 0; i < SSAO_KERNEL_SIZE; i++) {
-			m_SsaoShader->setUniform3f(("samples[" + std::to_string(i) + "].position").c_str(), m_SsaoKernel[i]);
+			m_SsaoShader->setUniform3f(("samples[" + std::to_string(i) + "]").c_str(), m_SsaoKernel[i]);
 		}
 
 		m_SsaoShader->setUniformMat4("view", camera->getViewMatrix());
 		m_SsaoShader->setUniformMat4("projection", camera->getProjectionMatrix());
+		m_SsaoShader->setUniformMat4("viewInverse", glm::inverse(camera->getViewMatrix()));
+		m_SsaoShader->setUniformMat4("projectionInverse", glm::inverse(camera->getProjectionMatrix()));
 
 		geometryData.outputGBuffer->getNormal()->bind(0);
 		m_SsaoShader->setUniform1i("normalTexture", 0);
