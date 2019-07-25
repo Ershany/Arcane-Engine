@@ -11,6 +11,7 @@ uniform sampler2D texNoise;
 // tile noise texture over screen based on screen dimensions divided by noise size
 uniform vec2 noiseScale;
 
+uniform float sampleRadius;
 uniform int numKernelSamples;
 uniform vec3 samples[64];
 
@@ -25,7 +26,7 @@ vec3 WorldPosFromDepth();
 void main() {
 	vec3 fragPos = WorldPosFromDepth();
 	vec3 normal = texture(normalTexture, TexCoords).xyz;
-	vec3 randomVec = texture(texNoise, TexCoords).xyz;
+	vec3 randomVec = texture(texNoise, TexCoords * noiseScale).xyz;
 
 	// Make a TBN matrix to go from tangent -> world space (so we can put our hemipshere tangent sample points into world space)
 	// Since our normal is already in world space, this TBN matrix will take our tangent space vector and put it into world space
@@ -36,7 +37,7 @@ void main() {
 	// Calculate the total amount of occlusion for this fragment
 	float occlusion = 0.0f;
 	for (int i = 0; i < numKernelSamples; ++i) {
-		vec3 sampleWorld = (TBN * samples[i]) * 0.5;
+		vec3 sampleWorld = (TBN * samples[i]) * sampleRadius;
 		sampleWorld = fragPos + sampleWorld;
 
 		// Take our sample position in world space and convert it to screen coordinates
@@ -46,8 +47,8 @@ void main() {
 		sampleScreenSpace.xyz = (sampleScreenSpace.xyz * 0.5) + 0.5; // [-1, 1] -> [0, 1]
 
 		// Check if our current samples depth is behind the screen space geometry's depth, if so then we know it is occluded in screenspace
-		float sampledDepth = texture(depthTexture, sampleScreenSpace.xy).r;
-		occlusion += (sampleScreenSpace.z > sampledDepth ? 1.0 : 0.0);
+		float sceneDepth = texture(depthTexture, sampleScreenSpace.xy).r;
+		occlusion += (sampleScreenSpace.z > sceneDepth ? 1.0 : 0.0);
 	}
 	// Finally we need to normalize our occlusion factor
 	occlusion = 1.0 - (occlusion / numKernelSamples);

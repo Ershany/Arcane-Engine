@@ -53,6 +53,7 @@ namespace arcane {
 
 		// Debug stuff
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
+		DebugPane::bindSsaoSampleRadiusValue(&m_SsaoSampleRadius);
 	}
 
 	PostProcessPass::~PostProcessPass() {}
@@ -75,6 +76,7 @@ namespace arcane {
 		// Used to tile the noise texture across the screen every 4 texels (because our noise texture is 4x4)
 		m_SsaoShader->setUniform2f("noiseScale", glm::vec2(m_SsaoRenderTarget.getWidth() / 4.0f, m_SsaoRenderTarget.getHeight() / 4.0f));
 
+		m_SsaoShader->setUniform1f("sampleRadius", m_SsaoSampleRadius);
 		m_SsaoShader->setUniform1i("numKernelSamples", SSAO_KERNEL_SIZE);
 		for (unsigned int i = 0; i < SSAO_KERNEL_SIZE; i++) {
 			m_SsaoShader->setUniform3f(("samples[" + std::to_string(i) + "]").c_str(), m_SsaoKernel[i]);

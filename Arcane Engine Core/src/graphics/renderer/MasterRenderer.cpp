@@ -70,6 +70,7 @@ namespace arcane
 		m_Timer.reset();
 #endif
 		m_PostProcessPass.executePostProcessPass(postGBufferForward.outputFramebuffer);
+		m_PostProcessPass.executePostProcessPass(preLightingOutput.ssaoFramebuffer);
 #if DEBUG_ENABLED
 		glFinish();
 		RuntimePane::setPostProcessTimer((float)m_Timer.elapsed());
