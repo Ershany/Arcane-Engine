@@ -82,11 +82,11 @@ namespace arcane {
 		glStencilFunc(GL_EQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
 		modelRenderer->NDC_Plane.Draw();
 
-		// Perform lighting on everything else (turn IBL on)
+		// Perform lighting on the models in the scene (turn IBL on)
 		if (useIBL) {
 			m_LightingShader->setUniform1i("computeIBL", 1);
 		}
-		glStencilFunc(GL_NOTEQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
+		glStencilFunc(GL_EQUAL, DeferredStencilValue::ModelStencilValue, 0xFF);
 		modelRenderer->NDC_Plane.Draw();
 
 
