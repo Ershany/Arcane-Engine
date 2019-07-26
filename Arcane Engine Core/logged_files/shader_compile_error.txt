@@ -1,3 +1,2 @@
-(src/shaders/ssao.frag): 0(34) : error C1060: incompatible types in initialization
-0(34) : error C1056: invalid initialization
+(src/shaders/ssao.frag): 0(55) : error C0000: syntax error, unexpected ')', expecting ',' or ';' at token ")"
 

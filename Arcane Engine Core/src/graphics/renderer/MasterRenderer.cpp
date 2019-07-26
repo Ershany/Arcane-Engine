@@ -55,7 +55,7 @@ namespace arcane
 		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executeLightingPass(shadowmapOutput, geometryOutput, m_ActiveScene->getCamera(), true);
 		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.executeLightingPass(shadowmapOutput, deferredLightingOutput, m_ActiveScene->getCamera(), false, true);
 		m_PostProcessPass.executePostProcessPass(postGBufferForward.outputFramebuffer);
-		//m_PostProcessPass.executePostProcessPass(preLightingOutput.ssaoFramebuffer);
+		m_PostProcessPass.executePostProcessPass(preLightingOutput.ssaoFramebuffer);
 
 #endif
 	}

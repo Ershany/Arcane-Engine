@@ -48,7 +48,11 @@ void main() {
 
 		// Check if our current samples depth is behind the screen space geometry's depth, if so then we know it is occluded in screenspace
 		float sceneDepth = texture(depthTexture, sampleScreenSpace.xy).r;
-		occlusion += (sampleScreenSpace.z > sceneDepth ? 1.0 : 0.0);
+
+		// Peform a range check
+		float rangeCheck = 1.0;
+
+		occlusion += ((sampleScreenSpace.z > sceneDepth) ? 1.0 : 0.0) * rangeCheck;
 	}
 	// Finally we need to normalize our occlusion factor
 	occlusion = 1.0 - (occlusion / numKernelSamples);
