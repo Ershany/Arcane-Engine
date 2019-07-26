@@ -21,10 +21,10 @@ uniform mat4 viewInverse;
 uniform mat4 projectionInverse;
 
 // Other function prototypes
-vec3 WorldPosFromDepth();
+vec3 WorldPosFromDepth(vec2 textureCoordinates);
 
 void main() {
-	vec3 fragPos = WorldPosFromDepth();
+	vec3 fragPos = WorldPosFromDepth(TexCoords);
 	vec3 normal = texture(normalTexture, TexCoords).xyz;
 	vec3 randomVec = texture(texNoise, TexCoords * noiseScale).xyz;
 
@@ -49,10 +49,11 @@ void main() {
 		// Check if our current samples depth is behind the screen space geometry's depth, if so then we know it is occluded in screenspace
 		float sceneDepth = texture(depthTexture, sampleScreenSpace.xy).r;
 
-		// Peform a range check
-		float rangeCheck = 1.0;
-
-		occlusion += ((sampleScreenSpace.z > sceneDepth) ? 1.0 : 0.0) * rangeCheck;
+		// Peform a range check on the current fragment we are calculating the occlusion factor for, and the occlusion position
+		vec3 occlusionPos = WorldPosFromDepth(sampleScreenSpace.xy);
+		if (length(fragPos - occlusionPos) <= sampleRadius) {
+			occlusion += ((sampleScreenSpace.z > sceneDepth) ? 1.0 : 0.0);
+		}
 	}
 	// Finally we need to normalize our occlusion factor
 	occlusion = 1.0 - (occlusion / numKernelSamples);
@@ -60,9 +61,9 @@ void main() {
 	FragColour = occlusion;
 }
 
-vec3 WorldPosFromDepth() {
-	float z = 2.0 * texture(depthTexture, TexCoords).r - 1.0; // [-1, 1]
-	vec4 clipSpacePos = vec4(TexCoords * 2.0 - 1.0 , z, 1.0);
+vec3 WorldPosFromDepth(vec2 textureCoordinates) {
+	float z = 2.0 * texture(depthTexture, textureCoordinates).r - 1.0; // [-1, 1]
+	vec4 clipSpacePos = vec4(textureCoordinates * 2.0 - 1.0 , z, 1.0);
 	vec4 viewSpacePos = projectionInverse * clipSpacePos;
 
 	viewSpacePos /= viewSpacePos.w; // Perspective division
