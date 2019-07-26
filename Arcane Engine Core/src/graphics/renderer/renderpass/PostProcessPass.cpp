@@ -28,7 +28,7 @@ namespace arcane {
 			hemisphereSample = glm::normalize(hemisphereSample);
 
 			// Generate more samples closer to the origin of the hemisphere. Since these make for better light occlusion tests
-			float scale = (float)i / 64.0f;
+			float scale = (float)i / m_SsaoKernel.size();
 			scale = lerp(0.1f, 1.0f, scale * scale);
 			hemisphereSample *= scale;
 
