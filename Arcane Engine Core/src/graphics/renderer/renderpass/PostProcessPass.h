@@ -29,7 +29,7 @@ namespace arcane {
 		// Post Processing Tweaks
 		bool m_FxaaEnabled = true;
 		float m_GammaCorrection = 2.2f;
-		float m_SsaoSampleRadius = 1.0f;
+		float m_SsaoSampleRadius = 2.0f;
 
 		// SSAO Tweaks
 		std::array<glm::vec3, SSAO_KERNEL_SIZE> m_SsaoKernel;

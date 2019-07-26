@@ -21,7 +21,7 @@ namespace arcane {
 		if (s_GammaCorrectionValue != nullptr)
 			ImGui::SliderFloat("Gamma", s_GammaCorrectionValue, 0.5f, 3.0f, "%.2f");
 		if (s_SsaoSampleRadius != nullptr)
-			ImGui::SliderFloat("SSAO Radius", s_SsaoSampleRadius, 0.1f, 2.0f, "%.2f");
+			ImGui::SliderFloat("SSAO Radius", s_SsaoSampleRadius, 0.1f, 4.0f, "%.2f");
 #if DEBUG_ENABLED
 		ImGui::Text("Hit \"P\" to show/hide the cursor");
 		ImGui::Checkbox("Wireframe Mode", &s_WireframeMode);
