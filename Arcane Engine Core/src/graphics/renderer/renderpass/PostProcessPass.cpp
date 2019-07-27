@@ -182,7 +182,7 @@ namespace arcane {
 		glFinish();
 		m_Timer.reset();
 #endif
-		m_TonemappedNonLinearTarget.unbind();
+		Window::bind();
 		Window::clear();
 		GLCache::getInstance()->switchShader(m_FxaaShader);
 		m_FxaaShader->setUniform1i("enable_FXAA", m_FxaaEnabled);

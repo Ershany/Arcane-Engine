@@ -19,6 +19,7 @@ namespace arcane {
 		void update();
 		bool closed() const;
 		static void clear();
+		static void bind();
 
 		static inline bool getHideCursor() { return s_HideCursor; }
 		static inline int getWidth() { return s_Width; }

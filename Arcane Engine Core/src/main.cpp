@@ -33,14 +33,15 @@ int main() {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #endif
 
-		window.clear();
+		arcane::Window::bind();
+		arcane::Window::clear();
 		ImGui_ImplGlfwGL3_NewFrame();
 
 		scene.onUpdate((float)deltaTime.getDeltaTime());
 		renderer.render();
 
 		// Display panes
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		arcane::Window::bind();
 		runtimePane.render();
 		debugPane.render();
 

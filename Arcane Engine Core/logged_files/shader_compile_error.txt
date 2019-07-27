@@ -1,2 +1,2 @@
-(src/shaders/ssao.frag): 0(54) : error C1503: undefined variable "radius"
+(src/shaders/ssao.frag): 0(56) : error C1503: undefined variable "length2"
 
