@@ -21,5 +21,6 @@ Deferred:
 -Add light volumes (very important for lots of lights in deferred)
 
 SSAO:
+-Fix far distance precision issue
 -Look at making a function in shader to set an array of data so LightManager and PostProcessor's SSAO hemipshere sample kernel can be set with one GPU call. As well as possibly allowing 100% dynamic amounts of data
 -should use length2

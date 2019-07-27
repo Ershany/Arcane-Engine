@@ -94,10 +94,8 @@ namespace arcane {
 
 		m_SsaoShader->setUniform1f("ssaoStrength", m_SsaoStrength);
 		m_SsaoShader->setUniform1f("sampleRadius", m_SsaoSampleRadius);
-		m_SsaoShader->setUniform1i("numKernelSamples", SSAO_KERNEL_SIZE);
-		for (unsigned int i = 0; i < SSAO_KERNEL_SIZE; i++) {
-			m_SsaoShader->setUniform3f(("samples[" + std::to_string(i) + "]").c_str(), m_SsaoKernel[i]);
-		}
+		m_SsaoShader->setUniform1i("numKernelSamples", m_SsaoKernel.size());
+		m_SsaoShader->setUniform3fv("samples", m_SsaoKernel.size(), &m_SsaoKernel[0]);
 
 		m_SsaoShader->setUniformMat4("view", camera->getViewMatrix());
 		m_SsaoShader->setUniformMat4("projection", camera->getProjectionMatrix());
