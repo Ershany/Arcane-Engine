@@ -62,7 +62,7 @@ namespace arcane {
 		geometryData.outputGBuffer->getMaterialInfo()->bind(6);
 		m_LightingShader->setUniform1i("materialInfoTexture", 6);
 
-		preLightingOutput.ssaoFramebuffer->getColourTexture()->bind(7);
+		preLightingOutput.ssaoTexture->bind(7);
 		m_LightingShader->setUniform1i("ssaoTexture", 7);
 
 		geometryData.outputGBuffer->getDepthStencilTexture()->bind(8);

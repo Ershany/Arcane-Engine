@@ -11,6 +11,7 @@ uniform sampler2D texNoise;
 // tile noise texture over screen based on screen dimensions divided by noise size
 uniform vec2 noiseScale;
 
+uniform float ssaoStrength;
 uniform float sampleRadius;
 uniform int numKernelSamples;
 uniform vec3 samples[64];
@@ -58,7 +59,7 @@ void main() {
 	// Finally we need to normalize our occlusion factor
 	occlusion = 1.0 - (occlusion / numKernelSamples);
 
-	FragColour = occlusion;
+	FragColour = pow(occlusion, ssaoStrength);
 }
 
 vec3 WorldPosFromDepth(vec2 textureCoordinates) {

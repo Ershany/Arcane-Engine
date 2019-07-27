@@ -24,7 +24,7 @@ namespace arcane {
 	};
 
 	struct PreLightingPassOutput {
-		Framebuffer *ssaoFramebuffer;
+		Texture *ssaoTexture;
 	};
 
 }

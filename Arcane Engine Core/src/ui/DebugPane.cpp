@@ -6,7 +6,9 @@ namespace arcane {
 	glm::vec3* DebugPane::s_CameraPosition = nullptr;
 	bool* DebugPane::s_FxaaEnabled = nullptr;
 	float* DebugPane::s_GammaCorrectionValue = nullptr;
+	bool* DebugPane::s_SsaoEnabled = nullptr;
 	float* DebugPane::s_SsaoSampleRadius = nullptr;
+	float* DebugPane::s_SsaoStrength = nullptr;
 	bool DebugPane::s_WireframeMode = false;
 
 	DebugPane::DebugPane(glm::vec2 &panePosition) : Pane(std::string("Debug Controls"), panePosition)
@@ -20,8 +22,12 @@ namespace arcane {
 			ImGui::Checkbox("FXAA", s_FxaaEnabled);
 		if (s_GammaCorrectionValue != nullptr)
 			ImGui::SliderFloat("Gamma", s_GammaCorrectionValue, 0.5f, 3.0f, "%.2f");
+		if (s_SsaoEnabled != nullptr)
+			ImGui::Checkbox("SSAO Enabled", s_SsaoEnabled);
 		if (s_SsaoSampleRadius != nullptr)
-			ImGui::SliderFloat("SSAO Radius", s_SsaoSampleRadius, 0.1f, 4.0f, "%.2f");
+			ImGui::SliderFloat("SSAO Radius", s_SsaoSampleRadius, 1.0f, 3.0f, "%.2f");
+		if (s_SsaoStrength != nullptr)
+			ImGui::SliderFloat("SSAO Strength", s_SsaoStrength, 1.0f, 5.0f, "%.2f");
 #if DEBUG_ENABLED
 		ImGui::Text("Hit \"P\" to show/hide the cursor");
 		ImGui::Checkbox("Wireframe Mode", &s_WireframeMode);

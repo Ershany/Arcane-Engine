@@ -57,7 +57,9 @@ namespace arcane {
 		// Debug stuff
 		DebugPane::bindFxaaEnabled(&m_FxaaEnabled);
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
+		DebugPane::bindSsaoEnabled(&m_SsaoEnabled);
 		DebugPane::bindSsaoSampleRadiusValue(&m_SsaoSampleRadius);
+		DebugPane::bindSsaoStrengthValue(&m_SsaoStrength);
 	}
 
 	PostProcessPass::~PostProcessPass() {}
@@ -68,6 +70,12 @@ namespace arcane {
 		glFinish();
 		m_Timer.reset();
 #endif
+		PreLightingPassOutput passOutput;
+		if (!m_SsaoEnabled) {
+			passOutput.ssaoTexture = TextureLoader::getWhiteTexture();
+			return passOutput;
+		}
+
 		// Generate the AO factors for the scene
 		glViewport(0, 0, m_SsaoRenderTarget.getWidth(), m_SsaoRenderTarget.getHeight());
 		m_SsaoRenderTarget.bind();
@@ -84,6 +92,7 @@ namespace arcane {
 		// Used to tile the noise texture across the screen every 4 texels (because our noise texture is 4x4)
 		m_SsaoShader->setUniform2f("noiseScale", glm::vec2(m_SsaoRenderTarget.getWidth() / 4.0f, m_SsaoRenderTarget.getHeight() / 4.0f));
 
+		m_SsaoShader->setUniform1f("ssaoStrength", m_SsaoStrength);
 		m_SsaoShader->setUniform1f("sampleRadius", m_SsaoSampleRadius);
 		m_SsaoShader->setUniform1i("numKernelSamples", SSAO_KERNEL_SIZE);
 		for (unsigned int i = 0; i < SSAO_KERNEL_SIZE; i++) {
@@ -126,8 +135,7 @@ namespace arcane {
 #endif
 
 		// Render pass output
-		PreLightingPassOutput passOutput;
-		passOutput.ssaoFramebuffer = &m_SsaoBlurRenderTarget;
+		passOutput.ssaoTexture = m_SsaoBlurRenderTarget.getColourTexture();
 		return passOutput;
 	}
 

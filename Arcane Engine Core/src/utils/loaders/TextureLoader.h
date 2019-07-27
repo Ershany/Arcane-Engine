@@ -13,6 +13,8 @@ namespace arcane {
 		static Texture* load2DTexture(std::string &path, TextureSettings *settings = nullptr);
 		static Cubemap* loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
 
+		inline static Texture* getWhiteTexture() { return s_FullMetallic; }
+		inline static Texture* getBlackTexture() { return s_NoMetallic; }
 		inline static Texture* getDefaultAlbedo() { return s_DefaultAlbedo; }
 		inline static Texture* getDefaultNormal() { return s_DefaultNormal; }
 		inline static Texture* getDefaultMetallic() { return s_NoMetallic; }
