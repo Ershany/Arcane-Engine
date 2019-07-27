@@ -55,14 +55,6 @@ namespace arcane {
 		else {
 			TextureLoader::getDefaultAO()->bind(currentTextureUnit++);
 		}
-
-		shader->setUniform1i("material.texture_emission", currentTextureUnit);
-		if (m_EmissionMap) {
-			m_EmissionMap->bind(currentTextureUnit++);
-		}
-		else {
-			TextureLoader::getDefaultEmission()->bind(currentTextureUnit++);
-		}
 	}
 
 }
