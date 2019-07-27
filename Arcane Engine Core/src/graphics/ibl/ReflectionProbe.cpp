@@ -29,12 +29,12 @@ namespace arcane {
 	}
 
 	void ReflectionProbe::bind(Shader *shader) {
-		shader->setUniform1i("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
+		shader->setUniform("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
 		
 		m_PrefilterMap->bind(2);
-		shader->setUniform1i("prefilterMap", 2);
+		shader->setUniform("prefilterMap", 2);
 		s_BRDF_LUT->bind(3);
-		shader->setUniform1i("brdfLUT", 3);
+		shader->setUniform("brdfLUT", 3);
 	}
 
 }

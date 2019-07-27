@@ -90,24 +90,24 @@ namespace arcane {
 		m_GLCache->switchShader(m_SsaoShader);
 
 		// Used to tile the noise texture across the screen every 4 texels (because our noise texture is 4x4)
-		m_SsaoShader->setUniform2f("noiseScale", glm::vec2(m_SsaoRenderTarget.getWidth() / 4.0f, m_SsaoRenderTarget.getHeight() / 4.0f));
+		m_SsaoShader->setUniform("noiseScale", glm::vec2(m_SsaoRenderTarget.getWidth() / 4.0f, m_SsaoRenderTarget.getHeight() / 4.0f));
 
-		m_SsaoShader->setUniform1f("ssaoStrength", m_SsaoStrength);
-		m_SsaoShader->setUniform1f("sampleRadius", m_SsaoSampleRadius);
-		m_SsaoShader->setUniform1i("numKernelSamples", m_SsaoKernel.size());
-		m_SsaoShader->setUniform3fv("samples", m_SsaoKernel.size(), &m_SsaoKernel[0]);
+		m_SsaoShader->setUniform("ssaoStrength", m_SsaoStrength);
+		m_SsaoShader->setUniform("sampleRadius", m_SsaoSampleRadius);
+		m_SsaoShader->setUniform("numKernelSamples", (int)m_SsaoKernel.size());
+		m_SsaoShader->setUniformArray("samples", m_SsaoKernel.size(), &m_SsaoKernel[0]);
 
-		m_SsaoShader->setUniformMat4("view", camera->getViewMatrix());
-		m_SsaoShader->setUniformMat4("projection", camera->getProjectionMatrix());
-		m_SsaoShader->setUniformMat4("viewInverse", glm::inverse(camera->getViewMatrix()));
-		m_SsaoShader->setUniformMat4("projectionInverse", glm::inverse(camera->getProjectionMatrix()));
+		m_SsaoShader->setUniform("view", camera->getViewMatrix());
+		m_SsaoShader->setUniform("projection", camera->getProjectionMatrix());
+		m_SsaoShader->setUniform("viewInverse", glm::inverse(camera->getViewMatrix()));
+		m_SsaoShader->setUniform("projectionInverse", glm::inverse(camera->getProjectionMatrix()));
 
 		geometryData.outputGBuffer->getNormal()->bind(0);
-		m_SsaoShader->setUniform1i("normalTexture", 0);
+		m_SsaoShader->setUniform("normalTexture", 0);
 		geometryData.outputGBuffer->getDepthStencilTexture()->bind(1);
-		m_SsaoShader->setUniform1i("depthTexture", 1);
+		m_SsaoShader->setUniform("depthTexture", 1);
 		m_SsaoNoiseTexture.bind(2);
-		m_SsaoShader->setUniform1i("texNoise", 2);
+		m_SsaoShader->setUniform("texNoise", 2);
 
 		// Render our NDC quad to perform SSAO
 		modelRenderer->NDC_Plane.Draw();
@@ -117,8 +117,8 @@ namespace arcane {
 		m_SsaoBlurRenderTarget.bind();
 		m_SsaoBlurShader->enable();
 
-		m_SsaoBlurShader->setUniform1i("numSamplesAroundTexel", 2); // 5x5 kernel blur
-		m_SsaoBlurShader->setUniform1i("ssaoInput", 0); // Texture unit
+		m_SsaoBlurShader->setUniform("numSamplesAroundTexel", 2); // 5x5 kernel blur
+		m_SsaoBlurShader->setUniform("ssaoInput", 0); // Texture unit
 		m_SsaoRenderTarget.getColourTexture()->bind(0);
 
 		// Render our NDC quad to blur our SSAO texture
@@ -167,9 +167,9 @@ namespace arcane {
 		m_TonemappedNonLinearTarget.bind();
 		m_TonemappedNonLinearTarget.clear();
 		GLCache::getInstance()->switchShader(m_PostProcessShader);
-		m_PostProcessShader->setUniform1f("gamma_inverse", 1.0f / m_GammaCorrection);
-		m_PostProcessShader->setUniform2f("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
-		m_PostProcessShader->setUniform1i("colour_texture", 0);
+		m_PostProcessShader->setUniform("gamma_inverse", 1.0f / m_GammaCorrection);
+		m_PostProcessShader->setUniform("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
+		m_PostProcessShader->setUniform("colour_texture", 0);
 		target->getColourTexture()->bind(0);
 
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
@@ -183,9 +183,9 @@ namespace arcane {
 		Window::bind();
 		Window::clear();
 		GLCache::getInstance()->switchShader(m_FxaaShader);
-		m_FxaaShader->setUniform1i("enable_FXAA", m_FxaaEnabled);
-		m_FxaaShader->setUniform2f("inverse_resolution", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
-		m_FxaaShader->setUniform1i("colour_texture", 0);
+		m_FxaaShader->setUniform("enable_FXAA", m_FxaaEnabled);
+		m_FxaaShader->setUniform("inverse_resolution", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
+		m_FxaaShader->setUniform("colour_texture", 0);
 		m_TonemappedNonLinearTarget.getColourTexture()->bind(0);
 
 		modelRenderer->NDC_Plane.Draw();

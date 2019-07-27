@@ -7,8 +7,8 @@ namespace arcane {
 		: Light(lightColour), m_Position(pos) {}
 
 	void PointLight::setupUniforms(Shader *shader, int currentLightIndex) {
-		shader->setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].position").c_str(), m_Position);
-		shader->setUniform3f(("pointLights[" + std::to_string(currentLightIndex) + "].lightColour").c_str(), m_LightColour);
+		shader->setUniform(("pointLights[" + std::to_string(currentLightIndex) + "].position").c_str(), m_Position);
+		shader->setUniform(("pointLights[" + std::to_string(currentLightIndex) + "].lightColour").c_str(), m_LightColour);
 	}
 
 }

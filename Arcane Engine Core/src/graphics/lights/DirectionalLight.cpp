@@ -7,8 +7,8 @@ namespace arcane {
 		: Light(lightColour), m_Direction(dir) {}
 
 	void DirectionalLight::setupUniforms(Shader *shader, int currentLightIndex) {
-		shader->setUniform3f(("dirLights[" + std::to_string(currentLightIndex) + "].direction").c_str(), m_Direction);
-		shader->setUniform3f(("dirLights[" + std::to_string(currentLightIndex) + "].lightColour").c_str(), m_LightColour);
+		shader->setUniform(("dirLights[" + std::to_string(currentLightIndex) + "].direction").c_str(), m_Direction);
+		shader->setUniform(("dirLights[" + std::to_string(currentLightIndex) + "].lightColour").c_str(), m_LightColour);
 	}
 
 }

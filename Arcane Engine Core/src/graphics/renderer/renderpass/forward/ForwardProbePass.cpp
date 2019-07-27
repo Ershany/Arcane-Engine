@@ -95,16 +95,16 @@ namespace arcane {
 		m_GLCache->setFaceCull(false);
 		m_GLCache->setDepthTest(false); // Important cause the depth buffer isn't cleared so it has zero depth
 
-		m_ConvolutionShader->setUniformMat4("projection", m_CubemapCamera.getProjectionMatrix());
+		m_ConvolutionShader->setUniform("projection", m_CubemapCamera.getProjectionMatrix());
 		m_ActiveScene->getSkybox()->getSkyboxCubemap()->bind(0);
-		m_ConvolutionShader->setUniform1i("sceneCaptureCubemap", 0);
+		m_ConvolutionShader->setUniform("sceneCaptureCubemap", 0);
 
 		m_LightProbeConvolutionFramebuffer.bind();
 		glViewport(0, 0, m_LightProbeConvolutionFramebuffer.getWidth(), m_LightProbeConvolutionFramebuffer.getHeight());
 		for (int i = 0; i < 6; i++) {
 			// Setup the camera's view
 			m_CubemapCamera.switchCameraToFace(i);
-			m_ConvolutionShader->setUniformMat4("view", m_CubemapCamera.getViewMatrix());
+			m_ConvolutionShader->setUniform("view", m_CubemapCamera.getViewMatrix());
 
 			// Convolute the scene's capture and store it in the Light Probe's cubemap
 			m_LightProbeConvolutionFramebuffer.setColorAttachment(fallbackLightProbe->getIrradianceMap()->getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
@@ -124,9 +124,9 @@ namespace arcane {
 		m_GLCache->setFaceCull(false);
 		m_GLCache->setDepthTest(false); // Important cause the depth buffer isn't cleared so it has zero depth
 
-		m_ImportanceSamplingShader->setUniformMat4("projection", m_CubemapCamera.getProjectionMatrix());
+		m_ImportanceSamplingShader->setUniform("projection", m_CubemapCamera.getProjectionMatrix());
 		m_ActiveScene->getSkybox()->getSkyboxCubemap()->bind(0);
-		m_ImportanceSamplingShader->setUniform1i("sceneCaptureCubemap", 0);
+		m_ImportanceSamplingShader->setUniform("sceneCaptureCubemap", 0);
 
 		m_ReflectionProbeSamplingFramebuffer.bind();
 		for (int mip = 0; mip < REFLECTION_PROBE_MIP_COUNT; mip++) {
@@ -137,11 +137,11 @@ namespace arcane {
 			glViewport(0, 0, mipWidth, mipHeight);
 
 			float mipRoughnessLevel = (float)mip / (float)(REFLECTION_PROBE_MIP_COUNT - 1);
-			m_ImportanceSamplingShader->setUniform1f("roughness", mipRoughnessLevel);
+			m_ImportanceSamplingShader->setUniform("roughness", mipRoughnessLevel);
 			for (int i = 0; i < 6; i++) {
 				// Setup the camera's view
 				m_CubemapCamera.switchCameraToFace(i);
-				m_ImportanceSamplingShader->setUniformMat4("view", m_CubemapCamera.getViewMatrix());
+				m_ImportanceSamplingShader->setUniform("view", m_CubemapCamera.getViewMatrix());
 
 				// Importance sample the scene's capture and store it in the Reflection Probe's cubemap
 				m_ReflectionProbeSamplingFramebuffer.setColorAttachment(fallbackReflectionProbe->getPrefilterMap()->getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mip);
@@ -186,16 +186,16 @@ namespace arcane {
 		m_GLCache->setFaceCull(false);
 		m_GLCache->setDepthTest(false); // Important cause the depth buffer isn't cleared so it has zero depth
 
-		m_ConvolutionShader->setUniformMat4("projection", m_CubemapCamera.getProjectionMatrix());
+		m_ConvolutionShader->setUniform("projection", m_CubemapCamera.getProjectionMatrix());
 		m_SceneCaptureCubemap.bind(0);
-		m_ConvolutionShader->setUniform1i("sceneCaptureCubemap", 0);
+		m_ConvolutionShader->setUniform("sceneCaptureCubemap", 0);
 
 		m_LightProbeConvolutionFramebuffer.bind();
 		glViewport(0, 0, m_LightProbeConvolutionFramebuffer.getWidth(), m_LightProbeConvolutionFramebuffer.getHeight());
 		for (int i = 0; i < 6; i++) {
 			// Setup the camera's view
 			m_CubemapCamera.switchCameraToFace(i);
-			m_ConvolutionShader->setUniformMat4("view", m_CubemapCamera.getViewMatrix());
+			m_ConvolutionShader->setUniform("view", m_CubemapCamera.getViewMatrix());
 
 			// Convolute the scene's capture and store it in the Light Probe's cubemap
 			m_LightProbeConvolutionFramebuffer.setColorAttachment(lightProbe->getIrradianceMap()->getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
@@ -238,9 +238,9 @@ namespace arcane {
 		m_GLCache->setFaceCull(false);
 		m_GLCache->setDepthTest(false); // Important cause the depth buffer isn't cleared so it has zero depth
 
-		m_ImportanceSamplingShader->setUniformMat4("projection", m_CubemapCamera.getProjectionMatrix());
+		m_ImportanceSamplingShader->setUniform("projection", m_CubemapCamera.getProjectionMatrix());
 		m_SceneCaptureCubemap.bind(0);
-		m_ImportanceSamplingShader->setUniform1i("sceneCaptureCubemap", 0);
+		m_ImportanceSamplingShader->setUniform("sceneCaptureCubemap", 0);
 
 		m_ReflectionProbeSamplingFramebuffer.bind();
 		for (int mip = 0; mip < REFLECTION_PROBE_MIP_COUNT; mip++) {
@@ -251,11 +251,11 @@ namespace arcane {
 			glViewport(0, 0, mipWidth, mipHeight);
 			
 			float mipRoughnessLevel = (float)mip / (float)(REFLECTION_PROBE_MIP_COUNT - 1);
-			m_ImportanceSamplingShader->setUniform1f("roughness", mipRoughnessLevel);
+			m_ImportanceSamplingShader->setUniform("roughness", mipRoughnessLevel);
 			for (int i = 0; i < 6; i++) {
 				// Setup the camera's view
 				m_CubemapCamera.switchCameraToFace(i);
-				m_ImportanceSamplingShader->setUniformMat4("view", m_CubemapCamera.getViewMatrix());
+				m_ImportanceSamplingShader->setUniform("view", m_CubemapCamera.getViewMatrix());
 
 				// Importance sample the scene's capture and store it in the Reflection Probe's cubemap
 				m_ReflectionProbeSamplingFramebuffer.setColorAttachment(reflectionProbe->getPrefilterMap()->getCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mip);

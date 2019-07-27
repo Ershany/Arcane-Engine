@@ -41,7 +41,7 @@ namespace arcane {
 		glm::mat4 directionalLightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, SHADOWMAP_NEAR_PLANE, SHADOWMAP_FAR_PLANE);
 		glm::mat4 directionalLightView = glm::lookAt(dirLightShadowmapEyePos, dirLightShadowmapLookAtPos, glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 directionalLightViewProjMatrix = directionalLightProjection * directionalLightView;
-		m_ShadowmapShader->setUniformMat4("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);
+		m_ShadowmapShader->setUniform("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);
 
 		// Setup model renderer
 		if (renderOnlyStatic) {

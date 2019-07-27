@@ -20,10 +20,10 @@ namespace arcane {
 
 		// Pass the texture to the shader
 		m_SkyboxCubemap->bind(0);
-		m_SkyboxShader->setUniform1i("skyboxCubemap", 0);
+		m_SkyboxShader->setUniform("skyboxCubemap", 0);
 
-		m_SkyboxShader->setUniformMat4("view", camera->getViewMatrix());
-		m_SkyboxShader->setUniformMat4("projection", camera->getProjectionMatrix());
+		m_SkyboxShader->setUniform("view", camera->getViewMatrix());
+		m_SkyboxShader->setUniform("projection", camera->getProjectionMatrix());
 
 		// Since the vertex shader is gonna make the depth value 1.0, and the default value in the depth buffer is 1.0 so this is needed to draw the sky  box
 		m_GLCache->setDepthTest(true);

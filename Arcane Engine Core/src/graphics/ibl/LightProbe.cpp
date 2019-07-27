@@ -25,7 +25,7 @@ namespace arcane {
 
 	void LightProbe::bind(Shader *shader) {
 		m_IrradianceMap->bind(1);
-		shader->setUniform1i("irradianceMap", 1);
+		shader->setUniform("irradianceMap", 1);
 	}
 
 }
