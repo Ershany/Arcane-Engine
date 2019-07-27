@@ -25,7 +25,7 @@ namespace arcane {
 			renderTarget1.TextureAnisotropyLevel = 1.0f;
 			renderTarget1.HasMips = false;
 			m_GBufferRenderTargets[0].setTextureSettings(renderTarget1);
-			m_GBufferRenderTargets[0].generate2DTexture(m_Width, m_Height, GL_RGB, nullptr);
+			m_GBufferRenderTargets[0].generate2DTexture(m_Width, m_Height, GL_RGB);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_GBufferRenderTargets[0].getTextureId(), 0);
 		}
 
@@ -40,7 +40,7 @@ namespace arcane {
 			renderTarget2.TextureAnisotropyLevel = 1.0f;
 			renderTarget2.HasMips = false;
 			m_GBufferRenderTargets[1].setTextureSettings(renderTarget2);
-			m_GBufferRenderTargets[1].generate2DTexture(m_Width, m_Height, GL_RGB, nullptr);
+			m_GBufferRenderTargets[1].generate2DTexture(m_Width, m_Height, GL_RGB);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_GBufferRenderTargets[1].getTextureId(), 0);
 		}
 
@@ -55,7 +55,7 @@ namespace arcane {
 			renderTarget3.TextureAnisotropyLevel = 1.0f;
 			renderTarget3.HasMips = false;
 			m_GBufferRenderTargets[2].setTextureSettings(renderTarget3);
-			m_GBufferRenderTargets[2].generate2DTexture(m_Width, m_Height, GL_RGB, nullptr);
+			m_GBufferRenderTargets[2].generate2DTexture(m_Width, m_Height, GL_RGB);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_GBufferRenderTargets[2].getTextureId(), 0);
 		}
 

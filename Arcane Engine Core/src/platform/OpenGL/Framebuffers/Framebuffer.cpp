@@ -57,7 +57,7 @@ namespace arcane {
 			setColorAttachment(m_ColourTexture.getTextureId(), GL_TEXTURE_2D_MULTISAMPLE);
 		}
 		else {
-			m_ColourTexture.generate2DTexture(m_Width, m_Height, GL_RGB, nullptr);
+			m_ColourTexture.generate2DTexture(m_Width, m_Height, GL_RGB);
 			setColorAttachment(m_ColourTexture.getTextureId(), GL_TEXTURE_2D);
 		}
 
@@ -98,7 +98,7 @@ namespace arcane {
 			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D_MULTISAMPLE, m_DepthStencilTexture.getTextureId(), 0);
 		}
 		else {
-			m_DepthStencilTexture.generate2DTexture(m_Width, m_Height, GL_DEPTH_COMPONENT, nullptr);
+			m_DepthStencilTexture.generate2DTexture(m_Width, m_Height, GL_DEPTH_COMPONENT);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D, m_DepthStencilTexture.getTextureId(), 0);
 		}
 

@@ -25,7 +25,7 @@ namespace arcane {
 		}
 	}
 
-	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, ICamera *camera, bool useIBL) {
+	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL) {
 		// Framebuffer setup
 		glViewport(0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight());
 		m_Framebuffer->bind();
@@ -62,8 +62,11 @@ namespace arcane {
 		geometryData.outputGBuffer->getMaterialInfo()->bind(6);
 		m_LightingShader->setUniform1i("materialInfoTexture", 6);
 
-		geometryData.outputGBuffer->getDepthStencilTexture()->bind(7);
-		m_LightingShader->setUniform1i("depthTexture", 7);
+		preLightingOutput.ssaoFramebuffer->getColourTexture()->bind(7);
+		m_LightingShader->setUniform1i("ssaoTexture", 7);
+
+		geometryData.outputGBuffer->getDepthStencilTexture()->bind(8);
+		m_LightingShader->setUniform1i("depthTexture", 8);
 
 		m_LightingShader->setUniform1f("nearPlane", NEAR_PLANE);
 		m_LightingShader->setUniform1f("farPlane", FAR_PLANE);

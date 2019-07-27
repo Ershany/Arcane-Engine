@@ -9,7 +9,7 @@ namespace arcane {
 		glDeleteTextures(1, &m_TextureId);
 	}
 
-	void Texture::generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, const void *data, GLenum pixelDataType) {
+	void Texture::generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, GLenum pixelDataType, const void *data) {
 		m_TextureTarget = GL_TEXTURE_2D;
 		m_Width = width;
 		m_Height = height;

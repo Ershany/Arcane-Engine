@@ -19,9 +19,10 @@ namespace arcane {
 	private:
 		Shader *m_PostProcessShader;
 		Shader *m_FxaaShader;
-		Shader *m_SsaoShader;
+		Shader *m_SsaoShader, *m_SsaoBlurShader;
 
 		Framebuffer m_SsaoRenderTarget;
+		Framebuffer m_SsaoBlurRenderTarget;
 		Framebuffer m_TonemappedNonLinearTarget;
 		Framebuffer m_ScreenRenderTarget; // Only used if the render resolution differs from the window resolution
 		Framebuffer m_ResolveRenderTarget; // Only used if multi-sampling is enabled so it can be resolved

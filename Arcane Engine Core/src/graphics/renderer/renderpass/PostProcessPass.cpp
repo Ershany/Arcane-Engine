@@ -6,16 +6,18 @@
 
 namespace arcane {
 
-	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false),
-		m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_Timer()
+	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_SsaoBlurRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false),
+		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_Timer()
 	{
 		// Shader setup
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
 		m_FxaaShader = ShaderLoader::loadShader("src/shaders/fxaa.vert", "src/shaders/fxaa.frag");
 		m_SsaoShader = ShaderLoader::loadShader("src/shaders/ssao.vert", "src/shaders/ssao.frag");
+		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/ssao_blur.vert", "src/shaders/ssao_blur.frag");
 
 		// Framebuffer setup
 		m_SsaoRenderTarget.addColorTexture(NormalizedSingleChannel8).createFramebuffer();
+		m_SsaoBlurRenderTarget.addColorTexture(NormalizedSingleChannel8).createFramebuffer();
 		m_TonemappedNonLinearTarget.addColorTexture(Normalized8).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ScreenRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ResolveRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
@@ -50,7 +52,7 @@ namespace arcane {
 		ssaoNoiseTextureSettings.TextureAnisotropyLevel = 1.0f;
 		ssaoNoiseTextureSettings.HasMips = false;
 		m_SsaoNoiseTexture.setTextureSettings(ssaoNoiseTextureSettings);
-		m_SsaoNoiseTexture.generate2DTexture(4, 4, GL_RGB, &noiseSSAO[0], GL_FLOAT);
+		m_SsaoNoiseTexture.generate2DTexture(4, 4, GL_RGB, GL_FLOAT, &noiseSSAO[0]);
 
 		// Debug stuff
 		DebugPane::bindFxaaEnabled(&m_FxaaEnabled);
@@ -103,6 +105,18 @@ namespace arcane {
 		// Render our NDC quad to perform SSAO
 		modelRenderer->NDC_Plane.Draw();
 
+
+		// Blur the result
+		m_SsaoBlurRenderTarget.bind();
+		m_SsaoBlurShader->enable();
+
+		m_SsaoBlurShader->setUniform1i("numSamplesAroundTexel", 2); // 5x5 kernel blur
+		m_SsaoBlurShader->setUniform1i("ssaoInput", 0); // Texture unit
+		m_SsaoRenderTarget.getColourTexture()->bind(0);
+
+		// Render our NDC quad to blur our SSAO texture
+		modelRenderer->NDC_Plane.Draw();
+		
 		// Reset unusual state
 		m_GLCache->setDepthTest(true);
 
@@ -113,7 +127,7 @@ namespace arcane {
 
 		// Render pass output
 		PreLightingPassOutput passOutput;
-		passOutput.ssaoFramebuffer = &m_SsaoRenderTarget;
+		passOutput.ssaoFramebuffer = &m_SsaoBlurRenderTarget;
 		return passOutput;
 	}
 
