@@ -13,6 +13,7 @@ uniform vec2 noiseScale;
 
 uniform float ssaoStrength;
 uniform float sampleRadius;
+uniform float sampleRadius2;
 uniform int numKernelSamples;
 uniform vec3 samples[64];
 
@@ -52,7 +53,8 @@ void main() {
 
 		// Peform a range check on the current fragment we are calculating the occlusion factor for, and the occlusion position
 		vec3 occlusionPos = WorldPosFromDepth(sampleScreenSpace.xy);
-		if (length(fragPos - occlusionPos) <= sampleRadius) {
+		vec3 fragToOcclusionPos = fragPos - occlusionPos;
+		if (dot(fragToOcclusionPos, fragToOcclusionPos) <= sampleRadius2) {
 			occlusion += ((sampleScreenSpace.z > sceneDepth) ? 1.0 : 0.0);
 		}
 	}

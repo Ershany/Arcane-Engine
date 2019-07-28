@@ -94,6 +94,7 @@ namespace arcane {
 
 		m_SsaoShader->setUniform("ssaoStrength", m_SsaoStrength);
 		m_SsaoShader->setUniform("sampleRadius", m_SsaoSampleRadius);
+		m_SsaoShader->setUniform("sampleRadius2", m_SsaoSampleRadius * m_SsaoSampleRadius);
 		m_SsaoShader->setUniform("numKernelSamples", (int)m_SsaoKernel.size());
 		m_SsaoShader->setUniformArray("samples", m_SsaoKernel.size(), &m_SsaoKernel[0]);
 
