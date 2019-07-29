@@ -26,7 +26,8 @@ namespace arcane {
 		std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
 		std::default_random_engine generator;
 		for (unsigned int i = 0; i < m_SsaoKernel.size(); i++) {
-			glm::vec3 hemisphereSample = glm::vec3((randomFloats(generator) * 2.0f) - 1.0f, (randomFloats(generator) * 2.0f) - 1.0f, randomFloats(generator)); // Z = [0, 1] because we want hemisphere in tangent space
+			// Make sure that the samples aren't perfectly perpendicular to the normal, or depth reconstruction will yield artifacts (so make sure the z value isn't close to 0)
+			glm::vec3 hemisphereSample = glm::vec3((randomFloats(generator) * 2.0f) - 1.0f, (randomFloats(generator) * 2.0f) - 1.0f, glm::clamp((double)randomFloats(generator), 0.2, 1.0)); // Z = [0.2, 1] because we want hemisphere in tangent space
 			hemisphereSample = glm::normalize(hemisphereSample);
 
 			// Generate more samples closer to the origin of the hemisphere. Since these make for better light occlusion tests
