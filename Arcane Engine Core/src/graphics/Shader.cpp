@@ -209,36 +209,76 @@ namespace arcane {
 		return glGetUniformLocation(m_ShaderID, name);
 	}
 
-	void Shader::setUniform1f(const char* name, float value) {
+	void Shader::setUniform(const char* name, float value) {
 		glUniform1f(getUniformLocation(name), value);
 	}
 
-	void Shader::setUniform1i(const char* name, int value) {
+	void Shader::setUniform(const char* name, int value) {
 		glUniform1i(getUniformLocation(name), value);
 	}
 
-	void Shader::setUniform2f(const char* name, const glm::vec2& vector) {
+	void Shader::setUniform(const char* name, const glm::vec2& vector) {
 		glUniform2f(getUniformLocation(name), vector.x, vector.y);
 	}
 
-	void Shader::setUniform3f(const char* name, const glm::vec3& vector) {
+	void Shader::setUniform(const char *name, const glm::ivec2& vector) {
+		glUniform2i(getUniformLocation(name), vector.x, vector.y);
+	}
+
+	void Shader::setUniform(const char* name, const glm::vec3& vector) {
 		glUniform3f(getUniformLocation(name), vector.x, vector.y, vector.z);
 	}
 
-	void Shader::setUniform4f(const char* name, const glm::vec4& vector) {
+	void Shader::setUniform(const char *name, const glm::ivec3& vector) {
+		glUniform3i(getUniformLocation(name), vector.x, vector.y, vector.z);
+	}
+
+	void Shader::setUniform(const char* name, const glm::vec4& vector) {
 		glUniform4f(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
 	}
 
-	void Shader::setUniform4i(const char* name, const glm::ivec4& vector) {
+	void Shader::setUniform(const char* name, const glm::ivec4& vector) {
 		glUniform4i(getUniformLocation(name), vector.x, vector.y, vector.z, vector.w);
 	}
 
-	void Shader::setUniformMat3(const char* name, const glm::mat3& matrix) {
+	void Shader::setUniform(const char* name, const glm::mat3& matrix) {
 		glUniformMatrix3fv(glGetUniformLocation(m_ShaderID, name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	void Shader::setUniformMat4(const char* name, const glm::mat4& matrix) {
+	void Shader::setUniform(const char* name, const glm::mat4& matrix) {
 		glUniformMatrix4fv(glGetUniformLocation(m_ShaderID, name), 1, GL_FALSE, glm::value_ptr(matrix));
+	}
+
+	void Shader::setUniformArray(const char *name, int arraySize, float *value) {
+		glUniform1fv(glGetUniformLocation(m_ShaderID, name), arraySize, value);
+	}
+
+	void Shader::setUniformArray(const char *name, int arraySize, int *value) {
+		glUniform1iv(glGetUniformLocation(m_ShaderID, name), arraySize, value);
+	}
+
+	void Shader::setUniformArray(const char *name, int arraySize, glm::vec2 *value) {
+		glUniform2fv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
+	}
+
+	void Shader::setUniformArray(const char *name, int arraySize, glm::ivec2 *value) {
+		glUniform2iv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
+	}
+
+	void Shader::setUniformArray(const char *name, int arraySize, glm::vec3 *value) {
+		glUniform3fv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
+	}
+
+	void Shader::setUniformArray(const char *name, int arraySize, glm::ivec3 *value) {
+		glUniform3iv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
+	}
+
+	void Shader::setUniformArray(const char *name, int arraySize, glm::vec4 *value) {
+		glUniform4fv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
+	}
+
+	void Shader::setUniformArray(const char *name, int arraySize, glm::ivec4 *value) {
+		glUniform4iv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
 	}
 
 	void Shader::enable() const {

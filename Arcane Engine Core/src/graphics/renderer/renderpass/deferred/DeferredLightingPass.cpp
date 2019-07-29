@@ -25,7 +25,7 @@ namespace arcane {
 		}
 	}
 
-	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, ICamera *camera, bool useIBL) {
+	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL) {
 		// Framebuffer setup
 		glViewport(0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight());
 		m_Framebuffer->bind();
@@ -48,25 +48,28 @@ namespace arcane {
 
 		m_GLCache->switchShader(m_LightingShader);
 		lightManager->bindLightingUniforms(m_LightingShader);
-		m_LightingShader->setUniform3f("viewPos", camera->getPosition());
-		m_LightingShader->setUniformMat4("viewInverse", glm::inverse(camera->getViewMatrix()));
-		m_LightingShader->setUniformMat4("projectionInverse", glm::inverse(camera->getProjectionMatrix()));
+		m_LightingShader->setUniform("viewPos", camera->getPosition());
+		m_LightingShader->setUniform("viewInverse", glm::inverse(camera->getViewMatrix()));
+		m_LightingShader->setUniform("projectionInverse", glm::inverse(camera->getProjectionMatrix()));
 
 		// Bind GBuffer data
 		geometryData.outputGBuffer->getAlbedo()->bind(4);
-		m_LightingShader->setUniform1i("albedoTexture", 4);
+		m_LightingShader->setUniform("albedoTexture", 4);
 
 		geometryData.outputGBuffer->getNormal()->bind(5);
-		m_LightingShader->setUniform1i("normalTexture", 5);
+		m_LightingShader->setUniform("normalTexture", 5);
 
 		geometryData.outputGBuffer->getMaterialInfo()->bind(6);
-		m_LightingShader->setUniform1i("materialInfoTexture", 6);
+		m_LightingShader->setUniform("materialInfoTexture", 6);
 
-		geometryData.outputGBuffer->getDepthStencilTexture()->bind(7);
-		m_LightingShader->setUniform1i("depthTexture", 7);
+		preLightingOutput.ssaoTexture->bind(7);
+		m_LightingShader->setUniform("ssaoTexture", 7);
 
-		m_LightingShader->setUniform1f("nearPlane", NEAR_PLANE);
-		m_LightingShader->setUniform1f("farPlane", FAR_PLANE);
+		geometryData.outputGBuffer->getDepthStencilTexture()->bind(8);
+		m_LightingShader->setUniform("depthTexture", 8);
+
+		m_LightingShader->setUniform("nearPlane", NEAR_PLANE);
+		m_LightingShader->setUniform("farPlane", FAR_PLANE);
 
 		// Shadowmap code
 		bindShadowmap(m_LightingShader, shadowmapData);
@@ -78,15 +81,15 @@ namespace arcane {
 		probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_LightingShader);
 
 		// Perform lighting on the terrain (turn IBL off)
-		m_LightingShader->setUniform1i("computeIBL", 0);
+		m_LightingShader->setUniform("computeIBL", 0);
 		glStencilFunc(GL_EQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
 		modelRenderer->NDC_Plane.Draw();
 
-		// Perform lighting on everything else (turn IBL on)
+		// Perform lighting on the models in the scene (turn IBL on)
 		if (useIBL) {
-			m_LightingShader->setUniform1i("computeIBL", 1);
+			m_LightingShader->setUniform("computeIBL", 1);
 		}
-		glStencilFunc(GL_NOTEQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
+		glStencilFunc(GL_EQUAL, DeferredStencilValue::ModelStencilValue, 0xFF);
 		modelRenderer->NDC_Plane.Draw();
 
 
@@ -102,8 +105,8 @@ namespace arcane {
 
 	void DeferredLightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
 		shadowmapData.shadowmapFramebuffer->getDepthStencilTexture()->bind();
-		shader->setUniform1i("shadowmap", 0);
-		shader->setUniformMat4("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+		shader->setUniform("shadowmap", 0);
+		shader->setUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 	}
 
 }

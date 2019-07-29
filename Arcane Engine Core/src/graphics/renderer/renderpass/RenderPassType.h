@@ -23,4 +23,8 @@ namespace arcane {
 		GBuffer *outputGBuffer;
 	};
 
+	struct PreLightingPassOutput {
+		Texture *ssaoTexture;
+	};
+
 }

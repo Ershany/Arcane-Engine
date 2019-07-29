@@ -162,66 +162,66 @@ namespace arcane {
 	void Terrain::Draw(Shader *shader, RenderPassType pass) const {
 		// Texture unit 0 is reserved for the shadowmap
 		if (pass == MaterialRequired) {
-			unsigned int currentTextureUnit = 1;
+			int currentTextureUnit = 1;
 			// Textures
 			m_Textures[0]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_albedo1", currentTextureUnit++);
+			shader->setUniform("material.texture_albedo1", currentTextureUnit++);
 			m_Textures[1]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_albedo2", currentTextureUnit++);
+			shader->setUniform("material.texture_albedo2", currentTextureUnit++);
 			m_Textures[2]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_albedo3", currentTextureUnit++);
+			shader->setUniform("material.texture_albedo3", currentTextureUnit++);
 			m_Textures[3]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_albedo4", currentTextureUnit++);
+			shader->setUniform("material.texture_albedo4", currentTextureUnit++);
 
 			m_Textures[4]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_normal1", currentTextureUnit++);
+			shader->setUniform("material.texture_normal1", currentTextureUnit++);
 			m_Textures[5]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_normal2", currentTextureUnit++);
+			shader->setUniform("material.texture_normal2", currentTextureUnit++);
 			m_Textures[6]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_normal3", currentTextureUnit++);
+			shader->setUniform("material.texture_normal3", currentTextureUnit++);
 			m_Textures[7]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_normal4", currentTextureUnit++);
+			shader->setUniform("material.texture_normal4", currentTextureUnit++);
 
 			m_Textures[8]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_roughness1", currentTextureUnit++);
+			shader->setUniform("material.texture_roughness1", currentTextureUnit++);
 			m_Textures[9]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_roughness2", currentTextureUnit++);
+			shader->setUniform("material.texture_roughness2", currentTextureUnit++);
 			m_Textures[10]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_roughness3", currentTextureUnit++);
+			shader->setUniform("material.texture_roughness3", currentTextureUnit++);
 			m_Textures[11]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_roughness4", currentTextureUnit++);
+			shader->setUniform("material.texture_roughness4", currentTextureUnit++);
 
 			m_Textures[12]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_metallic1", currentTextureUnit++);
+			shader->setUniform("material.texture_metallic1", currentTextureUnit++);
 			m_Textures[13]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_metallic2", currentTextureUnit++);
+			shader->setUniform("material.texture_metallic2", currentTextureUnit++);
 			m_Textures[14]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_metallic3", currentTextureUnit++);
+			shader->setUniform("material.texture_metallic3", currentTextureUnit++);
 			m_Textures[15]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_metallic4", currentTextureUnit++);
+			shader->setUniform("material.texture_metallic4", currentTextureUnit++);
 
 			m_Textures[16]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_AO1", currentTextureUnit++);
+			shader->setUniform("material.texture_AO1", currentTextureUnit++);
 			m_Textures[17]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_AO2", currentTextureUnit++);
+			shader->setUniform("material.texture_AO2", currentTextureUnit++);
 			m_Textures[18]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_AO3", currentTextureUnit++);
+			shader->setUniform("material.texture_AO3", currentTextureUnit++);
 			m_Textures[19]->bind(currentTextureUnit);
-			shader->setUniform1i("material.texture_AO4", currentTextureUnit++);
+			shader->setUniform("material.texture_AO4", currentTextureUnit++);
 
  			m_Textures[20]->bind(currentTextureUnit);
- 			shader->setUniform1i("material.blendmap", currentTextureUnit++);
+ 			shader->setUniform("material.blendmap", currentTextureUnit++);
 
 			// Normal matrix
 			glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(m_ModelMatrix)));
-			shader->setUniformMat3("normalMatrix", normalMatrix);
+			shader->setUniform("normalMatrix", normalMatrix);
 
 			// Tiling amount
-			shader->setUniform1f("material.tilingAmount", m_TextureTilingAmount);
+			shader->setUniform("material.tilingAmount", m_TextureTilingAmount);
 		}
 
 		// Only set normal matrix for non shadowmap pass
-		shader->setUniformMat4("model", m_ModelMatrix);
+		shader->setUniform("model", m_ModelMatrix);
 
 		m_GLCache->setDepthTest(true);
 		m_GLCache->setDepthFunc(GL_LESS);

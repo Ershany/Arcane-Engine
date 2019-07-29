@@ -11,7 +11,7 @@ Arcane Engine is a real-time, physically based renderer built with OpenGL. A lar
 
 ## Rendering
 - Forward + Deferred Rendering
-- Physically Based
+- Physically Based (Fresnel on Everything)
 - Cook Torrance Specular BRDF w/ Lambertian Diffuse
 - PBR Material System
 - Light Probes (IBL)

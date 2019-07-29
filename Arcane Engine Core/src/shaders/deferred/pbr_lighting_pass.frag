@@ -35,6 +35,7 @@ out vec4 color;
 uniform sampler2D albedoTexture;
 uniform sampler2D normalTexture;
 uniform sampler2D materialInfoTexture;
+uniform sampler2D ssaoTexture;
 uniform sampler2D depthTexture;
 
 // IBL
@@ -79,7 +80,9 @@ void main() {
 	float metallic = texture(materialInfoTexture, TexCoords).r;
 	float unclampedRoughness = texture(materialInfoTexture, TexCoords).g; // Used for indirect specular (reflections)
 	float roughness = max(unclampedRoughness, 0.04); // Used for calculations since specular highlights will be too fine, and will cause flicker
-	float ao = texture(materialInfoTexture, TexCoords).b;
+	float materialAO = texture(materialInfoTexture, TexCoords).b;
+	float sceneAO = texture(ssaoTexture, TexCoords).r;
+	float ao = min(materialAO, sceneAO);
 
 	// Reconstruct fragPos
 	vec3 fragPos = WorldPosFromDepth();
@@ -104,13 +107,13 @@ void main() {
 		vec3 diffuseRatio = vec3(1.0) - specularRatio;
 		diffuseRatio *= 1.0 - metallic;
 
-		vec3 indirectDiffuse = texture(irradianceMap, normal).rgb * albedo;
+		vec3 indirectDiffuse = texture(irradianceMap, normal).rgb * albedo * diffuseRatio;
 
 		vec3 prefilterColour = textureLod(prefilterMap, reflectionVec, unclampedRoughness * (reflectionProbeMipCount - 1)).rgb;
 		vec2 brdfIntegration = texture(brdfLUT, vec2(max(dot(normal, fragToView), 0.0), roughness)).rg;
 		vec3 indirectSpecular = prefilterColour * (specularRatio * brdfIntegration.x + brdfIntegration.y);
 
-		ambient = (diffuseRatio * indirectDiffuse + indirectSpecular) * ao;
+		ambient = (indirectDiffuse + indirectSpecular) * ao;
 	}
 
 	color = vec4(ambient + directLightIrradiance, 1.0);

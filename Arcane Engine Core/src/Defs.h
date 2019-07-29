@@ -15,7 +15,6 @@
 
 // AA Settings
 #define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering
-#define FXAA_ENABLE 1 // Used for forward and deferred
 #define SUPERSAMPLING_FACTOR 1 // 1 means window resolution will be the render resolution
 
 // Texture Filtering Settings
@@ -37,3 +36,6 @@
 #define SHADOWMAP_RESOLUTION_Y 2048
 #define SHADOWMAP_NEAR_PLANE 1.0f
 #define SHADOWMAP_FAR_PLANE 400.0f
+
+// SSAO Options
+#define SSAO_KERNEL_SIZE 32 // Maximum amount is restricted by the shader. Only supports a maximum of 64

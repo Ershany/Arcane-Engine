@@ -139,6 +139,10 @@ namespace arcane {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
+	void Window::bind() {
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
 	bool Window::closed() const {
 		return glfwWindowShouldClose(m_Window);
 	}

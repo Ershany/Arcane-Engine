@@ -1,5 +1,6 @@
 Nice To Have:
 -Move Anistropic amount querying to the defs.h or something instead of querying the driver for every texture
+-Uniform buffer objects (to push shader data with one GPU call)
 
 Normal mapping:
 -Specify tangents and bitangents for a cube and sphere

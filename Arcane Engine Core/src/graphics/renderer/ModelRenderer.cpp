@@ -80,11 +80,11 @@ namespace arcane {
 			model = translate * rotate * scale;
 		}
 
-		shader->setUniformMat4("model", model);
+		shader->setUniform("model", model);
 
 		if (pass == MaterialRequired) {
 			glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
-			shader->setUniformMat3("normalMatrix", normalMatrix);
+			shader->setUniform("normalMatrix", normalMatrix);
 		}
 	}
 

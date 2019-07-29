@@ -418,6 +418,10 @@
     <None Include="src\shaders\deferred\pbr_lighting_pass.frag" />
     <None Include="src\shaders\fxaa.vert" />
     <None Include="src\shaders\fxaa.frag" />
+    <None Include="src\shaders\ssao.vert" />
+    <None Include="src\shaders\ssao.frag" />
+    <None Include="src\shaders\ssao_blur.frag" />
+    <None Include="src\shaders\ssao_blur.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
