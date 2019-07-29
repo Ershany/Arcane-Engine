@@ -1,5 +1,6 @@
 Nice To Have:
 -Move Anistropic amount querying to the defs.h or something instead of querying the driver for every texture
+-Uniform buffer objects (to push shader data with one GPU call)
 
 Normal mapping:
 -Specify tangents and bitangents for a cube and sphere
@@ -19,8 +20,3 @@ IBL:
 
 Deferred:
 -Add light volumes (very important for lots of lights in deferred)
-
-SSAO:
--Fix far distance precision issue
--Look at making a function in shader to set an array of data so LightManager and PostProcessor's SSAO hemipshere sample kernel can be set with one GPU call. As well as possibly allowing 100% dynamic amounts of data
--should use length2
