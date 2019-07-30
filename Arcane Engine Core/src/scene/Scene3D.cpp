@@ -20,6 +20,7 @@ namespace arcane {
 		
 	}
 
+	RenderableModel *mainCube;
 	void Scene3D::init() {
 		//Model *helmet = new arcane::Model("res/3D_Models/DamagedHelmet/DamagedHelmet.gltf");
 		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(6.0f, 6.0f, 6.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(90.0f), helmet, nullptr, false, false));
@@ -48,7 +49,11 @@ namespace arcane {
 		//hyruleShield->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Roughness].tga")));
 		//hyruleShield->getMeshes()[0].getMaterial().setAmbientOcclusionMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Occlusion].tga")));
 
-		m_RenderableModels.push_back(new RenderableModel(glm::vec3(90.5f, 136.0f, 134.0f), glm::vec3(4.0f, 4.0f, 4.0f), glm::vec3(1.0f, 1.0f, 0.0f), 0.0f, new Model(Cube()), nullptr, false, false));
+		Model *cube = new Model(Cube());
+		mainCube = new RenderableModel(glm::vec3(90.5f, 136.0f, 134.0f), glm::vec3(4.0f, 4.0f, 4.0f), glm::vec3(1.0f, 1.0f, 0.0f), 0.0f, cube, nullptr, false, false);
+		m_RenderableModels.push_back(mainCube);
+		cube->getMeshes()[0].getMaterial().setMetallicMap(TextureLoader::getWhiteTexture());
+		cube->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::getBlackTexture());
 
 		Model *sponza = new arcane::Model("res/3D_Models/Sponza/sponza.obj");
 		m_RenderableModels.push_back(new RenderableModel(glm::vec3(67.0f, 110.0f, 133.0f), glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), sponza, nullptr, true, false));
@@ -66,12 +71,16 @@ namespace arcane {
 		m_SceneCamera.setPosition(glm::vec3(90.0f, 80.0f, 180.0f));
 	}
 
+	float rotAmount = 0.0f;
 	void Scene3D::onUpdate(float deltaTime) {
 		// Camera Update
 		m_SceneCamera.processInput(deltaTime);
 
 		m_DynamicLightManager.setSpotLightDirection(0, m_SceneCamera.getFront());
 		m_DynamicLightManager.setSpotLightPosition(0, m_SceneCamera.getPosition());
+
+		rotAmount += deltaTime;
+		mainCube->setOrientation(rotAmount, glm::normalize(glm::vec3(1.0f, 1.0f, 0.0f)));
 	}
 
 	void Scene3D::addModelsToRenderer() {
