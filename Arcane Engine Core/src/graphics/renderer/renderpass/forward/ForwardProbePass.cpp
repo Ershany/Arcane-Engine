@@ -37,7 +37,7 @@ namespace arcane {
 	}
 
 	void ForwardProbePass::pregenerateProbes() {
-		glm::vec3 probePosition = glm::vec3(67.0f, 92.0f, 133.0f);
+		glm::vec3 probePosition = glm::vec3(95.5f, 75.0f, 120.0f);
 		generateLightProbe(probePosition);
 		generateReflectionProbe(probePosition);
 	}

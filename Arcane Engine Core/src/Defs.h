@@ -1,14 +1,14 @@
 #pragma once
 
 // Debug Options
-#define DEBUG_ENABLED 1
+#define DEBUG_ENABLED 0
 
 
 // Window Settings
 #define WINDOW_X_RESOLUTION 1366
 #define WINDOW_Y_RESOLUTION 768
 #define V_SYNC 1
-#define FULLSCREEN_MODE 0 // If set, window resolution is maximized to your screen resolution
+#define FULLSCREEN_MODE 1 // If set, window resolution is maximized to your screen resolution
 
 // Render Settings
 #define FORWARD_RENDER 0
@@ -21,10 +21,10 @@
 #define ANISOTROPIC_FILTERING_LEVEL 8.0f
 
 // IBL Settings
-#define LIGHT_PROBE_RESOLUTION 32
+#define LIGHT_PROBE_RESOLUTION 64
 #define REFLECTION_PROBE_MIP_COUNT 5
-#define REFLECTION_PROBE_RESOLUTION 128
-#define IBL_CAPTURE_RESOLUTION 256 // Should always be greater than the light and reflection probe resolution
+#define REFLECTION_PROBE_RESOLUTION 256
+#define IBL_CAPTURE_RESOLUTION 512 // Should always be greater than the light and reflection probe resolution
 #define BRDF_LUT_RESOLUTION 512
 
 // Frustum Options
