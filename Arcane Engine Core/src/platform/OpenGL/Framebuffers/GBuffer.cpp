@@ -32,7 +32,7 @@ namespace arcane {
 		// Render Target 2
 		{
 			TextureSettings renderTarget2;
-			renderTarget2.TextureFormat = GL_RGB16F;
+			renderTarget2.TextureFormat = GL_RGB32F;
 			renderTarget2.TextureWrapSMode = GL_CLAMP_TO_EDGE;
 			renderTarget2.TextureWrapTMode = GL_CLAMP_TO_EDGE;
 			renderTarget2.TextureMinificationFilterMode = GL_NEAREST;
