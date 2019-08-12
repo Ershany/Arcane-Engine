@@ -4,7 +4,7 @@ Arcane Engine is a real-time, physically based renderer built with OpenGL. A lar
 ![arcaneengine](https://user-images.githubusercontent.com/11170417/27188219-75d8814e-51bb-11e7-907b-1be35da8de38.png)
 
 # Render Samples
-![sponza](https://user-images.githubusercontent.com/11170417/44693363-60dec180-aa35-11e8-8e06-8f305222a724.png)
+![sponza](https://user-images.githubusercontent.com/11170417/62843504-41fa2f00-bc88-11e9-9e9f-8b27d2873298.png)
 ![ArcanePBR+IBL](https://user-images.githubusercontent.com/11170417/58596408-f7007c00-8241-11e9-895c-cab452548672.png)
 
 # Features
@@ -32,6 +32,13 @@ Arcane Engine is a real-time, physically based renderer built with OpenGL. A lar
 - Model Loading via ASSIMP
 - ImGUI for UI
 - SOIL for Image Loading
+
+## Textbook Sources
+- LearnOpenGL
+- Game Engine Architecture
+- Real-Time Rendering
+- GPU Gems
+- GPU Pro
 
 ## Development
 If you want to see what I am currently working on, check out Arcane's roadmap on Trello:
