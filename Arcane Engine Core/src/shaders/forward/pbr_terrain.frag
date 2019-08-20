@@ -87,7 +87,7 @@ vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity);
 
 // Other function prototypes
 vec3 UnpackNormal(vec3 textureNormal);
-float CalculateShadow();
+float CalculateShadow(vec3 normal, vec3 fragToLight);
 
 void main() {
 	vec4 blendMapColour = texture(material.blendmap, TexCoords);
@@ -175,7 +175,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 		vec3 diffuse = diffuseRatio * albedo / PI;
 
 		// Add the light's radiance to the irradiance sum
-		directLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0) * (1.0 - CalculateShadow());
+		directLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0) * (1.0 - CalculateShadow(normal, lightDir));
 	}
 
 	return directLightIrradiance;
@@ -303,7 +303,7 @@ vec3 UnpackNormal(vec3 textureNormal) {
 }
 
 
-float CalculateShadow() {
+float CalculateShadow(vec3 normal, vec3 fragToLight) {
 	vec3 ndcCoords = FragPosLightClipSpace.xyz / FragPosLightClipSpace.w;
 	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
 
@@ -311,7 +311,7 @@ float CalculateShadow() {
 	float currentDepth = depthmapCoords.z;
 
 	// Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
-	float shadowBias = 0.001;
+	float shadowBias = max(0.001, 0.003 * (1.0 - dot(normal, fragToLight)));
 
 	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows
 	vec2 texelSize = 1.0 / textureSize(shadowmap, 0);

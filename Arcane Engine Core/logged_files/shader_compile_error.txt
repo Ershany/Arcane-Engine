@@ -1,2 +1,3 @@
-(src/shaders/ssao.frag): 0(56) : error C1503: undefined variable "length2"
+(src/shaders/deferred/pbr_lighting_pass.frag): 0(281) : error C1503: undefined variable "normal"
+0(281) : error C1503: undefined variable "fragToLight"
 
