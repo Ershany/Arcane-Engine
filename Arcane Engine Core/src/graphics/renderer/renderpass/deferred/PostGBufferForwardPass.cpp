@@ -59,6 +59,7 @@ namespace arcane {
 		}
 
 		// Render transparent objects
+		modelRenderer->setupTransparentRenderState();
 		modelRenderer->flushTransparent(m_ModelShader, MaterialRequired);
 
 		// Render pass output

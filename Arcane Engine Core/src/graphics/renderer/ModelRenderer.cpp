@@ -21,12 +21,21 @@ namespace arcane {
 		m_TransparentRenderQueue.push_back(renderable);
 	}
 
-	void ModelRenderer::flushOpaque(Shader *shader, RenderPassType pass) {
-		m_GLCache->switchShader(shader);
+	void ModelRenderer::setupOpaqueRenderState() {
 		m_GLCache->setDepthTest(true);
 		m_GLCache->setBlend(false);
 		m_GLCache->setFaceCull(true);
 		m_GLCache->setCullFace(GL_BACK);
+	}
+	
+	void ModelRenderer::setupTransparentRenderState() {
+		m_GLCache->setDepthTest(true);
+		m_GLCache->setBlend(true);
+		m_GLCache->setFaceCull(false);
+	}
+
+	void ModelRenderer::flushOpaque(Shader *shader, RenderPassType pass) {
+		m_GLCache->switchShader(shader);
 
 		// Render opaque objects
 		while (!m_OpaqueRenderQueue.empty()) {
@@ -41,9 +50,6 @@ namespace arcane {
 
 	void ModelRenderer::flushTransparent(Shader *shader, RenderPassType pass) {
 		m_GLCache->switchShader(shader);
-		m_GLCache->setDepthTest(true);
-		m_GLCache->setBlend(true);
-		m_GLCache->setFaceCull(false);
 
 		// Sort then render transparent objects (from back to front, does not account for rotations or scaling)
 		std::sort(m_TransparentRenderQueue.begin(), m_TransparentRenderQueue.end(),

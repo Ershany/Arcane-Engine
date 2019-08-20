@@ -52,7 +52,9 @@ namespace arcane {
 		}
 
 		// Render models
+		modelRenderer->setupOpaqueRenderState();
 		modelRenderer->flushOpaque(m_ShadowmapShader, NoMaterialRequired);
+		modelRenderer->setupTransparentRenderState();
 		modelRenderer->flushTransparent(m_ShadowmapShader, NoMaterialRequired);
 
 		// Render terrain

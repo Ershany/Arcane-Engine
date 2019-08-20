@@ -54,6 +54,7 @@ namespace arcane {
 		// Render opaque objects (use stencil to denote models for the deferred lighting pass)
 		m_GLCache->setStencilWriteMask(0xFF);
 		m_GLCache->setStencilFunc(GL_ALWAYS, DeferredStencilValue::ModelStencilValue, 0xFF);
+		modelRenderer->setupOpaqueRenderState();
 		modelRenderer->flushOpaque(m_ModelShader, MaterialRequired);
 		m_GLCache->setStencilWriteMask(0x00);
 

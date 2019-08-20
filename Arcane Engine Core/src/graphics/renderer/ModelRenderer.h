@@ -18,6 +18,9 @@ namespace arcane {
 		void submitOpaque(RenderableModel *renderable);
 		void submitTransparent(RenderableModel *renderable);
 		
+		void setupOpaqueRenderState();
+		void setupTransparentRenderState();
+
 		void flushOpaque(Shader *shader, RenderPassType pass);
 		void flushTransparent(Shader *shader, RenderPassType pass);
 	public:

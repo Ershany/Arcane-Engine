@@ -76,6 +76,7 @@ namespace arcane {
 		}
 
 		// Render opaque objects
+		modelRenderer->setupOpaqueRenderState();
 		modelRenderer->flushOpaque(m_ModelShader, MaterialRequired);
 
 		// Render terrain
@@ -95,6 +96,7 @@ namespace arcane {
 		if (useIBL) {
 			probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 		}
+		modelRenderer->setupTransparentRenderState();
 		modelRenderer->flushTransparent(m_ModelShader, MaterialRequired);
 
 		// Render pass output
