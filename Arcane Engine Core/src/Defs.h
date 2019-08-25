@@ -11,7 +11,7 @@
 #define FULLSCREEN_MODE 0 // If set, window resolution is maximized to your screen resolution
 
 // Render Settings
-#define FORWARD_RENDER 0
+#define FORWARD_RENDER 1
 
 // AA Settings
 #define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering
@@ -39,3 +39,7 @@
 
 // SSAO Options
 #define SSAO_KERNEL_SIZE 32 // Maximum amount is restricted by the shader. Only supports a maximum of 64
+
+// Parallax Options
+#define PARALLAX_MIN_STEPS 8
+#define PARALLAX_MAX_STEPS 32

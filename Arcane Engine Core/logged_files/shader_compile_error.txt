@@ -1,3 +1,11 @@
-(src/shaders/deferred/pbr_lighting_pass.frag): 0(281) : error C1503: undefined variable "normal"
-0(281) : error C1503: undefined variable "fragToLight"
+(src/shaders/deferred/pbr_model_geometry.frag): ERROR: 0:75: 'texture_displacement' : no such field in structure 
+ERROR: 0:75: 'texture' : no matching overloaded function found (using implicit conversion) 
+ERROR: 0:75: 'texture' : function is not known 
+ERROR: 0:80: 'texture_displacement' : no such field in structure 
+ERROR: 0:80: 'texture' : no matching overloaded function found (using implicit conversion) 
+ERROR: 0:80: 'texture' : function is not known 
+ERROR: 0:87: 'texture_displacement' : no such field in structure 
+ERROR: 0:87: 'texture' : no matching overloaded function found (using implicit conversion) 
+ERROR: 0:87: 'texture' : function is not known 
+
 

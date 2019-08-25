@@ -11,23 +11,39 @@ struct Material {
 	sampler2D texture_metallic;
 	sampler2D texture_roughness;
 	sampler2D texture_ao;
+	sampler2D texture_displacement;
 };
 
 in mat3 TBN;
 in vec2 TexCoords;
+in vec3 FragPosTangentSpace;
+in vec3 ViewPosTangentSpace;
 
+uniform bool hasDisplacement;
+uniform vec2 minMaxDisplacementSteps;
 uniform Material material;
 
 // Functions
 vec3 UnpackNormal(vec3 textureNormal);
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirTangentSpace);
 
 void main() {
+	// Parallax mapping
+	vec2 textureCoordinates = TexCoords;
+	if (hasDisplacement) {
+		vec3 viewDirTangentSpace = normalize(ViewPosTangentSpace - FragPosTangentSpace);
+		textureCoordinates = ParallaxMapping(TexCoords, viewDirTangentSpace);
+		if (textureCoordinates.x > 1.0 || textureCoordinates.y > 1.0 || textureCoordinates.x < 0.0 || textureCoordinates.y < 0.0) {
+			discard;
+		}
+	}
+
 	// Sample textures
-	vec4 albedo = texture(material.texture_albedo, TexCoords);
-	vec3 normal = texture(material.texture_normal, TexCoords).rgb;
-	float metallic = texture(material.texture_metallic, TexCoords).r;
-	float roughness = max(texture(material.texture_roughness, TexCoords).r, 0.04);
-	float ao = texture(material.texture_ao, TexCoords).r;
+	vec4 albedo = texture(material.texture_albedo, textureCoordinates);
+	vec3 normal = texture(material.texture_normal, textureCoordinates).rgb;
+	float metallic = texture(material.texture_metallic, textureCoordinates).r;
+	float roughness = max(texture(material.texture_roughness, textureCoordinates).r, 0.04);
+	float ao = texture(material.texture_ao, textureCoordinates).r;
 
 	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
 	normal = normalize(TBN * UnpackNormal(normal));
@@ -40,4 +56,38 @@ void main() {
 // Unpacks the normal from the texture and returns the normal in tangent space
 vec3 UnpackNormal(vec3 textureNormal) {
 	return normalize(textureNormal * 2.0 - 1.0);
+}
+
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirTangentSpace) {
+	const float minSteps = minMaxDisplacementSteps.x;
+	const float maxSteps = minMaxDisplacementSteps.y;
+	// When looking orthogonal to the surface, we need less ray marching to create an accurate effect
+	float numSteps = mix(maxSteps, minSteps, abs(dot(viewDirTangentSpace, vec3(0.0, 0.0, 1.0))));
+
+	float layerDepth = 1.0 / numSteps;
+	float currentLayerDepth = 0.0;
+
+	// Calculate the direction and the amount we should raymarch each iteration
+	vec2 p = (viewDirTangentSpace.xy / viewDirTangentSpace.z) * 0.05;
+	vec2 deltaTexCoords = p / numSteps;
+
+	// Get the initial values
+	vec2 currentTexCoords = texCoords;
+	float currentSampledDepth = texture(material.texture_displacement, currentTexCoords).r;
+
+	// Keep ray marching along vector p by the texture coordinate delta, until the raymarching depth catches up to the sampled depth (ie the -view vector intersects the surface)
+	while (currentLayerDepth < currentSampledDepth) {
+		currentTexCoords -= deltaTexCoords;
+		currentSampledDepth = texture(material.texture_displacement, currentTexCoords).r;
+		currentLayerDepth += layerDepth;
+	}
+
+	// Now we need to get the previous step and the current step, and interpolate between the two texture coordinates
+	vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+	float afterDepth = currentSampledDepth - currentLayerDepth;
+	float beforeDepth = texture(material.texture_displacement, prevTexCoords).r - currentLayerDepth + layerDepth;
+	float weight = afterDepth / (afterDepth - beforeDepth);
+	vec2 finalTexCoords = mix(currentTexCoords, prevTexCoords, weight);
+
+	return finalTexCoords;
 }

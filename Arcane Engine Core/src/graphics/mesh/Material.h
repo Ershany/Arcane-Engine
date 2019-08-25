@@ -9,7 +9,7 @@ namespace arcane {
 	class Material {
 	public:
 		Material(Texture *albedoMap = nullptr, Texture *normalMap = nullptr, Texture *metallicMap = nullptr, Texture *roughnessMap = nullptr, 
-				 Texture *ambientOcclusionMap = nullptr, Texture *emissionMap = nullptr);
+				 Texture *ambientOcclusionMap = nullptr, Texture *displacementMap = nullptr);
 
 		// Assumes the shader is already bound
 		void BindMaterialInformation(Shader *shader) const;
@@ -19,9 +19,10 @@ namespace arcane {
 		inline void setMetallicMap(Texture *texture) { m_MetallicMap = texture; }
 		inline void setRoughnessMap(Texture *texture) { m_RoughnessMap = texture; }
 		inline void setAmbientOcclusionMap(Texture *texture) { m_AmbientOcclusionMap = texture; }
-		inline void setEmissionMap(Texture *texture) { m_EmissionMap = texture; }
+		inline void setDisplacementMap(Texture *texture) { m_DisplacementMap = texture; }
 	private:
-		Texture *m_AlbedoMap, *m_NormalMap, *m_MetallicMap, *m_RoughnessMap, *m_AmbientOcclusionMap, *m_EmissionMap;
+		Texture *m_AlbedoMap, *m_NormalMap, *m_MetallicMap, *m_RoughnessMap, *m_AmbientOcclusionMap, *m_DisplacementMap;
+		static bool s_ParallaxEnabled;
 	};
 
 }

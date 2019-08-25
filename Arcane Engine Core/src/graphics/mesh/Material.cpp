@@ -2,11 +2,17 @@
 #include "Material.h"
 
 #include <graphics/Window.h>
+#include <ui/DebugPane.h>
 
 namespace arcane {
 
-	Material::Material(Texture *albedoMap, Texture *normalMap, Texture *metallicMap, Texture *roughnessMap, Texture *ambientOcclusionMap, Texture *emissionMap)
-		: m_AlbedoMap(albedoMap), m_NormalMap(normalMap), m_MetallicMap(metallicMap), m_RoughnessMap(roughnessMap), m_AmbientOcclusionMap(ambientOcclusionMap), m_EmissionMap(emissionMap) {}
+	bool Material::s_ParallaxEnabled = true;
+
+	Material::Material(Texture *albedoMap, Texture *normalMap, Texture *metallicMap, Texture *roughnessMap, Texture *ambientOcclusionMap, Texture *displacementMap)
+		: m_AlbedoMap(albedoMap), m_NormalMap(normalMap), m_MetallicMap(metallicMap), m_RoughnessMap(roughnessMap), m_AmbientOcclusionMap(ambientOcclusionMap), m_DisplacementMap(displacementMap)
+	{
+		DebugPane::bindParallaxEnabled(&s_ParallaxEnabled);
+	}
 
 
 	void Material::BindMaterialInformation(Shader *shader) const {
@@ -54,6 +60,16 @@ namespace arcane {
 		}
 		else {
 			TextureLoader::getDefaultAO()->bind(currentTextureUnit++);
+		}
+
+		shader->setUniform("material.texture_displacement", currentTextureUnit);
+		if (s_ParallaxEnabled && m_DisplacementMap) {
+			shader->setUniform("hasDisplacement", true);
+			shader->setUniform("minMaxDisplacementSteps", glm::vec2(PARALLAX_MIN_STEPS, PARALLAX_MAX_STEPS));
+			m_DisplacementMap->bind(currentTextureUnit++);
+		}
+		else {
+			shader->setUniform("hasDisplacement", false);
 		}
 	}
 
