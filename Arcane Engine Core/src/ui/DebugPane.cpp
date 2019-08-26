@@ -9,7 +9,6 @@ namespace arcane {
 	bool* DebugPane::s_SsaoEnabled = nullptr;
 	float* DebugPane::s_SsaoSampleRadius = nullptr;
 	float* DebugPane::s_SsaoStrength = nullptr;
-	bool* DebugPane::s_ParallaxEnabled = nullptr;
 	bool DebugPane::s_WireframeMode = false;
 
 	DebugPane::DebugPane(glm::vec2 &panePosition) : Pane(std::string("Debug Controls"), panePosition)
@@ -29,8 +28,6 @@ namespace arcane {
 			ImGui::SliderFloat("SSAO Radius", s_SsaoSampleRadius, 1.0f, 3.0f, "%.2f");
 		if (s_SsaoStrength != nullptr)
 			ImGui::SliderFloat("SSAO Power", s_SsaoStrength, 1.0f, 5.0f, "%.2f");
-		if (s_ParallaxEnabled != nullptr)
-			ImGui::Checkbox("Parallax", s_ParallaxEnabled);
 #if DEBUG_ENABLED
 		ImGui::Text("Hit \"P\" to show/hide the cursor");
 		ImGui::Checkbox("Wireframe Mode", &s_WireframeMode);

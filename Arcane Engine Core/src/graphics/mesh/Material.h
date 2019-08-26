@@ -22,7 +22,8 @@ namespace arcane {
 		inline void setDisplacementMap(Texture *texture) { m_DisplacementMap = texture; }
 	private:
 		Texture *m_AlbedoMap, *m_NormalMap, *m_MetallicMap, *m_RoughnessMap, *m_AmbientOcclusionMap, *m_DisplacementMap;
-		static bool s_ParallaxEnabled;
+		int m_ParallaxMinSteps, m_ParallelMaxSteps;
+		float m_ParallaxStepSize; // Needs to be lower for material's that have fine detail displacement
 	};
 
 }

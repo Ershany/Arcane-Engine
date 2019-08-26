@@ -21,6 +21,7 @@ in vec3 ViewPosTangentSpace;
 
 uniform bool hasDisplacement;
 uniform vec2 minMaxDisplacementSteps;
+uniform float parallaxStepSize;
 uniform Material material;
 
 // Functions
@@ -34,7 +35,7 @@ void main() {
 		vec3 viewDirTangentSpace = normalize(ViewPosTangentSpace - FragPosTangentSpace);
 		textureCoordinates = ParallaxMapping(TexCoords, viewDirTangentSpace);
 		if (textureCoordinates.x > 1.0 || textureCoordinates.y > 1.0 || textureCoordinates.x < 0.0 || textureCoordinates.y < 0.0) {
-			discard;
+			textureCoordinates = TexCoords;
 		}
 	}
 
@@ -68,7 +69,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirTangentSpace) {
 	float currentLayerDepth = 0.0;
 
 	// Calculate the direction and the amount we should raymarch each iteration
-	vec2 p = (viewDirTangentSpace.xy / viewDirTangentSpace.z) * 0.05;
+	vec2 p = (viewDirTangentSpace.xy / viewDirTangentSpace.z) * parallaxStepSize;
 	vec2 deltaTexCoords = p / numSteps;
 
 	// Get the initial values
