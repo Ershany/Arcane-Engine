@@ -60,10 +60,14 @@ vec3 UnpackNormal(vec3 textureNormal) {
 }
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirTangentSpace) {
+	// Figure out the LoD we should sample from while raymarching the heightfield in tangent space. Required to fix an artifacting issue
+	vec2 lodInfo = textureQueryLod(material.texture_displacement, texCoords);
+	float lodToSample = lodInfo.x;
+	float expectedLod = lodInfo.y; // Even if mip mapping isn't enabled this will still give us a mip level
+
 	const float minSteps = minMaxDisplacementSteps.x;
 	const float maxSteps = minMaxDisplacementSteps.y;
-	// When looking orthogonal to the surface, we need less ray marching to create an accurate effect
-	float numSteps = mix(maxSteps, minSteps, abs(dot(viewDirTangentSpace, vec3(0.0, 0.0, 1.0))));
+	float numSteps = mix(maxSteps, minSteps, clamp(expectedLod, 0, 1)); // More steps are required at lower mip levels since the camera is closer to the surface
 
 	float layerDepth = 1.0 / numSteps;
 	float currentLayerDepth = 0.0;
@@ -74,19 +78,19 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirTangentSpace) {
 
 	// Get the initial values
 	vec2 currentTexCoords = texCoords;
-	float currentSampledDepth = texture(material.texture_displacement, currentTexCoords).r;
+	float currentSampledDepth = textureLod(material.texture_displacement, currentTexCoords, lodToSample).r;
 
 	// Keep ray marching along vector p by the texture coordinate delta, until the raymarching depth catches up to the sampled depth (ie the -view vector intersects the surface)
 	while (currentLayerDepth < currentSampledDepth) {
 		currentTexCoords -= deltaTexCoords;
-		currentSampledDepth = texture(material.texture_displacement, currentTexCoords).r;
+		currentSampledDepth = textureLod(material.texture_displacement, currentTexCoords, lodToSample).r;
 		currentLayerDepth += layerDepth;
 	}
 
 	// Now we need to get the previous step and the current step, and interpolate between the two texture coordinates
 	vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
 	float afterDepth = currentSampledDepth - currentLayerDepth;
-	float beforeDepth = texture(material.texture_displacement, prevTexCoords).r - currentLayerDepth + layerDepth;
+	float beforeDepth = textureLod(material.texture_displacement, prevTexCoords, lodToSample).r - currentLayerDepth + layerDepth;
 	float weight = afterDepth / (afterDepth - beforeDepth);
 	vec2 finalTexCoords = mix(currentTexCoords, prevTexCoords, weight);
 
