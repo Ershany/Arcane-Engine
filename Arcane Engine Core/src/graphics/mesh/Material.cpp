@@ -8,7 +8,7 @@ namespace arcane {
 
 	Material::Material(Texture *albedoMap, Texture *normalMap, Texture *metallicMap, Texture *roughnessMap, Texture *ambientOcclusionMap, Texture *displacementMap)
 		: m_AlbedoMap(albedoMap), m_NormalMap(normalMap), m_MetallicMap(metallicMap), m_RoughnessMap(roughnessMap), m_AmbientOcclusionMap(ambientOcclusionMap), m_DisplacementMap(displacementMap),
-			m_ParallaxMinSteps(PARALLAX_MIN_STEPS), m_ParallelMaxSteps(PARALLAX_MAX_STEPS), m_ParallaxStepSize(0.05f)
+			m_ParallaxStrength(0.05f), m_ParallaxMinSteps(PARALLAX_MIN_STEPS), m_ParallelMaxSteps(PARALLAX_MAX_STEPS)
 	{
 	}
 
@@ -64,7 +64,7 @@ namespace arcane {
 		if (m_DisplacementMap) {
 			shader->setUniform("hasDisplacement", true);
 			shader->setUniform("minMaxDisplacementSteps", glm::vec2(m_ParallaxMinSteps, m_ParallelMaxSteps));
-			shader->setUniform("parallaxStepSize", m_ParallaxStepSize);
+			shader->setUniform("parallaxStrength", m_ParallaxStrength);
 			m_DisplacementMap->bind(currentTextureUnit++);
 		}
 		else {

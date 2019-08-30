@@ -19,7 +19,7 @@ namespace arcane {
 
 #define FPSCAMERA_MAX_SPEED 40.0f
 #define FPSCAMERA_ROTATION_SENSITIVITY 0.1f
-#define FPSCAMERA_MAX_FOV 100.0f
+#define FPSCAMERA_MAX_FOV 90.0f
 
 	public:
 		FPSCamera(glm::vec3 &position, glm::vec3 &up, float yaw, float pitch);

@@ -20,10 +20,12 @@ namespace arcane {
 		inline void setRoughnessMap(Texture *texture) { m_RoughnessMap = texture; }
 		inline void setAmbientOcclusionMap(Texture *texture) { m_AmbientOcclusionMap = texture; }
 		inline void setDisplacementMap(Texture *texture) { m_DisplacementMap = texture; }
+
+		inline void setDisplacmentStrength(float strength) { m_ParallaxStrength = strength; }
 	private:
 		Texture *m_AlbedoMap, *m_NormalMap, *m_MetallicMap, *m_RoughnessMap, *m_AmbientOcclusionMap, *m_DisplacementMap;
-		int m_ParallaxMinSteps, m_ParallelMaxSteps;
-		float m_ParallaxStepSize; // Needs to be lower for material's that have fine detail displacement
+		float m_ParallaxStrength;
+		int m_ParallaxMinSteps, m_ParallelMaxSteps; // Will need to increase when parallax strength increases
 	};
 
 }

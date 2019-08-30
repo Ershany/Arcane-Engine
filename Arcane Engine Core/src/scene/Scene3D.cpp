@@ -29,19 +29,32 @@ namespace arcane {
 
 		Model *window = new arcane::Model(Quad());
 		m_RenderableModels.push_back(new RenderableModel(glm::vec3(150.0f, 60.0f, 150.0f), glm::vec3(25.0f, 25.0f, 25.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(-90.0f), window, nullptr, true, false));
-		window->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/textures/bricks2.jpg")));
+		window->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/textures/bricks2.jpg"), &srgbTextureSettings));
 		window->getMeshes()[0].getMaterial().setNormalMap(TextureLoader::load2DTexture(std::string("res/textures/bricks2_normal.jpg")));
 		window->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::getWhiteTexture());
 		window->getMeshes()[0].getMaterial().setDisplacementMap(TextureLoader::load2DTexture(std::string("res/textures/bricks2_disp.jpg")));
 
-		Model *cube = new arcane::Model(Cube());
-		m_RenderableModels.push_back(new RenderableModel(glm::vec3(100.0f, 60.0f, 100.0f), glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, cube, nullptr, true, true));
-		cube->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_001_COLOR.png")));
-		cube->getMeshes()[0].getMaterial().setMetallicMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_001_SPEC.png")));
-		cube->getMeshes()[0].getMaterial().setNormalMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_001_NRM.png")));
-		cube->getMeshes()[0].getMaterial().setAmbientOcclusionMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_001_OCC.png")));
-		cube->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::getWhiteTexture());
-		cube->getMeshes()[0].getMaterial().setDisplacementMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_Displace.png")));
+		Model *window2 = new arcane::Model(Quad());
+		m_RenderableModels.push_back(new RenderableModel(glm::vec3(150.0f, 60.0f, 205.0f), glm::vec3(25.0f, 25.0f, 25.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(-90.0f), window2, nullptr, true, true));
+		window2->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_001_COLOR.png"), &srgbTextureSettings));
+		window2->getMeshes()[0].getMaterial().setMetallicMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_001_SPEC.png")));
+		window2->getMeshes()[0].getMaterial().setNormalMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_001_NRM.png")));
+		window2->getMeshes()[0].getMaterial().setAmbientOcclusionMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_001_OCC.png")));
+		window2->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::getWhiteTexture());
+		window2->getMeshes()[0].getMaterial().setDisplacementMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_Displace.png")));
+
+		/*
+		TextureSettings noMips;
+		noMips.HasMips = false;
+		noMips.TextureMinificationFilterMode = GL_LINEAR;
+
+		Model *test = new arcane::Model(Quad());
+		m_RenderableModels.push_back(new RenderableModel(glm::vec3(150.0f, 60.0f, 205.0f), glm::vec3(25.0f, 25.0f, 25.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(-90.0f), test, nullptr, true, true));
+		test->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/textures/bricks2_temp.jpg"), &noMips));
+		test->getMeshes()[0].getMaterial().setNormalMap(TextureLoader::load2DTexture(std::string("res/textures/bricks2_normal_temp.jpg"), &noMips));
+		test->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::getWhiteTexture());
+		test->getMeshes()[0].getMaterial().setDisplacementMap(TextureLoader::load2DTexture(std::string("res/textures/bricks2_disp_temp.jpg"), &noMips));
+		*/
 
 		//Model *pbrGun = new arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
 		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(120.0f, 75.0f, 120.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), pbrGun, nullptr, true, false));
