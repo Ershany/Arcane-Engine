@@ -1,3 +1,6 @@
-(src/shaders/deferred/pbr_lighting_pass.frag): 0(281) : error C1503: undefined variable "normal"
-0(281) : error C1503: undefined variable "fragToLight"
+(src/shaders/forward/pbr_model.frag): ERROR: 0:138: 'texCoords' : undeclared identifier 
+ERROR: 0:138: 'textureQueryLod' : no matching overloaded function found (using implicit conversion) 
+ERROR: 0:138: 'textureQueryLod' : function is not known 
+ERROR: 0:138: 'y' : vector field selection out of range 
+
 

@@ -1,1 +1,1 @@
-(texture load fail - path:): res/terrain/rock/rockRoughness.png
+(texture load fail - path:): res/textures/displace.png

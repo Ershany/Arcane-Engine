@@ -7,6 +7,7 @@ struct Material {
 	sampler2D texture_metallic;
 	sampler2D texture_roughness;
 	sampler2D texture_ao;
+	sampler2D texture_displacement;
 };
 
 struct DirLight {
@@ -37,9 +38,11 @@ struct SpotLight {
 const float PI = 3.14159265359;
 
 in mat3 TBN;
+in vec2 TexCoords;
 in vec3 FragPos;
 in vec4 FragPosLightClipSpace;
-in vec2 TexCoords;
+in vec3 FragPosTangentSpace;
+in vec3 ViewPosTangentSpace;
 
 out vec4 color;
 
@@ -57,6 +60,9 @@ uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
+uniform bool hasDisplacement;
+uniform vec2 minMaxDisplacementSteps;
+uniform float parallaxStrength;
 uniform Material material;
 uniform vec3 viewPos;
 
@@ -74,16 +80,24 @@ vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity);
 // Other function prototypes
 vec3 UnpackNormal(vec3 textureNormal);
 float CalculateShadow(vec3 normal, vec3 fragToLight);
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirTangentSpace);
 
 void main() {
+	// Parallax mapping
+	vec2 textureCoordinates = TexCoords;
+	if (hasDisplacement) {
+		vec3 viewDirTangentSpace = normalize(ViewPosTangentSpace - FragPosTangentSpace);
+		textureCoordinates = ParallaxMapping(TexCoords, viewDirTangentSpace);
+	}
+
 	// Sample textures
-	vec3 albedo = texture(material.texture_albedo, TexCoords).rgb;
-	float albedoAlpha = texture(material.texture_albedo, TexCoords).w;
-	vec3 normal = texture(material.texture_normal, TexCoords).rgb;
-	float metallic = texture(material.texture_metallic, TexCoords).r;
-	float unclampedRoughness = texture(material.texture_roughness, TexCoords).r; // Used for indirect specular (reflections)
+	vec3 albedo = texture(material.texture_albedo, textureCoordinates).rgb;
+	float albedoAlpha = texture(material.texture_albedo, textureCoordinates).w;
+	vec3 normal = texture(material.texture_normal, textureCoordinates).rgb;
+	float metallic = texture(material.texture_metallic, textureCoordinates).r;
+	float unclampedRoughness = texture(material.texture_roughness, textureCoordinates).r; // Used for indirect specular (reflections)
 	float roughness = max(unclampedRoughness, 0.04); // Used for calculations since specular highlights will be too fine, and will cause flicker
-	float ao = texture(material.texture_ao, TexCoords).r;
+	float ao = texture(material.texture_ao, textureCoordinates).r;
 
 	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
 	normal = normalize(TBN * UnpackNormal(normal));
@@ -299,4 +313,42 @@ float CalculateShadow(vec3 normal, vec3 fragToLight) {
 	if (currentDepth > 1.0)
 		shadow = 0.0;
 	return shadow;
+}
+
+vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirTangentSpace) {
+	// Figure out the LoD we should sample from while raymarching the heightfield in tangent space. Required to fix an artifacting issue
+	vec2 lodInfo = textureQueryLod(material.texture_displacement, texCoords);
+	float lodToSample = lodInfo.x;
+	float expectedLod = lodInfo.y; // Even if mip mapping isn't enabled this will still give us a mip level
+
+	const float minSteps = minMaxDisplacementSteps.x;
+	const float maxSteps = minMaxDisplacementSteps.y;
+	float numSteps = mix(maxSteps, minSteps, clamp(expectedLod * 0.4, 0, 1)); // More steps are required at lower mip levels since the camera is closer to the surface
+
+	float layerDepth = 1.0 / numSteps;
+	float currentLayerDepth = 0.0;
+
+	// Calculate the direction and the amount we should raymarch each iteration
+	vec2 p = viewDirTangentSpace.xy * parallaxStrength;
+	vec2 deltaTexCoords = p / numSteps;
+
+	// Get the initial values
+	vec2 currentTexCoords = texCoords;
+	float currentSampledDepth = textureLod(material.texture_displacement, currentTexCoords, lodToSample).r;
+
+	// Keep ray marching along vector p by the texture coordinate delta, until the raymarching depth catches up to the sampled depth (ie the -view vector intersects the surface)
+	while (currentLayerDepth < currentSampledDepth) {
+		currentTexCoords -= deltaTexCoords;
+		currentSampledDepth = textureLod(material.texture_displacement, currentTexCoords, lodToSample).r;
+		currentLayerDepth += layerDepth;
+	}
+
+	// Now we need to get the previous step and the current step, and interpolate between the two texture coordinates
+	vec2 prevTexCoords = currentTexCoords + deltaTexCoords;
+	float afterDepth = currentSampledDepth - currentLayerDepth;
+	float beforeDepth = textureLod(material.texture_displacement, prevTexCoords, lodToSample).r - currentLayerDepth + layerDepth;
+	float weight = afterDepth / (afterDepth - beforeDepth);
+	vec2 finalTexCoords = mix(currentTexCoords, prevTexCoords, weight);
+
+	return finalTexCoords;
 }

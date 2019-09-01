@@ -17,7 +17,7 @@ namespace arcane {
 		static inline void bindSsaoStrengthValue(float *ptr) { s_SsaoStrength = ptr; }
 		static inline bool getWireframeMode() { return s_WireframeMode; }
 		static inline void setWireframeMode(bool choice) { s_WireframeMode = choice; }
-		static inline void bindSsaoEnabled(bool* ptr) { s_SsaoEnabled = ptr; }
+		static inline void bindSsaoEnabled(bool *ptr) { s_SsaoEnabled = ptr; }
 
 	private:
 		static glm::vec3 *s_CameraPosition;
