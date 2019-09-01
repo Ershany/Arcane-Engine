@@ -64,7 +64,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDirTangentSpace) {
 
 	const float minSteps = minMaxDisplacementSteps.x;
 	const float maxSteps = minMaxDisplacementSteps.y;
-	float numSteps = mix(maxSteps, minSteps, clamp(expectedLod * 0.25, 0, 1)); // More steps are required at lower mip levels since the camera is closer to the surface
+	float numSteps = mix(maxSteps, minSteps, clamp(expectedLod * 0.4, 0, 1)); // More steps are required at lower mip levels since the camera is closer to the surface
 
 	float layerDepth = 1.0 / numSteps;
 	float currentLayerDepth = 0.0;
