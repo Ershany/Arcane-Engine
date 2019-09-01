@@ -41,5 +41,5 @@
 #define SSAO_KERNEL_SIZE 32 // Maximum amount is restricted by the shader. Only supports a maximum of 64
 
 // Parallax Options
-#define PARALLAX_MIN_STEPS 8
-#define PARALLAX_MAX_STEPS 32
+#define PARALLAX_MIN_STEPS 1
+#define PARALLAX_MAX_STEPS 20
