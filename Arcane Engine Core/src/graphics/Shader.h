@@ -7,8 +7,9 @@ namespace arcane {
 	class Shader {
 	private:
 		unsigned int m_ShaderID;
-		const char *m_VertPath, *m_FragPath, *m_GeomPath, *m_HullShader, *m_DomainShader;
+		const char *m_VertPath, *m_FragPath, *m_GeomPath, *m_HullPath, *m_DomainPath, *m_ComputePath;
 	public:
+		Shader(const char *computePath);
 		Shader(const char *vertPath, const char *fragPath);
 		Shader(const char *vertPath, const char *fragPath, const char *geoPath);
 		Shader(const char *vertPath, const char *fragPath, const char *hullPath, const char *domainPath);

@@ -3,26 +3,32 @@
 
 namespace arcane {
 
+	Shader::Shader(const char *computePath) 
+		: m_VertPath(""), m_FragPath(""), m_GeomPath(""), m_HullPath(""), m_DomainPath(""), m_ComputePath(computePath)
+	{
+		m_ShaderID = load();
+	}
+
 	Shader::Shader(const char *vertPath, const char *fragPath)
-		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(""), m_HullShader(""), m_DomainShader("")
+		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(""), m_HullPath(""), m_DomainPath(""), m_ComputePath("")
 	{
 		m_ShaderID = load();
 	}
 
 	Shader::Shader(const char *vertPath, const char *fragPath, const char *geoPath)
-		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(geoPath), m_HullShader(""), m_DomainShader("")
+		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(geoPath), m_HullPath(""), m_DomainPath(""), m_ComputePath("")
 	{
 		m_ShaderID = load();
 	}
 
 	Shader::Shader(const char *vertPath, const char *fragPath, const char *hullPath, const char *domainPath)
-		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(""), m_HullShader(hullPath), m_DomainShader(domainPath)
+		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(""), m_HullPath(hullPath), m_DomainPath(domainPath), m_ComputePath("")
 	{
 		m_ShaderID = load();
 	}
 
 	Shader::Shader(const char *vertPath, const char *fragPath, const char *geoPath, const char *hullPath, const char *domainPath)
-		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(geoPath), m_HullShader(hullPath), m_DomainShader(domainPath)
+		: m_VertPath(vertPath), m_FragPath(fragPath), m_GeomPath(geoPath), m_HullPath(hullPath), m_DomainPath(domainPath), m_ComputePath("")
 	{
 		m_ShaderID = load();
 	}
@@ -36,58 +42,64 @@ namespace arcane {
 		unsigned int program = glCreateProgram();
 		int result;
 
-		// Vertex Shader
-		unsigned int vertex = glCreateShader(GL_VERTEX_SHADER);
-		std::string vertSourceString = FileUtils::readFile(m_VertPath);
-		const char *vertSource = vertSourceString.c_str();
+		// Vertex Shader (optional)
+		unsigned int vertex;
+		if (m_VertPath != "") {
+			vertex = glCreateShader(GL_VERTEX_SHADER);
+			std::string vertSourceString = FileUtils::readFile(m_VertPath);
+			const char *vertSource = vertSourceString.c_str();
 
-		glShaderSource(vertex, 1, &vertSource, NULL);
-		glCompileShader(vertex);
+			glShaderSource(vertex, 1, &vertSource, NULL);
+			glCompileShader(vertex);
 
-		// Check to see if it was successful
-		glGetShaderiv(vertex, GL_COMPILE_STATUS, &result);
-		if (result == GL_FALSE || vertSourceString.empty()) {
-			int length;
-			glGetShaderiv(vertex, GL_INFO_LOG_LENGTH, &length);
-			if (length > 0) {
-				std::vector<char> error(length);
-				glGetShaderInfoLog(vertex, length, &length, &error[0]);
-				std::string errorString(error.begin(), error.end());
+			// Check to see if it was successful
+			glGetShaderiv(vertex, GL_COMPILE_STATUS, &result);
+			if (result == GL_FALSE || vertSourceString.empty()) {
+				int length;
+				glGetShaderiv(vertex, GL_INFO_LOG_LENGTH, &length);
+				if (length > 0) {
+					std::vector<char> error(length);
+					glGetShaderInfoLog(vertex, length, &length, &error[0]);
+					std::string errorString(error.begin(), error.end());
 
-				Logger::getInstance().error("logged_files/shader_compile_error.txt", m_VertPath, errorString);
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_VertPath, errorString);
+				}
+				else {
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_VertPath, "unknown error");
+				}
+				glDeleteShader(vertex);
+				return 0;
 			}
-			else {
-				Logger::getInstance().error("logged_files/shader_compile_error.txt", m_VertPath, "unknown error");
-			}
-			glDeleteShader(vertex);
-			return 0;
 		}
 
-		//Fragment Shader
-		unsigned int fragment = glCreateShader(GL_FRAGMENT_SHADER);
-		std::string fragSourceString = FileUtils::readFile(m_FragPath);
-		const char *fragSource = fragSourceString.c_str();
+		// Fragment Shader (optional)
+		unsigned int fragment;
+		if (m_FragPath != "") {
+			fragment = glCreateShader(GL_FRAGMENT_SHADER);
+			std::string fragSourceString = FileUtils::readFile(m_FragPath);
+			const char *fragSource = fragSourceString.c_str();
 
-		glShaderSource(fragment, 1, &fragSource, NULL);
-		glCompileShader(fragment);
+			glShaderSource(fragment, 1, &fragSource, NULL);
+			glCompileShader(fragment);
 
-		// Check to see if it was successful
-		glGetShaderiv(fragment, GL_COMPILE_STATUS, &result);
-		if (result == GL_FALSE || fragSourceString.empty()) {
-			int length;
-			glGetShaderiv(fragment, GL_INFO_LOG_LENGTH, &length);
-			if (length > 0) {
-				std::vector<char> error(length);
-				glGetShaderInfoLog(fragment, length, &length, &error[0]);
-				std::string errorString(error.begin(), error.end());
+			// Check to see if it was successful
+			glGetShaderiv(fragment, GL_COMPILE_STATUS, &result);
+			if (result == GL_FALSE || fragSourceString.empty()) {
+				int length;
+				glGetShaderiv(fragment, GL_INFO_LOG_LENGTH, &length);
+				if (length > 0) {
+					std::vector<char> error(length);
+					glGetShaderInfoLog(fragment, length, &length, &error[0]);
+					std::string errorString(error.begin(), error.end());
 
-				Logger::getInstance().error("logged_files/shader_compile_error.txt", m_FragPath, errorString);
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_FragPath, errorString);
+				}
+				else {
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_FragPath, "error unknown");
+				}
+				glDeleteShader(fragment);
+				return 0;
 			}
-			else {
-				Logger::getInstance().error("logged_files/shader_compile_error.txt", m_FragPath, "error unknown");
-			}
-			glDeleteShader(fragment);
-			return 0;
 		}
 
 		// Geometry shader (optional)
@@ -122,9 +134,9 @@ namespace arcane {
 
 		// Hull Shader (optional)
 		unsigned int hull;
-		if (m_HullShader != "") {
+		if (m_HullPath != "") {
 			hull = glCreateShader(GL_TESS_CONTROL_SHADER);
-			std::string hullSourceString = FileUtils::readFile(m_HullShader);
+			std::string hullSourceString = FileUtils::readFile(m_HullPath);
 			const char *hullSource = hullSourceString.c_str();
 
 			glShaderSource(hull, 1, &hullSource, NULL);
@@ -139,10 +151,10 @@ namespace arcane {
 					glGetShaderInfoLog(hull, length, &length, &error[0]);
 					std::string errorString(error.begin(), error.end());
 
-					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_HullShader, errorString);
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_HullPath, errorString);
 				}
 				else {
-					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_HullShader, "error unknown");
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_HullPath, "error unknown");
 				}
 				glDeleteShader(hull);
 				return 0;
@@ -151,9 +163,9 @@ namespace arcane {
 
 		// Domain Shader (optional)
 		unsigned int domain;
-		if (m_DomainShader != "") {
+		if (m_DomainPath != "") {
 			domain = glCreateShader(GL_TESS_EVALUATION_SHADER);
-			std::string domainSourceString = FileUtils::readFile(m_DomainShader);
+			std::string domainSourceString = FileUtils::readFile(m_DomainPath);
 			const char *domainSource = domainSourceString.c_str();
 
 			glShaderSource(domain, 1, &domainSource, NULL);
@@ -168,38 +180,74 @@ namespace arcane {
 					glGetShaderInfoLog(domain, length, &length, &error[0]);
 					std::string errorString(error.begin(), error.end());
 
-					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_DomainShader, errorString);
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_DomainPath, errorString);
 				}
 				else {
-					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_DomainShader, "error unknown");
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_DomainPath, "error unknown");
 				}
 				glDeleteShader(domain);
 				return 0;
 			}
 		}
 
+		unsigned int compute;
+		if (m_ComputePath != "") {
+			compute = glCreateShader(GL_COMPUTE_SHADER);
+			std::string computeSourceString = FileUtils::readFile(m_ComputePath);
+			const char *computeSource = computeSourceString.c_str();
+
+			glShaderSource(compute, 1, &computeSource, NULL);
+			glCompileShader(compute);
+
+			glGetShaderiv(compute, GL_COMPILE_STATUS, &result);
+			if (result == GL_FALSE || computeSourceString.empty()) {
+				int length;
+				glGetShaderiv(compute, GL_INFO_LOG_LENGTH, &length);
+				if (length > 0) {
+					std::vector<char> error(length);
+					glGetShaderInfoLog(compute, length, &length, &error[0]);
+					std::string errorString(error.begin(), error.end());
+
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_ComputePath, errorString);
+				}
+				else {
+					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_ComputePath, "error unknown");
+				}
+				glDeleteShader(compute);
+				return 0;
+			}
+		}
+
 		// Attach the shaders to the program and link them
-		glAttachShader(program, vertex);
-		glAttachShader(program, fragment);
+		if (m_VertPath != "")
+			glAttachShader(program, vertex);
+		if (m_FragPath != "")
+			glAttachShader(program, fragment);
 		if (m_GeomPath != "")
 			glAttachShader(program, geometry);
-		if (m_HullShader != "")
+		if (m_HullPath != "")
 			glAttachShader(program, hull);
-		if (m_DomainShader != "")
+		if (m_DomainPath != "")
 			glAttachShader(program, domain);
+		if (m_ComputePath != "")
+			glAttachShader(program, compute);
 
 		glLinkProgram(program);
 		glValidateProgram(program);
 
 		// Delete the vertex and fragment shaders
-		glDeleteShader(vertex);
-		glDeleteShader(fragment);
+		if (m_VertPath != "")
+			glDeleteShader(vertex);
+		if (m_FragPath != "")
+			glDeleteShader(fragment);
 		if (m_GeomPath != "")
 			glDeleteShader(geometry);
-		if (m_HullShader != "")
+		if (m_HullPath != "")
 			glDeleteShader(hull);
-		if (m_DomainShader != "")
+		if (m_DomainPath != "")
 			glDeleteShader(domain);
+		if (m_ComputePath != "")
+			glDeleteShader(compute);
 
 		// Return the program id
 		return program;

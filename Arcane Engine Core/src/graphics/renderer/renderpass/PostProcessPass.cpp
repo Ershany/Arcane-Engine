@@ -178,11 +178,11 @@ namespace arcane {
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
 		modelRenderer->NDC_Plane.Draw();
 
-		// Finally render the scene to the window's framebuffer
 #if DEBUG_ENABLED
 		glFinish();
 		m_Timer.reset();
 #endif
+		// Finally render the scene to the window's framebuffer
 		Window::bind();
 		Window::clear();
 		GLCache::getInstance()->switchShader(m_FxaaShader);
