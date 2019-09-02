@@ -170,6 +170,7 @@ namespace arcane {
 		m_TonemappedNonLinearTarget.clear();
 		GLCache::getInstance()->switchShader(m_PostProcessShader);
 		m_PostProcessShader->setUniform("gamma_inverse", 1.0f / m_GammaCorrection);
+		m_PostProcessShader->setUniform("exposure", m_Exposure);
 		m_PostProcessShader->setUniform("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
 		m_PostProcessShader->setUniform("colour_texture", 0);
 		target->getColourTexture()->bind(0);

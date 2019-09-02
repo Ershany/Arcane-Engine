@@ -11,7 +11,7 @@
 #define FULLSCREEN_MODE 0 // If set, window resolution is maximized to your screen resolution
 
 // Render Settings
-#define FORWARD_RENDER 0
+#define FORWARD_RENDER 1
 
 // AA Settings
 #define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering
