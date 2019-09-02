@@ -89,6 +89,9 @@ namespace arcane {
 		if (useIBL) {
 			m_LightingShader->setUniform("computeIBL", 1);
 		}
+		else {
+			m_LightingShader->setUniform("computeIBL", 0);
+		}
 		glStencilFunc(GL_EQUAL, DeferredStencilValue::ModelStencilValue, 0xFF);
 		modelRenderer->NDC_Plane.Draw();
 

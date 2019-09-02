@@ -58,14 +58,8 @@ namespace arcane {
 		// Shadowmap code
 		bindShadowmap(m_ModelShader, shadowmapData);
 
-		// IBL code
-		if (useIBL) {
-			m_ModelShader->setUniform("computeIBL", 1);
-			probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
-		}
-		else {
-			m_ModelShader->setUniform("computeIBL", 0);
-		}
+		// IBL Binding
+		probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 
 		// Setup model renderer
 		if (renderOnlyStatic) {
@@ -76,6 +70,12 @@ namespace arcane {
 		}
 
 		// Render opaque objects
+		if (useIBL) {
+			m_ModelShader->setUniform("computeIBL", 1);
+		}
+		else {
+			m_ModelShader->setUniform("computeIBL", 0);
+		}
 		modelRenderer->setupOpaqueRenderState();
 		modelRenderer->flushOpaque(m_ModelShader, MaterialRequired);
 
