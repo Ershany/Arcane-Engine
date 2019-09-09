@@ -228,6 +228,7 @@
     <None Include="src\shaders\brdf_integration.frag" />
     <None Include="src\shaders\brdf_integration.vert" />
     <None Include="src\shaders\compute\frame_luminance.comp" />
+    <None Include="src\shaders\compute\scene_luminance.comp" />
     <None Include="src\shaders\deferred\pbr_lighting_pass.frag" />
     <None Include="src\shaders\deferred\pbr_lighting_pass.vert" />
     <None Include="src\shaders\deferred\pbr_model_geometry.frag" />

@@ -423,6 +423,7 @@
     <None Include="src\shaders\ssao_blur.frag" />
     <None Include="src\shaders\ssao_blur.vert" />
     <None Include="src\shaders\compute\frame_luminance.comp" />
+    <None Include="src\shaders\compute\scene_luminance.comp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
