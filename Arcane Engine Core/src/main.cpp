@@ -16,7 +16,7 @@ int main() {
 	arcane::InputManager manager;
 
 	// Prepare the UI
-	arcane::RuntimePane runtimePane(glm::vec2(270.0f, 100.0f));
+	arcane::RuntimePane runtimePane(glm::vec2(270.0f, 175.0f));
 	arcane::DebugPane debugPane(glm::vec2(270.0f, 205.0f));
 
 	// Initialize the renderer
