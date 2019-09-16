@@ -5,9 +5,6 @@
 namespace arcane {
 
 	class Shader {
-	private:
-		
-		const char *m_VertPath, *m_FragPath, *m_GeomPath, *m_HullPath, *m_DomainPath, *m_ComputePath;
 	public:
 		Shader(const std::string &path);
 		~Shader();
