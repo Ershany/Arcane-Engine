@@ -6,15 +6,15 @@
 namespace arcane {
 
 	DeferredGeometryPass::DeferredGeometryPass(Scene3D *scene) : RenderPass(scene), m_AllocatedGBuffer(true) {
-		m_ModelShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_model_geometry.vert", "src/shaders/deferred/pbr_model_geometry.frag");
-		m_TerrainShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_terrain_geometry.vert", "src/shaders/deferred/pbr_terrain_geometry.frag");
+		m_ModelShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Model_GeometryPass.glsl");
+		m_TerrainShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Terrain_GeometryPass.glsl");
 
 		m_GBuffer = new GBuffer(Window::getResolutionWidth(), Window::getResolutionHeight());
 	}
 
 	DeferredGeometryPass::DeferredGeometryPass(Scene3D *scene, GBuffer *customGBuffer) : RenderPass(scene), m_AllocatedGBuffer(false), m_GBuffer(customGBuffer) {
-		m_ModelShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_model_geometry.vert", "src/shaders/deferred/pbr_model_geometry.frag");
-		m_TerrainShader = ShaderLoader::loadShader("src/shaders/deferred/pbr_terrain_geometry.vert", "src/shaders/deferred/pbr_terrain_geometry.frag");
+		m_ModelShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Model_GeometryPass.glsl");
+		m_TerrainShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Terrain_GeometryPass.glsl");
 	}
 
 	DeferredGeometryPass::~DeferredGeometryPass() {

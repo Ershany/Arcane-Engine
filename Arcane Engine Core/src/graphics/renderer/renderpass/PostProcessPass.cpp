@@ -10,10 +10,10 @@ namespace arcane {
 		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_Timer()
 	{
 		// Shader setup
-		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
-		m_FxaaShader = ShaderLoader::loadShader("src/shaders/fxaa.vert", "src/shaders/fxaa.frag");
-		m_SsaoShader = ShaderLoader::loadShader("src/shaders/ssao.vert", "src/shaders/ssao.frag");
-		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/ssao_blur.vert", "src/shaders/ssao_blur.frag");
+		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/PostProcess.glsl");
+		m_FxaaShader = ShaderLoader::loadShader("src/shaders/FXAA.glsl");
+		m_SsaoShader = ShaderLoader::loadShader("src/shaders/SSAO.glsl");
+		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/SSAO_Blur.glsl");
 
 		// Framebuffer setup
 		m_SsaoRenderTarget.addColorTexture(NormalizedSingleChannel8).createFramebuffer();

@@ -6,14 +6,10 @@ namespace arcane {
 
 	class Shader {
 	private:
-		unsigned int m_ShaderID;
+		
 		const char *m_VertPath, *m_FragPath, *m_GeomPath, *m_HullPath, *m_DomainPath, *m_ComputePath;
 	public:
-		Shader(const char *computePath);
-		Shader(const char *vertPath, const char *fragPath);
-		Shader(const char *vertPath, const char *fragPath, const char *geoPath);
-		Shader(const char *vertPath, const char *fragPath, const char *hullPath, const char *domainPath);
-		Shader(const char *vertPath, const char *fragPath, const char *geoPath, const char *hullPath, const char *domainPath);
+		Shader(const std::string &path);
 		~Shader();
 
 		void enable() const;
@@ -43,7 +39,12 @@ namespace arcane {
 	private:
 		int getUniformLocation(const char *name);
 
-		unsigned int load();
+		static GLenum shaderTypeFromString(const std::string &type);
+		std::unordered_map<GLenum, std::string> preProcessShaderBinary(std::string &source);
+		void compile(const std::unordered_map<GLenum, std::string> &shaderSources);
+	private:
+		unsigned int m_ShaderID;
+		std::string m_ShaderFilePath;
 	};
 
 }

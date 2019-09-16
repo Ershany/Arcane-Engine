@@ -1,2 +1,1 @@
-(Framebuffer initialization): Could not initialize GBuffer
-(Framebuffer initialization): Could not initialize the framebuffer
+(Could Not Read File): src/shaders/deferred/PBR_Model_GeometryPasss.glsl
