@@ -22,6 +22,9 @@ in vec2 TexCoords;
 out vec4 FragColour;
 
 uniform sampler2D colour_texture;
+uniform sampler2D scene_capture;
+
+uniform float second_highest_mip_level;
 uniform float gamma_inverse;
 uniform float exposure;
 uniform vec2 read_offset;
@@ -34,4 +37,5 @@ void main() {
 
 	// Apply gamma correction (Linear -> Non-linear)
 	FragColour = vec4(pow(tonemappedColour, vec3(gamma_inverse)), 1.0);
+	//FragColour = vec4(textureLod(scene_capture, TexCoords, second_highest_mip_level).rgb, 1.0);
 }
