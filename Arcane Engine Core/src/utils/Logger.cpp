@@ -15,9 +15,9 @@ namespace arcane {
 	void Logger::setOutputFile(const std::string &filename) {
 		file = filename;
 
-		// Add this file if it hasn't been written to yet
+		// Clear the file if it hasn't been written to yet
 		if (std::find(filePaths.begin(), filePaths.end(), filename) == filePaths.end()) {
-			filePaths.push_back(filename);
+			filePaths.insert(filename);
 			clearFileContents();
 		}
 	}
@@ -52,11 +52,10 @@ namespace arcane {
 		filestream.close();
 	}
 
-	// TODO: This function will clear the same file multiple times
 	void Logger::clearFileContents() {
 		filestream.open(file, std::ofstream::out);
 		if (!filestream) {
-			error("logged_files/log.txt", "Logger Dtor", "Could not empty the contents of file: " + file);
+			error(file, "Logger Dtor", std::string("Could not empty the contents of file: ") + file);
 		}
 		filestream.close();
 	}
