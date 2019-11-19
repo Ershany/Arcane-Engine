@@ -58,6 +58,7 @@ namespace arcane {
 		// Debug stuff
 		DebugPane::bindFxaaEnabled(&m_FxaaEnabled);
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
+		DebugPane::bindExposureValue(&m_Exposure);
 		DebugPane::bindSsaoEnabled(&m_SsaoEnabled);
 		DebugPane::bindSsaoSampleRadiusValue(&m_SsaoSampleRadius);
 		DebugPane::bindSsaoStrengthValue(&m_SsaoStrength);

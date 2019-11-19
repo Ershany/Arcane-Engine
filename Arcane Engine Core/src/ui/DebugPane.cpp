@@ -6,6 +6,7 @@ namespace arcane {
 	glm::vec3* DebugPane::s_CameraPosition = nullptr;
 	bool* DebugPane::s_FxaaEnabled = nullptr;
 	float* DebugPane::s_GammaCorrectionValue = nullptr;
+	float* DebugPane::s_ExposureValue = nullptr;
 	bool* DebugPane::s_SsaoEnabled = nullptr;
 	float* DebugPane::s_SsaoSampleRadius = nullptr;
 	float* DebugPane::s_SsaoStrength = nullptr;
@@ -22,6 +23,8 @@ namespace arcane {
 			ImGui::Checkbox("FXAA", s_FxaaEnabled);
 		if (s_GammaCorrectionValue != nullptr)
 			ImGui::SliderFloat("Gamma", s_GammaCorrectionValue, 0.5f, 3.0f, "%.2f");
+		if (s_ExposureValue != nullptr)
+			ImGui::SliderFloat("Exposure", s_ExposureValue, 0.1f, 5.0f, "%.2f");
 		if (s_SsaoEnabled != nullptr)
 			ImGui::Checkbox("SSAO Enabled", s_SsaoEnabled);
 		if (s_SsaoSampleRadius != nullptr)
