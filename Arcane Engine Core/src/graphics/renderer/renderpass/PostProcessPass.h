@@ -27,8 +27,6 @@ namespace arcane {
 		Framebuffer m_ScreenRenderTarget; // Only used if the render resolution differs from the window resolution
 		Framebuffer m_ResolveRenderTarget; // Only used if multi-sampling is enabled so it can be resolved
 
-		Texture m_ScreenTexture; // Used to copy the scene's colour buffer and then glGenerateMipmaps is called so we can get the average luminance of the scene
-
 		// Post Processing Tweaks
 		float m_GammaCorrection = 2.2f;
 		float m_Exposure = 1.0f;

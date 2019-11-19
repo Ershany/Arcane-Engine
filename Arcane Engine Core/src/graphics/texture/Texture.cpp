@@ -87,8 +87,9 @@ namespace arcane {
 	}
 
 	void Texture::generateMips() {
+		m_TextureSettings.HasMips = true;
 		if (isGenerated()) {
-			m_TextureSettings.HasMips = true;
+			bind();
 			glGenerateMipmap(m_TextureTarget);
 		}
 	}

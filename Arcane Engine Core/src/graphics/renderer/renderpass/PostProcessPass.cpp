@@ -7,8 +7,7 @@
 namespace arcane {
 
 	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_SsaoBlurRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false),
-		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), 
-		m_ScreenTexture(), m_Timer()
+		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_Timer()
 	{
 		// Shader setup
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/PostProcess.glsl");
@@ -22,12 +21,6 @@ namespace arcane {
 		m_TonemappedNonLinearTarget.addColorTexture(Normalized8).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ScreenRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ResolveRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
-
-		// Holds the scene's capture so we can generate mipmaps and get the scene's average luminance from the second highest mip level using a bilinear sample
-		m_ScreenTexture.setTextureFormat(GL_RGB16F);
-		m_ScreenTexture.setTextureMinFilter(GL_LINEAR);
-		m_ScreenTexture.setTextureMagFilter(GL_LINEAR);
-		m_ScreenTexture.generate2DTexture(m_ScreenRenderTarget.getWidth(), m_ScreenRenderTarget.getHeight(), GL_RGB);
 
 		// SSAO Hemisphere Sample Generation (tangent space)
 		std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
@@ -167,13 +160,6 @@ namespace arcane {
 			target = &m_ScreenRenderTarget;
 		}
 
-		// Auto-calculate exposure by generating mipmaps and sampling the 2nd highest mip using bilinear
-		target->bind();
-		m_ScreenTexture.bind(0);
-		glCopyTexImage2D(GL_TEXTURE_2D, 0, target->getColourTexture()->getTextureSettings().TextureFormat, 0, 0, m_ScreenTexture.getWidth(), m_ScreenTexture.getHeight(), 0);
-		m_ScreenTexture.generateMips();
-		float numberOfMips = 1.0 + glm::floor(glm::log2((float)glm::max(m_ScreenTexture.getWidth(), m_ScreenTexture.getHeight())));
-
 #if DEBUG_ENABLED
 		if (DebugPane::getWireframeMode())
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -186,11 +172,8 @@ namespace arcane {
 		m_PostProcessShader->setUniform("gamma_inverse", 1.0f / m_GammaCorrection);
 		m_PostProcessShader->setUniform("exposure", m_Exposure);
 		m_PostProcessShader->setUniform("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
-		m_PostProcessShader->setUniform("second_highest_mip_level", numberOfMips - 2);
-		m_PostProcessShader->setUniform("colour_texture", 0);
+		m_PostProcessShader->setUniform("scene_capture", 0);
 		target->getColourTexture()->bind(0);
-		m_PostProcessShader->setUniform("scene_capture", 1);
-		m_ScreenTexture.bind(1);
 
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
 		modelRenderer->NDC_Plane.Draw();
