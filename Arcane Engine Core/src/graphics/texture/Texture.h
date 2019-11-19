@@ -36,6 +36,7 @@ namespace arcane {
 		// Generation functions
 		void generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, GLenum pixelDataType = GL_UNSIGNED_BYTE, const void *data = nullptr);
 		void generate2DMultisampleTexture(unsigned int width, unsigned int height);
+		void generateMips(); // Will attempt to generate mipmaps, only works if the texture has already been generated
 
 		void bind(int unit = 0);
 		void unbind();
@@ -53,6 +54,7 @@ namespace arcane {
 
 		// Pre-generation controls only
 		inline void setTextureSettings(TextureSettings settings) { m_TextureSettings = settings; }
+		inline void setTextureFormat(GLenum format) { m_TextureSettings.TextureFormat = format; }
 
 		// Don't use this to bind the texture and use it. Call the Bind() function instead
 		inline unsigned int getTextureId() const { return m_TextureId; }

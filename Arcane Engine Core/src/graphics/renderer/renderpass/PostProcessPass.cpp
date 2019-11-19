@@ -58,6 +58,7 @@ namespace arcane {
 		// Debug stuff
 		DebugPane::bindFxaaEnabled(&m_FxaaEnabled);
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
+		DebugPane::bindExposureValue(&m_Exposure);
 		DebugPane::bindSsaoEnabled(&m_SsaoEnabled);
 		DebugPane::bindSsaoSampleRadiusValue(&m_SsaoSampleRadius);
 		DebugPane::bindSsaoStrengthValue(&m_SsaoStrength);
@@ -172,7 +173,7 @@ namespace arcane {
 		m_PostProcessShader->setUniform("gamma_inverse", 1.0f / m_GammaCorrection);
 		m_PostProcessShader->setUniform("exposure", m_Exposure);
 		m_PostProcessShader->setUniform("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
-		m_PostProcessShader->setUniform("colour_texture", 0);
+		m_PostProcessShader->setUniform("scene_capture", 0);
 		target->getColourTexture()->bind(0);
 
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
