@@ -1,2 +1,0 @@
-(src/shaders/deferred/PBR_LightingPass.glsl): (0) : error C0000: syntax error, unexpected $end, expecting "::" at token "<EOF>"
-
