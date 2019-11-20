@@ -1,1 +1,0 @@
-(Mesh Loading): Mesh's default material contains more than 1 texture for the same type, which currently isn't supported by the standard shader

@@ -43,6 +43,12 @@ namespace arcane {
 		window2->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::getWhiteTexture());
 		window2->getMeshes()[0].getMaterial().setDisplacementMap(TextureLoader::load2DTexture(std::string("res/textures/Pebles_Displace.png")));
 
+		Model *tunnel = new arcane::Model(Cube());
+		m_RenderableModels.push_back(new RenderableModel(glm::vec3(50.0f, 20.0f, 50.0f), glm::vec3(-100.0f, -10.0f, -10.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f, tunnel, nullptr, true, true));
+		tunnel->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/textures/bricks2.jpg"), &srgbTextureSettings));
+		tunnel->getMeshes()[0].getMaterial().setNormalMap(TextureLoader::load2DTexture(std::string("res/textures/bricks2_normal.jpg")));
+		tunnel->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::getWhiteTexture());
+
 		//Model *pbrGun = new arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
 		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(120.0f, 75.0f, 120.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), pbrGun, nullptr, true, false));
 		//pbrGun->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_A.tga"), &srgbTextureSettings));

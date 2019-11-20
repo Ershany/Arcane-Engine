@@ -1,2 +1,0 @@
-(Framebuffer initialization): Could not initialize GBuffer
-(Framebuffer initialization): Could not initialize the framebuffer

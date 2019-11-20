@@ -19,7 +19,8 @@ namespace arcane {
 		// Texture filtering options
 		GLenum TextureMinificationFilterMode = GL_LINEAR; // Filtering mode when the texture moves further away and multiple texels map to one pixel (trilinear for best quality)
 		GLenum TextureMagnificationFilterMode = GL_LINEAR; // Filtering mode when the texture gets closer and multiple pixels map to a single texel (Never needs to be more than bilinear because that is as accurate as it gets in this sitation)
-	
+		float TextureAnisotropyLevel = ANISOTROPIC_FILTERING_LEVEL; // Specified independent of texture min and mag filtering, should be a power of 2 (1.0 means the usual isotropic texture filtering is used which means anisotropic filtering isn't used)
+
 		// Mip Settings
 		bool HasMips = false;
 		int MipBias = 0; // positive means blurrier texture selected, negative means sharper texture which can show texture aliasing
@@ -42,6 +43,8 @@ namespace arcane {
 		unsigned int getCubemapID() { return m_CubemapID; }
 		inline unsigned int getFaceWidth() { return m_FaceWidth; }
 		inline unsigned int getFaceHeight() { return m_FaceHeight; }
+	private:
+		void applyCubemapSettings();
 	private:
 		unsigned int m_CubemapID;
 

@@ -29,13 +29,14 @@ namespace arcane {
 
 	class Texture {
 	public:
-		// If nothing is supplied, it will construct default settings
-		Texture(TextureSettings &settings = TextureSettings());
+		Texture(const Texture &texture); // Copies another texture and its settings
+		Texture(TextureSettings &settings = TextureSettings()); // If nothing is supplied, it will construct default settings
 		~Texture();
 
 		// Generation functions
 		void generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, GLenum pixelDataType = GL_UNSIGNED_BYTE, const void *data = nullptr);
 		void generate2DMultisampleTexture(unsigned int width, unsigned int height);
+		void generateMips(); // Will attempt to generate mipmaps, only works if the texture has already been generated
 
 		void bind(int unit = 0);
 		void unbind();
@@ -49,17 +50,21 @@ namespace arcane {
 		void setTextureMagFilter(GLenum textureFilterMode);
 		void setAnisotropicFilteringMode(float textureAnisotropyLevel);
 		void setMipBias(int mipBias);
+		void setHasMips(bool hasMips);
 
 		// Pre-generation controls only
-		void setHasMips(bool hasMips);
 		inline void setTextureSettings(TextureSettings settings) { m_TextureSettings = settings; }
+		inline void setTextureFormat(GLenum format) { m_TextureSettings.TextureFormat = format; }
 
 		// Don't use this to bind the texture and use it. Call the Bind() function instead
-		inline unsigned int getTextureId() { return m_TextureId; }
-		inline bool isGenerated() { return m_TextureId != 0; }
-		inline unsigned int getWidth() { return m_Width; }
-		inline unsigned int getHeight() { return m_Height; }
-		const TextureSettings& getTextureSettings() { return m_TextureSettings; }
+		inline unsigned int getTextureId() const { return m_TextureId; }
+		inline unsigned int getTextureTarget() const { return m_TextureTarget; }
+		inline bool isGenerated() const { return m_TextureId != 0; }
+		inline unsigned int getWidth() const { return m_Width; }
+		inline unsigned int getHeight() const { return m_Height; }
+		inline const TextureSettings& getTextureSettings() const { return m_TextureSettings; }
+	private:
+		void applyTextureSettings();
 	private:
 		unsigned int m_TextureId;
 		GLenum m_TextureTarget;

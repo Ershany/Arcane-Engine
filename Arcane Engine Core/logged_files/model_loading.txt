@@ -1,1 +1,0 @@
-(model initialization): Unable to open file "res/3D_Models/Hyrule_Shield/HShield.obj".

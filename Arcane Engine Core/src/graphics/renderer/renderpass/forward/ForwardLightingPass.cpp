@@ -7,8 +7,8 @@ namespace arcane {
 
 	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, bool shouldMultisample) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
-		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/pbr_model.vert", "src/shaders/forward/pbr_model.frag");
-		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/pbr_terrain.vert", "src/shaders/forward/pbr_terrain.frag");
+		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/PBR_Model.glsl");
+		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/PBR_Terrain.glsl");
 
 		m_Framebuffer = new Framebuffer(Window::getResolutionWidth(), Window::getResolutionHeight(), shouldMultisample);
 		m_Framebuffer->addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthStencil).createFramebuffer();
@@ -16,8 +16,8 @@ namespace arcane {
 
 	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
-		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/pbr_model.vert", "src/shaders/forward/pbr_model.frag");
-		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/pbr_terrain.vert", "src/shaders/forward/pbr_terrain.frag");
+		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/PBR_Model.glsl");
+		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/PBR_Terrain.glsl");
 	}
 
 	ForwardLightingPass::~ForwardLightingPass() {
@@ -58,14 +58,8 @@ namespace arcane {
 		// Shadowmap code
 		bindShadowmap(m_ModelShader, shadowmapData);
 
-		// IBL code
-		if (useIBL) {
-			m_ModelShader->setUniform("computeIBL", 1);
-			probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
-		}
-		else {
-			m_ModelShader->setUniform("computeIBL", 0);
-		}
+		// IBL Binding
+		probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 
 		// Setup model renderer
 		if (renderOnlyStatic) {
@@ -76,6 +70,12 @@ namespace arcane {
 		}
 
 		// Render opaque objects
+		if (useIBL) {
+			m_ModelShader->setUniform("computeIBL", 1);
+		}
+		else {
+			m_ModelShader->setUniform("computeIBL", 0);
+		}
 		modelRenderer->setupOpaqueRenderState();
 		modelRenderer->flushOpaque(m_ModelShader, MaterialRequired);
 

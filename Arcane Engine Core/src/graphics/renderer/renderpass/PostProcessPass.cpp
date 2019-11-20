@@ -10,10 +10,10 @@ namespace arcane {
 		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_Timer()
 	{
 		// Shader setup
-		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/postprocess.vert", "src/shaders/postprocess.frag");
-		m_FxaaShader = ShaderLoader::loadShader("src/shaders/fxaa.vert", "src/shaders/fxaa.frag");
-		m_SsaoShader = ShaderLoader::loadShader("src/shaders/ssao.vert", "src/shaders/ssao.frag");
-		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/ssao_blur.vert", "src/shaders/ssao_blur.frag");
+		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/PostProcess.glsl");
+		m_FxaaShader = ShaderLoader::loadShader("src/shaders/FXAA.glsl");
+		m_SsaoShader = ShaderLoader::loadShader("src/shaders/SSAO.glsl");
+		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/SSAO_Blur.glsl");
 
 		// Framebuffer setup
 		m_SsaoRenderTarget.addColorTexture(NormalizedSingleChannel8).createFramebuffer();
@@ -58,6 +58,7 @@ namespace arcane {
 		// Debug stuff
 		DebugPane::bindFxaaEnabled(&m_FxaaEnabled);
 		DebugPane::bindGammaCorrectionValue(&m_GammaCorrection);
+		DebugPane::bindExposureValue(&m_Exposure);
 		DebugPane::bindSsaoEnabled(&m_SsaoEnabled);
 		DebugPane::bindSsaoSampleRadiusValue(&m_SsaoSampleRadius);
 		DebugPane::bindSsaoStrengthValue(&m_SsaoStrength);
@@ -170,18 +171,19 @@ namespace arcane {
 		m_TonemappedNonLinearTarget.clear();
 		GLCache::getInstance()->switchShader(m_PostProcessShader);
 		m_PostProcessShader->setUniform("gamma_inverse", 1.0f / m_GammaCorrection);
+		m_PostProcessShader->setUniform("exposure", m_Exposure);
 		m_PostProcessShader->setUniform("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
-		m_PostProcessShader->setUniform("colour_texture", 0);
+		m_PostProcessShader->setUniform("scene_capture", 0);
 		target->getColourTexture()->bind(0);
 
 		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
 		modelRenderer->NDC_Plane.Draw();
 
-		// Finally render the scene to the window's framebuffer
 #if DEBUG_ENABLED
 		glFinish();
 		m_Timer.reset();
 #endif
+		// Finally render the scene to the window's framebuffer
 		Window::bind();
 		Window::clear();
 		GLCache::getInstance()->switchShader(m_FxaaShader);
