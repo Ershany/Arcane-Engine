@@ -6,14 +6,18 @@
 
 namespace arcane {
 
-	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_SsaoBlurRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false),
-		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getResolutionWidth(), Window::getResolutionHeight(), false), m_Timer()
+	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false), m_SsaoBlurRenderTarget(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false),
+		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false), m_BrightPassRenderTarget(Window::getWidth(), Window::getHeight(), false),
+		m_BloomFullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_BloomHalfRenderTarget(Window::getWidth() * 0.5f, Window::getHeight() * 0.5f, false), m_BloomQuarterRenderTarget(Window::getWidth() * 0.25f, Window::getHeight() * 0.25f, false), m_BloomEightRenderTarget(Window::getWidth() * 0.125f, Window::getHeight() * 0.125f, false),
+		m_FullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_HalfRenderTarget(Window::getWidth() * 0.5f, Window::getHeight() * 0.5f, false), m_QuarterRenderTarget(Window::getWidth() * 0.25f, Window::getWidth() * 0.25f, false), m_EightRenderTarget(Window::getWidth() * 0.125f, Window::getHeight() * 0.125f, false), m_SsaoNoiseTexture(), m_Timer()
 	{
 		// Shader setup
 		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/PostProcess.glsl");
 		m_FxaaShader = ShaderLoader::loadShader("src/shaders/FXAA.glsl");
 		m_SsaoShader = ShaderLoader::loadShader("src/shaders/SSAO.glsl");
 		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/SSAO_Blur.glsl");
+		m_BloomBrightPassShader = ShaderLoader::loadShader("src/shaders/BloomBrightPass.glsl");
+		m_BloomGaussianBlurShader = ShaderLoader::loadShader("src/shaders/BloomGaussianBlur.glsl");
 
 		// Framebuffer setup
 		m_SsaoRenderTarget.addColorTexture(NormalizedSingleChannel8).createFramebuffer();
@@ -21,6 +25,17 @@ namespace arcane {
 		m_TonemappedNonLinearTarget.addColorTexture(Normalized8).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ScreenRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_ResolveRenderTarget.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
+
+		m_FullRenderTarget.addColorTexture(FloatingPoint16).createFramebuffer();
+		m_HalfRenderTarget.addColorTexture(FloatingPoint16).createFramebuffer();
+		m_QuarterRenderTarget.addColorTexture(FloatingPoint16).createFramebuffer();
+		m_EightRenderTarget.addColorTexture(FloatingPoint16).createFramebuffer();
+
+		m_BrightPassRenderTarget.addColorTexture(FloatingPoint16).createFramebuffer();
+		m_BloomFullRenderTarget.addColorTexture(FloatingPoint16).createFramebuffer();
+		m_BloomHalfRenderTarget.addColorTexture(FloatingPoint16).createFramebuffer();
+		m_BloomQuarterRenderTarget.addColorTexture(FloatingPoint16).createFramebuffer();
+		m_BloomEightRenderTarget.addColorTexture(FloatingPoint16).createFramebuffer();
 
 		// SSAO Hemisphere Sample Generation (tangent space)
 		std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
@@ -141,7 +156,8 @@ namespace arcane {
 	}
 
 	void PostProcessPass::executePostProcessPass(Framebuffer *framebufferToProcess) {
-		glViewport(0, 0, m_ScreenRenderTarget.getWidth(), m_ScreenRenderTarget.getHeight());
+		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
+		GLCache *glCache = GLCache::getInstance();
 
 		// If the framebuffer is multi-sampled, resolve it
 		Framebuffer *supersampledTarget = framebufferToProcess;
@@ -166,17 +182,47 @@ namespace arcane {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #endif
 
-		// Set post process settings and convert our scene from HDR (linear) -> SDR (non-linear)
+		// Bloom Bright Pass
+		glViewport(0, 0, m_BrightPassRenderTarget.getWidth(), m_BrightPassRenderTarget.getHeight());
+		m_BrightPassRenderTarget.bind();
+		m_BrightPassRenderTarget.clear();
+		glCache->switchShader(m_BloomBrightPassShader);
+		m_BloomBrightPassShader->setUniform("threshold", m_BloomThreshold);
+		m_BloomBrightPassShader->setUniform("scene_capture", 0);
+		target->getColourTexture()->bind(0);
+		modelRenderer->NDC_Plane.Draw();
+
+		// Bloom Gaussian Blur Pass
+		// As the render target gets smaller, we can increase the separable (two-pass) Gaussian kernel size
+		glCache->switchShader(m_BloomGaussianBlurShader);
+		glViewport(0, 0, m_FullRenderTarget.getWidth(), m_FullRenderTarget.getHeight());
+		m_FullRenderTarget.bind();
+		m_FullRenderTarget.clear();
+		m_BloomGaussianBlurShader->setUniform("isVerticalBlur", true);
+		m_BloomGaussianBlurShader->setUniform("read_offset", glm::vec2(1.0f / (float)m_FullRenderTarget.getWidth(), 1.0f / (float)m_FullRenderTarget.getHeight()));
+		m_BloomGaussianBlurShader->setUniform("bloom_texture", 0);
+		m_BrightPassRenderTarget.getColourTexture()->bind(0);
+		modelRenderer->NDC_Plane.Draw();
+
+		m_BloomFullRenderTarget.bind();
+		m_BloomFullRenderTarget.clear();
+		m_BloomGaussianBlurShader->setUniform("isVerticalBlur", false);
+		m_BloomGaussianBlurShader->setUniform("read_offset", glm::vec2(1.0f / (float)m_BloomFullRenderTarget.getWidth(), 1.0f / (float)m_BloomFullRenderTarget.getHeight()));
+		m_BloomGaussianBlurShader->setUniform("bloom_texture", 0);
+		m_FullRenderTarget.getColourTexture()->bind(0);
+		modelRenderer->NDC_Plane.Draw();
+
+		// Set post process settings and convert our scene from HDR (linear) -> SDR (sRGB)
+		glViewport(0, 0, m_TonemappedNonLinearTarget.getWidth(), m_TonemappedNonLinearTarget.getHeight());
 		m_TonemappedNonLinearTarget.bind();
 		m_TonemappedNonLinearTarget.clear();
-		GLCache::getInstance()->switchShader(m_PostProcessShader);
+		glCache->switchShader(m_PostProcessShader);
 		m_PostProcessShader->setUniform("gamma_inverse", 1.0f / m_GammaCorrection);
 		m_PostProcessShader->setUniform("exposure", m_Exposure);
-		m_PostProcessShader->setUniform("read_offset", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
 		m_PostProcessShader->setUniform("scene_capture", 0);
 		target->getColourTexture()->bind(0);
-
-		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
+		m_PostProcessShader->setUniform("bloom_texture", 1);
+		m_BloomFullRenderTarget.getColourTexture()->bind(1);
 		modelRenderer->NDC_Plane.Draw();
 
 #if DEBUG_ENABLED
@@ -186,12 +232,11 @@ namespace arcane {
 		// Finally render the scene to the window's framebuffer
 		Window::bind();
 		Window::clear();
-		GLCache::getInstance()->switchShader(m_FxaaShader);
+		glCache->switchShader(m_FxaaShader);
 		m_FxaaShader->setUniform("enable_FXAA", m_FxaaEnabled);
 		m_FxaaShader->setUniform("inverse_resolution", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
 		m_FxaaShader->setUniform("colour_texture", 0);
 		m_TonemappedNonLinearTarget.getColourTexture()->bind(0);
-
 		modelRenderer->NDC_Plane.Draw();
 #if DEBUG_ENABLED
 		glFinish();

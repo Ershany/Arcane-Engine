@@ -410,6 +410,8 @@
     <None Include="src\shaders\deferred\PBR_Model_GeometryPass.glsl" />
     <None Include="src\shaders\deferred\PBR_Terrain_GeometryPass.glsl" />
     <None Include="src\shaders\compute\Scene_Luminance.glsl" />
+    <None Include="src\shaders\BloomBrightPass.glsl" />
+    <None Include="src\shaders\BloomGaussianBlur.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

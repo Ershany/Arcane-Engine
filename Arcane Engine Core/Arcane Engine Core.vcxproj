@@ -225,6 +225,8 @@
     <ClInclude Include="src\vendor\imgui\stb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\shaders\BloomBrightPass.glsl" />
+    <None Include="src\shaders\BloomGaussianBlur.glsl" />
     <None Include="src\shaders\BRDF_Integration.glsl" />
     <None Include="src\shaders\compute\frame_luminance.comp" />
     <None Include="src\shaders\compute\Scene_Luminance.glsl" />

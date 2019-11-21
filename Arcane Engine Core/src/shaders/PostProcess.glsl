@@ -22,13 +22,14 @@ in vec2 TexCoords;
 out vec4 FragColour;
 
 uniform sampler2D scene_capture;
+uniform sampler2D bloom_texture;
 
 uniform float gamma_inverse;
 uniform float exposure;
-uniform vec2 read_offset;
 
 void main() {
-	vec3 hdrColour = texture(scene_capture, TexCoords).rgb;
+	// Sample our HDR scene and HDR bloom so we can combine them
+	vec3 hdrColour = texture(scene_capture, TexCoords).rgb + texture(bloom_texture, TexCoords).rgb; 
 	
 	// Apply a simple exposure tonemap (HDR -> SDR) (dark scenes should have higher exposures, while bright scenes should have lower exposures)
 	vec3 tonemappedColour = vec3(1.0) - exp(exposure * -hdrColour);
