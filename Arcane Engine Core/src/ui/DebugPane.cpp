@@ -7,6 +7,7 @@ namespace arcane {
 	bool* DebugPane::s_FxaaEnabled = nullptr;
 	float* DebugPane::s_GammaCorrectionValue = nullptr;
 	float* DebugPane::s_ExposureValue = nullptr;
+	float* DebugPane::s_BloomThresholdValue = nullptr;
 	bool* DebugPane::s_SsaoEnabled = nullptr;
 	float* DebugPane::s_SsaoSampleRadius = nullptr;
 	float* DebugPane::s_SsaoStrength = nullptr;
@@ -25,6 +26,8 @@ namespace arcane {
 			ImGui::SliderFloat("Gamma", s_GammaCorrectionValue, 0.5f, 3.0f, "%.2f");
 		if (s_ExposureValue != nullptr)
 			ImGui::SliderFloat("Exposure", s_ExposureValue, 0.1f, 5.0f, "%.2f");
+		if (s_BloomThresholdValue != nullptr)
+			ImGui::SliderFloat("Bloom Threshold", s_BloomThresholdValue, 0.1f, 10.0f, "%.2f");
 		if (s_SsaoEnabled != nullptr)
 			ImGui::Checkbox("SSAO Enabled", s_SsaoEnabled);
 		if (s_SsaoSampleRadius != nullptr)

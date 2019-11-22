@@ -43,7 +43,7 @@ namespace arcane {
 		// Post Processing Tweaks
 		float m_GammaCorrection = 2.2f;
 		float m_Exposure = 1.0f;
-		float m_BloomThreshold = 1000000.0f;
+		float m_BloomThreshold = 1.0f;
 		bool m_FxaaEnabled = true;
 		bool m_SsaoEnabled = true;
 		float m_SsaoSampleRadius = 2.0f;
