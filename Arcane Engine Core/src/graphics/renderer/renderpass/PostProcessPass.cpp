@@ -6,7 +6,7 @@
 
 namespace arcane {
 
-	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false), m_SsaoBlurRenderTarget(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false),
+	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getRenderResolutionWidth() * 0.5f, Window::getRenderResolutionHeight() * 0.5f, false), m_SsaoBlurRenderTarget(Window::getRenderResolutionWidth() * 0.5f, Window::getRenderResolutionHeight() * 0.5f, false),
 		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false), m_BrightPassRenderTarget(Window::getWidth(), Window::getHeight(), false),
 		m_BloomFullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_BloomHalfRenderTarget(Window::getWidth() * 0.5f, Window::getHeight() * 0.5f, false), m_BloomQuarterRenderTarget(Window::getWidth() * 0.25f, Window::getHeight() * 0.25f, false), m_BloomEightRenderTarget(Window::getWidth() * 0.125f, Window::getHeight() * 0.125f, false),
 		m_FullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_HalfRenderTarget(Window::getWidth() * 0.5f, Window::getHeight() * 0.5f, false), m_QuarterRenderTarget(Window::getWidth() * 0.25f, Window::getWidth() * 0.25f, false), m_EightRenderTarget(Window::getWidth() * 0.125f, Window::getHeight() * 0.125f, false), m_SsaoNoiseTexture(), m_Timer()
@@ -108,7 +108,7 @@ namespace arcane {
 		m_GLCache->switchShader(m_SsaoShader);
 
 		// Used to tile the noise texture across the screen every 4 texels (because our noise texture is 4x4)
-		m_SsaoShader->setUniform("noiseScale", glm::vec2(m_SsaoRenderTarget.getWidth() / 4.0f, m_SsaoRenderTarget.getHeight() / 4.0f));
+		m_SsaoShader->setUniform("noiseScale", glm::vec2(m_SsaoRenderTarget.getWidth() * 0.25f, m_SsaoRenderTarget.getHeight() * 0.25f));
 
 		m_SsaoShader->setUniform("ssaoStrength", m_SsaoStrength);
 		m_SsaoShader->setUniform("sampleRadius", m_SsaoSampleRadius);

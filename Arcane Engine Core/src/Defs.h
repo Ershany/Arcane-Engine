@@ -5,8 +5,8 @@
 
 
 // Window Settings
-#define WINDOW_X_RESOLUTION 1366
-#define WINDOW_Y_RESOLUTION 768
+#define WINDOW_X_RESOLUTION 1920
+#define WINDOW_Y_RESOLUTION 1080
 #define V_SYNC 1
 #define FULLSCREEN_MODE 0 // If set, window resolution is maximized to your screen resolution
 
