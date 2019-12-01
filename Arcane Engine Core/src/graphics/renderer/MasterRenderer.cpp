@@ -42,12 +42,12 @@ namespace arcane
 #else
 #if DEBUG_ENABLED
 		glFinish();
-		m_Timer.reset();
+		m_ProfilingTimer.reset();
 #endif
 		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->getCamera(), false);
 #if DEBUG_ENABLED
 		glFinish();
-		RuntimePane::setShadowmapTimer((float)m_Timer.elapsed());
+		RuntimePane::setShadowmapTimer((float)m_ProfilingTimer.elapsed());
 #endif
 
 		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.executeGeometryPass(m_ActiveScene->getCamera(), false);

@@ -17,6 +17,9 @@ namespace arcane {
 		static inline void bindBloomThresholdValue(float *ptr) { s_BloomThresholdValue = ptr; }
 		static inline void bindSsaoSampleRadiusValue(float *ptr) { s_SsaoSampleRadius = ptr; }
 		static inline void bindSsaoStrengthValue(float *ptr) { s_SsaoStrength = ptr; }
+		static inline void bindVignetteIntensityValue(float *ptr) { s_VignetteIntensity = ptr; }
+		static inline void bindChromaticAberrationIntensityValue(float *ptr) { s_ChromaticAberrationIntensity = ptr; }
+		static inline void bindFilmGrainIntensityValue(float *ptr) { s_FilmGrainIntensity = ptr; }
 		static inline bool getWireframeMode() { return s_WireframeMode; }
 		static inline void setWireframeMode(bool choice) { s_WireframeMode = choice; }
 		static inline void bindSsaoEnabled(bool *ptr) { s_SsaoEnabled = ptr; }
@@ -31,6 +34,9 @@ namespace arcane {
 		static bool* s_SsaoEnabled;
 		static float *s_SsaoSampleRadius;
 		static float *s_SsaoStrength;
+		static float *s_VignetteIntensity;
+		static float *s_ChromaticAberrationIntensity;
+		static float *s_FilmGrainIntensity;
 	};
 
 }

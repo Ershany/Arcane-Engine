@@ -9,15 +9,20 @@ namespace arcane {
 	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getRenderResolutionWidth() * 0.5f, Window::getRenderResolutionHeight() * 0.5f, false), m_SsaoBlurRenderTarget(Window::getRenderResolutionWidth() * 0.5f, Window::getRenderResolutionHeight() * 0.5f, false),
 		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false), m_BrightPassRenderTarget(Window::getWidth(), Window::getHeight(), false),
 		m_BloomFullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_BloomHalfRenderTarget(Window::getWidth() * 0.5f, Window::getHeight() * 0.5f, false), m_BloomQuarterRenderTarget(Window::getWidth() * 0.25f, Window::getHeight() * 0.25f, false), m_BloomEightRenderTarget(Window::getWidth() * 0.125f, Window::getHeight() * 0.125f, false),
-		m_FullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_HalfRenderTarget(Window::getWidth() * 0.5f, Window::getHeight() * 0.5f, false), m_QuarterRenderTarget(Window::getWidth() * 0.25f, Window::getWidth() * 0.25f, false), m_EightRenderTarget(Window::getWidth() * 0.125f, Window::getHeight() * 0.125f, false), m_SsaoNoiseTexture(), m_Timer()
+		m_FullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_HalfRenderTarget(Window::getWidth() * 0.5f, Window::getHeight() * 0.5f, false), m_QuarterRenderTarget(Window::getWidth() * 0.25f, Window::getWidth() * 0.25f, false), m_EightRenderTarget(Window::getWidth() * 0.125f, Window::getHeight() * 0.125f, false),
+		m_SsaoNoiseTexture(), m_ProfilingTimer(), m_EffectsTimer()
 	{
 		// Shader setup
-		m_PostProcessShader = ShaderLoader::loadShader("src/shaders/PostProcess.glsl");
-		m_FxaaShader = ShaderLoader::loadShader("src/shaders/FXAA.glsl");
-		m_SsaoShader = ShaderLoader::loadShader("src/shaders/SSAO.glsl");
-		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/SSAO_Blur.glsl");
-		m_BloomBrightPassShader = ShaderLoader::loadShader("src/shaders/BloomBrightPass.glsl");
-		m_BloomGaussianBlurShader = ShaderLoader::loadShader("src/shaders/BloomGaussianBlur.glsl");
+		m_PassthroughShader = ShaderLoader::loadShader("src/shaders/post_process/Copy.glsl");
+		m_TonemapGammaCorrectShader = ShaderLoader::loadShader("src/shaders/TonemapGammaCorrect.glsl");
+		m_FxaaShader = ShaderLoader::loadShader("src/shaders/post_process/fxaa/FXAA.glsl");
+		m_SsaoShader = ShaderLoader::loadShader("src/shaders/post_process/ssao/SSAO.glsl");
+		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/post_process/ssao/SSAO_Blur.glsl");
+		m_BloomBrightPassShader = ShaderLoader::loadShader("src/shaders/post_process/bloom/BloomBrightPass.glsl");
+		m_BloomGaussianBlurShader = ShaderLoader::loadShader("src/shaders/post_process/bloom/BloomGaussianBlur.glsl");
+		m_VignetteShader = ShaderLoader::loadShader("src/shaders/post_process/vignette/vignette.glsl");
+		m_ChromaticAberrationShader = ShaderLoader::loadShader("src/shaders/post_process/chromatic_aberration/ChromaticAberration.glsl");
+		m_FilmGrainShader = ShaderLoader::loadShader("src/shaders/post_process/film_grain/FilmGrain.glsl");
 
 		// Framebuffer setup
 		m_SsaoRenderTarget.addColorTexture(NormalizedSingleChannel8).createFramebuffer();
@@ -78,6 +83,9 @@ namespace arcane {
 		DebugPane::bindSsaoEnabled(&m_SsaoEnabled);
 		DebugPane::bindSsaoSampleRadiusValue(&m_SsaoSampleRadius);
 		DebugPane::bindSsaoStrengthValue(&m_SsaoStrength);
+		DebugPane::bindVignetteIntensityValue(&m_VignetteIntensity);
+		DebugPane::bindChromaticAberrationIntensityValue(&m_ChromaticAberrationIntensity);
+		DebugPane::bindFilmGrainIntensityValue(&m_FilmGrainIntensity);
 	}
 
 	PostProcessPass::~PostProcessPass() {}
@@ -86,7 +94,7 @@ namespace arcane {
 	PreLightingPassOutput PostProcessPass::executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera) {
 #if DEBUG_ENABLED
 		glFinish();
-		m_Timer.reset();
+		m_ProfilingTimer.reset();
 #endif
 		PreLightingPassOutput passOutput;
 		if (!m_SsaoEnabled) {
@@ -148,7 +156,7 @@ namespace arcane {
 
 #if DEBUG_ENABLED
 		glFinish();
-		RuntimePane::setSsaoTimer((float)m_Timer.elapsed());
+		RuntimePane::setSsaoTimer((float)m_ProfilingTimer.elapsed());
 #endif
 
 		// Render pass output
@@ -214,35 +222,128 @@ namespace arcane {
 		modelRenderer->NDC_Plane.Draw();
 
 		// Set post process settings and convert our scene from HDR (linear) -> SDR (sRGB)
-		glViewport(0, 0, m_TonemappedNonLinearTarget.getWidth(), m_TonemappedNonLinearTarget.getHeight());
-		m_TonemappedNonLinearTarget.bind();
-		m_TonemappedNonLinearTarget.clear();
-		glCache->switchShader(m_PostProcessShader);
-		m_PostProcessShader->setUniform("gamma_inverse", 1.0f / m_GammaCorrection);
-		m_PostProcessShader->setUniform("exposure", m_Exposure);
-		m_PostProcessShader->setUniform("scene_capture", 0);
-		target->getColourTexture()->bind(0);
-		m_PostProcessShader->setUniform("bloom_texture", 1);
-		m_BloomFullRenderTarget.getColourTexture()->bind(1);
-		modelRenderer->NDC_Plane.Draw();
+		tonemapGammaCorrect(&m_TonemappedNonLinearTarget, target->getColourTexture());
+
+		// Chromatic Aberration
+		chromaticAberration(&m_FullRenderTarget, m_TonemappedNonLinearTarget.getColourTexture());
+
+		// Film Grain
+		filmGrain(&m_BloomFullRenderTarget, m_FullRenderTarget.getColourTexture());
+
+		// Vignette
+		vignette(&m_TonemappedNonLinearTarget, m_BloomFullRenderTarget.getColourTexture());
 
 #if DEBUG_ENABLED
 		glFinish();
-		m_Timer.reset();
+		m_ProfilingTimer.reset();
 #endif
+		fxaa(&m_FullRenderTarget, m_TonemappedNonLinearTarget.getColourTexture());
+#if DEBUG_ENABLED
+		glFinish();
+		RuntimePane::setFxaaTimer((float)m_ProfilingTimer.elapsed());
+#endif
+
 		// Finally render the scene to the window's framebuffer
 		Window::bind();
 		Window::clear();
-		glCache->switchShader(m_FxaaShader);
-		m_FxaaShader->setUniform("enable_FXAA", m_FxaaEnabled);
-		m_FxaaShader->setUniform("inverse_resolution", glm::vec2(1.0f / (float)target->getWidth(), 1.0f / (float)target->getHeight()));
-		m_FxaaShader->setUniform("colour_texture", 0);
-		m_TonemappedNonLinearTarget.getColourTexture()->bind(0);
-		modelRenderer->NDC_Plane.Draw();
-#if DEBUG_ENABLED
-		glFinish();
-		RuntimePane::setFxaaTimer((float)m_Timer.elapsed());
-#endif
+		m_GLCache->switchShader(m_PassthroughShader);
+		m_PassthroughShader->setUniform("input_texture", 0);
+		m_FullRenderTarget.getColourTexture()->bind(0);
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+	}
+
+	void PostProcessPass::tonemapGammaCorrect(Framebuffer *target, Texture *hdrTexture) {
+		glViewport(0, 0, target->getWidth(), target->getHeight());
+		m_GLCache->switchShader(m_TonemapGammaCorrectShader);
+		m_GLCache->setDepthTest(false);
+		m_GLCache->setBlend(false);
+		m_GLCache->setFaceCull(true);
+		m_GLCache->setCullFace(GL_BACK);
+		m_GLCache->setStencilTest(false);
+		target->bind();
+
+		m_TonemapGammaCorrectShader->setUniform("gamma_inverse", 1.0f / m_GammaCorrection); 
+		m_TonemapGammaCorrectShader->setUniform("exposure", m_Exposure);
+		m_TonemapGammaCorrectShader->setUniform("input_texture", 0);
+		hdrTexture->bind(0);
+
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+	}
+
+	void PostProcessPass::fxaa(Framebuffer *target, Texture *texture) {
+		glViewport(0, 0, target->getWidth(), target->getHeight());
+		m_GLCache->switchShader(m_FxaaShader);
+		m_GLCache->setDepthTest(false);
+		m_GLCache->setBlend(false);
+		m_GLCache->setFaceCull(true);
+		m_GLCache->setCullFace(GL_BACK);
+		m_GLCache->setStencilTest(false);
+		target->bind();
+
+		m_FxaaShader->setUniform("texel_size", glm::vec2(1.0f / (float)texture->getWidth(), 1.0f / (float)texture->getHeight()));
+		m_FxaaShader->setUniform("input_texture", 0);
+		texture->bind(0);
+
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+	}
+
+	void PostProcessPass::vignette(Framebuffer *target, Texture *texture, Texture *optionalVignetteMask) {
+		glViewport(0, 0, target->getWidth(), target->getHeight());
+		m_GLCache->switchShader(m_VignetteShader);
+		m_GLCache->setDepthTest(false);
+		m_GLCache->setBlend(false);
+		m_GLCache->setFaceCull(true);
+		m_GLCache->setCullFace(GL_BACK);
+		m_GLCache->setStencilTest(false);
+		target->bind();
+
+		m_VignetteShader->setUniform("colour", m_VignetteColour);
+		m_VignetteShader->setUniform("intensity", m_VignetteIntensity);
+		m_VignetteShader->setUniform("input_texture", 0);
+		texture->bind(0);
+		if (optionalVignetteMask != nullptr) {
+			m_VignetteShader->setUniform("usesMask", 1);
+			m_VignetteShader->setUniform("vignette_mask", 1);
+			optionalVignetteMask->bind(1);
+		}
+
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+	}
+
+	void PostProcessPass::chromaticAberration(Framebuffer *target, Texture *texture) {
+		glViewport(0, 0, target->getWidth(), target->getHeight());
+		m_GLCache->switchShader(m_ChromaticAberrationShader);
+		m_GLCache->setDepthTest(false);
+		m_GLCache->setBlend(false);
+		m_GLCache->setFaceCull(true);
+		m_GLCache->setCullFace(GL_BACK);
+		m_GLCache->setStencilTest(false);
+		target->bind();
+
+		m_ChromaticAberrationShader->setUniform("intensity", m_ChromaticAberrationIntensity * 100);
+		m_ChromaticAberrationShader->setUniform("texel_size", glm::vec2(1.0f / (float)texture->getWidth(), 1.0f / (float)texture->getHeight()));
+		m_ChromaticAberrationShader->setUniform("input_texture", 0);
+		texture->bind(0);
+
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+	}
+
+	void PostProcessPass::filmGrain(Framebuffer *target, Texture *texture) {
+		glViewport(0, 0, target->getWidth(), target->getHeight());
+		m_GLCache->switchShader(m_FilmGrainShader);
+		m_GLCache->setDepthTest(false);
+		m_GLCache->setBlend(false);
+		m_GLCache->setFaceCull(true);
+		m_GLCache->setCullFace(GL_BACK);
+		m_GLCache->setStencilTest(false);
+		target->bind();
+
+		m_FilmGrainShader->setUniform("intensity", m_FilmGrainIntensity * 100.0f);
+		m_FilmGrainShader->setUniform("time", (float)m_EffectsTimer.elapsed());
+		m_FilmGrainShader->setUniform("input_texture", 0);
+		texture->bind(0);
+
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
 	}
 
 }

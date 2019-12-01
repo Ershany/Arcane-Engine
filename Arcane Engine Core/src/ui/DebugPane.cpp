@@ -11,6 +11,9 @@ namespace arcane {
 	bool* DebugPane::s_SsaoEnabled = nullptr;
 	float* DebugPane::s_SsaoSampleRadius = nullptr;
 	float* DebugPane::s_SsaoStrength = nullptr;
+	float* DebugPane::s_VignetteIntensity = nullptr;
+	float* DebugPane::s_ChromaticAberrationIntensity = nullptr;
+	float* DebugPane::s_FilmGrainIntensity = nullptr;
 	bool DebugPane::s_WireframeMode = false;
 
 	DebugPane::DebugPane(glm::vec2 &panePosition) : Pane(std::string("Debug Controls"), panePosition)
@@ -34,6 +37,12 @@ namespace arcane {
 			ImGui::SliderFloat("SSAO Radius", s_SsaoSampleRadius, 1.0f, 3.0f, "%.2f");
 		if (s_SsaoStrength != nullptr)
 			ImGui::SliderFloat("SSAO Power", s_SsaoStrength, 1.0f, 5.0f, "%.2f");
+		if (s_VignetteIntensity != nullptr)
+			ImGui::SliderFloat("Vignette Intensity", s_VignetteIntensity, 0.0f, 1.0f, "%.2f");
+		if (s_ChromaticAberrationIntensity != nullptr)
+			ImGui::SliderFloat("Chromatic Aberration Intensity", s_ChromaticAberrationIntensity, 0.0f, 1.0f, "%.2f");
+		if (s_FilmGrainIntensity != nullptr)
+			ImGui::SliderFloat("Film Grain Intensity", s_FilmGrainIntensity, 0.0f, 1.0f, "%.2f");
 #if DEBUG_ENABLED
 		ImGui::Text("Hit \"P\" to show/hide the cursor");
 		ImGui::Checkbox("Wireframe Mode", &s_WireframeMode);

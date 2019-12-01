@@ -32,14 +32,14 @@ void main() {
 	vec3 blurResult = texture(bloom_texture, TexCoords).rgb * weights[0];
 	if (isVerticalBlur) {
 		for (int i = 1; i < 5; ++i) {
-			blurResult += texture(bloom_texture, TexCoords + vec2(0.0, i * read_offset.y)).rgb * weights[i];
-			blurResult += texture(bloom_texture, TexCoords + vec2(0.0, i * -read_offset.y)).rgb * weights[i];
+			blurResult += texture2D(bloom_texture, TexCoords + vec2(0.0, i * read_offset.y)).rgb * weights[i];
+			blurResult += texture2D(bloom_texture, TexCoords + vec2(0.0, i * -read_offset.y)).rgb * weights[i];
 		}
 	}
 	else {
 		for (int i = 1; i < 5; ++i) {
-			blurResult += texture(bloom_texture, TexCoords + vec2(i * read_offset.y, 0.0)).rgb * weights[i];
-			blurResult += texture(bloom_texture, TexCoords + vec2(i * -read_offset.y, 0.0)).rgb * weights[i];
+			blurResult += texture2D(bloom_texture, TexCoords + vec2(i * read_offset.y, 0.0)).rgb * weights[i];
+			blurResult += texture2D(bloom_texture, TexCoords + vec2(i * -read_offset.y, 0.0)).rgb * weights[i];
 		}
 	}
 	FragColour = vec4(blurResult, 1.0);

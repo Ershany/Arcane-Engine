@@ -14,13 +14,24 @@ namespace arcane {
 
 		PreLightingPassOutput executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera);
 		void executePostProcessPass(Framebuffer *framebufferToProcess);
+
+		// Post Processing Effects
+		void tonemapGammaCorrect(Framebuffer *target, Texture *hdrTexture);
+		void fxaa(Framebuffer *target, Texture *texture);
+		void vignette(Framebuffer *target, Texture *texture, Texture *optionalVignetteMask = nullptr);
+		void chromaticAberration(Framebuffer *target, Texture *texture);
+		void filmGrain(Framebuffer *target, Texture *texture);
 	private:
 		inline float lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:
-		Shader *m_PostProcessShader;
+		Shader *m_PassthroughShader;
+		Shader *m_TonemapGammaCorrectShader;
 		Shader *m_FxaaShader;
 		Shader *m_SsaoShader, *m_SsaoBlurShader;
 		Shader *m_BloomBrightPassShader, *m_BloomGaussianBlurShader;
+		Shader *m_VignetteShader;
+		Shader *m_ChromaticAberrationShader;
+		Shader *m_FilmGrainShader;
 
 		Framebuffer m_SsaoRenderTarget;
 		Framebuffer m_SsaoBlurRenderTarget;
@@ -48,12 +59,18 @@ namespace arcane {
 		bool m_SsaoEnabled = true;
 		float m_SsaoSampleRadius = 2.0f;
 		float m_SsaoStrength = 3.0f;
+		Texture *m_VignetteTexture;
+		glm::vec3 m_VignetteColour = glm::vec3(0.0f, 0.0f, 0.0f);
+		float m_VignetteIntensity = 0.2f;
+		float m_ChromaticAberrationIntensity = 0.2f;
+		float m_FilmGrainIntensity = 0.2f;
 
 		// SSAO Tweaks
 		std::array<glm::vec3, SSAO_KERNEL_SIZE> m_SsaoKernel;
 		Texture m_SsaoNoiseTexture;
 
-		Timer m_Timer;
+		Timer m_ProfilingTimer;
+		Timer m_EffectsTimer;
 	};
 
 }
