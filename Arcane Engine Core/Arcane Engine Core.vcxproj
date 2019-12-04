@@ -236,6 +236,7 @@
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\forward\PBR_Model.glsl" />
     <None Include="src\shaders\forward\PBR_Terrain.glsl" />
+    <None Include="src\shaders\post_process\bloom\Composite.glsl" />
     <None Include="src\shaders\post_process\chromatic_aberration\ChromaticAberration.glsl" />
     <None Include="src\shaders\post_process\Copy.glsl" />
     <None Include="src\shaders\post_process\film_grain\FilmGrain.glsl" />

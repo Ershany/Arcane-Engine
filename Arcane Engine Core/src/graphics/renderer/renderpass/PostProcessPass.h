@@ -28,7 +28,7 @@ namespace arcane {
 		Shader *m_TonemapGammaCorrectShader;
 		Shader *m_FxaaShader;
 		Shader *m_SsaoShader, *m_SsaoBlurShader;
-		Shader *m_BloomBrightPassShader, *m_BloomGaussianBlurShader;
+		Shader *m_BloomBrightPassShader, *m_BloomGaussianBlurShader, *m_BloomComposite;
 		Shader *m_VignetteShader;
 		Shader *m_ChromaticAberrationShader;
 		Shader *m_FilmGrainShader;
@@ -61,9 +61,9 @@ namespace arcane {
 		float m_SsaoStrength = 3.0f;
 		Texture *m_VignetteTexture;
 		glm::vec3 m_VignetteColour = glm::vec3(0.0f, 0.0f, 0.0f);
-		float m_VignetteIntensity = 0.2f;
-		float m_ChromaticAberrationIntensity = 0.2f;
-		float m_FilmGrainIntensity = 0.2f;
+		float m_VignetteIntensity = 0.0f;
+		float m_ChromaticAberrationIntensity = 0.0f;
+		float m_FilmGrainIntensity = 0.0f;
 
 		// SSAO Tweaks
 		std::array<glm::vec3, SSAO_KERNEL_SIZE> m_SsaoKernel;

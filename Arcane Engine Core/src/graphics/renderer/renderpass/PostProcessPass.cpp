@@ -20,6 +20,7 @@ namespace arcane {
 		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/post_process/ssao/SSAO_Blur.glsl");
 		m_BloomBrightPassShader = ShaderLoader::loadShader("src/shaders/post_process/bloom/BloomBrightPass.glsl");
 		m_BloomGaussianBlurShader = ShaderLoader::loadShader("src/shaders/post_process/bloom/BloomGaussianBlur.glsl");
+		m_BloomComposite = ShaderLoader::loadShader("src/shaders/post_process/bloom/Composite.glsl");
 		m_VignetteShader = ShaderLoader::loadShader("src/shaders/post_process/vignette/vignette.glsl");
 		m_ChromaticAberrationShader = ShaderLoader::loadShader("src/shaders/post_process/chromatic_aberration/ChromaticAberration.glsl");
 		m_FilmGrainShader = ShaderLoader::loadShader("src/shaders/post_process/film_grain/FilmGrain.glsl");
@@ -221,8 +222,19 @@ namespace arcane {
 		m_FullRenderTarget.getColourTexture()->bind(0);
 		modelRenderer->NDC_Plane.Draw();
 
+		// Combine our bloom texture with the scene
+		glCache->switchShader(m_BloomComposite);
+		glViewport(0, 0, m_FullRenderTarget.getWidth(), m_FullRenderTarget.getHeight());
+		m_FullRenderTarget.bind();
+		m_BloomComposite->setUniform("strength", 1.0f);
+		m_BloomComposite->setUniform("scene_texture", 0);
+		m_BloomComposite->setUniform("bloom_texture", 1);
+		target->getColourTexture()->bind(0);
+		m_BloomFullRenderTarget.getColourTexture()->bind(1);
+		modelRenderer->NDC_Plane.Draw();
+
 		// Set post process settings and convert our scene from HDR (linear) -> SDR (sRGB)
-		tonemapGammaCorrect(&m_TonemappedNonLinearTarget, target->getColourTexture());
+		tonemapGammaCorrect(&m_TonemappedNonLinearTarget, m_FullRenderTarget.getColourTexture());
 
 		// Chromatic Aberration
 		chromaticAberration(&m_FullRenderTarget, m_TonemappedNonLinearTarget.getColourTexture());

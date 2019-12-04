@@ -28,8 +28,8 @@
 #define BRDF_LUT_RESOLUTION 512
 
 // Frustum Options
-#define NEAR_PLANE 0.1f
-#define FAR_PLANE 2000.0f
+#define NEAR_PLANE 0.3f
+#define FAR_PLANE 1500.0f
 
 // Shadowmap Options
 #define SHADOWMAP_RESOLUTION_X 2048

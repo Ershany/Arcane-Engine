@@ -417,6 +417,7 @@
     <None Include="src\shaders\post_process\chromatic_aberration\ChromaticAberration.glsl" />
     <None Include="src\shaders\post_process\film_grain\FilmGrain.glsl" />
     <None Include="src\shaders\post_process\smaa\SMAA.glsl" />
+    <None Include="src\shaders\post_process\bloom\Composite.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">
