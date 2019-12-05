@@ -3,7 +3,7 @@
 
 namespace arcane {
 
-	Light::Light(glm::vec3 &lightColour) 
-		: m_LightColour(lightColour), m_IsStatic(false) {}
+	Light::Light(float lightIntensity, glm::vec3 &lightColour) 
+		: m_Intensity(lightIntensity), m_LightColour(lightColour), m_IsStatic(false) {}
 
 }

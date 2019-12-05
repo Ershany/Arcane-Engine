@@ -20,23 +20,27 @@ void main() {
 struct DirLight {
 	vec3 direction;
 
+	float intensity;
 	vec3 lightColour;
 };
 
 struct PointLight {
 	vec3 position;
 
+	float intensity;
 	vec3 lightColour;
+	float attenuationRadius;
 };
 
 struct SpotLight {
 	vec3 position;
 	vec3 direction;
 
+	float intensity;
+	vec3 lightColour;
+
 	float cutOff;
 	float outerCutOff;
-
-	vec3 lightColour;
 };
 
 #define MAX_DIR_LIGHTS 5
@@ -178,7 +182,13 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 		vec3 fragToLight = normalize(pointLights[i].position - fragPos);
 		vec3 halfway = normalize(fragToView + fragToLight);
 		float fragToLightDistance = length(pointLights[i].position - fragPos);
-		float attenuation = 1.0 / (fragToLightDistance * fragToLightDistance);
+
+		// Attenuation calculation (based on Epic's UE4 falloff model)
+		float d = fragToLightDistance / pointLights[i].attenuationRadius;
+		float d2 = d * d;
+		float d4 = d2 * d2;
+		float falloffNumerator = clamp(1.0 - d4, 0.0, 1.0);
+		float attenuation = (falloffNumerator * falloffNumerator) / ((fragToLightDistance * fragToLightDistance) + 1.0);
 		vec3 radiance = pointLights[i].lightColour * attenuation;
 
 		// Cook-Torrance Specular BRDF calculations
@@ -256,7 +266,7 @@ float NormalDistributionGGX(vec3 normal, vec3 halfway, float roughness) {
 	float normDotHalf2 = normDotHalf * normDotHalf;
 
 	float numerator = a2;
-	float denominator = normDotHalf2 * (a2 - 1) + 1;
+	float denominator = normDotHalf2 * (a2 - 1.0) + 1.0;
 	denominator = PI * denominator * denominator;
 
 	return numerator / denominator;

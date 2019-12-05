@@ -9,7 +9,7 @@ namespace arcane {
 	class SpotLight : public Light {
 		friend DynamicLightManager;
 	public:
-		SpotLight(glm::vec3 &lightColour, glm::vec3 &pos, glm::vec3 &dir, float cutOffAngle, float outerCutOffAngle);
+		SpotLight(float lightIntensity, glm::vec3 &lightColour, glm::vec3 &pos, glm::vec3 &dir, float cutOffAngle, float outerCutOffAngle);
 	
 		virtual void setupUniforms(Shader *shader, int currentLightIndex) override;
 	private:

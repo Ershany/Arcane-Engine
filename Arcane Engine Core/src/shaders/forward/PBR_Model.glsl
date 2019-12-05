@@ -302,7 +302,7 @@ float NormalDistributionGGX(vec3 normal, vec3 halfway, float roughness) {
 	float normDotHalf2 = normDotHalf * normDotHalf;
 
 	float numerator = a2;
-	float denominator = normDotHalf2 * (a2 - 1) + 1;
+	float denominator = normDotHalf2 * (a2 - 1.0) + 1.0;
 	denominator = PI * denominator * denominator;
 
 	return numerator / denominator;
