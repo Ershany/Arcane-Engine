@@ -351,7 +351,7 @@ namespace arcane {
 		target->bind();
 
 		m_FilmGrainShader->setUniform("intensity", m_FilmGrainIntensity * 100.0f);
-		m_FilmGrainShader->setUniform("time", (float)m_EffectsTimer.elapsed());
+		m_FilmGrainShader->setUniform("time", (float)(std::fmod(m_EffectsTimer.elapsed(), 100.0)));
 		m_FilmGrainShader->setUniform("input_texture", 0);
 		texture->bind(0);
 
@@ -359,6 +359,12 @@ namespace arcane {
 	}
 
 	Texture* PostProcessPass::bloom(Texture *hdrSceneTexture) {
+		m_GLCache->setDepthTest(false);
+		m_GLCache->setBlend(false);
+		m_GLCache->setFaceCull(true);
+		m_GLCache->setCullFace(GL_BACK);
+		m_GLCache->setStencilTest(false);
+
 		// Bloom Bright Pass
 		glViewport(0, 0, m_BrightPassRenderTarget.getWidth(), m_BrightPassRenderTarget.getHeight());
 		m_BrightPassRenderTarget.bind();
