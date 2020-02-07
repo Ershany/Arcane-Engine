@@ -50,7 +50,7 @@ I plan on adding many different features to the forward & deferred renderers. He
 1. Decals
 1. Particles
 1. SSR
-1. Volumetric Lighting
+1. Volumetric Effects
 1. Reverse Z Buffer
 1. Virtual Texture System (Terrain)
 

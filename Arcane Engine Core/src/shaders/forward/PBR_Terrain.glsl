@@ -194,7 +194,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 	for (int i = 0; i < numDirPointSpotLights.x; ++i) {
 		vec3 lightDir = normalize(-dirLights[i].direction);
 		vec3 halfway = normalize(lightDir + fragToView);
-		vec3 radiance = dirLights[i].lightColour;
+		vec3 radiance = dirLights[i].intensity * dirLights[i].lightColour;
 
 		// Cook-Torrance Specular BRDF calculations
 		float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
@@ -236,7 +236,7 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 		float d4 = d2 * d2;
 		float falloffNumerator = clamp(1.0 - d4, 0.0, 1.0);
 		float attenuation = (falloffNumerator * falloffNumerator) / ((fragToLightDistance * fragToLightDistance) + 1.0);
-		vec3 radiance = pointLights[i].lightColour * attenuation;
+		vec3 radiance = pointLights[i].intensity * pointLights[i].lightColour * attenuation;
 
 		// Cook-Torrance Specular BRDF calculations
 		float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
@@ -283,7 +283,7 @@ vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float 
 		float difference = spotLights[i].cutOff - spotLights[i].outerCutOff;
 		float intensity = clamp((theta - spotLights[i].outerCutOff) / difference, 0.0, 1.0);
 		float attenuation = intensity * (falloffNumerator * falloffNumerator) / ((fragToLightDistance * fragToLightDistance) + 1.0);
-		vec3 radiance = spotLights[i].lightColour * attenuation;
+		vec3 radiance = spotLights[i].intensity * spotLights[i].lightColour * attenuation;
 
 		// Cook-Torrance Specular BRDF calculations
 		float normalDistribution = NormalDistributionGGX(normal, halfway, roughness);
