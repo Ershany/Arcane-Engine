@@ -25,24 +25,18 @@ in vec2 TexCoords;
 
 out vec4 FragColour;
 
-uniform sampler2D colour_texture;
-uniform vec2 inverse_resolution;
-uniform int enable_FXAA;
+uniform sampler2D input_texture;
+
+uniform vec2 texel_size;
 
 void main() {
-	// if FXAA is disabled early out
-	vec3 rgbM  = texture2D(colour_texture, TexCoords).xyz;
-	if (enable_FXAA == 0) {
-		FragColour = vec4(rgbM, 1.0);
-		return;
-	}
-
 	// Samples the texels around and calculate their corresponding luminosity
 	vec3 calculateLuma = vec3(0.299, 0.587, 0.114);
-	vec3 rgbNW = texture2D(colour_texture, TexCoords + (vec2(-1.0,-1.0)) * inverse_resolution).xyz;
-	vec3 rgbNE = texture2D(colour_texture, TexCoords + (vec2(1.0,-1.0)) * inverse_resolution).xyz;
-	vec3 rgbSW = texture2D(colour_texture, TexCoords + (vec2(-1.0,1.0)) * inverse_resolution).xyz;
-	vec3 rgbSE = texture2D(colour_texture, TexCoords + (vec2(1.0,1.0)) * inverse_resolution).xyz;
+	vec3 rgbM  = texture2D(input_texture, TexCoords).xyz;
+	vec3 rgbNW = texture2D(input_texture, TexCoords + (vec2(-1.0,-1.0)) * texel_size).xyz;
+	vec3 rgbNE = texture2D(input_texture, TexCoords + (vec2(1.0,-1.0)) * texel_size).xyz;
+	vec3 rgbSW = texture2D(input_texture, TexCoords + (vec2(-1.0,1.0)) * texel_size).xyz;
+	vec3 rgbSE = texture2D(input_texture, TexCoords + (vec2(1.0,1.0)) * texel_size).xyz;
 
 	float lumaM  = dot(rgbM,  calculateLuma);
 	float lumaNW = dot(rgbNW, calculateLuma);
@@ -58,11 +52,11 @@ void main() {
 	dir.y =  ((lumaNW + lumaSW) - (lumaNE + lumaSE));
 	float dirReduce = max((lumaNW + lumaNE + lumaSW + lumaSE) * (0.25 * FXAA_REDUCE_MUL), FXAA_REDUCE_MIN);
 	float rcpDirMin = 1.0 / (min(abs(dir.x), abs(dir.y)) + dirReduce);
-	dir = min(vec2(FXAA_SPAN_MAX, FXAA_SPAN_MAX), max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX), dir * rcpDirMin)) * inverse_resolution;
+	dir = min(vec2(FXAA_SPAN_MAX, FXAA_SPAN_MAX), max(vec2(-FXAA_SPAN_MAX, -FXAA_SPAN_MAX), dir * rcpDirMin)) * texel_size;
 
 	// Perform the samples and calculate the new texel colour
-	vec3 rgbA = 0.5 * (texture2D(colour_texture, TexCoords + dir * ((1.0 / 3.0) - 0.5)).xyz + texture2D(colour_texture, TexCoords + dir * ((2.0 / 3.0) - 0.5)).xyz);
-	vec3 rgbB = rgbA * 0.5 + 0.25 * (texture2D(colour_texture, TexCoords + dir * - 0.5).xyz + texture2D(colour_texture, TexCoords + dir * 0.5).xyz);
+	vec3 rgbA = 0.5 * (texture2D(input_texture, TexCoords + dir * ((1.0 / 3.0) - 0.5)).xyz + texture2D(input_texture, TexCoords + dir * ((2.0 / 3.0) - 0.5)).xyz);
+	vec3 rgbB = rgbA * 0.5 + 0.25 * (texture2D(input_texture, TexCoords + dir * - 0.5).xyz + texture2D(input_texture, TexCoords + dir * 0.5).xyz);
 	float lumaB = dot(rgbB, calculateLuma);
 	if ((lumaB < lumaMin) || (lumaB > lumaMax)) {
 		FragColour = vec4(rgbA, 1.0);

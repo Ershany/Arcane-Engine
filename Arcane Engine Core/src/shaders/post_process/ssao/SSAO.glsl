@@ -48,8 +48,14 @@ uniform mat4 projectionInverse;
 vec3 WorldPosFromDepth(vec2 textureCoordinates);
 
 void main() {
-	vec3 fragPos = WorldPosFromDepth(TexCoords);
+	// Early out if there is no data in the GBuffer at this particular sample
 	vec3 normal = texture(normalTexture, TexCoords).xyz;
+	if (normal == vec3(0.0, 0.0, 0.0)) {
+		FragColour = 1.0;
+		return;
+	}
+
+	vec3 fragPos = WorldPosFromDepth(TexCoords);
 	vec3 randomVec = texture(texNoise, TexCoords * noiseScale).xyz;
 
 	// Make a TBN matrix to go from tangent -> world space (so we can put our hemipshere tangent sample points into world space)

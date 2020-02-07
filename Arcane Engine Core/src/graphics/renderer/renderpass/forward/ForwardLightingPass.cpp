@@ -10,7 +10,7 @@ namespace arcane {
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/PBR_Model.glsl");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/forward/PBR_Terrain.glsl");
 
-		m_Framebuffer = new Framebuffer(Window::getResolutionWidth(), Window::getResolutionHeight(), shouldMultisample);
+		m_Framebuffer = new Framebuffer(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), shouldMultisample);
 		m_Framebuffer->addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthStencil).createFramebuffer();
 	}
 

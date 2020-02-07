@@ -396,20 +396,28 @@
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\shaders\compute\frame_luminance.comp" />
     <None Include="src\shaders\BRDF_Integration.glsl" />
-    <None Include="src\shaders\FXAA.glsl" />
     <None Include="src\shaders\LightProbe_Convolution.glsl" />
-    <None Include="src\shaders\PostProcess.glsl" />
     <None Include="src\shaders\ReflectionProbe_ImportanceSampling.glsl" />
     <None Include="src\shaders\Shadowmap_Generation.glsl" />
     <None Include="src\shaders\Skybox.glsl" />
-    <None Include="src\shaders\SSAO.glsl" />
-    <None Include="src\shaders\SSAO_Blur.glsl" />
     <None Include="src\shaders\forward\PBR_Model.glsl" />
     <None Include="src\shaders\forward\PBR_Terrain.glsl" />
     <None Include="src\shaders\deferred\PBR_LightingPass.glsl" />
     <None Include="src\shaders\deferred\PBR_Model_GeometryPass.glsl" />
     <None Include="src\shaders\deferred\PBR_Terrain_GeometryPass.glsl" />
     <None Include="src\shaders\compute\Scene_Luminance.glsl" />
+    <None Include="src\shaders\post_process\bloom\BloomBrightPass.glsl" />
+    <None Include="src\shaders\post_process\bloom\BloomGaussianBlur.glsl" />
+    <None Include="src\shaders\post_process\fxaa\FXAA.glsl" />
+    <None Include="src\shaders\post_process\ssao\SSAO.glsl" />
+    <None Include="src\shaders\post_process\ssao\SSAO_Blur.glsl" />
+    <None Include="src\shaders\TonemapGammaCorrect.glsl" />
+    <None Include="src\shaders\post_process\vignette\Vignette.glsl" />
+    <None Include="src\shaders\post_process\Copy.glsl" />
+    <None Include="src\shaders\post_process\chromatic_aberration\ChromaticAberration.glsl" />
+    <None Include="src\shaders\post_process\film_grain\FilmGrain.glsl" />
+    <None Include="src\shaders\post_process\smaa\SMAA.glsl" />
+    <None Include="src\shaders\post_process\bloom\Composite.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

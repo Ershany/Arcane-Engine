@@ -5,8 +5,8 @@
 
 
 // Window Settings
-#define WINDOW_X_RESOLUTION 1366
-#define WINDOW_Y_RESOLUTION 768
+#define WINDOW_X_RESOLUTION 1920
+#define WINDOW_Y_RESOLUTION 1080
 #define V_SYNC 1
 #define FULLSCREEN_MODE 0 // If set, window resolution is maximized to your screen resolution
 
@@ -28,8 +28,8 @@
 #define BRDF_LUT_RESOLUTION 512
 
 // Frustum Options
-#define NEAR_PLANE 0.1f
-#define FAR_PLANE 2000.0f
+#define NEAR_PLANE 0.3f
+#define FAR_PLANE 1500.0f
 
 // Shadowmap Options
 #define SHADOWMAP_RESOLUTION_X 2048

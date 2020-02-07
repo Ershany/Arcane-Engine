@@ -17,7 +17,7 @@ int main() {
 
 	// Prepare the UI
 	arcane::RuntimePane runtimePane(glm::vec2(270.0f, 175.0f));
-	arcane::DebugPane debugPane(glm::vec2(270.0f, 230.0f));
+	arcane::DebugPane debugPane(glm::vec2(270.0f, 400.0f));
 
 	// Initialize the renderer
 	renderer.init();

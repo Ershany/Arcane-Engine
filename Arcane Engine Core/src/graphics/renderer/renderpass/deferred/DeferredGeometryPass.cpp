@@ -9,7 +9,7 @@ namespace arcane {
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Model_GeometryPass.glsl");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Terrain_GeometryPass.glsl");
 
-		m_GBuffer = new GBuffer(Window::getResolutionWidth(), Window::getResolutionHeight());
+		m_GBuffer = new GBuffer(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight());
 	}
 
 	DeferredGeometryPass::DeferredGeometryPass(Scene3D *scene, GBuffer *customGBuffer) : RenderPass(scene), m_AllocatedGBuffer(false), m_GBuffer(customGBuffer) {
