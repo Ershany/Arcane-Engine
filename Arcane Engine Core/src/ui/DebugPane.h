@@ -23,6 +23,9 @@ namespace arcane {
 		static inline bool getWireframeMode() { return s_WireframeMode; }
 		static inline void setWireframeMode(bool choice) { s_WireframeMode = choice; }
 		static inline void bindSsaoEnabled(bool *ptr) { s_SsaoEnabled = ptr; }
+		static inline void bindVignetteEnabled(bool *ptr) { s_VignetteEnabled = ptr; }
+		static inline void bindChromaticAberrationEnabled(bool *ptr) { s_ChromaticAberrationEnabled = ptr; }
+		static inline void bindFilmGrainEnabled(bool *ptr) { s_FilmGrainEnabled = ptr; }
 
 	private:
 		static glm::vec3 *s_CameraPosition;
@@ -34,8 +37,11 @@ namespace arcane {
 		static bool* s_SsaoEnabled;
 		static float *s_SsaoSampleRadius;
 		static float *s_SsaoStrength;
+		static bool* s_VignetteEnabled;
 		static float *s_VignetteIntensity;
+		static bool* s_ChromaticAberrationEnabled;
 		static float *s_ChromaticAberrationIntensity;
+		static bool* s_FilmGrainEnabled;
 		static float *s_FilmGrainIntensity;
 	};
 

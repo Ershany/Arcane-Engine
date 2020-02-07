@@ -60,11 +60,14 @@ namespace arcane {
 		bool m_SsaoEnabled = true;
 		float m_SsaoSampleRadius = 2.0f;
 		float m_SsaoStrength = 3.0f;
+		bool m_VignetteEnabled = false;
 		Texture *m_VignetteTexture;
 		glm::vec3 m_VignetteColour = glm::vec3(0.0f, 0.0f, 0.0f);
-		float m_VignetteIntensity = 0.0f;
-		float m_ChromaticAberrationIntensity = 0.0f;
-		float m_FilmGrainIntensity = 0.0f;
+		float m_VignetteIntensity = 0.25f;
+		bool m_ChromaticAberrationEnabled = false;
+		float m_ChromaticAberrationIntensity = 0.25f;
+		bool m_FilmGrainEnabled = false;
+		float m_FilmGrainIntensity = 0.25f;
 
 		// SSAO Tweaks
 		std::array<glm::vec3, SSAO_KERNEL_SIZE> m_SsaoKernel;

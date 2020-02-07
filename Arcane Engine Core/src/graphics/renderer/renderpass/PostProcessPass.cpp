@@ -6,10 +6,10 @@
 
 namespace arcane {
 
-	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget(Window::getRenderResolutionWidth() * 0.5f, Window::getRenderResolutionHeight() * 0.5f, false), m_SsaoBlurRenderTarget(Window::getRenderResolutionWidth() * 0.5f, Window::getRenderResolutionHeight() * 0.5f, false),
+	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget((unsigned int)(Window::getRenderResolutionWidth() * 0.5f), (unsigned int)(Window::getRenderResolutionHeight() * 0.5f), false), m_SsaoBlurRenderTarget((unsigned int)(Window::getRenderResolutionWidth() * 0.5f), (unsigned int)(Window::getRenderResolutionHeight() * 0.5f), false),
 		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false), m_BrightPassRenderTarget(Window::getWidth(), Window::getHeight(), false),
-		m_BloomFullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_BloomHalfRenderTarget(Window::getWidth() * 0.5f, Window::getHeight() * 0.5f, false), m_BloomQuarterRenderTarget(Window::getWidth() * 0.25f, Window::getHeight() * 0.25f, false), m_BloomEightRenderTarget(Window::getWidth() * 0.125f, Window::getHeight() * 0.125f, false),
-		m_FullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_HalfRenderTarget(Window::getWidth() * 0.5f, Window::getHeight() * 0.5f, false), m_QuarterRenderTarget(Window::getWidth() * 0.25f, Window::getWidth() * 0.25f, false), m_EightRenderTarget(Window::getWidth() * 0.125f, Window::getHeight() * 0.125f, false),
+		m_BloomFullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_BloomHalfRenderTarget((unsigned int)(Window::getWidth() * 0.5f), (unsigned int)(Window::getHeight() * 0.5f), false), m_BloomQuarterRenderTarget((unsigned int)(Window::getWidth() * 0.25f), (unsigned int)(Window::getHeight() * 0.25f), false), m_BloomEightRenderTarget((unsigned int)(Window::getWidth() * 0.125f), (unsigned int)(Window::getHeight() * 0.125f), false),
+		m_FullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_HalfRenderTarget((unsigned int)(Window::getWidth() * 0.5f), (unsigned int)(Window::getHeight() * 0.5f), false), m_QuarterRenderTarget((unsigned int)(Window::getWidth() * 0.25f), (unsigned int)(Window::getWidth() * 0.25f), false), m_EightRenderTarget((unsigned int)(Window::getWidth() * 0.125f), (unsigned int)(Window::getHeight() * 0.125f), false),
 		m_SsaoNoiseTexture(), m_ProfilingTimer(), m_EffectsTimer()
 	{
 		// Shader setup
@@ -84,8 +84,11 @@ namespace arcane {
 		DebugPane::bindSsaoEnabled(&m_SsaoEnabled);
 		DebugPane::bindSsaoSampleRadiusValue(&m_SsaoSampleRadius);
 		DebugPane::bindSsaoStrengthValue(&m_SsaoStrength);
+		DebugPane::bindVignetteEnabled(&m_VignetteEnabled);
 		DebugPane::bindVignetteIntensityValue(&m_VignetteIntensity);
+		DebugPane::bindChromaticAberrationEnabled(&m_ChromaticAberrationEnabled);
 		DebugPane::bindChromaticAberrationIntensityValue(&m_ChromaticAberrationIntensity);
+		DebugPane::bindFilmGrainEnabled(&m_FilmGrainEnabled);
 		DebugPane::bindFilmGrainIntensityValue(&m_FilmGrainIntensity);
 	}
 
@@ -179,12 +182,12 @@ namespace arcane {
 		}
 
 		// If some sort of super-sampling is set, we need to downsample (or upsample) our image to match the window's resolution
-		Framebuffer *target = supersampledTarget;
-		if (target->getWidth() != m_ScreenRenderTarget.getWidth() || target->getHeight() != m_ScreenRenderTarget.getHeight()) {
+		Framebuffer *inputFramebuffer = supersampledTarget;
+		if (inputFramebuffer->getWidth() != m_ScreenRenderTarget.getWidth() || inputFramebuffer->getHeight() != m_ScreenRenderTarget.getHeight()) {
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, supersampledTarget->getFramebuffer());
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_ScreenRenderTarget.getFramebuffer());
 			glBlitFramebuffer(0, 0, supersampledTarget->getWidth(), supersampledTarget->getHeight(), 0, 0, m_ScreenRenderTarget.getWidth(), m_ScreenRenderTarget.getHeight(), GL_COLOR_BUFFER_BIT, GL_LINEAR);
-			target = &m_ScreenRenderTarget;
+			inputFramebuffer = &m_ScreenRenderTarget;
 		}
 
 #if DEBUG_ENABLED
@@ -193,6 +196,7 @@ namespace arcane {
 #endif
 		//Texture *sceneWithBloom = bloom(target->getColourTexture());
 
+		/*
 		// Set post process settings and convert our scene from HDR (linear) -> SDR (sRGB)
 		tonemapGammaCorrect(&m_TonemappedNonLinearTarget, target->getColourTexture());
 
@@ -204,12 +208,48 @@ namespace arcane {
 
 		// Vignette
 		vignette(&m_TonemappedNonLinearTarget, m_BloomFullRenderTarget.getColourTexture());
+		*/
+
+		// Convert our scene from HDR (linear) -> SDR (sRGB)
+		tonemapGammaCorrect(&m_TonemappedNonLinearTarget, inputFramebuffer->getColourTexture());
+		inputFramebuffer = &m_TonemappedNonLinearTarget;
+
+		Framebuffer *framebufferToRenderTo = nullptr;
+		if (m_ChromaticAberrationEnabled) {
+			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
+			else framebufferToRenderTo = &m_FullRenderTarget;
+
+			chromaticAberration(framebufferToRenderTo, inputFramebuffer->getColourTexture());
+			inputFramebuffer = framebufferToRenderTo;
+		}
+
+		if (m_FilmGrainEnabled) {
+			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
+			else framebufferToRenderTo = &m_FullRenderTarget;
+
+			filmGrain(framebufferToRenderTo, inputFramebuffer->getColourTexture());
+			inputFramebuffer = framebufferToRenderTo;
+		}
+
+		if (m_VignetteEnabled) {
+			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
+			else framebufferToRenderTo = &m_FullRenderTarget;
+
+			vignette(framebufferToRenderTo, inputFramebuffer->getColourTexture());
+			inputFramebuffer = framebufferToRenderTo;
+		}
 
 #if DEBUG_ENABLED
 		glFinish();
 		m_ProfilingTimer.reset();
 #endif
-		fxaa(&m_FullRenderTarget, m_TonemappedNonLinearTarget.getColourTexture());
+		if (m_FxaaEnabled) {
+			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
+			else framebufferToRenderTo = &m_FullRenderTarget;
+
+			fxaa(framebufferToRenderTo, inputFramebuffer->getColourTexture());
+			inputFramebuffer = framebufferToRenderTo;
+		}
 #if DEBUG_ENABLED
 		glFinish();
 		RuntimePane::setFxaaTimer((float)m_ProfilingTimer.elapsed());
@@ -220,7 +260,7 @@ namespace arcane {
 		Window::clear();
 		m_GLCache->switchShader(m_PassthroughShader);
 		m_PassthroughShader->setUniform("input_texture", 0);
-		m_FullRenderTarget.getColourTexture()->bind(0);
+		inputFramebuffer->getColourTexture()->bind(0);
 		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
 	}
 

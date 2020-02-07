@@ -11,8 +11,11 @@ namespace arcane {
 	bool* DebugPane::s_SsaoEnabled = nullptr;
 	float* DebugPane::s_SsaoSampleRadius = nullptr;
 	float* DebugPane::s_SsaoStrength = nullptr;
+	bool* DebugPane::s_VignetteEnabled = nullptr;
 	float* DebugPane::s_VignetteIntensity = nullptr;
+	bool* DebugPane::s_ChromaticAberrationEnabled = nullptr;
 	float* DebugPane::s_ChromaticAberrationIntensity = nullptr;
+	bool* DebugPane::s_FilmGrainEnabled = nullptr;
 	float* DebugPane::s_FilmGrainIntensity = nullptr;
 	bool DebugPane::s_WireframeMode = false;
 
@@ -37,10 +40,16 @@ namespace arcane {
 			ImGui::SliderFloat("SSAO Radius", s_SsaoSampleRadius, 1.0f, 3.0f, "%.2f");
 		if (s_SsaoStrength != nullptr)
 			ImGui::SliderFloat("SSAO Power", s_SsaoStrength, 1.0f, 5.0f, "%.2f");
+		if (s_VignetteEnabled != nullptr)
+			ImGui::Checkbox("Vignette Enabled", s_VignetteEnabled);
 		if (s_VignetteIntensity != nullptr)
 			ImGui::SliderFloat("Vignette Intensity", s_VignetteIntensity, 0.0f, 1.0f, "%.2f");
+		if (s_ChromaticAberrationEnabled != nullptr)
+			ImGui::Checkbox("Chromatic Aberration Enabled", s_ChromaticAberrationEnabled);
 		if (s_ChromaticAberrationIntensity != nullptr)
 			ImGui::SliderFloat("Chromatic Aberration Intensity", s_ChromaticAberrationIntensity, 0.0f, 1.0f, "%.2f");
+		if (s_FilmGrainEnabled != nullptr)
+			ImGui::Checkbox("Film Grain Enabled", s_FilmGrainEnabled);
 		if (s_FilmGrainIntensity != nullptr)
 			ImGui::SliderFloat("Film Grain Intensity", s_FilmGrainIntensity, 0.0f, 1.0f, "%.2f");
 #if DEBUG_ENABLED
