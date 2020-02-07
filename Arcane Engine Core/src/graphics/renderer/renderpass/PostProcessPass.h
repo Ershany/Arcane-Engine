@@ -21,6 +21,7 @@ namespace arcane {
 		void vignette(Framebuffer *target, Texture *texture, Texture *optionalVignetteMask = nullptr);
 		void chromaticAberration(Framebuffer *target, Texture *texture);
 		void filmGrain(Framebuffer *target, Texture *texture);
+		Texture* bloom(Texture *hdrSceneTexture);
 	private:
 		inline float lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:

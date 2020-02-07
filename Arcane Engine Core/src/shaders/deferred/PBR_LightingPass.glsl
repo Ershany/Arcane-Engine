@@ -38,6 +38,7 @@ struct SpotLight {
 
 	float intensity;
 	vec3 lightColour;
+	float attenuationRadius;
 
 	float cutOff;
 	float outerCutOff;
@@ -225,11 +226,17 @@ vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float 
 		vec3 halfway = normalize(fragToView + fragToLight);
 		float fragToLightDistance = length(spotLights[i].position - fragPos);
 
+		// Attenuation calculation (based on Epic's UE4 falloff model)
+		float d = fragToLightDistance / spotLights[i].attenuationRadius;
+		float d2 = d * d;
+		float d4 = d2 * d2;
+		float falloffNumerator = clamp(1.0 - d4, 0.0, 1.0);
+
 		// Check if it is in the spotlight's circle
 		float theta = dot(normalize(spotLights[i].direction), -fragToLight);
 		float difference = spotLights[i].cutOff - spotLights[i].outerCutOff;
 		float intensity = clamp((theta - spotLights[i].outerCutOff) / difference, 0.0, 1.0);
-		float attenuation = intensity * (1.0 / (fragToLightDistance * fragToLightDistance));
+		float attenuation = intensity * (falloffNumerator * falloffNumerator) / ((fragToLightDistance * fragToLightDistance) + 1.0);
 		vec3 radiance = spotLights[i].lightColour * attenuation;
 
 		// Cook-Torrance Specular BRDF calculations
@@ -305,7 +312,7 @@ float CalculateShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
 	float currentDepth = depthmapCoords.z;
 
 	// Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
-	float shadowBias = max(0.001, 0.003 * (1.0 - dot(normal, fragToLight)));
+	float shadowBias = 0.003;
 
 	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows
 	vec2 texelSize = 1.0 / textureSize(shadowmap, 0);

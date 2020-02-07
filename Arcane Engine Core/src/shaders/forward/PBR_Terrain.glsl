@@ -10,13 +10,11 @@ layout (location = 4) in vec3 bitangent;
 out mat3 TBN;
 out vec2 TexCoords;
 out vec3 FragPos;
-out vec4 FragPosLightClipSpace;
 
 uniform mat3 normalMatrix;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
-uniform mat4 lightSpaceViewProjectionMatrix;
 
 void main() {
 	// Use the normal matrix to maintain the orthogonal property of a vector when it is scaled non-uniformly
@@ -26,7 +24,6 @@ void main() {
 	TBN = mat3(T, B, N);
 
 	FragPos = vec3(model * vec4(position, 1.0f));
-	FragPosLightClipSpace = lightSpaceViewProjectionMatrix * vec4(FragPos, 1.0);
 	TexCoords = texCoords;
 
 	gl_Position = projection * view * vec4(FragPos, 1.0);
@@ -72,23 +69,28 @@ struct Material {
 struct DirLight {
 	vec3 direction;
 
+	float intensity;
 	vec3 lightColour;
 };
 
 struct PointLight {
 	vec3 position;
 
+	float intensity;
 	vec3 lightColour;
+	float attenuationRadius;
 };
 
 struct SpotLight {
 	vec3 position;
 	vec3 direction;
 
+	float intensity;
+	vec3 lightColour;
+	float attenuationRadius;
+
 	float cutOff;
 	float outerCutOff;
-
-	vec3 lightColour;
 };
 
 #define MAX_DIR_LIGHTS 5
@@ -99,7 +101,6 @@ const float PI = 3.14159265359;
 in mat3 TBN;
 in vec2 TexCoords;
 in vec3 FragPos;
-in vec4 FragPosLightClipSpace;
 
 out vec4 color;
 
@@ -111,6 +112,7 @@ uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 uniform Material material;
 uniform vec3 viewPos;
+uniform mat4 lightSpaceViewProjectionMatrix;
 
 // Light radiance calculations
 vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity);
@@ -227,7 +229,13 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 		vec3 fragToLight = normalize(pointLights[i].position - FragPos);
 		vec3 halfway = normalize(fragToView + fragToLight);
 		float fragToLightDistance = length(pointLights[i].position - FragPos);
-		float attenuation = 1.0 / (fragToLightDistance * fragToLightDistance);
+
+		// Attenuation calculation (based on Epic's UE4 falloff model)
+		float d = fragToLightDistance / pointLights[i].attenuationRadius;
+		float d2 = d * d;
+		float d4 = d2 * d2;
+		float falloffNumerator = clamp(1.0 - d4, 0.0, 1.0);
+		float attenuation = (falloffNumerator * falloffNumerator) / ((fragToLightDistance * fragToLightDistance) + 1.0);
 		vec3 radiance = pointLights[i].lightColour * attenuation;
 
 		// Cook-Torrance Specular BRDF calculations
@@ -264,11 +272,17 @@ vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float 
 		vec3 halfway = normalize(fragToView + fragToLight);
 		float fragToLightDistance = length(spotLights[i].position - FragPos);
 
+		// Attenuation calculation (based on Epic's UE4 falloff model)
+		float d = fragToLightDistance / spotLights[i].attenuationRadius;
+		float d2 = d * d;
+		float d4 = d2 * d2;
+		float falloffNumerator = clamp(1.0 - d4, 0.0, 1.0);
+
 		// Check if it is in the spotlight's circle
 		float theta = dot(normalize(spotLights[i].direction), -fragToLight);
 		float difference = spotLights[i].cutOff - spotLights[i].outerCutOff;
 		float intensity = clamp((theta - spotLights[i].outerCutOff) / difference, 0.0, 1.0);
-		float attenuation = intensity * (1.0 / (fragToLightDistance * fragToLightDistance));
+		float attenuation = intensity * (falloffNumerator * falloffNumerator) / ((fragToLightDistance * fragToLightDistance) + 1.0);
 		vec3 radiance = spotLights[i].lightColour * attenuation;
 
 		// Cook-Torrance Specular BRDF calculations
@@ -342,14 +356,15 @@ vec3 UnpackNormal(vec3 textureNormal) {
 
 
 float CalculateShadow(vec3 normal, vec3 fragToLight) {
-	vec3 ndcCoords = FragPosLightClipSpace.xyz / FragPosLightClipSpace.w;
+	vec4 fragPosLightClipSpace = lightSpaceViewProjectionMatrix * vec4(FragPos, 1.0);
+	vec3 ndcCoords = fragPosLightClipSpace.xyz / fragPosLightClipSpace.w;
 	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
 
 	float shadow = 0.0;
 	float currentDepth = depthmapCoords.z;
 
 	// Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
-	float shadowBias = max(0.001, 0.003 * (1.0 - dot(normal, fragToLight)));
+	float shadowBias = 0.003;
 
 	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows
 	vec2 texelSize = 1.0 / textureSize(shadowmap, 0);

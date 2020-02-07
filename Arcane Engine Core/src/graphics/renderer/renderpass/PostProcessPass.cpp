@@ -191,50 +191,10 @@ namespace arcane {
 		if (DebugPane::getWireframeMode())
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #endif
-
-		// Bloom Bright Pass
-		glViewport(0, 0, m_BrightPassRenderTarget.getWidth(), m_BrightPassRenderTarget.getHeight());
-		m_BrightPassRenderTarget.bind();
-		m_BrightPassRenderTarget.clear();
-		glCache->switchShader(m_BloomBrightPassShader);
-		m_BloomBrightPassShader->setUniform("threshold", m_BloomThreshold);
-		m_BloomBrightPassShader->setUniform("scene_capture", 0);
-		target->getColourTexture()->bind(0);
-		modelRenderer->NDC_Plane.Draw();
-
-		// Bloom Gaussian Blur Pass
-		// As the render target gets smaller, we can increase the separable (two-pass) Gaussian kernel size
-		glCache->switchShader(m_BloomGaussianBlurShader);
-		glViewport(0, 0, m_FullRenderTarget.getWidth(), m_FullRenderTarget.getHeight());
-		m_FullRenderTarget.bind();
-		m_FullRenderTarget.clear();
-		m_BloomGaussianBlurShader->setUniform("isVerticalBlur", true);
-		m_BloomGaussianBlurShader->setUniform("read_offset", glm::vec2(1.0f / (float)m_FullRenderTarget.getWidth(), 1.0f / (float)m_FullRenderTarget.getHeight()));
-		m_BloomGaussianBlurShader->setUniform("bloom_texture", 0);
-		m_BrightPassRenderTarget.getColourTexture()->bind(0);
-		modelRenderer->NDC_Plane.Draw();
-
-		m_BloomFullRenderTarget.bind();
-		m_BloomFullRenderTarget.clear();
-		m_BloomGaussianBlurShader->setUniform("isVerticalBlur", false);
-		m_BloomGaussianBlurShader->setUniform("read_offset", glm::vec2(1.0f / (float)m_BloomFullRenderTarget.getWidth(), 1.0f / (float)m_BloomFullRenderTarget.getHeight()));
-		m_BloomGaussianBlurShader->setUniform("bloom_texture", 0);
-		m_FullRenderTarget.getColourTexture()->bind(0);
-		modelRenderer->NDC_Plane.Draw();
-
-		// Combine our bloom texture with the scene
-		glCache->switchShader(m_BloomComposite);
-		glViewport(0, 0, m_FullRenderTarget.getWidth(), m_FullRenderTarget.getHeight());
-		m_FullRenderTarget.bind();
-		m_BloomComposite->setUniform("strength", 1.0f);
-		m_BloomComposite->setUniform("scene_texture", 0);
-		m_BloomComposite->setUniform("bloom_texture", 1);
-		target->getColourTexture()->bind(0);
-		m_BloomFullRenderTarget.getColourTexture()->bind(1);
-		modelRenderer->NDC_Plane.Draw();
+		//Texture *sceneWithBloom = bloom(target->getColourTexture());
 
 		// Set post process settings and convert our scene from HDR (linear) -> SDR (sRGB)
-		tonemapGammaCorrect(&m_TonemappedNonLinearTarget, m_FullRenderTarget.getColourTexture());
+		tonemapGammaCorrect(&m_TonemappedNonLinearTarget, target->getColourTexture());
 
 		// Chromatic Aberration
 		chromaticAberration(&m_FullRenderTarget, m_TonemappedNonLinearTarget.getColourTexture());
@@ -356,6 +316,51 @@ namespace arcane {
 		texture->bind(0);
 
 		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+	}
+
+	Texture* PostProcessPass::bloom(Texture *hdrSceneTexture) {
+		// Bloom Bright Pass
+		glViewport(0, 0, m_BrightPassRenderTarget.getWidth(), m_BrightPassRenderTarget.getHeight());
+		m_BrightPassRenderTarget.bind();
+		m_BrightPassRenderTarget.clear();
+		m_GLCache->switchShader(m_BloomBrightPassShader);
+		m_BloomBrightPassShader->setUniform("threshold", m_BloomThreshold);
+		m_BloomBrightPassShader->setUniform("scene_capture", 0);
+		hdrSceneTexture->bind(0);
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+
+		// Bloom Gaussian Blur Pass
+		// As the render target gets smaller, we can increase the separable (two-pass) Gaussian kernel size
+		m_GLCache->switchShader(m_BloomGaussianBlurShader);
+		glViewport(0, 0, m_FullRenderTarget.getWidth(), m_FullRenderTarget.getHeight());
+		m_FullRenderTarget.bind();
+		m_FullRenderTarget.clear();
+		m_BloomGaussianBlurShader->setUniform("isVerticalBlur", true);
+		m_BloomGaussianBlurShader->setUniform("read_offset", glm::vec2(1.0f / (float)m_FullRenderTarget.getWidth(), 1.0f / (float)m_FullRenderTarget.getHeight()));
+		m_BloomGaussianBlurShader->setUniform("bloom_texture", 0);
+		m_BrightPassRenderTarget.getColourTexture()->bind(0);
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+
+		m_BloomFullRenderTarget.bind();
+		m_BloomFullRenderTarget.clear();
+		m_BloomGaussianBlurShader->setUniform("isVerticalBlur", false);
+		m_BloomGaussianBlurShader->setUniform("read_offset", glm::vec2(1.0f / (float)m_BloomFullRenderTarget.getWidth(), 1.0f / (float)m_BloomFullRenderTarget.getHeight()));
+		m_BloomGaussianBlurShader->setUniform("bloom_texture", 0);
+		m_FullRenderTarget.getColourTexture()->bind(0);
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+
+		// Combine our bloom texture with the scene
+		m_GLCache->switchShader(m_BloomComposite);
+		glViewport(0, 0, m_FullRenderTarget.getWidth(), m_FullRenderTarget.getHeight());
+		m_FullRenderTarget.bind();
+		m_BloomComposite->setUniform("strength", 1.0f);
+		m_BloomComposite->setUniform("scene_texture", 0);
+		m_BloomComposite->setUniform("bloom_texture", 1);
+		hdrSceneTexture->bind(0);
+		m_BloomFullRenderTarget.getColourTexture()->bind(1);
+		m_ActiveScene->getModelRenderer()->NDC_Plane.Draw();
+
+		return m_FullRenderTarget.getColourTexture();
 	}
 
 }
