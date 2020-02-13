@@ -195,20 +195,7 @@ namespace arcane {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #endif
 		//Texture *sceneWithBloom = bloom(target->getColourTexture());
-
-		/*
-		// Set post process settings and convert our scene from HDR (linear) -> SDR (sRGB)
-		tonemapGammaCorrect(&m_TonemappedNonLinearTarget, target->getColourTexture());
-
-		// Chromatic Aberration
-		chromaticAberration(&m_FullRenderTarget, m_TonemappedNonLinearTarget.getColourTexture());
-
-		// Film Grain
-		filmGrain(&m_BloomFullRenderTarget, m_FullRenderTarget.getColourTexture());
-
-		// Vignette
-		vignette(&m_TonemappedNonLinearTarget, m_BloomFullRenderTarget.getColourTexture());
-		*/
+		//tonemapGammaCorrect(&m_TonemappedNonLinearTarget, sceneWithBloom);
 
 		// Convert our scene from HDR (linear) -> SDR (sRGB)
 		tonemapGammaCorrect(&m_TonemappedNonLinearTarget, inputFramebuffer->getColourTexture());
