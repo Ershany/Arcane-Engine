@@ -4,7 +4,7 @@ Arcane Engine is a real-time, physically based renderer built with OpenGL. A lar
 ![Arcane Logo](https://user-images.githubusercontent.com/11170417/79673959-8a210800-81ac-11ea-9474-3a44ee664152.png)
 
 # Render Examples
-[![Tech Reel 2019](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=sc02q6MXvVo)
+[![Tech Reel 2019](https://img.youtube.com/vi/sc02q6MXvVo/0.jpg)](https://www.youtube.com/watch?v=sc02q6MXvVo)
 
 # Features
 
@@ -42,12 +42,11 @@ Arcane Engine is a real-time, physically based renderer built with OpenGL. A lar
 - GPU Pro
 
 ## Development
-If you want to see what I am currently working on, check out Arcane's roadmap on Trello:
-
-https://trello.com/b/WzD2bYCD/arcane-engine
+If you want to see what I am currently working on, check out Arcane's roadmap on [Trello](
+https://trello.com/b/WzD2bYCD/arcane-engine)
 
 I plan on adding many different features to the forward & deferred renderers. Here are some of the few things I am really looking forward to adding:
-l. Vulkan Support
+1. Vulkan Support
 1. Decals
 1. Particles
 1. SSR
@@ -56,7 +55,7 @@ l. Vulkan Support
 1. Virtual Texture System (Terrain)
 
 ## Contributing
-1. Fork it (https://github.com/Ershany/Arcane-Engine.git)
+1. [Fork it](https://github.com/Ershany/Arcane-Engine.git)
 1. Create your feature branch (`git checkout -b new-feature-branch`)
 1. Commit your changes (`git commit -m "A description for your feature"`)
 1. Push to the branch (`git push origin new-feature-branch`)
