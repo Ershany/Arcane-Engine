@@ -1,11 +1,10 @@
 # Arcane-Engine
 Arcane Engine is a real-time, physically based renderer built with OpenGL. A large focus of this project is to implement modern real-time graphical effects, while also making it easy to read and understand. Arcane supports forward and deferred rendering, by using the benefits of each to its advantage.
 
-![arcaneengine](https://user-images.githubusercontent.com/11170417/27188219-75d8814e-51bb-11e7-907b-1be35da8de38.png)
+![Arcane Logo](https://user-images.githubusercontent.com/11170417/79673820-1c281100-81ab-11ea-918b-a243c0bdc0a1.png)
 
-# Render Samples
-![sponza](https://user-images.githubusercontent.com/11170417/62843504-41fa2f00-bc88-11e9-9e9f-8b27d2873298.png)
-![ArcanePBR+IBL](https://user-images.githubusercontent.com/11170417/58596408-f7007c00-8241-11e9-895c-cab452548672.png)
+# Render Examples
+[![Tech Reel 2019](https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=sc02q6MXvVo)
 
 # Features
 
@@ -48,6 +47,7 @@ If you want to see what I am currently working on, check out Arcane's roadmap on
 https://trello.com/b/WzD2bYCD/arcane-engine
 
 I plan on adding many different features to the forward & deferred renderers. Here are some of the few things I am really looking forward to adding:
+l. Vulkan Support
 1. Decals
 1. Particles
 1. SSR
