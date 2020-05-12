@@ -42,8 +42,9 @@ Arcane Engine is a real-time, physically based renderer built with OpenGL. A lar
 - GPU Pro
 
 ## Development
-If you want to see what I am currently working on, check out Arcane's roadmap on [Trello](
-https://trello.com/b/WzD2bYCD/arcane-engine)
+If you want to see what I am currently working on check out Arcane's roadmap:
+- [Rendering Trello](https://trello.com/b/WzD2bYCD/arcane-rendering)
+- [Engine Trello](https://trello.com/b/Giv16bRX/arcane-engine)
 
 I plan on adding many different features to the forward & deferred renderers. Here are some of the few things I am really looking forward to adding:
 1. Vulkan Support
