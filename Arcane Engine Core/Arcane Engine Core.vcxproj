@@ -85,6 +85,7 @@
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\WaterPass.cpp" />
     <ClCompile Include="src\input\JoystickInputData.cpp" />
     <ClCompile Include="src\graphics\camera\FPSCamera.cpp" />
     <ClCompile Include="src\graphics\camera\CubemapCamera.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\WaterPass.h" />
     <ClInclude Include="src\input\JoystickInputData.h" />
     <ClInclude Include="src\Defs.h" />
     <ClInclude Include="src\graphics\camera\FPSCamera.h" />
@@ -252,6 +254,7 @@
     <None Include="src\shaders\spotlight.frag" />
     <None Include="src\shaders\post_process\ssao\SSAO.glsl" />
     <None Include="src\shaders\post_process\ssao\SSAO_Blur.glsl" />
+    <None Include="src\shaders\Water.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

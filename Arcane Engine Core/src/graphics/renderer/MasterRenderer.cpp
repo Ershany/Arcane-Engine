@@ -7,7 +7,7 @@ namespace arcane
 {
 
 	MasterRenderer::MasterRenderer(Scene3D *scene) : m_ActiveScene(scene),
-		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_ForwardLightingPass(scene, true), m_EnvironmentProbePass(scene),
+		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_WaterPass(scene), m_ForwardLightingPass(scene, true), m_EnvironmentProbePass(scene),
 		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene), m_PostGBufferForwardPass(scene)
 	{
 		m_GLCache = GLCache::getInstance();
@@ -35,7 +35,8 @@ namespace arcane
 #endif
 
 		LightingPassOutput lightingOutput = m_ForwardLightingPass.executeLightingPass(shadowmapOutput, m_ActiveScene->getCamera(), false, true);
-		m_PostProcessPass.executePostProcessPass(lightingOutput.outputFramebuffer);
+		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(lightingOutput, m_ActiveScene->getCamera());
+		m_PostProcessPass.executePostProcessPass(waterOutput.outputFramebuffer);
 
 
 		/* Deferred Rendering */
@@ -54,7 +55,8 @@ namespace arcane
 		PreLightingPassOutput preLightingOutput = m_PostProcessPass.executePreLightingPass(geometryOutput, m_ActiveScene->getCamera());
 		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executeLightingPass(shadowmapOutput, geometryOutput, preLightingOutput, m_ActiveScene->getCamera(), true);
 		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.executeLightingPass(shadowmapOutput, deferredLightingOutput, m_ActiveScene->getCamera(), false, true);
-		m_PostProcessPass.executePostProcessPass(postGBufferForward.outputFramebuffer);
+		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(postGBufferForward, m_ActiveScene->getCamera());
+		m_PostProcessPass.executePostProcessPass(waterOutput.outputFramebuffer);
 
 #endif
 	}

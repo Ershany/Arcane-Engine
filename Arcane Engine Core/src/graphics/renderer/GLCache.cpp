@@ -10,9 +10,11 @@ namespace arcane {
 		m_Blend = false;
 		m_Cull = false;
 		m_FaceToCull = GL_BACK;
-		m_Multisample = false;;
+		m_Multisample = false;
+		m_UsesClipPlane = false;
 		setDepthTest(true);
 		setFaceCull(true);
+		setClipPlane(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
 	}
 
 	GLCache::~GLCache() {
@@ -74,6 +76,18 @@ namespace arcane {
 		}
 	}
 
+	void GLCache::setUsesClipPlane(bool choice)
+	{
+		if (m_UsesClipPlane != choice)
+		{
+			m_UsesClipPlane = choice;
+			if (m_UsesClipPlane)
+				glEnable(GL_CLIP_DISTANCE0);
+			else
+				glDisable(GL_CLIP_DISTANCE0);
+		}
+	}
+
 	void GLCache::setDepthFunc(GLenum depthFunc) {
 		if (m_DepthFunc != depthFunc) {
 			m_DepthFunc = depthFunc;
@@ -121,6 +135,11 @@ namespace arcane {
 			m_FaceToCull = faceToCull;
 			glCullFace(m_FaceToCull);
 		}
+	}
+
+	void GLCache::setClipPlane(glm::vec4 clipPlane)
+	{
+		m_ActiveClipPlane = clipPlane;
 	}
 
 	void GLCache::switchShader(Shader *shader) {

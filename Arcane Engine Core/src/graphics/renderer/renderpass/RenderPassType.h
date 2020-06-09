@@ -19,6 +19,11 @@ namespace arcane {
 		Framebuffer *outputFramebuffer;
 	};
 
+	struct WaterPassOutput
+	{
+		Framebuffer *outputFramebuffer;
+	};
+
 	struct GeometryPassOutput {
 		GBuffer *outputGBuffer;
 	};

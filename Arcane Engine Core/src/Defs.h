@@ -11,7 +11,7 @@
 #define FULLSCREEN_MODE 0 // If set, window resolution is maximized to your screen resolution
 
 // Render Settings
-#define FORWARD_RENDER 0
+#define FORWARD_RENDER 1
 
 // AA Settings
 #define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering
@@ -29,7 +29,7 @@
 
 // Frustum Options
 #define NEAR_PLANE 0.3f
-#define FAR_PLANE 1500.0f
+#define FAR_PLANE 2000.0f
 
 // Shadowmap Options
 #define SHADOWMAP_RESOLUTION_X 2048
@@ -43,3 +43,10 @@
 // Parallax Options
 #define PARALLAX_MIN_STEPS 1
 #define PARALLAX_MAX_STEPS 20
+
+// Water Options
+#define WATER_REFLECTION_RESOLUTION_WIDTH 320
+#define WATER_REFLECTION_RESOLUTION_HEIGHT 180
+#define WATER_REFLECTION_SHADOW_RESOLUTION 512
+#define WATER_REFRACTION_RESOLUTION_WIDTH 1280
+#define WATER_REFRACTION_RESOLUTION_HEIGHT 720

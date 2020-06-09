@@ -192,6 +192,9 @@
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\renderer\renderpass\WaterPass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\Window.h">
@@ -389,6 +392,9 @@
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\renderer\renderpass\WaterPass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\shaders\spotlight.frag" />
@@ -418,6 +424,7 @@
     <None Include="src\shaders\post_process\film_grain\FilmGrain.glsl" />
     <None Include="src\shaders\post_process\smaa\SMAA.glsl" />
     <None Include="src\shaders\post_process\bloom\Composite.glsl" />
+    <None Include="src\shaders\Water.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\container.jpg">

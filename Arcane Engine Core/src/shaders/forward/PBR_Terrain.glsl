@@ -11,6 +11,9 @@ out mat3 TBN;
 out vec2 TexCoords;
 out vec3 FragPos;
 
+uniform bool usesClipPlane;
+uniform vec4 clipPlane;
+
 uniform mat3 normalMatrix;
 uniform mat4 model;
 uniform mat4 view;
@@ -26,6 +29,9 @@ void main() {
 	FragPos = vec3(model * vec4(position, 1.0f));
 	TexCoords = texCoords;
 
+	if (usesClipPlane) {
+		gl_ClipDistance[0] = dot(vec4(FragPos, 1.0), clipPlane);
+	}
 	gl_Position = projection * view * vec4(FragPos, 1.0);
 }
 

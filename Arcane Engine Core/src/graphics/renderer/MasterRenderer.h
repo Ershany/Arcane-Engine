@@ -5,6 +5,7 @@
 #include <graphics/renderer/renderpass/deferred/PostGBufferForwardPass.h>
 #include <graphics/renderer/renderpass/forward/ForwardProbePass.h>
 #include <graphics/renderer/renderpass/forward/ForwardLightingPass.h>
+#include <graphics/renderer/renderpass/WaterPass.h>
 #include <graphics/renderer/renderpass/PostProcessPass.h>
 #include <graphics/renderer/renderpass/ShadowmapPass.h>
 #include <scene/Scene3D.h>
@@ -27,6 +28,7 @@ namespace arcane
 		// Other passes
 		ShadowmapPass m_ShadowmapPass;
 		PostProcessPass m_PostProcessPass;
+		WaterPass m_WaterPass;
 
 		// Forward passes
 		ForwardLightingPass m_ForwardLightingPass;

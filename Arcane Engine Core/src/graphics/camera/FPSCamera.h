@@ -30,15 +30,17 @@ namespace arcane {
 
 		void processInput(float deltaTime);
 
+		inline virtual void setPosition(const glm::vec3 &position) override { m_Position = position; };
+		virtual void invertPitch() override;
+
 		// Getters
 		inline float getYaw() const { return m_CurrentYaw; }
 		inline float getPitch() const { return m_CurrentPitch; }
 		inline float getMovementSpeed() const { return m_CurrentMovementSpeed; }
 		inline float getFOV() const { return m_CurrentFOV; }
 		inline virtual const glm::vec3& getPosition() const override { return m_Position; }
-		inline virtual const glm::vec3& getFront() const { return m_Front; }
-		inline virtual const glm::vec3& getUp() const { return m_Up; }
-		inline virtual void setPosition(const glm::vec3 &position) { m_Position = position; };
+		inline virtual const glm::vec3& getFront() const override { return m_Front; }
+		inline virtual const glm::vec3& getUp() const override { return m_Up; }
 	private:
 		void updateCameraVectors();
 		void processCameraMovement(glm::vec3 &direction, float deltaTime);

@@ -9,7 +9,7 @@ namespace arcane {
 
 	void DynamicLightManager::init() {
 		// Setup some lights for the scene
-		DirectionalLight directionalLight1(2.0f, glm::vec3(3.25f, 3.25f, 3.25f), glm::vec3(-0.25f, -1.0f, -0.25f));
+		DirectionalLight directionalLight1(2.0f, glm::vec3(3.25f, 3.25f, 3.25f), glm::vec3(-0.1f, -1.0f, -0.1f));
 		directionalLight1.m_IsStatic = true;
 		addDirectionalLight(directionalLight1);
 
