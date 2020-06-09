@@ -1,11 +1,10 @@
 # Arcane-Engine
 Arcane Engine is a real-time, physically based renderer built with OpenGL. A large focus of this project is to implement modern real-time graphical effects, while also making it easy to read and understand. Arcane supports forward and deferred rendering, by using the benefits of each to its advantage.
 
-![arcaneengine](https://user-images.githubusercontent.com/11170417/27188219-75d8814e-51bb-11e7-907b-1be35da8de38.png)
+![Arcane Logo](https://user-images.githubusercontent.com/11170417/79674060-a3768400-81ad-11ea-9011-a55b27c001dd.png)
 
-# Render Samples
-![sponza](https://user-images.githubusercontent.com/11170417/62843504-41fa2f00-bc88-11e9-9e9f-8b27d2873298.png)
-![ArcanePBR+IBL](https://user-images.githubusercontent.com/11170417/58596408-f7007c00-8241-11e9-895c-cab452548672.png)
+# Render Examples
+[Tech Reel 2019](https://www.youtube.com/watch?v=sc02q6MXvVo)
 
 # Features
 
@@ -43,11 +42,12 @@ Arcane Engine is a real-time, physically based renderer built with OpenGL. A lar
 - GPU Pro
 
 ## Development
-If you want to see what I am currently working on, check out Arcane's roadmap on Trello:
-
-https://trello.com/b/WzD2bYCD/arcane-engine
+If you want to see what I am currently working on check out Arcane's roadmap:
+- [Rendering Trello](https://trello.com/b/WzD2bYCD/arcane-rendering)
+- [Engine Trello](https://trello.com/b/Giv16bRX/arcane-engine)
 
 I plan on adding many different features to the forward & deferred renderers. Here are some of the few things I am really looking forward to adding:
+1. Vulkan Support
 1. Decals
 1. Particles
 1. SSR
@@ -56,7 +56,7 @@ I plan on adding many different features to the forward & deferred renderers. He
 1. Virtual Texture System (Terrain)
 
 ## Contributing
-1. Fork it (https://github.com/Ershany/Arcane-Engine.git)
+1. [Fork it](https://github.com/Ershany/Arcane-Engine.git)
 1. Create your feature branch (`git checkout -b new-feature-branch`)
 1. Commit your changes (`git commit -m "A description for your feature"`)
 1. Push to the branch (`git push origin new-feature-branch`)
