@@ -4,6 +4,7 @@
 layout (location = 0) in vec3 position;
 layout (location = 2) in vec2 texCoords;
 
+out vec3 worldFragPos;
 out vec4 clipSpace;
 out vec2 planeTexCoords;
 out vec3 fragToView;
@@ -15,10 +16,10 @@ uniform mat4 view;
 uniform mat4 projection;
 
 void main() {
-	vec4 worldPos = model * vec4(position, 1.0);
-	clipSpace = projection * view *worldPos;
+	worldFragPos = vec3(model * vec4(position, 1.0));
+	clipSpace = projection * view * vec4(worldFragPos, 1.0);
 	planeTexCoords = texCoords * waveTiling;
-	fragToView = viewPos - vec3(worldPos);
+	fragToView = viewPos - worldFragPos;
 
 	gl_Position = clipSpace;
 }
@@ -60,6 +61,7 @@ struct SpotLight {
 	float outerCutOff;
 };
 
+in vec3 worldFragPos;
 in vec4 clipSpace;
 in vec2 planeTexCoords;
 in vec3 normal;
@@ -78,6 +80,9 @@ uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 
+uniform mat4 viewInverse;
+uniform mat4 projectionInverse;
+
 uniform bool clearWater;
 uniform vec3 waterAlbedo;
 uniform float albedoPower;
@@ -90,6 +95,9 @@ const float reflectivity = 0.6f;
 const float waterNormalSmoothing = 1.0f;
 const float dampeningEffectStrength = 0.1f;
 
+// Function Declarations
+vec3 WorldPosFromDepth(vec2 texCoords);
+
 void main() {
 	vec2 ndc = clipSpace.xy / clipSpace.w;
 	vec2 textureCoords = ndc * 0.5 + 0.5;
@@ -99,12 +107,9 @@ void main() {
 
 	float near = nearFarPlaneValues.x;
 	float far = nearFarPlaneValues.y;
-	float depth = texture(refractionDepthTexture, refractCoords).r;
-	float cameraToSurfaceFloorDistance = 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
-	depth = gl_FragCoord.z;
-	float cameraToWaterDistance = 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
-	float waterDepth = cameraToSurfaceFloorDistance - cameraToWaterDistance;
-	float dampeningEffect = clamp(waterDepth * dampeningEffectStrength, 0.0, 1.0);
+	vec3 refractedSurface = WorldPosFromDepth(refractCoords);
+	float waterDepthAtRefractedSurface = worldFragPos.y - refractedSurface.y;
+	float dampeningEffect = clamp(waterDepthAtRefractedSurface * dampeningEffectStrength, 0.0, 1.0);
 	float dampeningEffect2 = dampeningEffect * dampeningEffect;
 
 	// Apply offset to the sampled coords for the refracted & reflected texture
@@ -151,4 +156,15 @@ void main() {
 	FragColour = mix(FragColour, vec4(waterAlbedo, 1.0), albedoPower) + vec4(specHighlight, 0.0);
 	FragColour.a = dampeningEffect;
 	//FragColour = vec4(dampeningEffect, dampeningEffect, dampeningEffect, 1.0);
+}
+
+vec3 WorldPosFromDepth(vec2 texCoords) {
+	float z = 2.0 * texture(refractionDepthTexture, texCoords).r - 1.0; // [-1, 1]
+	vec4 clipSpacePos = vec4(texCoords * 2.0 - 1.0 , z, 1.0);
+	vec4 viewSpacePos = projectionInverse * clipSpacePos;
+	viewSpacePos /= viewSpacePos.w; // Perspective division
+
+	vec4 worldSpacePos = viewInverse * viewSpacePos;
+
+	return worldSpacePos.xyz;
 }

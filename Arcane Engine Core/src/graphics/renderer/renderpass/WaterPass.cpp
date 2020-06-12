@@ -43,9 +43,8 @@ namespace arcane
 		m_GLCache->setUsesClipPlane(true);
 
 		// Generate Reflection framebuffer and render to it
-		const float waterEpsilon = 0.0f;
 		{
-			m_GLCache->setClipPlane(glm::vec4(0.0f, 1.0f, 0.0f, -m_WaterPos.y + waterEpsilon));
+			m_GLCache->setClipPlane(glm::vec4(0.0f, 1.0f, 0.0f, -m_WaterPos.y));
 			float distance = 2 * (camera->getPosition().y - m_WaterPos.y);
 			camera->setPosition(camera->getPosition() - glm::vec3(0.0f, distance, 0.0f));
 			camera->invertPitch();
@@ -98,13 +97,15 @@ namespace arcane
 		m_WaveMoveFactor = static_cast<float>(std::fmod((double)m_WaveMoveFactor, 1.0));
 		
 		lightManager->bindLightingUniforms(m_WaterShader);
+		m_WaterShader->setUniform("view", camera->getViewMatrix());
+		m_WaterShader->setUniform("projection", camera->getProjectionMatrix());
+		m_WaterShader->setUniform("viewInverse", glm::inverse(camera->getViewMatrix()));
+		m_WaterShader->setUniform("projectionInverse", glm::inverse(camera->getProjectionMatrix()));
 		m_WaterShader->setUniform("clearWater", m_EnableClearWater);
 		m_WaterShader->setUniform("viewPos", camera->getPosition());
 		m_WaterShader->setUniform("waterAlbedo", m_WaterAlbedo);
 		m_WaterShader->setUniform("albedoPower", m_AlbedoPower);
 		m_WaterShader->setUniform("model", model);
-		m_WaterShader->setUniform("view", camera->getViewMatrix());
-		m_WaterShader->setUniform("projection", camera->getProjectionMatrix());
 		m_WaterShader->setUniform("waveTiling", m_WaterScale * 0.01f);
 		m_WaterShader->setUniform("waveMoveFactor", m_WaveMoveFactor);
 		m_WaterShader->setUniform("nearFarPlaneValues", glm::vec2(NEAR_PLANE, FAR_PLANE));

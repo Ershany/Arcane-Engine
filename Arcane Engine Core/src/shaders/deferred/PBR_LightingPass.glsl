@@ -333,7 +333,6 @@ vec3 WorldPosFromDepth() {
 	float z = 2.0 * texture(depthTexture, TexCoords).r - 1.0; // [-1, 1]
 	vec4 clipSpacePos = vec4(TexCoords * 2.0 - 1.0 , z, 1.0);
 	vec4 viewSpacePos = projectionInverse * clipSpacePos;
-
 	viewSpacePos /= viewSpacePos.w; // Perspective division
 
 	vec4 worldSpacePos = viewInverse * viewSpacePos;
