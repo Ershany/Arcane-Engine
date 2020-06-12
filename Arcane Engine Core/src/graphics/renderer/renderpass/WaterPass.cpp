@@ -60,8 +60,9 @@ namespace arcane
 		}
 
 		// Generate Refraction framebuffer and render to it
+		float refractionBias = 2.0f; // Should scale with dampeningEffectStrength
 		{
-			m_GLCache->setClipPlane(glm::vec4(0.0f, -1.0f, 0.0f, m_WaterPos.y));
+			m_GLCache->setClipPlane(glm::vec4(0.0f, -1.0f, 0.0f, m_WaterPos.y + refractionBias));
 
 			ShadowmapPass shadowPass(m_ActiveScene, &m_SceneShadowFramebuffer);
 			ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneRefractionFramebuffer);
