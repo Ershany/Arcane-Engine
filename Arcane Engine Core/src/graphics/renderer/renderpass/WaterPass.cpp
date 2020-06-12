@@ -83,8 +83,7 @@ namespace arcane
 			m_GLCache->setMultisample(false);
 		}
 		m_GLCache->setDepthTest(true);
-		m_GLCache->setBlend(true);
-		m_GLCache->setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		m_GLCache->setBlend(false);
 		m_GLCache->setFaceCull(true);
 		m_GLCache->setCullFace(GL_BACK);
 

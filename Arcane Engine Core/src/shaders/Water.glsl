@@ -154,7 +154,6 @@ void main() {
 	// Finally combine results for the pixel
 	FragColour = mix(reflectedColour, refractedColour, fresnel); // Should be fresnel value
 	FragColour = mix(FragColour, vec4(waterAlbedo, 1.0), albedoPower) + vec4(specHighlight, 0.0);
-	FragColour.a = dampeningEffect;
 	//FragColour = vec4(dampeningEffect, dampeningEffect, dampeningEffect, 1.0);
 }
 
