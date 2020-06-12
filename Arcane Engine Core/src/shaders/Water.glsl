@@ -88,7 +88,7 @@ const float waveStrength = 0.02f;
 const float shineDamper = 20.0f;
 const float reflectivity = 0.6f;
 const float waterNormalSmoothing = 1.0f;
-const float dampeningEffectStrength = 20.0f;
+const float dampeningEffectStrength = 0.1f;
 
 void main() {
 	vec2 ndc = clipSpace.xy / clipSpace.w;
@@ -104,7 +104,8 @@ void main() {
 	depth = gl_FragCoord.z;
 	float cameraToWaterDistance = 2.0 * near * far / (far + near - (2.0 * depth - 1.0) * (far - near));
 	float waterDepth = cameraToSurfaceFloorDistance - cameraToWaterDistance;
-	float dampeningEffect = clamp(waterDepth / dampeningEffectStrength, 0.0, 1.0);
+	float dampeningEffect = clamp(waterDepth * dampeningEffectStrength, 0.0, 1.0);
+	float dampeningEffect2 = dampeningEffect * dampeningEffect;
 
 	// Apply offset to the sampled coords for the refracted & reflected texture
 	vec2 distortion;
@@ -116,13 +117,13 @@ void main() {
 	else {
 		distortion = (texture(dudvWaveTexture, vec2(planeTexCoords.x + waveMoveFactor, planeTexCoords.y)).rg * 2.0 - 1.0) * 0.1; // Unpack the dudv map
 		distortion = planeTexCoords + vec2(distortion.x, distortion.y + waveMoveFactor);
-		totalDistortion = (texture(dudvWaveTexture, distortion).rg * 2.0 - 1.0) * waveStrength * dampeningEffect; // Unpack the dudv map and multiply by strength
+		totalDistortion = (texture(dudvWaveTexture, distortion).rg * 2.0 - 1.0) * waveStrength * dampeningEffect2;
 	}
 
 	reflectCoords += totalDistortion;
-	reflectCoords = clamp(reflectCoords, 0.0, 1.0);
+	reflectCoords = clamp(reflectCoords, 0.001, 0.999);
 	refractCoords += totalDistortion;
-	refractCoords = clamp(refractCoords, 0.0, 1.0);
+	refractCoords = clamp(refractCoords, 0.001, 0.999);
 	vec4 reflectedColour = texture(reflectionTexture, reflectCoords);
 	vec4 refractedColour = texture(refractionTexture, refractCoords);
 
@@ -143,10 +144,11 @@ void main() {
 	vec3 reflectedVec = reflect(normalize(dirLights[0].direction), normal);
 	float specular = max(dot(reflectedVec, viewVec), 0.0);
 	specular = pow(specular, shineDamper);
-	vec3 specHighlight = dirLights[0].lightColour * specular * reflectivity * dampeningEffect;
+	vec3 specHighlight = dirLights[0].lightColour * specular * reflectivity * dampeningEffect2;
 
 	// Finally combine results for the pixel
-	FragColour = mix(reflectedColour, refractedColour, fresnel);
+	FragColour = mix(reflectedColour, refractedColour, fresnel); // Should be fresnel value
 	FragColour = mix(FragColour, vec4(waterAlbedo, 1.0), albedoPower) + vec4(specHighlight, 0.0);
 	FragColour.a = dampeningEffect;
+	//FragColour = vec4(dampeningEffect, dampeningEffect, dampeningEffect, 1.0);
 }
