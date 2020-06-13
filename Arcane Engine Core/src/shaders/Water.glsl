@@ -152,9 +152,8 @@ void main() {
 	vec3 specHighlight = dirLights[0].lightColour * specular * reflectivity * dampeningEffect2;
 
 	// Finally combine results for the pixel
-	FragColour = mix(reflectedColour, refractedColour, fresnel); // Should be fresnel value
+	FragColour = mix(reflectedColour, refractedColour, fresnel);
 	FragColour = mix(FragColour, vec4(waterAlbedo, 1.0), albedoPower) + vec4(specHighlight, 0.0);
-	//FragColour = vec4(dampeningEffect, dampeningEffect, dampeningEffect, 1.0);
 }
 
 vec3 WorldPosFromDepth(vec2 texCoords) {

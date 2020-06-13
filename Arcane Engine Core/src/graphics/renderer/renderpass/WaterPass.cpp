@@ -9,14 +9,23 @@
 namespace arcane
 {
 	WaterPass::WaterPass(Scene3D * scene) : RenderPass(scene), m_WaterEnabled(true), m_SceneShadowFramebuffer(WATER_REFLECTION_SHADOW_RESOLUTION, WATER_REFLECTION_SHADOW_RESOLUTION, false), 
-		m_SceneReflectionFramebuffer(WATER_REFLECTION_RESOLUTION_WIDTH, WATER_REFLECTION_RESOLUTION_HEIGHT, false), m_SceneRefractionFramebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false), 
-		m_WaterPos(1095.0f, 83.0f, 730.0f), m_WaterScale(600.0f), m_EnableClearWater(false), m_WaveMoveFactor(0.0f), m_WaveSpeed(0.05f), m_WaterAlbedo(0.1f, 0.9f, 0.9f), m_AlbedoPower(0.1f)
+		m_SceneRefractionFramebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false), m_WaterPos(1095.0f, 83.0f, 730.0f), m_WaterScale(600.0f), 
+		m_EnableClearWater(false), m_WaveMoveFactor(0.0f), m_WaveSpeed(0.05f), m_WaterAlbedo(0.1f, 0.9f, 0.9f), m_AlbedoPower(0.1f)
+#ifdef WATER_REFLECTION_USE_MSAA
+		, m_SceneReflectionFramebuffer(WATER_REFLECTION_RESOLUTION_WIDTH, WATER_REFLECTION_RESOLUTION_HEIGHT, true)
+		, m_ResolveFramebuffer(WATER_REFLECTION_RESOLUTION_WIDTH, WATER_REFLECTION_RESOLUTION_HEIGHT, false)
+#else
+		, m_SceneReflectionFramebuffer(WATER_REFLECTION_RESOLUTION_WIDTH, WATER_REFLECTION_RESOLUTION_HEIGHT, false)
+#endif
 	{
 		m_WaterShader = ShaderLoader::loadShader("src/shaders/Water.glsl");
 
 		m_SceneShadowFramebuffer.addDepthStencilTexture(NormalizedDepthOnly).createFramebuffer();
 		m_SceneReflectionFramebuffer.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
 		m_SceneRefractionFramebuffer.addColorTexture(FloatingPoint16).addDepthStencilTexture(NormalizedDepthOnly).createFramebuffer();
+#ifdef WATER_REFLECTION_USE_MSAA
+		m_ResolveFramebuffer.addColorTexture(FloatingPoint16).addDepthStencilRBO(NormalizedDepthOnly).createFramebuffer();
+#endif
 
 		m_WaveTexture = TextureLoader::load2DTexture(std::string("res/water/dudv.png"));
 		m_WaterNormalMap = TextureLoader::load2DTexture(std::string("res/water/normals.png"));
@@ -43,8 +52,10 @@ namespace arcane
 		m_GLCache->setUsesClipPlane(true);
 
 		// Generate Reflection framebuffer and render to it
+		Framebuffer *reflectionFramebuffer = &m_SceneReflectionFramebuffer;
+		float reflectionBias = 2.0f; // Should scale with dampeningEffectStrength
 		{
-			m_GLCache->setClipPlane(glm::vec4(0.0f, 1.0f, 0.0f, -m_WaterPos.y));
+			m_GLCache->setClipPlane(glm::vec4(0.0f, 1.0f, 0.0f, -m_WaterPos.y + reflectionBias));
 			float distance = 2 * (camera->getPosition().y - m_WaterPos.y);
 			camera->setPosition(camera->getPosition() - glm::vec3(0.0f, distance, 0.0f));
 			camera->invertPitch();
@@ -55,6 +66,12 @@ namespace arcane
 			ShadowmapPassOutput shadowpassOutput = shadowPass.generateShadowmaps(camera, false);
 			lightingPass.executeLightingPass(shadowpassOutput, camera, false, false);
 
+#ifdef WATER_REFLECTION_USE_MSAA
+			glBindFramebuffer(GL_READ_FRAMEBUFFER, m_SceneReflectionFramebuffer.getFramebuffer());
+			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_ResolveFramebuffer.getFramebuffer());
+			glBlitFramebuffer(0, 0, m_SceneReflectionFramebuffer.getWidth(), m_SceneReflectionFramebuffer.getHeight(), 0, 0, m_ResolveFramebuffer.getWidth(), m_ResolveFramebuffer.getHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+			reflectionFramebuffer = &m_ResolveFramebuffer;
+#endif
 			camera->setPosition(camera->getPosition() + glm::vec3(0.0f, distance, 0.0f));
 			camera->invertPitch();
 		}
@@ -110,7 +127,7 @@ namespace arcane
 		m_WaterShader->setUniform("waveMoveFactor", m_WaveMoveFactor);
 		m_WaterShader->setUniform("nearFarPlaneValues", glm::vec2(NEAR_PLANE, FAR_PLANE));
 		m_WaterShader->setUniform("reflectionTexture", 0);
-		m_SceneReflectionFramebuffer.getColourTexture()->bind(0);
+		reflectionFramebuffer->getColourTexture()->bind(0);
 		m_WaterShader->setUniform("refractionTexture", 1);
 		m_SceneRefractionFramebuffer.getColourTexture()->bind(1);
 		m_WaterShader->setUniform("dudvWaveTexture", 2);

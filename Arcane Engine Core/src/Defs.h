@@ -14,7 +14,7 @@
 #define FORWARD_RENDER 0
 
 // AA Settings
-#define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering
+#define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering & for water
 #define SUPERSAMPLING_FACTOR 1 // 1 means window resolution will be the render resolution
 
 // Texture Filtering Settings
@@ -45,6 +45,7 @@
 #define PARALLAX_MAX_STEPS 20
 
 // Water Options
+#define WATER_REFLECTION_USE_MSAA
 #define WATER_REFLECTION_RESOLUTION_WIDTH 640
 #define WATER_REFLECTION_RESOLUTION_HEIGHT 360
 #define WATER_REFLECTION_SHADOW_RESOLUTION 512

@@ -19,6 +19,10 @@ namespace arcane
 		bool m_WaterEnabled;
 
 		Framebuffer m_SceneShadowFramebuffer, m_SceneReflectionFramebuffer, m_SceneRefractionFramebuffer;
+#ifdef WATER_REFLECTION_USE_MSAA
+		Framebuffer m_ResolveFramebuffer;
+#endif
+
 		Shader *m_WaterShader;
 		Texture *m_WaveTexture, *m_WaterNormalMap;
 
