@@ -26,15 +26,15 @@ namespace arcane
 		ImGui::Checkbox("Enable Clear Water", s_ClearWater);
 		ImGui::Checkbox("Enable Shine", s_EnableShine);
 		ImGui::SliderFloat3("Water Albedo", glm::value_ptr(*s_WaterAlbedo), 0.0f, 1.0f);
-		ImGui::SliderFloat("Albedo Power", s_AlbedoPower, 0.0, 1.0);
-		ImGui::SliderFloat("Water Tiling", s_WaterTiling, 0.001, 1000.0);
-		ImGui::SliderFloat("Wave Speed", s_WaveSpeed, 0.0, 1.0);
-		ImGui::SliderFloat("Wave Strength", s_WaveStrength, 0.01, 0.1);
-		ImGui::SliderFloat("Shine Damper", s_ShineDamper, 1.0, 100.0);
-		ImGui::SliderFloat("Normal Smoothing", s_WaterNormalSmoothing, 1.0, 2.0);
-		ImGui::SliderFloat("Depth Dampening", s_DepthDampeningEffect, 0.01, 1.0);
-		ImGui::SliderFloat("Reflection Bias", s_ReflectionBias, 0.01, 5.0);
-		ImGui::SliderFloat("Refraction Bias", s_RefractionBias, 0.01, 5.0);
+		ImGui::SliderFloat("Albedo Power", s_AlbedoPower, 0.0f, 1.0f);
+		ImGui::SliderFloat("Water Tiling", s_WaterTiling, 0.001f, 1000.0f);
+		ImGui::SliderFloat("Wave Speed", s_WaveSpeed, 0.0f, 1.0f);
+		ImGui::SliderFloat("Wave Strength", s_WaveStrength, 0.01f, 0.1f);
+		ImGui::SliderFloat("Shine Damper", s_ShineDamper, 1.0f, 100.0f);
+		ImGui::SliderFloat("Normal Smoothing", s_WaterNormalSmoothing, 1.0f, 2.0f);
+		ImGui::SliderFloat("Depth Dampening", s_DepthDampeningEffect, 0.01f, 1.0f);
+		ImGui::SliderFloat("Reflection Bias", s_ReflectionBias, 0.01f, 5.0f);
+		ImGui::SliderFloat("Refraction Bias", s_RefractionBias, 0.01f, 5.0f);
 #endif
 	}
 
