@@ -5,6 +5,7 @@
 #include <scene/Scene3D.h>
 #include <ui/DebugPane.h>
 #include <ui/RuntimePane.h>
+#include <ui/WaterPane.h>
 #include <utils/Time.h>
 
 int main() {
@@ -18,6 +19,7 @@ int main() {
 	// Prepare the UI
 	arcane::RuntimePane runtimePane(glm::vec2(270.0f, 175.0f));
 	arcane::DebugPane debugPane(glm::vec2(270.0f, 400.0f));
+	arcane::WaterPane waterPane(glm::vec2(270.0f, 400.0f));
 
 	// Initialize the renderer
 	renderer.init();
@@ -41,10 +43,13 @@ int main() {
 		renderer.render();
 
 		// Display panes
-		arcane::Window::bind();
-		runtimePane.render();
-		debugPane.render();
-
+		if (!arcane::Window::getHideUI())
+		{
+			arcane::Window::bind();
+			runtimePane.render();
+			debugPane.render();
+			waterPane.render();
+		}
 		ImGui::Render();
 		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 

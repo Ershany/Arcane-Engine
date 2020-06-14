@@ -84,16 +84,15 @@ uniform mat4 viewInverse;
 uniform mat4 projectionInverse;
 
 uniform bool clearWater;
+uniform bool shouldShine;
 uniform vec3 waterAlbedo;
 uniform float albedoPower;
 uniform float waveMoveFactor;
 uniform vec2 nearFarPlaneValues;
-
-const float waveStrength = 0.02f;
-const float shineDamper = 20.0f;
-const float reflectivity = 0.6f;
-const float waterNormalSmoothing = 1.0f;
-const float dampeningEffectStrength = 0.1f;
+uniform float waveStrength;
+uniform float shineDamper;
+uniform float waterNormalSmoothing;
+uniform float depthDampeningEffect;
 
 // Function Declarations
 vec3 WorldPosFromDepth(vec2 texCoords);
@@ -109,7 +108,7 @@ void main() {
 	float far = nearFarPlaneValues.y;
 	vec3 refractedSurface = WorldPosFromDepth(refractCoords);
 	float waterDepthAtRefractedSurface = worldFragPos.y - refractedSurface.y;
-	float dampeningEffect = clamp(waterDepthAtRefractedSurface * dampeningEffectStrength, 0.0, 1.0);
+	float dampeningEffect = clamp(waterDepthAtRefractedSurface * depthDampeningEffect, 0.0, 1.0);
 	float dampeningEffect2 = dampeningEffect * dampeningEffect;
 
 	// Apply offset to the sampled coords for the refracted & reflected texture
@@ -146,10 +145,13 @@ void main() {
 	float fresnel = dot(viewVec, vec3(0.0, 1.0, 0.0)); // TODO: Should use sampled normal
 
 	// Direct Specular light highlights (TODO: Actually make this work for multiple directional lights, right now it requires there to be one directional light and only uses one)
-	vec3 reflectedVec = reflect(normalize(dirLights[0].direction), normal);
-	float specular = max(dot(reflectedVec, viewVec), 0.0);
-	specular = pow(specular, shineDamper);
-	vec3 specHighlight = dirLights[0].lightColour * specular * reflectivity * dampeningEffect2;
+	vec3 specHighlight = vec3(0.0, 0.0, 0.0);
+	if (shouldShine) {
+		vec3 reflectedVec = reflect(normalize(dirLights[0].direction), normal);
+		float specular = max(dot(reflectedVec, viewVec), 0.0);
+		specular = pow(specular, shineDamper);
+		specHighlight = dirLights[0].lightColour * specular * dampeningEffect2;
+	}
 
 	// Finally combine results for the pixel
 	FragColour = mix(reflectedColour, refractedColour, fresnel);
