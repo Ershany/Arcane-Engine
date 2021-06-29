@@ -42,25 +42,37 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane Engine Core\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib-vc2013;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)\bin-int\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane Engine Core\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib-vc2013;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)\bin-int\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ARC_PLATFORM_WINDOWS;ARC_DEBUG;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;SOIL.lib;assimp-vc140-mt.lib;legacy_stdio_definitions.lib;FreeType-GL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc140-mt.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -69,10 +81,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ARC_PLATFORM_WINDOWS;ARC_FINAL;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -80,8 +93,16 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;SOIL.lib;assimp-vc140-mt.lib;legacy_stdio_definitions.lib;freetype28MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc140-mt.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\Layer.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.cpp" />
@@ -160,6 +181,9 @@
     <ClCompile Include="src\ui\WaterPane.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\Assert.h" />
+    <ClInclude Include="src\core\Base.h" />
+    <ClInclude Include="src\core\Layer.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.h" />

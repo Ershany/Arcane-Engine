@@ -2,8 +2,8 @@
 
 #include "Singleton.h"
 
-namespace arcane {
-
+namespace arcane
+{
 	class Logger : public Singleton {
 	private:
 		Logger();
@@ -28,5 +28,19 @@ namespace arcane {
 		std::ofstream filestream;
 		std::string file; // Default value set to: "logged_files/log.txt"
 	};
-
 }
+
+// Engine Log Macros
+#ifdef ARC_FINAL
+#define ARC_LOG_FATAL
+#define ARC_LOG_ERROR
+#define ARC_LOG_WARN
+#define ARC_LOG_INFO
+#define ARC_LOG_TRACE
+#else
+#define ARC_LOG_FATAL(...) arcane::Logger::GetEngineLogger()->critical(__VA_ARGS__)
+#define ARC_LOG_ERROR(...) arcane::Logger::GetEngineLogger()->error(__VA_ARGS__)
+#define ARC_LOG_WARN(...)  arcane::Logger::GetEngineLogger()->warn(__VA_ARGS__)
+#define ARC_LOG_INFO(...)  arcane::Logger::GetEngineLogger()->info(__VA_ARGS__)
+#define ARC_LOG_TRACE(...) arcane::Logger::GetEngineLogger()->trace(__VA_ARGS__)
+#endif
