@@ -167,10 +167,10 @@ namespace arcane {
 					glGetShaderInfoLog(shader, length, &length, &error[0]);
 					std::string errorString(error.begin(), error.end());
 
-					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_ShaderFilePath, errorString);
+					ARC_LOG_ERROR("Shader Compile Error: {0} - {1}", m_ShaderFilePath, errorString);
 				}
 				else {
-					Logger::getInstance().error("logged_files/shader_compile_error.txt", m_ShaderFilePath, "unknown error");
+					ARC_LOG_ERROR("Shader Compile Error: {0} - Unknown Error", m_ShaderFilePath);
 				}
 				glDeleteShader(shader);
 				break;

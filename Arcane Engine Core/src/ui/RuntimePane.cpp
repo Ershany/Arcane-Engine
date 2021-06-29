@@ -15,7 +15,7 @@ namespace arcane {
 	void RuntimePane::setupPaneObjects() {
 		float frametime = 1000.0f / ImGui::GetIO().Framerate;
 		ImGui::Text("Frametime: %.3f ms (FPS %.1f)", frametime, ImGui::GetIO().Framerate);
-#if DEBUG_ENABLED
+#if DEBUG_PROFILING
 		if (frametime > m_MaxFrametime) {
 			m_MaxFrametime = frametime;
 		}
@@ -28,7 +28,7 @@ namespace arcane {
 		ImGui::Text("SSAO Generation: %.6f ms", 1000.0f * s_SsaoTimer);
 		ImGui::Text("FXAA: %.6f ms", 1000.0f * s_FxaaTimer);
 		ImGui::Text("Water Profiling: %.6f ms", 1000.0f * s_WaterTimer);
-#endif
+#endif // DEBUG_PROFILING
 	}
 
 }

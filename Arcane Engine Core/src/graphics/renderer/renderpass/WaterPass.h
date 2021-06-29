@@ -43,8 +43,8 @@ namespace arcane
 		float m_ReflectionBias, m_RefractionBias;
 
 		Timer m_Timer;
-#if DEBUG_ENABLED
+#if DEBUG_PROFILING
 		Timer m_ProfilingTimer;
-#endif
+#endif // DEBUG_PROFILING
 	};
 }

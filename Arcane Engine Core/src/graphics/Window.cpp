@@ -16,7 +16,7 @@ namespace arcane {
 		s_HideUI = false;
 
 		if (!init()) {
-			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize window class");
+			ARC_LOG_FATAL("Failed to initialize window");
 			glfwDestroyWindow(m_Window);
 			glfwTerminate();
 		}
@@ -34,8 +34,7 @@ namespace arcane {
 		glewExperimental = true;
 
 		if (!glfwInit()) {
-			std::cout << "GLFW Failed To Initialize" << std::endl;
-			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLFW window");
+			ARC_LOG_FATAL("Failed to initialize GLFW window");
 			return false;
 		}
 
@@ -58,8 +57,7 @@ namespace arcane {
 		}
 		
 		if (!m_Window) {
-			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not create the GLFW window");
-			std::cout << "GLFW Window Couldn't Be Created" << std::endl;
+			ARC_LOG_FATAL("Failed to initialize GLFW window");
 			return false;
 		}
 
@@ -94,11 +92,10 @@ namespace arcane {
 
 		// Initialize GLEW (allows us to use newer versions of OpenGL)
 		if (glewInit() != GLEW_OK) {
-			std::cout << "Could not Initialize GLEW" << std::endl;
-			Logger::getInstance().error("logged_files/window_creation.txt", "Window Initialization", "Could not initialize the GLEW");
+			ARC_LOG_FATAL("Failed to initialize GLEW");
 			return 0;
 		}
-		std::cout << "OpenGL " << glGetString(GL_VERSION) << std::endl;
+		ARC_LOG_TRACE("OpenGL {0}", glGetString(GL_VERSION));
 
 		// Setup default OpenGL viewport
 		glViewport(0, 0, s_Width, s_Height);
@@ -109,14 +106,14 @@ namespace arcane {
 		ImGui::StyleColorsDark();
 
 		// Error callback setup
-#if DEBUG_ENABLED
+#if ARC_DEBUG
 		glEnable(GL_DEBUG_OUTPUT);
 		glDebugMessageCallback(DebugMessageCallback, 0);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, nullptr, GL_FALSE);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_MEDIUM, 0, nullptr, GL_TRUE);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, nullptr, GL_TRUE);
-#endif
+#endif // ARC_DEBUG
 		
 		// Everything was successful so return true
 		return 1;
@@ -126,7 +123,7 @@ namespace arcane {
 		// Error reporting
 		GLenum error = glGetError();
 		if (error != GL_NO_ERROR) {
-			std::cout << "OpenGL Error: " << error << std::endl;
+			ARC_LOG_ERROR("OpenGL Error: {0}", error);
 		}
 
 		// Input handling
@@ -158,7 +155,7 @@ namespace arcane {
 
 	/*              Callback Functions              */
 	static void error_callback(int error, const char* description) {
-		std::cout << "Error:" << std::endl << description << std::endl;
+		ARC_LOG_ERROR("Error: {0} - {1}", error, description);
 	}
 
 	static void window_resize_callback(GLFWwindow *window, int width, int height) {
@@ -182,7 +179,7 @@ namespace arcane {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		g_InputManager.keyCallback(key, scancode, action, mods);
 		ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
-#if DEBUG_ENABLED
+#if ARC_DEBUG
 		if (key == GLFW_KEY_P && action == GLFW_RELEASE) {
 			win->s_HideCursor = !win->s_HideCursor;
 			GLenum cursorOption = win->s_HideCursor ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL;
@@ -192,7 +189,7 @@ namespace arcane {
 		{
 			win->s_HideUI = !win->s_HideUI;
 		}
-#endif
+#endif // ARC_DEBUG
 	}
 
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
@@ -218,9 +215,7 @@ namespace arcane {
 	}
 
 	static void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-		fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s\n",
-			(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""),
-			type, severity, message);
+		ARC_LOG_WARN("GL CALLBACK: type {0} - severity {1} - message {2}", type, severity, message);
 	}
 
 }

@@ -25,28 +25,32 @@ namespace arcane {
 	}
 
 	void JoystickManager::joystickConnectionCallback(int joystick, int event) {
-		if (joystick >= MAX_JOYSTICKS) {
-			Logger::getInstance().error("logged_files/input_errors.txt", "Joystick Check", "Too many Joysticks connected");
+#if ARC_DEBUG
+		if (joystick >= MAX_JOYSTICKS)
+		{
+			ARC_LOG_WARN("Too many joysticks connected, not tracking new connection");
 			return;
 		}
-
+#endif
 		if (event == GLFW_CONNECTED) {
 			// TODO: Maybe get controller name and store for more debugging of controller information
 			s_JoystickData[joystick].setConnection(true);
-			std::cout << "joystick " << joystick << "has connected successfully" << std::endl;
+			ARC_LOG_TRACE("Joystick {0} has connected successfully", joystick);
 		}
 		else if (event == GLFW_DISCONNECTED) {
 			s_JoystickData[joystick].setConnection(false);
-			std::cout << "joystick " << joystick << "has disconnected successfully" << std::endl;
+			ARC_LOG_TRACE("Joystick {0} has disconnected successfully", joystick);
 		}
 	}
 
 	JoystickInputData* JoystickManager::getJoystickInfo(int joystick) {
-		if (joystick < 0 || joystick >= MAX_JOYSTICKS) {
-			Logger::getInstance().error("logged_files/input_errors.txt", "Joystick Check", "Joystick data requested does not exist");
+#if ARC_DEBUG
+		if (joystick < 0 || joystick >= MAX_JOYSTICKS)
+		{
+			ARC_LOG_WARN("Joystick id {0} requested but not loaded", joystick);
 			return nullptr;
 		}
-
+#endif
 		return &s_JoystickData[joystick];
 	}
 

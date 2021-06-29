@@ -28,12 +28,12 @@ int main() {
 	while (!window.closed()) {
 		deltaTime.update();
 
-#if DEBUG_ENABLED
+#if ARC_DEBUG
 		if (debugPane.getWireframeMode())
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		else
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-#endif
+#endif // ARC_DEBUG
 
 		arcane::Window::bind();
 		arcane::Window::clear();

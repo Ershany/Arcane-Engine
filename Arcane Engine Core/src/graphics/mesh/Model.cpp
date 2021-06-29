@@ -32,7 +32,7 @@ namespace arcane {
 		const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-			Logger::getInstance().error("logged_files/model_loading.txt", "model initialization", import.GetErrorString());
+			ARC_LOG_ERROR("failed to load model - {0}", import.GetErrorString());
 			return;
 		}
 
@@ -120,7 +120,7 @@ namespace arcane {
 	Texture* Model::loadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB) {
 		// Log material constraints are being violated (1 texture per type for the standard shader)
 		if (mat->GetTextureCount(type) > 1)
-			Logger::getInstance().error("logged_files/material_creation.txt", "Mesh Loading", "Mesh's default material contains more than 1 texture for the same type, which currently isn't supported by the standard shader");
+			ARC_LOG_WARN("Mesh's default material contains more than 1 texture for the same type, which isn't currently supported by the standard shaders");
 
 		// Load the texture of a certain type, assuming there is one
 		if (mat->GetTextureCount(type) > 0) {

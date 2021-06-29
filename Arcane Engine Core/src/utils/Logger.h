@@ -1,32 +1,23 @@
 #pragma once
 
 #include "Singleton.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
 
 namespace arcane
 {
-	class Logger : public Singleton {
+	class Logger : public Singleton
+	{
 	private:
 		Logger();
+		~Logger();
 	public:
-		static Logger& getInstance();
-
-		void debug(const std::string &filePath, std::string &module, const std::string &message);
-		void info(const std::string &filePath, const std::string &module, const std::string &message);
-		void warning(const std::string &filePath, const std::string &module, const std::string &message);
-		void error(const std::string &filePath, const std::string &module, const std::string &message);
+		static Logger& GetInstance();
+		inline static std::shared_ptr<spdlog::logger> GetEngineLogger() { return GetInstance().s_EngineLogger; }
 	private:
-		void logMessage(const int &priority, const std::string &module, const std::string &message);
-
-		void clearFileContents();
-		void setOutputFile(const std::string &filename);
-
-		enum {
-			DEBUG, INFO, WARNING, ERROR
-		};
-		std::set<std::string> filePaths;
-
-		std::ofstream filestream;
-		std::string file; // Default value set to: "logged_files/log.txt"
+		static void Init();
+	private:
+		static std::shared_ptr<spdlog::logger> s_EngineLogger;
 	};
 }
 

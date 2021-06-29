@@ -96,10 +96,10 @@ namespace arcane {
 
 	// Generates the AO of the scene using SSAO and stores it in a single channel texture
 	PreLightingPassOutput PostProcessPass::executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera) {
-#if DEBUG_ENABLED
+#if DEBUG_PROFILING
 		glFinish();
 		m_ProfilingTimer.reset();
-#endif
+#endif // DEBUG_PROFILING
 		PreLightingPassOutput passOutput;
 		if (!m_SsaoEnabled) {
 			passOutput.ssaoTexture = TextureLoader::getWhiteTexture();
@@ -158,10 +158,10 @@ namespace arcane {
 		// Reset unusual state
 		m_GLCache->setDepthTest(true);
 
-#if DEBUG_ENABLED
+#if DEBUG_PROFILING
 		glFinish();
 		RuntimePane::setSsaoTimer((float)m_ProfilingTimer.elapsed());
-#endif
+#endif // DEBUG_PROFILING
 
 		// Render pass output
 		passOutput.ssaoTexture = m_SsaoBlurRenderTarget.getColourTexture();
@@ -190,10 +190,10 @@ namespace arcane {
 			inputFramebuffer = &m_ScreenRenderTarget;
 		}
 
-#if DEBUG_ENABLED
+#if ARC_DEBUG
 		if (DebugPane::getWireframeMode())
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-#endif
+#endif // ARC_DEBUG
 		//Texture *sceneWithBloom = bloom(target->getColourTexture());
 		//tonemapGammaCorrect(&m_TonemappedNonLinearTarget, sceneWithBloom);
 
@@ -226,10 +226,10 @@ namespace arcane {
 			inputFramebuffer = framebufferToRenderTo;
 		}
 
-#if DEBUG_ENABLED
+#if DEBUG_PROFILING
 		glFinish();
 		m_ProfilingTimer.reset();
-#endif
+#endif // DEBUG_PROFILING
 		if (m_FxaaEnabled) {
 			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
 			else framebufferToRenderTo = &m_FullRenderTarget;
@@ -237,10 +237,10 @@ namespace arcane {
 			fxaa(framebufferToRenderTo, inputFramebuffer->getColourTexture());
 			inputFramebuffer = framebufferToRenderTo;
 		}
-#if DEBUG_ENABLED
+#if DEBUG_PROFILING
 		glFinish();
 		RuntimePane::setFxaaTimer((float)m_ProfilingTimer.elapsed());
-#endif
+#endif // DEBUG_PROFILING
 
 		// Finally render the scene to the window's framebuffer
 		Window::bind();

@@ -28,7 +28,7 @@ namespace arcane {
 		// Anisotropic filtering (TODO: Move the anistropyAmount calculation to Defs.h to avoid querying the OpenGL driver everytime)
 		float maxAnisotropy;
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-		float anistropyAmount = glm::min(maxAnisotropy, m_CubemapSettings.TextureAnisotropyLevel);
+		float anistropyAmount = glm::min<float>(maxAnisotropy, m_CubemapSettings.TextureAnisotropyLevel);
 		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
 	}
 

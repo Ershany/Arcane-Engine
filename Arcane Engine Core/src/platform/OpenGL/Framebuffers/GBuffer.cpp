@@ -65,7 +65,7 @@ namespace arcane {
 
 		// Check if the creation failed
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			Logger::getInstance().error("logged_files/error.txt", "Framebuffer initialization", "Could not initialize GBuffer");
+			ARC_LOG_FATAL("Could not initialize GBuffer");
 			return;
 		}
 		unbind();

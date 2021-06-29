@@ -13,7 +13,7 @@ namespace arcane {
 		int mapWidth, mapHeight;
 		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, SOIL_LOAD_L);
 		if (mapWidth != mapHeight) {
-			Logger::getInstance().error("logged_files/terrain_creation.txt", "terrain initialization", "Can't use a heightmap with a different width and height");
+			ARC_LOG_FATAL("Can't use a heightmap with a different width and height for the terrain");
 			return;
 		}
 
@@ -270,7 +270,7 @@ namespace arcane {
 	}
 
 	float Terrain::clamp(float n, float lower, float upper) {
-		return std::max(lower, std::min(n, upper));
+		return std::max<float>(lower, std::min<float>(n, upper));
 	}
 
 }

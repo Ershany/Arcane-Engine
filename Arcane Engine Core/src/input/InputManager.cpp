@@ -29,30 +29,35 @@ namespace arcane {
 	}
 
 	bool InputManager::isKeyPressed(unsigned int keycode) {
-		if (keycode < 0 || keycode >= MAX_KEYS) {
-			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
+#if ARC_DEBUG
+		if (keycode < 0 || keycode >= MAX_KEYS)
+		{
+			ARC_LOG_WARN("Key press check is out of bounds (ie not supported) - Keycode: {0}", keycode);
 			return false;
 		}
-		else {
-			return s_Keys[keycode];
-		}
+#endif
+		return s_Keys[keycode];
 	}
 
 	float InputManager::getKeyPressure(unsigned int keycode) {
-		if (keycode < 0 || keycode >= MAX_KEYS) {
-			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Key checked is out of bounds (ie not supported)");
+#if ARC_DEBUG
+		if (keycode < 0 || keycode >= MAX_KEYS)
+		{
+			ARC_LOG_WARN("Key pressure get is out of bounds (ie not supported) - Keycode: {0}", keycode);
 			return 0.0f;
 		}
-
+#endif
 		return s_KeyPressure[keycode];
 	}
 
 	bool InputManager::isMouseButtonPressed(unsigned int code) {
-		if (code < 0 || code >= MAX_BUTTONS) {
-			Logger::getInstance().error("logged_files/input_errors.txt", "Input Check", "Mouse button checked is out of bounds (ie not supported)");
+#if ARC_DEBUG
+		if (code < 0 || code >= MAX_BUTTONS)
+		{
+			ARC_LOG_WARN("Mouse button press check is out of bounds (ie not supported) - code: {0}", code);
 			return false;
 		}
-
+#endif
 		return s_Buttons[code];
 	}
 
@@ -82,20 +87,24 @@ namespace arcane {
 	}
 
 	bool InputManager::getButton(int keyCode) {
-		if (keyCode < 0 || keyCode >= MAX_BUTTONS) {
-			Logger::getInstance().error("logged_files/input_errors.txt", "Input Get button", "Button get is out of bounds (ie not supported)");
+#if ARC_DEBUG
+		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
+		{
+			ARC_LOG_WARN("Button get is out of bounds (ie not supported) - KeyCode: {0}", keyCode);
 			return false;
 		}
-
+#endif
 		return s_Keys[keyCode] != GLFW_RELEASE;
 	}
 
 	bool InputManager::getButtonDown(int keyCode) {
-		if (keyCode < 0 || keyCode >= MAX_BUTTONS) {
-			Logger::getInstance().error("logged_files/input_errors.txt", "Input Get button", "Button get is out of bounds (ie not supported)");
+#if ARC_DEBUG
+		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
+		{
+			ARC_LOG_WARN("Button down get is out of bounds (ie not supported) - KeyCode: {0}", keyCode);
 			return false;
 		}
-
+#endif
 		return s_Keys[keyCode] == GLFW_PRESS;
 	}
 }
