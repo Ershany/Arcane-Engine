@@ -103,6 +103,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Layer.cpp" />
+    <ClCompile Include="src\core\LayerStack.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="src\core\Assert.h" />
     <ClInclude Include="src\core\Base.h" />
     <ClInclude Include="src\core\Layer.h" />
+    <ClInclude Include="src\core\LayerStack.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.h" />

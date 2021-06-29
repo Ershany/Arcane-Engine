@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Assert.h"
+#include <core/Assert.h>
 
 #ifdef ARC_PLATFORM_WINDOWS
 #else
