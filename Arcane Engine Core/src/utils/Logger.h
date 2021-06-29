@@ -16,6 +16,7 @@ namespace arcane
 		inline static std::shared_ptr<spdlog::logger> GetEngineLogger() { return GetInstance().s_EngineLogger; }
 	private:
 		static void Init();
+		static void Shutdown();
 	private:
 		static std::shared_ptr<spdlog::logger> s_EngineLogger;
 	};

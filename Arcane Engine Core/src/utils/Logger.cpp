@@ -14,7 +14,7 @@ namespace arcane
 
 	Logger::~Logger()
 	{
-
+		Shutdown();
 	}
 
 	Logger& Logger::GetInstance()
@@ -29,5 +29,11 @@ namespace arcane
 
 		s_EngineLogger = spdlog::stdout_color_mt("Arcane");
 		s_EngineLogger->set_level(spdlog::level::trace);
+	}
+
+	void Logger::Shutdown()
+	{
+		s_EngineLogger.reset();
+		spdlog::drop_all();
 	}
 }
