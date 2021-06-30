@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Final|x64">
+      <Configuration>Final</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FDA7B389-08B8-4B2B-A0F9-1488FB7AAB92}</ProjectGuid>
+    <RootNamespace>Arcane</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Final|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Final|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane\src;$(SolutionDir)Dependencies\spdlog\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)\bin-int\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane\src;$(SolutionDir)Dependencies\spdlog\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)\bin-int\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Final|x64'">
+    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane\src;$(SolutionDir)Dependencies\spdlog\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin\$(Platform)-$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)\bin-int\$(Platform)-$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>ARC_PLATFORM_WINDOWS;ARC_DEBUG;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>arcpch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;SOIL.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;FreeType-GL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc141-mt.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>ARC_PLATFORM_WINDOWS;ARC_RELEASE;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>arcpch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;SOIL.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;freetype28MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc141-mt.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Final|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>ARC_PLATFORM_WINDOWS;ARC_FINAL;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>arcpch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;SOIL.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;freetype28MT.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc141-mt.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\Application.cpp" />
+    <ClCompile Include="src\core\Layer.cpp" />
+    <ClCompile Include="src\core\LayerStack.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\WaterPass.cpp" />
+    <ClCompile Include="src\input\JoystickInputData.cpp" />
+    <ClCompile Include="src\graphics\camera\FPSCamera.cpp" />
+    <ClCompile Include="src\graphics\camera\CubemapCamera.cpp" />
+    <ClCompile Include="src\graphics\lights\DirectionalLight.cpp" />
+    <ClCompile Include="src\graphics\lights\Light.cpp" />
+    <ClCompile Include="src\graphics\lights\DynamicLightManager.cpp" />
+    <ClCompile Include="src\graphics\lights\PointLight.cpp" />
+    <ClCompile Include="src\graphics\lights\SpotLight.cpp" />
+    <ClCompile Include="src\graphics\ibl\ProbeManager.cpp" />
+    <ClCompile Include="src\graphics\ibl\LightProbe.cpp" />
+    <ClCompile Include="src\graphics\ibl\ReflectionProbe.cpp" />
+    <ClCompile Include="src\graphics\mesh\common\Cube.cpp" />
+    <ClCompile Include="src\graphics\mesh\common\Quad.cpp" />
+    <ClCompile Include="src\graphics\mesh\common\Sphere.cpp" />
+    <ClCompile Include="src\graphics\mesh\Material.cpp" />
+    <ClCompile Include="src\graphics\mesh\Model.cpp" />
+    <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
+    <ClCompile Include="src\graphics\renderer\GLCache.cpp" />
+    <ClCompile Include="src\graphics\renderer\MasterRenderer.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\forward\ForwardProbePass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\forward\ForwardLightingPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\PostProcessPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\RenderPass.cpp" />
+    <ClCompile Include="src\graphics\renderer\renderpass\ShadowmapPass.cpp" />
+    <ClCompile Include="src\input\InputManager.cpp" />
+    <ClCompile Include="src\input\JoystickManager.cpp" />
+    <ClCompile Include="src\arcpch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\platform\OpenGL\Framebuffers\GBuffer.cpp" />
+    <ClCompile Include="src\scene\RenderableModel.cpp" />
+    <ClCompile Include="src\graphics\renderer\ModelRenderer.cpp" />
+    <ClCompile Include="src\graphics\Shader.cpp" />
+    <ClCompile Include="src\graphics\Skybox.cpp" />
+    <ClCompile Include="src\graphics\texture\Cubemap.cpp" />
+    <ClCompile Include="src\graphics\texture\Texture.cpp" />
+    <ClCompile Include="src\graphics\Window.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\platform\OpenGL\Buffer.cpp" />
+    <ClCompile Include="src\platform\OpenGL\Framebuffers\Framebuffer.cpp" />
+    <ClCompile Include="src\platform\OpenGL\IndexBuffer.cpp" />
+    <ClCompile Include="src\platform\OpenGL\VertexArray.cpp" />
+    <ClCompile Include="src\scene\Scene3D.cpp" />
+    <ClCompile Include="src\terrain\Terrain.cpp" />
+    <ClCompile Include="src\ui\DebugPane.cpp" />
+    <ClCompile Include="src\ui\Pane.cpp" />
+    <ClCompile Include="src\ui\RuntimePane.cpp" />
+    <ClCompile Include="src\utils\FileUtils.cpp" />
+    <ClCompile Include="src\utils\loaders\MeshLoader.cpp" />
+    <ClCompile Include="src\utils\loaders\ShaderLoader.cpp" />
+    <ClCompile Include="src\utils\loaders\TextureLoader.cpp" />
+    <ClCompile Include="src\utils\Logger.cpp" />
+    <ClCompile Include="src\utils\Time.cpp" />
+    <ClCompile Include="src\utils\Timer.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw_gl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\ui\WaterPane.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\Application.h" />
+    <ClInclude Include="src\core\Assert.h" />
+    <ClInclude Include="src\core\Base.h" />
+    <ClInclude Include="src\core\events\Event.h" />
+    <ClInclude Include="src\core\Layer.h" />
+    <ClInclude Include="src\core\LayerStack.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredLightingPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\deferred\PostGBufferForwardPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\WaterPass.h" />
+    <ClInclude Include="src\input\JoystickInputData.h" />
+    <ClInclude Include="src\Defs.h" />
+    <ClInclude Include="src\graphics\camera\FPSCamera.h" />
+    <ClInclude Include="src\graphics\camera\CubemapCamera.h" />
+    <ClInclude Include="src\graphics\camera\ICamera.h" />
+    <ClInclude Include="src\graphics\lights\DirectionalLight.h" />
+    <ClInclude Include="src\graphics\lights\Light.h" />
+    <ClInclude Include="src\graphics\lights\DynamicLightManager.h" />
+    <ClInclude Include="src\graphics\lights\PointLight.h" />
+    <ClInclude Include="src\graphics\lights\SpotLight.h" />
+    <ClInclude Include="src\graphics\ibl\ProbeManager.h" />
+    <ClInclude Include="src\graphics\ibl\LightProbe.h" />
+    <ClInclude Include="src\graphics\ibl\ReflectionProbe.h" />
+    <ClInclude Include="src\graphics\mesh\common\Cube.h" />
+    <ClInclude Include="src\graphics\mesh\common\Quad.h" />
+    <ClInclude Include="src\graphics\mesh\common\Sphere.h" />
+    <ClInclude Include="src\graphics\mesh\Material.h" />
+    <ClInclude Include="src\graphics\mesh\Model.h" />
+    <ClInclude Include="src\graphics\mesh\Mesh.h" />
+    <ClInclude Include="src\graphics\renderer\GLCache.h" />
+    <ClInclude Include="src\graphics\renderer\MasterRenderer.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\forward\ForwardProbePass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\forward\ForwardLightingPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\PostProcessPass.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\RenderPassType.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\ShadowmapPass.h" />
+    <ClInclude Include="src\input\InputManager.h" />
+    <ClInclude Include="src\input\JoystickManager.h" />
+    <ClInclude Include="src\arcpch.h" />
+    <ClInclude Include="src\platform\OpenGL\Framebuffers\GBuffer.h" />
+    <ClInclude Include="src\scene\RenderableModel.h" />
+    <ClInclude Include="src\graphics\renderer\ModelRenderer.h" />
+    <ClInclude Include="src\graphics\renderer\renderpass\RenderPass.h" />
+    <ClInclude Include="src\graphics\Shader.h" />
+    <ClInclude Include="src\graphics\Skybox.h" />
+    <ClInclude Include="src\graphics\texture\Cubemap.h" />
+    <ClInclude Include="src\graphics\texture\Texture.h" />
+    <ClInclude Include="src\graphics\Window.h" />
+    <ClInclude Include="src\platform\OpenGL\Buffer.h" />
+    <ClInclude Include="src\platform\OpenGL\Framebuffers\Framebuffer.h" />
+    <ClInclude Include="src\platform\OpenGL\IndexBuffer.h" />
+    <ClInclude Include="src\platform\OpenGL\VertexArray.h" />
+    <ClInclude Include="src\scene\Scene3D.h" />
+    <ClInclude Include="src\terrain\Terrain.h" />
+    <ClInclude Include="src\ui\DebugPane.h" />
+    <ClInclude Include="src\ui\Pane.h" />
+    <ClInclude Include="src\ui\RuntimePane.h" />
+    <ClInclude Include="src\utils\FileUtils.h" />
+    <ClInclude Include="src\utils\loaders\MeshLoader.h" />
+    <ClInclude Include="src\utils\loaders\ShaderLoader.h" />
+    <ClInclude Include="src\utils\loaders\TextureLoader.h" />
+    <ClInclude Include="src\utils\Logger.h" />
+    <ClInclude Include="src\utils\Singleton.h" />
+    <ClInclude Include="src\utils\Time.h" />
+    <ClInclude Include="src\utils\Timer.h" />
+    <ClInclude Include="src\vendor\imgui\imconfig.h" />
+    <ClInclude Include="src\vendor\imgui\imgui.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_internal.h" />
+    <ClInclude Include="src\vendor\imgui\stb_rect_pack.h" />
+    <ClInclude Include="src\vendor\imgui\stb_textedit.h" />
+    <ClInclude Include="src\vendor\imgui\stb_truetype.h" />
+    <ClInclude Include="src\ui\WaterPane.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\shaders\post_process\bloom\BloomBrightPass.glsl" />
+    <None Include="src\shaders\post_process\bloom\BloomGaussianBlur.glsl" />
+    <None Include="src\shaders\BRDF_Integration.glsl" />
+    <None Include="src\shaders\compute\frame_luminance.comp" />
+    <None Include="src\shaders\compute\Scene_Luminance.glsl" />
+    <None Include="src\shaders\deferred\PBR_LightingPass.glsl" />
+    <None Include="src\shaders\deferred\PBR_Model_GeometryPass.glsl" />
+    <None Include="src\shaders\deferred\PBR_Terrain_GeometryPass.glsl" />
+    <None Include="src\shaders\directionalLight.frag" />
+    <None Include="src\shaders\forward\PBR_Model.glsl" />
+    <None Include="src\shaders\forward\PBR_Terrain.glsl" />
+    <None Include="src\shaders\post_process\bloom\Composite.glsl" />
+    <None Include="src\shaders\post_process\chromatic_aberration\ChromaticAberration.glsl" />
+    <None Include="src\shaders\post_process\Copy.glsl" />
+    <None Include="src\shaders\post_process\film_grain\FilmGrain.glsl" />
+    <None Include="src\shaders\post_process\fxaa\FXAA.glsl" />
+    <None Include="src\shaders\LightProbe_Convolution.glsl" />
+    <None Include="src\shaders\post_process\smaa\SMAA.glsl" />
+    <None Include="src\shaders\post_process\vignette\Vignette.glsl" />
+    <None Include="src\shaders\TonemapGammaCorrect.glsl" />
+    <None Include="src\shaders\pointlight.frag" />
+    <None Include="src\shaders\ReflectionProbe_ImportanceSampling.glsl" />
+    <None Include="src\shaders\Shadowmap_Generation.glsl" />
+    <None Include="src\shaders\Skybox.glsl" />
+    <None Include="src\shaders\spotlight.frag" />
+    <None Include="src\shaders\post_process\ssao\SSAO.glsl" />
+    <None Include="src\shaders\post_process\ssao\SSAO_Blur.glsl" />
+    <None Include="src\shaders\Water.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\awesomeface.png" />
+    <Image Include="res\container.jpg" />
+    <Image Include="res\container2.png" />
+    <Image Include="res\container2_emission.png" />
+    <Image Include="res\container2_specular.png" />
+    <Image Include="res\matrix.jpg" />
+    <Image Include="res\skybox\back.png" />
+    <Image Include="res\skybox\bottom.png" />
+    <Image Include="res\skybox\front.png" />
+    <Image Include="res\skybox\left.png" />
+    <Image Include="res\skybox\right.png" />
+    <Image Include="res\skybox\top.png" />
+    <Image Include="res\terrain\blendMap.png" />
+    <Image Include="res\terrain\dirt.png" />
+    <Image Include="res\terrain\grass.png" />
+    <Image Include="res\terrain\heightMap.png" />
+    <Image Include="res\terrain\sand.png" />
+    <Image Include="res\terrain\stone.png" />
+    <Image Include="res\textures\fullSpec.png" />
+    <Image Include="res\textures\grass.png" />
+    <Image Include="res\textures\noSpec.png" />
+    <Image Include="res\textures\window.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
