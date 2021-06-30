@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "arcpch.h"
 #include "DeferredLightingPass.h"
 
 #include <graphics/renderer/renderpass/deferred/DeferredGeometryPass.h>

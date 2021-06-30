@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "arcpch.h"
 #include "LightProbe.h"
 
 namespace Arcane
