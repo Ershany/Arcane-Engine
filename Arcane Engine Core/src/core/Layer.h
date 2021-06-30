@@ -12,7 +12,7 @@ namespace arcane
 		virtual void onDetach() {}
 		virtual void onUpdate(float deltaTime) {}
 		virtual void onImGuiRender() {}
-		//virtual void onEvent(Event &event) {}
+		virtual void onEvent(Event &event) {}
 
 		inline const std::string& getName() const { return m_DebugName; }
 	protected:

@@ -1,5 +1,6 @@
 #pragma once
 
+// C/C++
 #include <cmath>
 #include <math.h>
 #include <iostream>
@@ -14,6 +15,7 @@
 #include <fstream>
 #include <random>
 
+// Dependencies
 #include <gl/glew.h>
 
 #include <GLFW/glfw3.h>
@@ -28,5 +30,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "Defs.h"
-#include "utils/Logger.h"
+// Arcane
+#include <Defs.h>
+#include <utils/Logger.h>
+#include <core/Base.h>
+#include <core/events/Event.h>

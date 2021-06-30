@@ -1,6 +1,5 @@
 #pragma once
 
-#include <core/Base.h>
 #include <core/Layer.h>
 
 namespace arcane

@@ -102,6 +102,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\Application.cpp" />
     <ClCompile Include="src\core\Layer.cpp" />
     <ClCompile Include="src\core\LayerStack.cpp" />
     <ClCompile Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.cpp" />
@@ -182,8 +183,10 @@
     <ClCompile Include="src\ui\WaterPane.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\Application.h" />
     <ClInclude Include="src\core\Assert.h" />
     <ClInclude Include="src\core\Base.h" />
+    <ClInclude Include="src\core\events\Event.h" />
     <ClInclude Include="src\core\Layer.h" />
     <ClInclude Include="src\core\LayerStack.h" />
     <ClInclude Include="src\graphics\renderer\renderpass\deferred\DeferredGeometryPass.h" />
