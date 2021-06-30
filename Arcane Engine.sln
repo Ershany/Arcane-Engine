@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Arcane Engine Core", "Arcane Engine Core\Arcane Engine Core.vcxproj", "{FDA7B389-08B8-4B2B-A0F9-1488FB7AAB92}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Arcane", "Arcane\Arcane.vcxproj", "{FDA7B389-08B8-4B2B-A0F9-1488FB7AAB92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
