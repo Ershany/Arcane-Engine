@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Application.h"
 
-namespace arcane
+namespace Arcane
 {
 	Application::Application(const ApplicationSpecification &spec)
 	{

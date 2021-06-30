@@ -4,8 +4,8 @@
 #include <ui/RuntimePane.h>
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget((unsigned int)(Window::getRenderResolutionWidth() * 0.5f), (unsigned int)(Window::getRenderResolutionHeight() * 0.5f), false), m_SsaoBlurRenderTarget((unsigned int)(Window::getRenderResolutionWidth() * 0.5f), (unsigned int)(Window::getRenderResolutionHeight() * 0.5f), false),
 		m_TonemappedNonLinearTarget(Window::getWidth(), Window::getHeight(), false), m_ScreenRenderTarget(Window::getWidth(), Window::getHeight(), false), m_ResolveRenderTarget(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false), m_BrightPassRenderTarget(Window::getWidth(), Window::getHeight(), false),
 		m_BloomFullRenderTarget(Window::getWidth(), Window::getHeight(), false), m_BloomHalfRenderTarget((unsigned int)(Window::getWidth() * 0.5f), (unsigned int)(Window::getHeight() * 0.5f), false), m_BloomQuarterRenderTarget((unsigned int)(Window::getWidth() * 0.25f), (unsigned int)(Window::getHeight() * 0.25f), false), m_BloomEightRenderTarget((unsigned int)(Window::getWidth() * 0.125f), (unsigned int)(Window::getHeight() * 0.125f), false),
@@ -395,5 +395,4 @@ namespace arcane {
 
 		return m_FullRenderTarget.getColourTexture();
 	}
-
 }

@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "InputManager.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	// Static declarations
 	bool InputManager::s_Keys[MAX_KEYS];
 	float InputManager::s_KeyPressure[MAX_KEYS];
@@ -108,4 +108,3 @@ namespace arcane {
 		return s_Keys[keyCode] == GLFW_PRESS;
 	}
 }
-

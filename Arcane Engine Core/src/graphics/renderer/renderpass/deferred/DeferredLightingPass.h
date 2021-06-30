@@ -4,8 +4,8 @@
 #include <graphics/Shader.h>
 #include <scene/Scene3D.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class DeferredLightingPass : public RenderPass {
 	public:
 		DeferredLightingPass(Scene3D *scene);

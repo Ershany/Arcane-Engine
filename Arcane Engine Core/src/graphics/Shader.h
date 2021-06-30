@@ -2,8 +2,8 @@
 
 #include <utils/FileUtils.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Shader {
 	public:
 		Shader(const std::string &path);
@@ -43,5 +43,4 @@ namespace arcane {
 		unsigned int m_ShaderID;
 		std::string m_ShaderFilePath;
 	};
-
 }

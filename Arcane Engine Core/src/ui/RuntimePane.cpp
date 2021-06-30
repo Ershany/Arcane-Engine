@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "RuntimePane.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	float RuntimePane::s_ShadowmapTimer = 0.0f;
 	float RuntimePane::s_SsaoTimer = 0.0f;
 	float RuntimePane::s_FxaaTimer = 0.0f;
@@ -30,5 +30,4 @@ namespace arcane {
 		ImGui::Text("Water Profiling: %.6f ms", 1000.0f * s_WaterTimer);
 #endif // DEBUG_PROFILING
 	}
-
 }

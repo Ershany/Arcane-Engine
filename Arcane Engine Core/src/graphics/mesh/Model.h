@@ -9,8 +9,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Model {
 	public:
 		Model(const char *path);
@@ -29,5 +29,4 @@ namespace arcane {
 		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
 		Texture* loadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB);
 	};
-
 }

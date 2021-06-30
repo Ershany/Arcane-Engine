@@ -2,8 +2,8 @@
 
 #include <input/JoystickInputData.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 #define MAX_JOYSTICKS 16
 
 	class JoystickManager {

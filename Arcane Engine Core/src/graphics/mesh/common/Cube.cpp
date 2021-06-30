@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Cube.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Cube::Cube() {
 		m_Positions = std::vector<glm::vec3>{
 			glm::vec3(-0.5f, -0.5f, -0.5f),
@@ -226,5 +226,4 @@ namespace arcane {
 
 		LoadData();
 	}
-
 }

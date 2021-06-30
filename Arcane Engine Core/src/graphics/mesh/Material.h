@@ -4,8 +4,8 @@
 #include <graphics/texture/Texture.h>
 #include <utils/loaders/TextureLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Material {
 	public:
 		Material(Texture *albedoMap = nullptr, Texture *normalMap = nullptr, Texture *metallicMap = nullptr, Texture *roughnessMap = nullptr, 
@@ -27,5 +27,4 @@ namespace arcane {
 		float m_ParallaxStrength;
 		int m_ParallaxMinSteps, m_ParallelMaxSteps; // Will need to increase when parallax strength increases
 	};
-
 }

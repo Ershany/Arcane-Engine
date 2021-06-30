@@ -3,8 +3,8 @@
 
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	ShadowmapPass::ShadowmapPass(Scene3D *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_ShadowmapShader = ShaderLoader::loadShader("src/shaders/Shadowmap_Generation.glsl");
@@ -66,5 +66,4 @@ namespace arcane {
 		passOutput.shadowmapFramebuffer = m_ShadowmapFramebuffer;
 		return passOutput;
 	}
-
 }

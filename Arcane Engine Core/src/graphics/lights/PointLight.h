@@ -2,8 +2,8 @@
 
 #include "Light.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	class DynamicLightManager;
 
 	class PointLight : public Light {
@@ -16,5 +16,4 @@ namespace arcane {
 		float m_AttenuationRadius;
 		glm::vec3 m_Position;
 	};
-
 }

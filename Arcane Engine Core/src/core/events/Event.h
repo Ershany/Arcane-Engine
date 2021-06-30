@@ -8,7 +8,7 @@
 	TODO: Buffer Events and process during the event part of the update stage
 */
 
-namespace arcane
+namespace Arcane
 {
 	enum class EventType
 	{

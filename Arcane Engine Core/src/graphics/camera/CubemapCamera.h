@@ -2,8 +2,8 @@
 
 #include <graphics/camera/ICamera.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class CubemapCamera : public ICamera {
 	public:
 		CubemapCamera();
@@ -22,5 +22,4 @@ namespace arcane {
 	private:
 		glm::vec3 m_CenterPosition, m_Front, m_Up;
 	};
-
 }

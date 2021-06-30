@@ -11,9 +11,8 @@
 #include <scene/Scene3D.h>
 #include <utils/Timer.h>
 
-namespace arcane
+namespace Arcane
 {
-
 	class MasterRenderer
 	{
 	public:
@@ -41,5 +40,4 @@ namespace arcane
 
 		Timer m_ProfilingTimer;
 	};
-
 }

@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "DirectionalLight.h"
 
-namespace arcane {
-
+namespace Arcane 
+{
 	DirectionalLight::DirectionalLight(float lightIntensity, glm::vec3 &lightColour, glm::vec3 &dir)
 		: Light(lightIntensity, lightColour), m_Direction(dir) {}
 
@@ -11,5 +11,4 @@ namespace arcane {
 		shader->setUniform(("dirLights[" + std::to_string(currentLightIndex) + "].intensity").c_str(), m_Intensity);
 		shader->setUniform(("dirLights[" + std::to_string(currentLightIndex) + "].lightColour").c_str(), m_LightColour);
 	}
-
 }

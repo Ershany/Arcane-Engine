@@ -1,7 +1,7 @@
 #pragma once
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Singleton {
 	public:
 		Singleton(const Singleton &singleton) = delete;  // Get rid of copy ctor
@@ -13,5 +13,4 @@ namespace arcane {
 		Singleton() = default;
 		virtual ~Singleton() = default;
 	};
-
 }

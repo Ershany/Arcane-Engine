@@ -2,8 +2,8 @@
 
 #include "Pane.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	class DebugPane : public Pane {
 	public:
 		DebugPane(glm::vec2 &panePosition);
@@ -44,5 +44,4 @@ namespace arcane {
 		static bool* s_FilmGrainEnabled;
 		static float *s_FilmGrainIntensity;
 	};
-
 }

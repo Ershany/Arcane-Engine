@@ -3,9 +3,8 @@
 
 #include <ui/RuntimePane.h>
 
-namespace arcane
+namespace Arcane
 {
-
 	MasterRenderer::MasterRenderer(Scene3D *scene) : m_ActiveScene(scene),
 		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_WaterPass(scene), m_ForwardLightingPass(scene, true), m_EnvironmentProbePass(scene),
 		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene), m_PostGBufferForwardPass(scene)
@@ -60,5 +59,4 @@ namespace arcane
 
 #endif
 	}
-
 }

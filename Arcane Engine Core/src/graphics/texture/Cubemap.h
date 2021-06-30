@@ -1,7 +1,7 @@
 #pragma once
 
-namespace arcane {
-
+namespace Arcane
+{
 	struct CubemapSettings {
 		// Texture format
 		GLenum TextureFormat = GL_NONE; // If set to GL_NONE, the data format will be used
@@ -53,5 +53,4 @@ namespace arcane {
 
 		CubemapSettings m_CubemapSettings;
 	};
-
 }

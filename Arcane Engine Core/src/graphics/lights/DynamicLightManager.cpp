@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "DynamicLightManager.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	DynamicLightManager::DynamicLightManager() {
 		init();
 	}
@@ -118,5 +118,4 @@ namespace arcane {
 	const glm::vec3& DynamicLightManager::getDirectionalLightDirection(unsigned int index) {
 		return m_DirectionalLights[index].m_Direction;
 	}
-
 }

@@ -9,8 +9,8 @@
 #include <graphics/mesh/common/Cube.h>
 #include <graphics/renderer/renderpass/RenderPassType.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class ModelRenderer {
 	public:
 		ModelRenderer(FPSCamera *camera);
@@ -35,5 +35,4 @@ namespace arcane {
 		FPSCamera *m_Camera;
 		GLCache *m_GLCache;
 	};
-
 }

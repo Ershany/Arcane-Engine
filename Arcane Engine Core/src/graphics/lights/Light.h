@@ -2,8 +2,8 @@
 
 #include <graphics/Shader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Light {
 	public:
 		Light(float lightIntensity, glm::vec3 &lightColour);
@@ -15,5 +15,4 @@ namespace arcane {
 
 		bool m_IsStatic; // Should be true if the light will never have any of it's properties changed
 	};
-
 }

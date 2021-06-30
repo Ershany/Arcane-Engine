@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "VertexArray.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	VertexArray::VertexArray() {
 		glGenVertexArrays(1, &m_VertexArrayID);
 	}
@@ -33,5 +33,4 @@ namespace arcane {
 	void VertexArray::unbind() const {
 		glBindVertexArray(0);
 	}
-
 }

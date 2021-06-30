@@ -11,8 +11,8 @@
 #include <platform/OpenGL/VertexArray.h>
 #include <utils/loaders/TextureLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Skybox {
 	public:
 		Skybox(const std::vector<std::string> &filePaths);
@@ -27,5 +27,4 @@ namespace arcane {
 		Cube cube;
 		Cubemap *m_SkyboxCubemap;
 	};
-
 }

@@ -10,21 +10,21 @@
 
 int main() {
 	// Prepare the engine
-	arcane::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
-	arcane::TextureLoader::initializeDefaultTextures();
-	arcane::Scene3D scene(&window);
-	arcane::MasterRenderer renderer(&scene);
-	arcane::InputManager manager;
+	Arcane::Window window("Arcane Engine", WINDOW_X_RESOLUTION, WINDOW_Y_RESOLUTION);
+	Arcane::TextureLoader::initializeDefaultTextures();
+	Arcane::Scene3D scene(&window);
+	Arcane::MasterRenderer renderer(&scene);
+	Arcane::InputManager manager;
 
 	// Prepare the UI
-	arcane::RuntimePane runtimePane(glm::vec2(270.0f, 175.0f));
-	arcane::DebugPane debugPane(glm::vec2(270.0f, 400.0f));
-	arcane::WaterPane waterPane(glm::vec2(270.0f, 400.0f));
+	Arcane::RuntimePane runtimePane(glm::vec2(270.0f, 175.0f));
+	Arcane::DebugPane debugPane(glm::vec2(270.0f, 400.0f));
+	Arcane::WaterPane waterPane(glm::vec2(270.0f, 400.0f));
 
 	// Initialize the renderer
 	renderer.init();
 
-	arcane::Time deltaTime;
+	Arcane::Time deltaTime;
 	while (!window.closed()) {
 		deltaTime.update();
 
@@ -35,17 +35,17 @@ int main() {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 #endif // ARC_DEBUG
 
-		arcane::Window::bind();
-		arcane::Window::clear();
+		Arcane::Window::bind();
+		Arcane::Window::clear();
 		ImGui_ImplGlfwGL3_NewFrame();
 
 		scene.onUpdate((float)deltaTime.getDeltaTime());
 		renderer.render();
 
 		// Display panes
-		if (!arcane::Window::getHideUI())
+		if (!Arcane::Window::getHideUI())
 		{
-			arcane::Window::bind();
+			Arcane::Window::bind();
 			runtimePane.render();
 			debugPane.render();
 			waterPane.render();

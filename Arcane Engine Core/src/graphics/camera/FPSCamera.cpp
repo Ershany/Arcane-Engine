@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "FPSCamera.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	FPSCamera::FPSCamera(glm::vec3 &position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 &up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f)
 		: m_Front(glm::vec3(0.0f, 0.0f, -1.0f)), m_CurrentMovementSpeed(FPSCAMERA_MAX_SPEED), m_CurrentFOV(FPSCAMERA_MAX_FOV)
 	{
@@ -127,5 +127,4 @@ namespace arcane {
 		m_Right = glm::normalize(glm::cross(m_Front, m_WorldUp));
 		m_Up = glm::normalize(glm::cross(m_Right, m_Front));
 	}
-
 }

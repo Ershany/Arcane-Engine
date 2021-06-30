@@ -2,7 +2,8 @@
 
 #include "Light.h"
 
-namespace arcane {
+namespace Arcane
+{
 	
 	class DynamicLightManager;
 
@@ -15,5 +16,4 @@ namespace arcane {
 	private:
 		glm::vec3 m_Direction;
 	};
-
 }

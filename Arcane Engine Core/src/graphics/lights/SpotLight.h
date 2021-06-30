@@ -2,8 +2,8 @@
 
 #include "Light.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	class DynamicLightManager;
 
 	class SpotLight : public Light {
@@ -17,5 +17,4 @@ namespace arcane {
 		glm::vec3 m_Position, m_Direction;
 		float m_CutOff, m_OuterCutOff;
 	};
-
 }

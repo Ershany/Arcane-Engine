@@ -3,8 +3,8 @@
 #include <graphics/Shader.h>
 #include <graphics/texture/Cubemap.h>
 
-namespace arcane {
-	
+namespace Arcane
+{
 	class LightProbe {
 	public:
 		LightProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution);
@@ -25,5 +25,4 @@ namespace arcane {
 		glm::vec2 m_ProbeResolution;
 		bool m_Generated;
 	};
-
 }

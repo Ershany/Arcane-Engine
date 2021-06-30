@@ -3,8 +3,8 @@
 #include <graphics/Shader.h>
 #include <utils/Singleton.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class GLCache : Singleton {
 	public:
 		GLCache();
@@ -64,5 +64,4 @@ namespace arcane {
 		// Active binds
 		unsigned int m_ActiveShaderID;
 	};
-
 }

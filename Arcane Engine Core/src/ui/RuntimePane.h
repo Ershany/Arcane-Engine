@@ -2,8 +2,8 @@
 
 #include "Pane.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	class RuntimePane : public Pane {
 	public:
 		RuntimePane(glm::vec2 &panePosition);
@@ -28,5 +28,4 @@ namespace arcane {
 		float m_MaxFrametime;
 		std::array<float, 300> m_Frametimes;
 	};
-
 }

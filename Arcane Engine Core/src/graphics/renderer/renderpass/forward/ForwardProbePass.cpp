@@ -7,8 +7,8 @@
 #include <graphics/renderer/renderpass/ShadowmapPass.h>
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	ForwardProbePass::ForwardProbePass(Scene3D *scene) : RenderPass(scene),
 		m_SceneCaptureShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false),
 		m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION, false), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION, false)
@@ -269,5 +269,4 @@ namespace arcane {
 		ProbeManager *probeManager = m_ActiveScene->getProbeManager();
 		probeManager->addProbe(reflectionProbe);
 	}
-
 }

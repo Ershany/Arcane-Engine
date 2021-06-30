@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "JoystickInputData.h"
 
-namespace arcane
+namespace Arcane
 {
 	JoystickInputData::JoystickInputData(char id) : m_Id(id), m_Connected(false), m_Deadzone(0.005f) {
 		memset(m_ButtonStates, 0, sizeof(unsigned char) * MAX_JOYSTICK_BUTTONS);

@@ -2,8 +2,8 @@
 
 #include <platform/OpenGL/Framebuffers/Framebuffer.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class GBuffer : public Framebuffer {
 	public:
 		GBuffer(unsigned int width, unsigned int height);
@@ -20,5 +20,4 @@ namespace arcane {
 		// 2 RGBA8  ->       metallic     roughness       ambientOcclusion
 		std::array<Texture, 3> m_GBufferRenderTargets;
 	};
-
 }

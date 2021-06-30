@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Timer.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Timer::Timer() {
 		m_StartTime = glfwGetTime();
 	}
@@ -21,5 +21,4 @@ namespace arcane {
 	double Timer::elapsed() const {
 		return glfwGetTime() - m_StartTime;
 	}
-
 };

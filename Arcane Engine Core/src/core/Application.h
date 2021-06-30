@@ -3,7 +3,7 @@
 #include <core/LayerStack.h>
 #include <utils/Singleton.h>
 
-namespace arcane
+namespace Arcane
 {
 	class Layer;
 

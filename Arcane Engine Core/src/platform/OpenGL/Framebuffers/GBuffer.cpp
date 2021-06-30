@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "GBuffer.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	GBuffer::GBuffer(unsigned int width, unsigned int height) : Framebuffer(width, height, false) {
 		init();
 	}
@@ -70,5 +70,4 @@ namespace arcane {
 		}
 		unbind();
 	}
-
 }

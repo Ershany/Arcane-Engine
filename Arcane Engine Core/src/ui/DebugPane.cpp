@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "DebugPane.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	glm::vec3* DebugPane::s_CameraPosition = nullptr;
 	bool* DebugPane::s_FxaaEnabled = nullptr;
 	float* DebugPane::s_GammaCorrectionValue = nullptr;
@@ -57,5 +57,4 @@ namespace arcane {
 		ImGui::Checkbox("Wireframe Mode", &s_WireframeMode);
 #endif // ARC_DEBUG
 	}
-
 }

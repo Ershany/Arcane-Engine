@@ -3,8 +3,8 @@
 
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	DeferredGeometryPass::DeferredGeometryPass(Scene3D *scene) : RenderPass(scene), m_AllocatedGBuffer(true) {
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Model_GeometryPass.glsl");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Terrain_GeometryPass.glsl");
@@ -79,5 +79,4 @@ namespace arcane {
 		passOutput.outputGBuffer = m_GBuffer;
 		return passOutput;
 	}
-
 }

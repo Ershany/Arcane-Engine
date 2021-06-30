@@ -2,9 +2,8 @@
 
 #include "Pane.h"
 
-namespace arcane
+namespace Arcane
 {
-
 	class WaterPane : public Pane
 	{
 	public:
@@ -37,5 +36,4 @@ namespace arcane
 		static float *s_DepthDampeningEffect;
 		static float *s_ReflectionBias, *s_RefractionBias;
 	};
-
 }

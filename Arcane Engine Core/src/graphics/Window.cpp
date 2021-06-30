@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Window.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	// Static declarations
 	bool Window::s_HideCursor;
 	bool Window::s_HideUI;
@@ -217,5 +217,4 @@ namespace arcane {
 	static void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
 		ARC_LOG_WARN("GL CALLBACK: type {0} - severity {1} - message {2}", type, severity, message);
 	}
-
 }

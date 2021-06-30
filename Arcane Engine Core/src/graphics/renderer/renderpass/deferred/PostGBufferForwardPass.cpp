@@ -3,8 +3,8 @@
 
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	PostGBufferForward::PostGBufferForward(Scene3D *scene) : RenderPass(scene)
 	{
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/PBR_Model.glsl");
@@ -80,5 +80,4 @@ namespace arcane {
 		shader->setUniform("shadowmap", 0);
 		shader->setUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 	}
-
 }

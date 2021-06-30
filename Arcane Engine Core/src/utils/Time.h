@@ -1,7 +1,7 @@
 #pragma once
 
-namespace arcane {
-
+namespace Arcane
+{
 	struct Time {
 	private:
 		GLdouble lastFrame;
@@ -14,5 +14,4 @@ namespace arcane {
 		// Getters
 		inline GLdouble getDeltaTime() const { return delta; }
 	};
-
 }

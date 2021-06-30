@@ -4,7 +4,7 @@
 #include <scene/Scene3D.h>
 #include <utils/Timer.h>
 
-namespace arcane
+namespace Arcane
 {
 	class Shader;
 

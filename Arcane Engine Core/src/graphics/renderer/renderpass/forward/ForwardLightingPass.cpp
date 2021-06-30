@@ -3,8 +3,8 @@
 
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, bool shouldMultisample) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/forward/PBR_Model.glsl");
@@ -135,5 +135,4 @@ namespace arcane {
 		shader->setUniform("shadowmap", 0);
 		shader->setUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 	}
-
 }

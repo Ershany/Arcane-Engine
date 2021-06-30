@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Mesh.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Mesh::Mesh() : m_VAO(0), m_VBO(0), m_IBO(0) {}
 
 	Mesh::Mesh(std::vector<glm::vec3> &positions, std::vector<unsigned int> &indices)
@@ -190,5 +190,4 @@ namespace arcane {
 
 		glBindVertexArray(0);
 	}
-
 }

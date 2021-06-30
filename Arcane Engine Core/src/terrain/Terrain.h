@@ -6,8 +6,8 @@
 #include <graphics/Shader.h>
 #include <utils/loaders/TextureLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Terrain {
 	public:
 		Terrain(glm::vec3 &worldPosition);
@@ -41,5 +41,4 @@ namespace arcane {
 		Mesh *m_Mesh;
 		std::array<Texture*, 21> m_Textures; // Represents all the textures supported by the terrain's texure splatting (rgba and the default value)
 	};
-
 }

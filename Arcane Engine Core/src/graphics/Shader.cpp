@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Shader.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Shader::Shader(const std::string &path) : m_ShaderFilePath(path) {
 		std::string shaderBinary = FileUtils::readFile(m_ShaderFilePath);
 		auto shaderSources = preProcessShaderBinary(shaderBinary);
@@ -184,5 +184,4 @@ namespace arcane {
 		glLinkProgram(m_ShaderID);
 		glValidateProgram(m_ShaderID);
 	}
-
 }

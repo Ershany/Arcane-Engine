@@ -4,8 +4,8 @@
 #include <graphics/renderer/renderpass/deferred/DeferredGeometryPass.h>
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	DeferredLightingPass::DeferredLightingPass(Scene3D *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_LightingShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_LightingPass.glsl");
@@ -111,5 +111,4 @@ namespace arcane {
 		shader->setUniform("shadowmap", 0);
 		shader->setUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 	}
-
 }

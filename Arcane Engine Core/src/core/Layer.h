@@ -1,6 +1,6 @@
 #pragma once
 
-namespace arcane
+namespace Arcane
 {
 	class Layer
 	{

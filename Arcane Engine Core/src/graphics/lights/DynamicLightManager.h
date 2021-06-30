@@ -4,8 +4,8 @@
 #include "PointLight.h"
 #include "SpotLight.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	class DynamicLightManager {
 	public:
 		DynamicLightManager();
@@ -37,5 +37,4 @@ namespace arcane {
 		std::vector<PointLight> m_PointLights;
 		std::vector<SpotLight> m_SpotLights;
 	};
-
 }

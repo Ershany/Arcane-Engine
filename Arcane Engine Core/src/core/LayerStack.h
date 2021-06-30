@@ -2,7 +2,7 @@
 
 #include <core/Layer.h>
 
-namespace arcane
+namespace Arcane
 {
 	class LayerStack
 	{

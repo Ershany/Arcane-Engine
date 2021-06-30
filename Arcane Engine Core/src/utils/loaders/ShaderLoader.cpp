@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ShaderLoader.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	// Static declarations
 	std::unordered_map<std::size_t, Shader*> ShaderLoader::s_ShaderCache;
 	std::hash<std::string> ShaderLoader::s_Hasher;
@@ -22,5 +22,4 @@ namespace arcane {
 		s_ShaderCache.insert(std::pair<std::size_t, Shader*>(hash, shader));
 		return s_ShaderCache[hash];
 	}
-
 }

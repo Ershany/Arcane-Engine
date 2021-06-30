@@ -4,8 +4,8 @@
 #include <graphics/Window.h>
 #include <ui/DebugPane.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	enum Camera_Movement {
 		FORWARD,
 		BACKWARD,
@@ -57,5 +57,4 @@ namespace arcane {
 		float m_CurrentMovementSpeed;
 		float m_CurrentFOV;
 	};
-
 }

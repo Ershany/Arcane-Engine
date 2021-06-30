@@ -2,8 +2,8 @@
 
 #include "Buffer.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	class VertexArray {
 	private:
 		unsigned int m_VertexArrayID;
@@ -18,5 +18,4 @@ namespace arcane {
 		void bind() const;
 		void unbind() const;
 	};
-
 }

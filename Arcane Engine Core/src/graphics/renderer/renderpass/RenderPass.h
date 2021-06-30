@@ -4,8 +4,8 @@
 
 #include <scene/Scene3D.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class RenderPass {
 	public:
 		RenderPass(Scene3D *scene);
@@ -15,5 +15,4 @@ namespace arcane {
 
 		Scene3D *m_ActiveScene;
 	};
-
 }

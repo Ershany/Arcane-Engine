@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "SpotLight.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	SpotLight::SpotLight(float lightIntensity, glm::vec3 &lightColour, float attenuationRadius, glm::vec3 &pos, glm::vec3 &dir, float cutOffAngle, float outerCutOffAngle)
 		: Light(lightIntensity, lightColour), m_AttenuationRadius(attenuationRadius), m_Position(pos), m_Direction(dir), m_CutOff(cutOffAngle), m_OuterCutOff(outerCutOffAngle) {}
 
@@ -15,5 +15,4 @@ namespace arcane {
 		shader->setUniform(("spotLights[" + std::to_string(currentLightIndex) + "].cutOff").c_str(), m_CutOff);
 		shader->setUniform(("spotLights[" + std::to_string(currentLightIndex) + "].outerCutOff").c_str(), m_OuterCutOff);
 	}
-
 }

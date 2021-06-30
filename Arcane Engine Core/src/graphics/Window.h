@@ -4,8 +4,8 @@
 #include <vendor/imgui/imgui.h>
 #include <vendor/imgui/imgui_impl_glfw_gl3.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	static InputManager g_InputManager;
 
 	class Window {
@@ -51,5 +51,4 @@ namespace arcane {
 		static bool s_HideUI;
 		static int s_Width, s_Height;
 	};
-
 }

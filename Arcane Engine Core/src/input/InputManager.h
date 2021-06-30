@@ -2,8 +2,8 @@
 
 #include <input/JoystickManager.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 #define MAX_KEYS 1024
 #define MAX_BUTTONS 32
 
@@ -47,5 +47,4 @@ namespace arcane {
 		static double s_MouseX, s_MouseY, s_MouseXDelta, s_MouseYDelta;
 		static double s_ScrollXDelta, s_ScrollYDelta;
 	};
-
 }

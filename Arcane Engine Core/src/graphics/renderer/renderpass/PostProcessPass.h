@@ -5,8 +5,8 @@
 #include <scene/Scene3D.h>
 #include <utils/Timer.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class PostProcessPass : public RenderPass {
 	public:
 		PostProcessPass(Scene3D *scene);
@@ -76,5 +76,4 @@ namespace arcane {
 		Timer m_ProfilingTimer;
 		Timer m_EffectsTimer;
 	};
-
 }

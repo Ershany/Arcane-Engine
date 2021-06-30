@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Pane.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Pane::Pane(std::string &paneName, glm::vec2 &paneSize) : m_PaneName(paneName), m_PaneSize(paneSize) {
 	}
 
@@ -11,5 +11,4 @@ namespace arcane {
 		setupPaneObjects();
 		ImGui::End();
 	}
-
 }

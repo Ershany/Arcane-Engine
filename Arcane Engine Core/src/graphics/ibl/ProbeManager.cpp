@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ProbeManager.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	ProbeManager::ProbeManager(ProbeBlendSetting sceneProbeBlendSetting)
 		: m_ProbeBlendSetting(sceneProbeBlendSetting), m_LightProbeFallback(nullptr), m_ReflectionProbeFallback(nullptr)
 	{}
@@ -69,5 +69,4 @@ namespace arcane {
 			m_ReflectionProbeFallback->bind(shader);
 		}
 	}
-
 }

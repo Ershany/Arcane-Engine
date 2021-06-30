@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "LayerStack.h"
 
-namespace arcane
+namespace Arcane
 {
 	void LayerStack::PushLayer(Layer *layer)
 	{

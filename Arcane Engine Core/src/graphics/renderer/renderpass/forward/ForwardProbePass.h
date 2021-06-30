@@ -6,8 +6,8 @@
 #include <graphics/Shader.h>
 #include <scene/Scene3D.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class ForwardProbePass : public RenderPass {
 	public:
 		ForwardProbePass(Scene3D *scene);
@@ -29,5 +29,4 @@ namespace arcane {
 
 		Shader *m_ConvolutionShader, *m_ImportanceSamplingShader;
 	};
-
 }

@@ -3,7 +3,7 @@
 
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-namespace arcane
+namespace Arcane
 {
 	std::shared_ptr<spdlog::logger> Logger::s_EngineLogger;
 

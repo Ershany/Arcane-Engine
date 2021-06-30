@@ -4,8 +4,8 @@
 #include <graphics/Shader.h>
 #include <scene/Scene3D.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class ForwardLightingPass : public RenderPass {
 	public:
 		ForwardLightingPass(Scene3D *scene, bool shouldMultisample);
@@ -20,5 +20,4 @@ namespace arcane {
 		Framebuffer *m_Framebuffer;
 		Shader *m_ModelShader, *m_TerrainShader;
 	};
-
 }

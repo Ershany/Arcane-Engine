@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ReflectionProbe.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Texture* ReflectionProbe::s_BRDF_LUT = nullptr;
 
 	ReflectionProbe::ReflectionProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution)
@@ -36,5 +36,4 @@ namespace arcane {
 		s_BRDF_LUT->bind(3);
 		shader->setUniform("brdfLUT", 3);
 	}
-
 }

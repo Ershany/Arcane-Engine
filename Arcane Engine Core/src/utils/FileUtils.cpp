@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "FileUtils.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	std::string FileUtils::readFile(const std::string &filepath) {
 		std::ifstream ifs(filepath, std::ios::in, std::ios::binary);
 		std::string result;
@@ -18,5 +18,4 @@ namespace arcane {
 
 		return result;
 	}
-
 }

@@ -2,8 +2,8 @@
 
 #include <utils/loaders/TextureLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	enum ColorAttachmentFormat {
 		NormalizedSingleChannel8 = GL_RED,
 		Normalized8 = GL_RGBA8,
@@ -59,5 +59,4 @@ namespace arcane {
 		Texture m_DepthStencilTexture;
 		unsigned int m_DepthStencilRBO;
 	};
-
 }

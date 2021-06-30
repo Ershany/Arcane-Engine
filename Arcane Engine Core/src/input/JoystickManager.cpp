@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "JoystickManager.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	JoystickInputData JoystickManager::s_JoystickData[MAX_JOYSTICKS];
 
 	JoystickManager::JoystickManager() {

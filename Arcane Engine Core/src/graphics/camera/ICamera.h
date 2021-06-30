@@ -1,7 +1,7 @@
 #pragma once
 
-namespace arcane {
-
+namespace Arcane
+{
 	class ICamera {
 	public:
 		virtual ~ICamera() {}
@@ -16,5 +16,4 @@ namespace arcane {
 		virtual void setPosition(const glm::vec3 &position) = 0;
 		virtual void invertPitch() = 0;
 	};
-
 }

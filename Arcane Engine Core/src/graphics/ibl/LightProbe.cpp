@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "LightProbe.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	LightProbe::LightProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution)
 		: m_Position(probePosition), m_ProbeResolution(probeResolution), m_IrradianceMap(nullptr), m_Generated(false)
 	{}
@@ -27,5 +27,4 @@ namespace arcane {
 		m_IrradianceMap->bind(1);
 		shader->setUniform("irradianceMap", 1);
 	}
-
 }

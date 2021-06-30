@@ -3,8 +3,8 @@
 
 #include "Mesh.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Model::Model(const char *path) {
 		loadModel(path);
 	}
@@ -137,5 +137,4 @@ namespace arcane {
 
 		return nullptr;
 	}
-
 }

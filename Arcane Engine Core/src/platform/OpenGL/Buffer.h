@@ -1,7 +1,7 @@
 #pragma once
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Buffer {
 	private:
 		unsigned int m_BufferID;
@@ -18,5 +18,4 @@ namespace arcane {
 
 		inline unsigned int getComponentCount() const { return m_ComponentCount; }
 	};
-
 }

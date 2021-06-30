@@ -11,8 +11,8 @@
 #include <terrain/Terrain.h>
 #include <utils/loaders/TextureLoader.h>
 
-namespace arcane {
-	
+namespace Arcane
+{
 	class Scene3D {
 	public:
 		Scene3D(Window *window);
@@ -51,5 +51,4 @@ namespace arcane {
 		ProbeManager m_ProbeManager;
 		std::vector<RenderableModel*> m_RenderableModels;
 	};
-
 }

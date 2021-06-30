@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "WaterPane.h"
 
-namespace arcane
+namespace Arcane
 {
 	bool* WaterPane::s_ClearWater = nullptr;
 	bool* WaterPane::s_EnableShine = nullptr;
@@ -37,5 +37,4 @@ namespace arcane
 		ImGui::SliderFloat("Refraction Bias", s_RefractionBias, 0.01f, 5.0f);
 #endif // ARC_DEBUG
 	}
-
 }

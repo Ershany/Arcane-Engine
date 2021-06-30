@@ -4,8 +4,8 @@
 #include <graphics/Shader.h>
 #include <scene/Scene3D.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class PostGBufferForward : public RenderPass {
 	public:
 		PostGBufferForward(Scene3D *scene);
@@ -17,5 +17,4 @@ namespace arcane {
 	private:
 		Shader *m_ModelShader;
 	};
-
 }

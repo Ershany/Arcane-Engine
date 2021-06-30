@@ -3,8 +3,8 @@
 #include <graphics/texture/Cubemap.h>
 #include <graphics/texture/Texture.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class TextureLoader {
 	public:
 		static void initializeDefaultTextures();
@@ -32,5 +32,4 @@ namespace arcane {
 		static Texture *s_DefaultNormal;
 		static Texture *s_WhiteTexture, *s_BlackTexture;
 	};
-
 }

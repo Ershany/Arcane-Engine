@@ -5,8 +5,8 @@
 #include <graphics/ibl/LightProbe.h>
 #include <graphics/ibl/ReflectionProbe.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	enum ProbeBlendSetting
 	{
 		PROBES_DISABLED, // Ignores probes and uses the skybox
@@ -38,5 +38,4 @@ namespace arcane {
 		LightProbe *m_LightProbeFallback;
 		ReflectionProbe *m_ReflectionProbeFallback;
 	};
-
 }

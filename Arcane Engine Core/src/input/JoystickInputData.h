@@ -1,7 +1,7 @@
 #pragma once
 
-namespace arcane {
-
+namespace Arcane
+{
 #define MAX_JOYSTICK_BUTTONS 18
 
 #define ARCANE_GAMEPAD_A 0
@@ -52,5 +52,4 @@ namespace arcane {
 		glm::vec2 m_RightStick;
 		glm::vec2 m_Triggers;
 	};
-
 }

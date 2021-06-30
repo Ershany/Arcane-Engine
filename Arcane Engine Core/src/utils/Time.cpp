@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Time.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Time::Time() {
 		lastFrame = glfwGetTime();
 		delta = 0;
@@ -12,5 +12,4 @@ namespace arcane {
 		delta = glfwGetTime() - lastFrame;
 		lastFrame = glfwGetTime();
 	}
-
 }

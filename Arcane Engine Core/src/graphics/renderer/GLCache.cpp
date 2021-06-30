@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "GLCache.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	GLCache::GLCache() : m_ActiveShaderID(0) {
 		// Initialize cache values to ensure garbage data doesn't mess with my GL state
 		m_DepthTest = false;
@@ -155,5 +155,4 @@ namespace arcane {
 			glUseProgram(shaderID);
 		}
 	}
-
 }

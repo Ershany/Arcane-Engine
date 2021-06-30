@@ -4,8 +4,8 @@
 #include <graphics/Shader.h>
 #include <scene/Scene3D.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	enum DeferredStencilValue : int {
 		ModelStencilValue = 0x01,
 		TerrainStencilValue = 0x02
@@ -23,5 +23,4 @@ namespace arcane {
 		GBuffer *m_GBuffer;
 		Shader *m_ModelShader, *m_TerrainShader;
 	};
-
 }

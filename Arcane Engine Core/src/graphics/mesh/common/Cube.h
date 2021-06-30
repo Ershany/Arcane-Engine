@@ -2,11 +2,10 @@
 
 #include <graphics/mesh/Mesh.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Cube : public Mesh {
 	public:
 		Cube();
 	};
-
 }

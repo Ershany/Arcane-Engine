@@ -3,8 +3,8 @@
 
 #include <utils/loaders/ShaderLoader.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	Skybox::Skybox(const std::vector<std::string> &filePaths) {
 		m_SkyboxShader = ShaderLoader::loadShader("src/shaders/Skybox.glsl");
 
@@ -38,5 +38,4 @@ namespace arcane {
 
 		m_SkyboxCubemap->unbind();
 	}
-
 }

@@ -3,8 +3,8 @@
 #include <platform/OpenGL/Framebuffers/Framebuffer.h>
 #include <platform/OpenGL/Framebuffers/GBuffer.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	enum RenderPassType {
 		MaterialRequired,
 		NoMaterialRequired
@@ -31,5 +31,4 @@ namespace arcane {
 	struct PreLightingPassOutput {
 		Texture *ssaoTexture;
 	};
-
 }

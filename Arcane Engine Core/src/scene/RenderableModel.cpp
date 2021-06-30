@@ -1,8 +1,8 @@
 #include "pch.h"
 #include <scene/RenderableModel.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	RenderableModel::RenderableModel(glm::vec3 &position, glm::vec3 &scale, glm::vec3 &rotationAxis, float radianRotation, Model *model, RenderableModel *parent, bool isStatic, bool isTransparent)
 		: m_Position(position), m_Scale(scale), m_Orientation(glm::angleAxis(radianRotation, rotationAxis)), m_Model(model), m_Parent(parent), m_IsStatic(isStatic), m_IsTransparent(isTransparent)
 	{
@@ -27,5 +27,4 @@ namespace arcane {
 		m_Children.push_back(child);
 		child->setParent(this);
 	}
-
 }

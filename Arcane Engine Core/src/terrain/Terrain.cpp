@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Terrain.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Terrain::Terrain(glm::vec3 &worldPosition) : m_Position(worldPosition)
 	{
 		m_GLCache = GLCache::getInstance();
@@ -272,5 +272,4 @@ namespace arcane {
 	float Terrain::clamp(float n, float lower, float upper) {
 		return std::max<float>(lower, std::min<float>(n, upper));
 	}
-
 }

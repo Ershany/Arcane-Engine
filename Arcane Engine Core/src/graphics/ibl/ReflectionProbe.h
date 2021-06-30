@@ -4,8 +4,8 @@
 #include <graphics/texture/Texture.h>
 #include <graphics/texture/Cubemap.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class ReflectionProbe {
 	public:
 		ReflectionProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution);
@@ -31,5 +31,4 @@ namespace arcane {
 		glm::vec2 m_ProbeResolution;
 		bool m_Generated;
 	};
-
 }

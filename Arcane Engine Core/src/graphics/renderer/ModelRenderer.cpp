@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "ModelRenderer.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	ModelRenderer::ModelRenderer(FPSCamera *camera) :
 		m_Camera(camera), NDC_Plane(), NDC_Cube()
 	{
@@ -93,5 +93,4 @@ namespace arcane {
 			shader->setUniform("normalMatrix", normalMatrix);
 		}
 	}
-
 }

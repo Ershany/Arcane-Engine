@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Framebuffer.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	Framebuffer::Framebuffer(unsigned int width, unsigned int height, bool isMultisampled)
 		: m_FBO(0), m_Width(width), m_Height(height), m_IsMultisampled(isMultisampled), m_ColourTexture(), m_DepthStencilTexture(), m_DepthStencilRBO(0)
 	{
@@ -154,5 +154,4 @@ namespace arcane {
 	void Framebuffer::clear() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
-
 }

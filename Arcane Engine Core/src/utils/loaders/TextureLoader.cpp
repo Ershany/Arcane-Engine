@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "TextureLoader.h"
 
-namespace arcane {
-
+namespace Arcane
+{
 	// Static declarations
 	std::unordered_map<std::string, Texture*> TextureLoader::m_TextureCache;
 	Texture *TextureLoader::s_DefaultAlbedo;
@@ -107,5 +107,4 @@ namespace arcane {
 		s_BlackTexture->setTextureMinFilter(GL_NEAREST);
 		s_BlackTexture->setTextureMagFilter(GL_NEAREST);
 	}
-
 }

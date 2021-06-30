@@ -1,7 +1,7 @@
 #pragma once
 
-namespace arcane {
-
+namespace Arcane
+{
 	class Timer {
 	public:
 		Timer();
@@ -13,5 +13,4 @@ namespace arcane {
 	private:
 		double m_StartTime;
 	};
-
 }

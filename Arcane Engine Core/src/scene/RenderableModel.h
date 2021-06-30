@@ -3,8 +3,8 @@
 #include <graphics/mesh/Model.h>
 #include <graphics/renderer/renderpass/RenderPassType.h>
 
-namespace arcane {
-
+namespace Arcane
+{
 	class RenderableModel {
 	public:
 		RenderableModel(glm::vec3 &position, glm::vec3 &scale, glm::vec3 &rotationAxis, float radianRotation, Model *model, RenderableModel *parent, bool isStatic = false, bool isTransparent = false);
@@ -40,5 +40,4 @@ namespace arcane {
 		bool m_IsTransparent; // Should be true if the model contains any translucent material
 		bool m_IsStatic;	  // Should be true if the model will never have its transform modified
 	};
-
 }
