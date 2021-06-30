@@ -22,7 +22,7 @@ namespace Arcane
 
 	void WaterPane::setupPaneObjects()
 	{
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		ImGui::Checkbox("Enable Clear Water", s_ClearWater);
 		ImGui::Checkbox("Enable Shine", s_EnableShine);
 		ImGui::SliderFloat3("Water Albedo", glm::value_ptr(*s_WaterAlbedo), 0.0f, 1.0f);
@@ -35,6 +35,6 @@ namespace Arcane
 		ImGui::SliderFloat("Depth Dampening", s_DepthDampeningEffect, 0.01f, 1.0f);
 		ImGui::SliderFloat("Reflection Bias", s_ReflectionBias, 0.01f, 5.0f);
 		ImGui::SliderFloat("Refraction Bias", s_RefractionBias, 0.01f, 5.0f);
-#endif // ARC_DEBUG
+#endif // ARC_DEV_BUILD
 	}
 }

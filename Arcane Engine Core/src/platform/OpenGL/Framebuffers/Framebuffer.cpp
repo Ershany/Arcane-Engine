@@ -32,12 +32,12 @@ namespace Arcane
 	}
 
 	Framebuffer& Framebuffer::addColorTexture(ColorAttachmentFormat textureFormat) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (m_ColourTexture.isGenerated()) {
 			ARC_LOG_ERROR("Framebuffer already has a colour attachment");
 			return *this;
 		}
-#endif // ARC_DEBUG
+#endif // ARC_DEV_BUILD
 
 		bind();
 
@@ -66,12 +66,12 @@ namespace Arcane
 	}
 
 	Framebuffer& Framebuffer::addDepthStencilTexture(DepthStencilAttachmentFormat textureFormat) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (m_DepthStencilTexture.isGenerated()) {
 			ARC_LOG_ERROR("Framebuffer already has a depth attachment");
 			return *this;
 		}
-#endif // ARC_DEBUG
+#endif // ARC_DEV_BUILD
 
 		GLenum attachmentType = GL_DEPTH_STENCIL_ATTACHMENT;
 		if (textureFormat == NormalizedDepthOnly) {
@@ -107,12 +107,12 @@ namespace Arcane
 	}
 
 	Framebuffer& Framebuffer::addDepthStencilRBO(DepthStencilAttachmentFormat textureFormat) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (m_DepthStencilRBO != 0) {
 			ARC_LOG_ERROR("Framebuffer already has a depth+stencil RBO attachment");
 			return *this;
 		}
-#endif // ARC_DEBUG
+#endif // ARC_DEV_BUILD
 
 		bind();
 

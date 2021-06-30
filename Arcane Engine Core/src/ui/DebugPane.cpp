@@ -52,9 +52,9 @@ namespace Arcane
 			ImGui::Checkbox("Film Grain Enabled", s_FilmGrainEnabled);
 		if (s_FilmGrainIntensity != nullptr)
 			ImGui::SliderFloat("Film Grain Intensity", s_FilmGrainIntensity, 0.0f, 1.0f, "%.2f");
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		ImGui::Text("Hit \"P\" to show/hide the cursor");
 		ImGui::Checkbox("Wireframe Mode", &s_WireframeMode);
-#endif // ARC_DEBUG
+#endif // ARC_DEV_BUILD
 	}
 }

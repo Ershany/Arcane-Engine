@@ -83,33 +83,33 @@ namespace Arcane
 
 	// Setters
 	void DynamicLightManager::setDirectionalLightDirection(unsigned int index, const glm::vec3 &dir) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (m_DirectionalLights[index].m_IsStatic)
 			ARC_LOG_WARN("Attempting to modify directional light at index {0}, even though it is set as a static light", index);
-#endif
+#endif // ARC_DEV_BUILD
 		m_DirectionalLights[index].m_Direction = dir;
 	}
 
 	void DynamicLightManager::setPointLightPosition(unsigned int index, const glm::vec3 &pos) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (m_PointLights[index].m_IsStatic)
 			ARC_LOG_WARN("Attempting to modify point light position at index {0}, even though it is set as a static light", index);
-#endif
+#endif // ARC_DEV_BUILD
 		m_PointLights[index].m_Position = pos;
 	}
 
 	void DynamicLightManager::setSpotLightPosition(unsigned int index, const glm::vec3 &pos) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (m_PointLights[index].m_IsStatic)
 			ARC_LOG_WARN("Attempting to modify spot light position at index {0}, even though it is set as a static light", index);
-#endif
+#endif // ARC_DEV_BUILD
 		m_SpotLights[index].m_Position = pos;
 	}
 	void DynamicLightManager::setSpotLightDirection(unsigned int index, const glm::vec3 &dir) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (m_PointLights[index].m_IsStatic)
 			ARC_LOG_WARN("Attempting to modify spot light direction at index {0}, even though it is set as a static light", index);
-#endif
+#endif // ARC_DEV_BUILD
 		m_SpotLights[index].m_Direction = dir;
 	}
 

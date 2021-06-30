@@ -106,14 +106,14 @@ namespace Arcane
 		ImGui::StyleColorsDark();
 
 		// Error callback setup
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		glEnable(GL_DEBUG_OUTPUT);
 		glDebugMessageCallback(DebugMessageCallback, 0);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, nullptr, GL_FALSE);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_MEDIUM, 0, nullptr, GL_TRUE);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, nullptr, GL_TRUE);
-#endif // ARC_DEBUG
+#endif // ARC_DEV_BUILD
 		
 		// Everything was successful so return true
 		return 1;
@@ -179,7 +179,7 @@ namespace Arcane
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		g_InputManager.keyCallback(key, scancode, action, mods);
 		ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (key == GLFW_KEY_P && action == GLFW_RELEASE) {
 			win->s_HideCursor = !win->s_HideCursor;
 			GLenum cursorOption = win->s_HideCursor ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL;
@@ -189,7 +189,7 @@ namespace Arcane
 		{
 			win->s_HideUI = !win->s_HideUI;
 		}
-#endif // ARC_DEBUG
+#endif // ARC_DEV_BUILD
 	}
 
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {

@@ -25,13 +25,13 @@ namespace Arcane
 	}
 
 	void JoystickManager::joystickConnectionCallback(int joystick, int event) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (joystick >= MAX_JOYSTICKS)
 		{
 			ARC_LOG_WARN("Too many joysticks connected, not tracking new connection");
 			return;
 		}
-#endif
+#endif // ARC_DEV_BUILD
 		if (event == GLFW_CONNECTED) {
 			// TODO: Maybe get controller name and store for more debugging of controller information
 			s_JoystickData[joystick].setConnection(true);
@@ -44,13 +44,13 @@ namespace Arcane
 	}
 
 	JoystickInputData* JoystickManager::getJoystickInfo(int joystick) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (joystick < 0 || joystick >= MAX_JOYSTICKS)
 		{
 			ARC_LOG_WARN("Joystick id {0} requested but not loaded", joystick);
 			return nullptr;
 		}
-#endif
+#endif // ARC_DEV_BUILD
 		return &s_JoystickData[joystick];
 	}
 

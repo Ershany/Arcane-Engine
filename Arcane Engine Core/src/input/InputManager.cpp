@@ -29,35 +29,35 @@ namespace Arcane
 	}
 
 	bool InputManager::isKeyPressed(unsigned int keycode) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (keycode < 0 || keycode >= MAX_KEYS)
 		{
 			ARC_LOG_WARN("Key press check is out of bounds (ie not supported) - Keycode: {0}", keycode);
 			return false;
 		}
-#endif
+#endif // ARC_DEV_BUILD
 		return s_Keys[keycode];
 	}
 
 	float InputManager::getKeyPressure(unsigned int keycode) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (keycode < 0 || keycode >= MAX_KEYS)
 		{
 			ARC_LOG_WARN("Key pressure get is out of bounds (ie not supported) - Keycode: {0}", keycode);
 			return 0.0f;
 		}
-#endif
+#endif // ARC_DEV_BUILD
 		return s_KeyPressure[keycode];
 	}
 
 	bool InputManager::isMouseButtonPressed(unsigned int code) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (code < 0 || code >= MAX_BUTTONS)
 		{
 			ARC_LOG_WARN("Mouse button press check is out of bounds (ie not supported) - code: {0}", code);
 			return false;
 		}
-#endif
+#endif // ARC_DEV_BUILD
 		return s_Buttons[code];
 	}
 
@@ -87,24 +87,24 @@ namespace Arcane
 	}
 
 	bool InputManager::getButton(int keyCode) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
 		{
 			ARC_LOG_WARN("Button get is out of bounds (ie not supported) - KeyCode: {0}", keyCode);
 			return false;
 		}
-#endif
+#endif // ARC_DEV_BUILD
 		return s_Keys[keyCode] != GLFW_RELEASE;
 	}
 
 	bool InputManager::getButtonDown(int keyCode) {
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
 		{
 			ARC_LOG_WARN("Button down get is out of bounds (ie not supported) - KeyCode: {0}", keyCode);
 			return false;
 		}
-#endif
+#endif // ARC_DEV_BUILD
 		return s_Keys[keyCode] == GLFW_PRESS;
 	}
 }

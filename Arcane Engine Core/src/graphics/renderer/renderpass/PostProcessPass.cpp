@@ -190,10 +190,10 @@ namespace Arcane
 			inputFramebuffer = &m_ScreenRenderTarget;
 		}
 
-#if ARC_DEBUG
+#ifdef ARC_DEV_BUILD
 		if (DebugPane::getWireframeMode())
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-#endif // ARC_DEBUG
+#endif // ARC_DEV_BUILD
 		//Texture *sceneWithBloom = bloom(target->getColourTexture());
 		//tonemapGammaCorrect(&m_TonemappedNonLinearTarget, sceneWithBloom);
 
