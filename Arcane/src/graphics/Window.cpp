@@ -7,19 +7,18 @@ namespace Arcane
 	bool Window::s_HideCursor;
 	bool Window::s_HideUI;
 	int Window::s_Width; int Window::s_Height;
+	int Window::s_RenderResolutionWidth; int Window::s_RenderResolutionHeight;
+	bool Window::s_VSync;
 
-	Window::Window(const char *title, int width, int height) {
-		m_Title = title;
-		s_Width = width;
-		s_Height = height;
+	Window::Window(const ApplicationSpecification &spec) {
+		m_Title = spec.Name.c_str();
+		s_Width = spec.WindowWidth;
+		s_Height = spec.WindowHeight;
+		s_RenderResolutionWidth = spec.RenderResolutionWidth;
+		s_RenderResolutionHeight = spec.RenderResolutionHeight;
+		s_VSync = spec.VSync;
 		s_HideCursor = true;
 		s_HideUI = false;
-
-		if (!init()) {
-			ARC_LOG_FATAL("Failed to initialize window");
-			glfwDestroyWindow(m_Window);
-			glfwTerminate();
-		}
 	}
 
 	Window::~Window() {
@@ -29,7 +28,17 @@ namespace Arcane
 		ImGui::DestroyContext();
 	}
 
-	bool Window::init() {
+	void Window::init()
+	{
+		if (!initInternal())
+		{
+			ARC_LOG_FATAL("Failed to initialize window");
+			glfwDestroyWindow(m_Window);
+			glfwTerminate();
+		}
+	}
+
+	bool Window::initInternal() {
 		// Needed in order to establish the correct OpenGL context (also enabled the usage of RenderDoc along with the window hints)
 		glewExperimental = true;
 
@@ -83,7 +92,7 @@ namespace Arcane
 		glfwSetJoystickCallback(joystick_callback);
 
 		// Check to see if v-sync was enabled and act accordingly
-		if (V_SYNC) {
+		if (s_VSync) {
 			glfwSwapInterval(1);
 		}
 		else {

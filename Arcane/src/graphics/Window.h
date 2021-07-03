@@ -1,6 +1,7 @@
 #pragma once
 
 #include <input/InputManager.h>
+#include <core/Application.h>
 #include <vendor/imgui/imgui.h>
 #include <vendor/imgui/imgui_impl_glfw_gl3.h>
 
@@ -10,8 +11,10 @@ namespace Arcane
 
 	class Window {
 	public:
-		Window(const char *title, int width, int height);
+		Window(const ApplicationSpecification &spec);
 		~Window();
+
+		void init();
 
 		/**
 		* Will swap the screen buffers and will poll all window/input events
@@ -25,11 +28,10 @@ namespace Arcane
 		static inline bool getHideUI() { return s_HideUI; }
 		static inline int getWidth() { return s_Width; }
 		static inline int getHeight() { return s_Height; }
-		static inline int getRenderResolutionWidth() { return (int)(s_Width * SUPERSAMPLING_FACTOR); }
-		static inline int getRenderResolutionHeight() { return (int)(s_Height * SUPERSAMPLING_FACTOR); }
+		static inline int getRenderResolutionWidth() { return s_RenderResolutionWidth; }
+		static inline int getRenderResolutionHeight() { return s_RenderResolutionHeight; }
 	private:
-		bool init();
-
+		bool initInternal();
 		void setFullscreenResolution();
 
 		// Callback Functions
@@ -50,5 +52,7 @@ namespace Arcane
 		static bool s_HideCursor;
 		static bool s_HideUI;
 		static int s_Width, s_Height;
+		static int s_RenderResolutionWidth, s_RenderResolutionHeight;
+		static bool s_VSync;
 	};
 }

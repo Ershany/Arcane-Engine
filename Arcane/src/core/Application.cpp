@@ -1,30 +1,102 @@
 #include "arcpch.h"
 #include "Application.h"
 
+#include <Defs.h>
+#include <graphics/Window.h>
+#include <graphics/renderer/MasterRenderer.h>
+#include <scene/Scene3D.h>
+#include <utils/loaders/TextureLoader.h>
+#include <utils/Time.h>
+#include <ui/DebugPane.h>
+#include <ui/RuntimePane.h>
+#include <ui/WaterPane.h>
+
 namespace Arcane
 {
-	Application::Application(const ApplicationSpecification &spec)
-	{
+	Application* Application::s_Instance = nullptr;
 
+	Application::Application(const ApplicationSpecification &spec) : m_Specification(spec)
+	{
+		s_Instance = this;
+
+		// Prepare the engine
+		m_Window = new Window(spec);
+		m_Window->init();
+		Arcane::TextureLoader::initializeDefaultTextures();
+		m_Scene3D = new Scene3D(m_Window);
+		m_Renderer = new MasterRenderer(m_Scene3D);
+		m_Manager = new InputManager();
+
+		// Initialize the renderer
+		m_Renderer->init();
 	}
 
 	Application::~Application()
 	{
+		for (Layer *layer : m_LayerStack)
+		{
+			layer->onDetach();
+			delete layer;
+		}
 
+		// Todo: insert render queue flush here
+		// And render shutdown
+
+		delete m_Window;
+		delete m_Scene3D;
+		delete m_Renderer;
+		delete m_Manager;
 	}
 
 	void Application::run()
 	{
 		onInit();
 
-		while (m_Running)
-		{
+		// Temp ImGui Windows
+		Arcane::RuntimePane runtimePane(glm::vec2(270.0f, 175.0f));
+		Arcane::DebugPane debugPane(glm::vec2(270.0f, 400.0f));
+		Arcane::WaterPane waterPane(glm::vec2(270.0f, 400.0f));
 
+		uint64_t frameCounter = 0;
+		Time deltaTime;
+		while (m_Running && !m_Window->closed())
+		{
+			deltaTime.update();
+
+			m_Window->update();
 
 			// Render stuff
 			if (!m_Minimized)
 			{
+				// Wireframe stuff
+				#ifdef ARC_DEV_BUILD
+					if (debugPane.getWireframeMode())
+						glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+					else
+						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				#endif // ARC_DEV_BUILD
 
+				m_Window->bind();
+				m_Window->clear();
+				ImGui_ImplGlfwGL3_NewFrame();
+
+				//for (Layer *layer : m_LayerStack)
+					//layer->onUpdate()
+				m_Scene3D->onUpdate((float)deltaTime.getDeltaTime());
+				m_Renderer->render();
+
+				// Display panes
+				if (!Arcane::Window::getHideUI())
+				{
+					Arcane::Window::bind();
+					runtimePane.render();
+					debugPane.render();
+					waterPane.render();
+				}
+				ImGui::Render();
+				ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+
+				++frameCounter;
 			}
 		}
 

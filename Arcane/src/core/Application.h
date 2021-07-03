@@ -5,11 +5,18 @@
 
 namespace Arcane
 {
+	class Window;
 	class Layer;
+	class Scene3D;
+	class MasterRenderer;
+	class InputManager;
 
 	struct ApplicationSpecification
 	{
 		std::string Name = "Arcane";
+		uint32_t WindowWidth = 1920, WindowHeight = 1080;
+		uint32_t RenderResolutionWidth = WindowWidth, RenderResolutionHeight = WindowHeight;
+		bool VSync = true;
 		bool EnableImGui = true;
 	};
 
@@ -37,6 +44,11 @@ namespace Arcane
 		const ApplicationSpecification& GetSpecification() const { return m_Specification; }
 	private:
 		ApplicationSpecification m_Specification;
+
+		Window *m_Window;
+		Scene3D *m_Scene3D;
+		MasterRenderer *m_Renderer;
+		InputManager *m_Manager;
 		LayerStack m_LayerStack;
 
 		bool m_Running = true;
