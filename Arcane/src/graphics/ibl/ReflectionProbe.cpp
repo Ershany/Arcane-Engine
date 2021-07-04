@@ -13,7 +13,7 @@ namespace Arcane
 		delete m_PrefilterMap;
 	}
 
-	void ReflectionProbe::generate() {
+	void ReflectionProbe::Generate() {
 		// Generate the HDR reflection probe and set the generated flag
 		CubemapSettings settings;
 		settings.TextureFormat = GL_RGBA16F;
@@ -22,18 +22,18 @@ namespace Arcane
 
 		m_PrefilterMap = new Cubemap(settings);
 		for (int i = 0; i < 6; i++) {
-			m_PrefilterMap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, (unsigned int)m_ProbeResolution.x, (unsigned int)m_ProbeResolution.y, GL_RGB, nullptr);
+			m_PrefilterMap->GenerateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, (unsigned int)m_ProbeResolution.x, (unsigned int)m_ProbeResolution.y, GL_RGB, nullptr);
 		}
 
 		m_Generated = true;
 	}
 
-	void ReflectionProbe::bind(Shader *shader) {
-		shader->setUniform("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
+	void ReflectionProbe::Bind(Shader *shader) {
+		shader->SetUniform("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
 		
-		m_PrefilterMap->bind(2);
-		shader->setUniform("prefilterMap", 2);
-		s_BRDF_LUT->bind(3);
-		shader->setUniform("brdfLUT", 3);
+		m_PrefilterMap->Bind(2);
+		shader->SetUniform("prefilterMap", 2);
+		s_BRDF_LUT->Bind(3);
+		shader->SetUniform("brdfLUT", 3);
 	}
 }

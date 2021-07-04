@@ -6,10 +6,10 @@ namespace Arcane
 	public:
 		Timer();
 
-		void reset();
-		void rewind(double time);
+		void Reset();
+		void Rewind(double time);
 
-		double elapsed() const;
+		double Elapsed() const;
 	private:
 		double m_StartTime;
 	};

@@ -22,11 +22,11 @@ namespace Arcane
 		glBindVertexArray(m_VAO);
 		if (m_Indices.size() > 0) {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-			glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(m_Indices.size()), GL_UNSIGNED_INT, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 		else {
-			glDrawArrays(GL_TRIANGLES, 0, m_Positions.size());
+			glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(m_Positions.size()));
 		}
 		glBindVertexArray(0);
 	}
@@ -34,7 +34,7 @@ namespace Arcane
 	void Mesh::LoadData(bool interleaved) {
 		// Check for possible mesh initialization errors
 		{
-			unsigned int vertexCount = m_Positions.size();
+			unsigned int vertexCount = static_cast<unsigned int>(m_Positions.size());
 
 			if (vertexCount == 0)
 				ARC_LOG_WARN("Mesh doesn't contain any vertices");
@@ -137,26 +137,26 @@ namespace Arcane
 			size_t offset = 0;
 
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), (void*)offset);
 			offset += 3 * sizeof(float);
 			if (m_Normals.size() > 0) {
 				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+				glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), (void*)offset);
 				offset += 3 * sizeof(float);
 			}
 			if (m_UVs.size() > 0) {
 				glEnableVertexAttribArray(2);
-				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+				glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), (void*)offset);
 				offset += 2 * sizeof(float);
 			}
 			if (m_Tangents.size() > 0) {
 				glEnableVertexAttribArray(3);
-				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+				glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), (void*)offset);
 				offset += 3 * sizeof(float);
 			}
 			if (m_Bitangents.size() > 0) {
 				glEnableVertexAttribArray(4);
-				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, stride, (void*)offset);
+				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), (void*)offset);
 				offset += 3 * sizeof(float);
 			}
 		}

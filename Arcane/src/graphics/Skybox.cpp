@@ -10,32 +10,32 @@ namespace Arcane
 
 		CubemapSettings srgbCubemap;
 		srgbCubemap.IsSRGB = true;
-		m_SkyboxCubemap = TextureLoader::loadCubemapTexture(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5], &srgbCubemap);
+		m_SkyboxCubemap = TextureLoader::LoadCubemapTexture(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5], &srgbCubemap);
 
-		m_GLCache = GLCache::getInstance();
+		m_GLCache = GLCache::GetInstance();
 	}
 
 	void Skybox::Draw(ICamera *camera) {
-		m_GLCache->switchShader(m_SkyboxShader);
+		m_GLCache->SetShader(m_SkyboxShader);
 
 		// Pass the texture to the shader
-		m_SkyboxCubemap->bind(0);
-		m_SkyboxShader->setUniform("skyboxCubemap", 0);
+		m_SkyboxCubemap->Bind(0);
+		m_SkyboxShader->SetUniform("skyboxCubemap", 0);
 
-		m_SkyboxShader->setUniform("view", camera->getViewMatrix());
-		m_SkyboxShader->setUniform("projection", camera->getProjectionMatrix());
+		m_SkyboxShader->SetUniform("view", camera->GetViewMatrix());
+		m_SkyboxShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Since the vertex shader is gonna make the depth value 1.0, and the default value in the depth buffer is 1.0 so this is needed to draw the sky  box
-		m_GLCache->setDepthTest(true);
-		m_GLCache->setFaceCull(true);
-		m_GLCache->setCullFace(GL_FRONT);
-		m_GLCache->setDepthFunc(GL_LEQUAL);
+		m_GLCache->SetDepthTest(true);
+		m_GLCache->SetFaceCull(true);
+		m_GLCache->SetCullFace(GL_FRONT);
+		m_GLCache->SetDepthFunc(GL_LEQUAL);
 		
 		cube.Draw();
 
-		m_GLCache->setCullFace(GL_BACK);
-		m_GLCache->setDepthFunc(GL_LESS);
+		m_GLCache->SetCullFace(GL_BACK);
+		m_GLCache->SetDepthFunc(GL_LESS);
 
-		m_SkyboxCubemap->unbind();
+		m_SkyboxCubemap->Unbind();
 	}
 }

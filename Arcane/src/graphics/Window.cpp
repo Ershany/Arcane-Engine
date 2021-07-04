@@ -28,9 +28,9 @@ namespace Arcane
 		ImGui::DestroyContext();
 	}
 
-	void Window::init()
+	void Window::Init()
 	{
-		if (!initInternal())
+		if (!InitInternal())
 		{
 			ARC_LOG_FATAL("Failed to initialize window");
 			glfwDestroyWindow(m_Window);
@@ -38,7 +38,7 @@ namespace Arcane
 		}
 	}
 
-	bool Window::initInternal() {
+	bool Window::InitInternal() {
 		// Needed in order to establish the correct OpenGL context (also enabled the usage of RenderDoc along with the window hints)
 		glewExperimental = true;
 
@@ -58,7 +58,7 @@ namespace Arcane
 
 		// Create the window and OpenGL context
 		if (FULLSCREEN_MODE) {
-			setFullscreenResolution();
+			SetFullscreenResolution();
 			m_Window = glfwCreateWindow(s_Width, s_Height, m_Title, glfwGetPrimaryMonitor(), NULL);
 		}
 		else {
@@ -76,7 +76,7 @@ namespace Arcane
 
 		double currMouseX, currMouseY;
 		glfwGetCursorPos(m_Window, &currMouseX, &currMouseY);
-		g_InputManager.setMousePos(currMouseX, currMouseY);
+		g_InputManager.SetMousePos(currMouseX, currMouseY);
 
 		// Set up contexts and callbacks
 		glfwMakeContextCurrent(m_Window);
@@ -128,7 +128,7 @@ namespace Arcane
 		return 1;
 	}
 
-	void Window::update() {
+	void Window::Update() {
 		// Error reporting
 		GLenum error = glGetError();
 		if (error != GL_NO_ERROR) {
@@ -136,27 +136,27 @@ namespace Arcane
 		}
 
 		// Input handling
-		g_InputManager.update();
+		g_InputManager.Update();
 
 		// Handle Window updating
 		glfwSwapBuffers(m_Window);
 		glfwPollEvents();
 	}
 
-	void Window::clear() {
+	void Window::Clear() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
-	void Window::bind() {
+	void Window::Bind() {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	bool Window::closed() const {
+	bool Window::Closed() const {
 		return glfwWindowShouldClose(m_Window);
 	}
 
 	// Sets the Window's Size to the Primary Monitor's Resolution
-	void Window::setFullscreenResolution() {
+	void Window::SetFullscreenResolution() {
 		const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		s_Width = mode->width;
 		s_Height = mode->height;
@@ -186,7 +186,7 @@ namespace Arcane
 
 	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
-		g_InputManager.keyCallback(key, scancode, action, mods);
+		g_InputManager.KeyCallback(key, scancode, action, mods);
 		ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
 #ifdef ARC_DEV_BUILD
 		if (key == GLFW_KEY_P && action == GLFW_RELEASE) {
@@ -202,16 +202,16 @@ namespace Arcane
 	}
 
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-		g_InputManager.mouseButtonCallback(button, action, mods);
+		g_InputManager.MouseButtonCallback(button, action, mods);
 		ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
 	}
 
 	static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
-		g_InputManager.cursorPositionCallback(xpos, ypos);
+		g_InputManager.CursorPositionCallback(xpos, ypos);
 	}
 	
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-		g_InputManager.scrollCallback(xoffset, yoffset);
+		g_InputManager.ScrollCallback(xoffset, yoffset);
 		ImGui_ImplGlfw_ScrollCallback(window, xoffset, yoffset);
 	}
 
@@ -220,7 +220,7 @@ namespace Arcane
 	}
 
 	static void joystick_callback(int joystick, int event) {
-		g_InputManager.joystickCallback(joystick, event);
+		g_InputManager.JoystickCallback(joystick, event);
 	}
 
 	static void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {

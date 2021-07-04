@@ -10,8 +10,8 @@ namespace Arcane
 	{
 		m_LightingShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_LightingPass.glsl");
 
-		m_Framebuffer = new Framebuffer(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight(), false);
-		m_Framebuffer->addColorTexture(FloatingPoint16).addDepthStencilTexture(NormalizedDepthStencil).createFramebuffer();
+		m_Framebuffer = new Framebuffer(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false);
+		m_Framebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthStencil).CreateFramebuffer();
 	}
 
 	DeferredLightingPass::DeferredLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
@@ -27,78 +27,79 @@ namespace Arcane
 
 	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL) {
 		// Framebuffer setup
-		glViewport(0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight());
-		m_Framebuffer->bind();
-		m_Framebuffer->clear();
-		m_GLCache->setDepthTest(false);
-		m_GLCache->setMultisample(false);
+		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
+		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
+		m_Framebuffer->Bind();
+		m_Framebuffer->Clear();
+		m_GLCache->SetDepthTest(false);
+		m_GLCache->SetMultisample(false);
 
 		// Move the depth + stencil of the GBuffer to the our framebuffer
 		// NOTE: Framebuffers have to have identical depth + stencil formats for this to work
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, geometryData.outputGBuffer->getFramebuffer());
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer->getFramebuffer());
-		glBlitFramebuffer(0, 0, geometryData.outputGBuffer->getWidth(), geometryData.outputGBuffer->getHeight(), 0, 0, m_Framebuffer->getWidth(), m_Framebuffer->getHeight(), GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, geometryData.outputGBuffer->GetFramebuffer());
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer->GetFramebuffer());
+		glBlitFramebuffer(0, 0, geometryData.outputGBuffer->GetWidth(), geometryData.outputGBuffer->GetHeight(), 0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight(), GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 
 		// Setup initial stencil state
-		m_GLCache->setStencilTest(true);
-		m_GLCache->setStencilWriteMask(0x00); // Do not update stencil values
+		m_GLCache->SetStencilTest(true);
+		m_GLCache->SetStencilWriteMask(0x00); // Do not update stencil values
 
-		DynamicLightManager *lightManager = m_ActiveScene->getDynamicLightManager();
-		ProbeManager *probeManager = m_ActiveScene->getProbeManager();
+		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
-		m_GLCache->switchShader(m_LightingShader);
-		lightManager->bindLightingUniforms(m_LightingShader);
-		m_LightingShader->setUniform("viewPos", camera->getPosition());
-		m_LightingShader->setUniform("viewInverse", glm::inverse(camera->getViewMatrix()));
-		m_LightingShader->setUniform("projectionInverse", glm::inverse(camera->getProjectionMatrix()));
+		m_GLCache->SetShader(m_LightingShader);
+		lightManager->BindLightingUniforms(m_LightingShader);
+		m_LightingShader->SetUniform("viewPos", camera->GetPosition());
+		m_LightingShader->SetUniform("viewInverse", glm::inverse(camera->GetViewMatrix()));
+		m_LightingShader->SetUniform("projectionInverse", glm::inverse(camera->GetProjectionMatrix()));
 
 		// Bind GBuffer data
-		geometryData.outputGBuffer->getAlbedo()->bind(4);
-		m_LightingShader->setUniform("albedoTexture", 4);
+		geometryData.outputGBuffer->GetAlbedo()->Bind(4);
+		m_LightingShader->SetUniform("albedoTexture", 4);
 
-		geometryData.outputGBuffer->getNormal()->bind(5);
-		m_LightingShader->setUniform("normalTexture", 5);
+		geometryData.outputGBuffer->GetNormal()->Bind(5);
+		m_LightingShader->SetUniform("normalTexture", 5);
 
-		geometryData.outputGBuffer->getMaterialInfo()->bind(6);
-		m_LightingShader->setUniform("materialInfoTexture", 6);
+		geometryData.outputGBuffer->GetMaterialInfo()->Bind(6);
+		m_LightingShader->SetUniform("materialInfoTexture", 6);
 
-		preLightingOutput.ssaoTexture->bind(7);
-		m_LightingShader->setUniform("ssaoTexture", 7);
+		preLightingOutput.ssaoTexture->Bind(7);
+		m_LightingShader->SetUniform("ssaoTexture", 7);
 
-		geometryData.outputGBuffer->getDepthStencilTexture()->bind(8);
-		m_LightingShader->setUniform("depthTexture", 8);
+		geometryData.outputGBuffer->GetDepthStencilTexture()->Bind(8);
+		m_LightingShader->SetUniform("depthTexture", 8);
 
-		m_LightingShader->setUniform("nearPlane", NEAR_PLANE);
-		m_LightingShader->setUniform("farPlane", FAR_PLANE);
+		m_LightingShader->SetUniform("nearPlane", NEAR_PLANE);
+		m_LightingShader->SetUniform("farPlane", FAR_PLANE);
 
 		// Shadowmap code
 		bindShadowmap(m_LightingShader, shadowmapData);
 
 		// Finally perform the lighting using the GBuffer
-		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
+		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 
 		// IBL Binding
-		probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_LightingShader);
+		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_LightingShader);
 
 		// Perform lighting on the terrain (turn IBL off)
-		m_LightingShader->setUniform("computeIBL", 0);
-		m_GLCache->setStencilFunc(GL_EQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
+		m_LightingShader->SetUniform("computeIBL", 0);
+		m_GLCache->SetStencilFunc(GL_EQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
 		modelRenderer->NDC_Plane.Draw();
 
 		// Perform lighting on the models in the scene (turn IBL on)
 		if (useIBL) {
-			m_LightingShader->setUniform("computeIBL", 1);
+			m_LightingShader->SetUniform("computeIBL", 1);
 		}
 		else {
-			m_LightingShader->setUniform("computeIBL", 0);
+			m_LightingShader->SetUniform("computeIBL", 0);
 		}
-		m_GLCache->setStencilFunc(GL_EQUAL, DeferredStencilValue::ModelStencilValue, 0xFF);
+		m_GLCache->SetStencilFunc(GL_EQUAL, DeferredStencilValue::ModelStencilValue, 0xFF);
 		modelRenderer->NDC_Plane.Draw();
 
 
 		// Reset state
-		m_GLCache->setDepthTest(true);
-		m_GLCache->setStencilTest(false);
+		m_GLCache->SetDepthTest(true);
+		m_GLCache->SetStencilTest(false);
 
 		// Render pass output
 		LightingPassOutput passOutput;
@@ -107,8 +108,8 @@ namespace Arcane
 	}
 
 	void DeferredLightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
-		shadowmapData.shadowmapFramebuffer->getDepthStencilTexture()->bind();
-		shader->setUniform("shadowmap", 0);
-		shader->setUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+		shadowmapData.shadowmapFramebuffer->GetDepthStencilTexture()->Bind();
+		shader->SetUniform("shadowmap", 0);
+		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 	}
 }

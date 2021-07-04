@@ -7,18 +7,18 @@ namespace Arcane
 		m_StartTime = glfwGetTime();
 	}
 
-	void Timer::reset() {
+	void Timer::Reset() {
 		m_StartTime = glfwGetTime();
 	}
 
-	void Timer::rewind(double time) {
+	void Timer::Rewind(double time) {
 		m_StartTime += time;
-		if (elapsed() < 0.0) {
+		if (Elapsed() < 0.0) {
 			m_StartTime = glfwGetTime();
 		}
 	}
 
-	double Timer::elapsed() const {
+	double Timer::Elapsed() const {
 		return glfwGetTime() - m_StartTime;
 	}
 };

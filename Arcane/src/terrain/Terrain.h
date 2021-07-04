@@ -15,14 +15,14 @@ namespace Arcane
 
 		void Draw(Shader *shader, RenderPassType pass) const;
 
-		inline const glm::vec3& getPosition() const { return m_Position; }
+		inline const glm::vec3& GetPosition() const { return m_Position; }
 	private:
-		glm::vec3 calculateNormal(float worldPosX, float worldPosZ, unsigned char *heightMapData);
+		glm::vec3 CalculateNormal(float worldPosX, float worldPosZ, unsigned char *heightMapData);
 
-		float sampleHeightfieldBilinear(float worldPosX, float worldPosZ, unsigned char *heightMapData);
-		float sampleHeightfieldNearest(float worldPosX, float worldPosZ, unsigned char *heightMapData);
+		float SampleHeightfieldBilinear(float worldPosX, float worldPosZ, unsigned char *heightMapData);
+		float SampleHeightfieldNearest(float worldPosX, float worldPosZ, unsigned char *heightMapData);
 
-		float Terrain::clamp(float n, float lower, float upper);
+		float Terrain::Clamp(float n, float lower, float upper);
 	private:
 		GLCache *m_GLCache;
 

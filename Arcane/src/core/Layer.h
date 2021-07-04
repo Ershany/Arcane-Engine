@@ -8,13 +8,13 @@ namespace Arcane
 		Layer(const std::string &debugName = "Layer");
 		virtual ~Layer();
 
-		virtual void onAttach() {}
-		virtual void onDetach() {}
-		virtual void onUpdate(float deltaTime) {}
-		virtual void onImGuiRender() {}
-		virtual void onEvent(Event &event) {}
+		virtual void OnAttach() {}
+		virtual void OnDetach() {}
+		virtual void OnUpdate(float deltaTime) {}
+		virtual void OnImGuiRender() {}
+		virtual void OnEvent(Event &event) {}
 
-		inline const std::string& getName() const { return m_DebugName; }
+		inline const std::string& GetName() const { return m_DebugName; }
 	protected:
 		std::string m_DebugName;
 	};

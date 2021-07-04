@@ -24,30 +24,30 @@ namespace Arcane
 		virtual ~Framebuffer();
 
 		// Creation functions
-		void createFramebuffer();
-		Framebuffer& addColorTexture(ColorAttachmentFormat textureFormat);
-		Framebuffer& addDepthStencilTexture(DepthStencilAttachmentFormat textureFormat);
-		Framebuffer& addDepthStencilRBO(DepthStencilAttachmentFormat rboFormat);
+		void CreateFramebuffer();
+		Framebuffer& AddColorTexture(ColorAttachmentFormat textureFormat);
+		Framebuffer& AddDepthStencilTexture(DepthStencilAttachmentFormat textureFormat);
+		Framebuffer& AddDepthStencilRBO(DepthStencilAttachmentFormat rboFormat);
 
-		void bind();
-		void unbind();
+		void Bind();
+		void Unbind();
 
 		// Assumes framebuffer is bound
-		void setColorAttachment(unsigned int target, unsigned int targetType, int mipToWriteTo = 0);
-		void clear();
+		void SetColorAttachment(unsigned int target, unsigned int targetType, int mipToWriteTo = 0);
+		void Clear();
 
 		// Getters
-		inline unsigned int getFramebuffer() { return m_FBO; }
+		inline unsigned int GetFramebuffer() { return m_FBO; }
 
-		inline unsigned int getWidth() const { return m_Width; }
-		inline unsigned int getHeight() const { return m_Height; }
+		inline unsigned int GetWidth() const { return m_Width; }
+		inline unsigned int GetHeight() const { return m_Height; }
 
-		inline bool isMultisampled() const { return m_IsMultisampled; }
+		inline bool IsMultisampled() const { return m_IsMultisampled; }
 
-		inline Texture* getColourTexture() { return &m_ColourTexture; }
+		inline Texture* GetColourTexture() { return &m_ColourTexture; }
 
-		inline Texture* getDepthStencilTexture() { return &m_DepthStencilTexture; }
-		inline unsigned int getDepthStencilRBO() { return m_DepthStencilRBO; }
+		inline Texture* GetDepthStencilTexture() { return &m_DepthStencilTexture; }
+		inline unsigned int GetDepthStencilRBO() { return m_DepthStencilRBO; }
 	protected:
 		unsigned int m_FBO;
 

@@ -15,22 +15,22 @@ namespace Arcane
 		glDeleteVertexArrays(1, &m_VertexArrayID);
 	}
 
-	void VertexArray::addBuffer(Buffer *buffer, int index) {
-		bind();
+	void VertexArray::AddBuffer(Buffer *buffer, int index) {
+		Bind();
 
-		buffer->bind();
+		buffer->Bind();
 		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, buffer->getComponentCount(), GL_FLOAT, GL_FALSE, 0, 0);
-		buffer->unbind();
+		glVertexAttribPointer(index, buffer->GetComponentCount(), GL_FLOAT, GL_FALSE, 0, 0);
+		buffer->Unbind();
 
-		unbind();
+		Unbind();
 	}
 
-	void VertexArray::bind() const {
+	void VertexArray::Bind() const {
 		glBindVertexArray(m_VertexArrayID);
 	}
 
-	void VertexArray::unbind() const {
+	void VertexArray::Unbind() const {
 		glBindVertexArray(0);
 	}
 }

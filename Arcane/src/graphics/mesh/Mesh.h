@@ -23,14 +23,14 @@ namespace Arcane
 
 		void Draw() const;
 
-		inline void setPositions(std::vector<glm::vec3> &positions) { m_Positions = positions; }
-		inline void setUVs(std::vector<glm::vec2> &uvs) { m_UVs = uvs; }
-		inline void setNormals(std::vector<glm::vec3> &normals) { m_Normals = normals; }
-		inline void setTangents(std::vector<glm::vec3> &tangents) { m_Tangents = tangents; }
-		inline void setBitangents(std::vector<glm::vec3> &bitangents) { m_Bitangents = bitangents; }
-		inline void setIndices(std::vector<unsigned int> &indices) { m_Indices = indices; }
+		inline void SetPositions(std::vector<glm::vec3> &positions) { m_Positions = positions; }
+		inline void SetUVs(std::vector<glm::vec2> &uvs) { m_UVs = uvs; }
+		inline void SetNormals(std::vector<glm::vec3> &normals) { m_Normals = normals; }
+		inline void SetTangents(std::vector<glm::vec3> &tangents) { m_Tangents = tangents; }
+		inline void SetBitangents(std::vector<glm::vec3> &bitangents) { m_Bitangents = bitangents; }
+		inline void SetIndices(std::vector<unsigned int> &indices) { m_Indices = indices; }
 
-		inline Material& getMaterial() { return m_Material; }
+		inline Material& SetMaterial() { return m_Material; }
 	protected:
 		unsigned int m_VAO, m_VBO, m_IBO;
 		Material m_Material;

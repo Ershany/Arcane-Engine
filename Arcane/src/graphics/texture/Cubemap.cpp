@@ -9,7 +9,7 @@ namespace Arcane
 		glDeleteTextures(1, &m_CubemapID);
 	}
 
-	void Cubemap::applyCubemapSettings() {
+	void Cubemap::ApplyCubemapSettings() {
 		// Texture wrapping
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, m_CubemapSettings.TextureWrapSMode);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, m_CubemapSettings.TextureWrapTMode);
@@ -32,7 +32,7 @@ namespace Arcane
 		glTexParameterf(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
 	}
 
-	void Cubemap::generateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum dataFormat, const unsigned char *data)
+	void Cubemap::GenerateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum dataFormat, const unsigned char *data)
 	{
 		// Generate cubemap if this is the first face being generated
 		if (m_CubemapID == 0) {
@@ -54,24 +54,24 @@ namespace Arcane
 			}
 		}
 
-		bind();
+		Bind();
 
 		glTexImage2D(face, 0, m_CubemapSettings.TextureFormat, m_FaceWidth, m_FaceHeight, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 		++m_FacesGenerated;
 
 		if (m_FacesGenerated >= 6) {
-			applyCubemapSettings();
+			ApplyCubemapSettings();
 		}
 
-		unbind();
+		Unbind();
 	}
 
-	void Cubemap::bind(int unit) {
+	void Cubemap::Bind(int unit) {
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_CubemapID);
 	}
 
-	void Cubemap::unbind() {
+	void Cubemap::Unbind() {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	}
 }

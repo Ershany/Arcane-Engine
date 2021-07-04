@@ -10,14 +10,14 @@ namespace Arcane
 		LightProbe(glm::vec3 &probePosition, glm::vec2 &probeResolution);
 		~LightProbe();
 
-		void generate();
+		void Generate();
 
 		// Assumes the shader is bound
-		void bind(Shader *shader);
+		void Bind(Shader *shader);
 
 		// Getters
-		inline glm::vec3& getPosition() { return m_Position; }
-		inline Cubemap* getIrradianceMap() { return m_IrradianceMap; }
+		inline glm::vec3& GetPosition() { return m_Position; }
+		inline Cubemap* GetIrradianceMap() { return m_IrradianceMap; }
 	private:
 		Cubemap *m_IrradianceMap;
 

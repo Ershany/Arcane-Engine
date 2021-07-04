@@ -3,19 +3,19 @@
 namespace Arcane
 {
 	class Buffer {
-	private:
-		unsigned int m_BufferID;
-		unsigned int m_ComponentCount;
 	public:
 		Buffer();
 		Buffer(float *data, int amount, unsigned int componentCount);
 		~Buffer();
 
-		void load(float *data, int amount, unsigned int componentCount);
+		void Load(float *data, int amount, unsigned int componentCount);
 
-		void bind() const;
-		void unbind() const;
+		void Bind() const;
+		void Unbind() const;
 
-		inline unsigned int getComponentCount() const { return m_ComponentCount; }
+		inline unsigned int GetComponentCount() const { return m_ComponentCount; }
+	private:
+		unsigned int m_BufferID;
+		unsigned int m_ComponentCount;
 	};
 }

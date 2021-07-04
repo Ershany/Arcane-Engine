@@ -6,14 +6,14 @@ namespace Arcane
 	public:
 		virtual ~ICamera() {}
 
-		virtual glm::mat4 getViewMatrix() = 0;
-		virtual glm::mat4 getProjectionMatrix() = 0;
+		virtual glm::mat4 GetViewMatrix() = 0;
+		virtual glm::mat4 GetProjectionMatrix() = 0;
 
-		virtual const glm::vec3& getPosition() const = 0;
-		virtual const glm::vec3& getFront() const = 0;
-		virtual const glm::vec3& getUp() const = 0;
+		virtual const glm::vec3& GetPosition() const = 0;
+		virtual const glm::vec3& GetFront() const = 0;
+		virtual const glm::vec3& GetUp() const = 0;
 
-		virtual void setPosition(const glm::vec3 &position) = 0;
-		virtual void invertPitch() = 0;
+		virtual void SetPosition(const glm::vec3 &position) = 0;
+		virtual void InvertPitch() = 0;
 	};
 }

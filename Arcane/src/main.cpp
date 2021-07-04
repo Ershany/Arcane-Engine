@@ -1,13 +1,8 @@
 #include "arcpch.h"
 
-#include <graphics/Window.h>
-#include <utils/Logger.h>
+#include <core/Application.h>
 
 int main() {
-	// Pre-Engine Intialization
-	Arcane::Logger::GetEngineLogger();
-	ARC_LOG_INFO("Initialized Logger");
-
 	// Temp: Should be handled by whatever service that wants to run Arcane
 	Arcane::ApplicationSpecification specification;
 	specification.Name = "Arcane Engine";
@@ -20,7 +15,7 @@ int main() {
 	new Arcane::Application(specification);
 
 	//Arcane::Application::GetInstance().pushOverlay();
-	Arcane::Application::GetInstance().run();
+	Arcane::Application::GetInstance().Run();
 
 	return EXIT_SUCCESS;
 }

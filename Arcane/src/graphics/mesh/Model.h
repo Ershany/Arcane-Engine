@@ -19,14 +19,14 @@ namespace Arcane
 		
 		void Draw(Shader *shader, RenderPassType pass) const;
 
-		inline std::vector<Mesh>& getMeshes() { return m_Meshes; }
+		inline std::vector<Mesh>& GetMeshes() { return m_Meshes; }
+	private:
+		void LoadModel(const std::string &path);
+		void ProcessNode(aiNode *node, const aiScene *scene);
+		Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene);
+		Texture* LoadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB);
 	private:
 		std::vector<Mesh> m_Meshes;
 		std::string m_Directory;
-
-		void loadModel(const std::string &path);
-		void processNode(aiNode *node, const aiScene *scene);
-		Mesh processMesh(aiMesh *mesh, const aiScene *scene);
-		Texture* loadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB);
 	};
 }

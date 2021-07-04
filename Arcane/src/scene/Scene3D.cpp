@@ -9,18 +9,18 @@
 namespace Arcane
 {
 	Scene3D::Scene3D(Window *window)
-		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_ModelRenderer(getCamera()), m_Terrain(glm::vec3(0.0f, -20.0f, 0.0f)), m_ProbeManager(m_SceneProbeBlendSetting)
+		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_ModelRenderer(GetCamera()), m_Terrain(glm::vec3(0.0f, -20.0f, 0.0f)), m_ProbeManager(m_SceneProbeBlendSetting)
 	{
-		m_GLCache = GLCache::getInstance();
+		m_GLCache = GLCache::GetInstance();
 
-		init();
+		Init();
 	}
 
 	Scene3D::~Scene3D() {
 		
 	}
 
-	void Scene3D::init() {
+	void Scene3D::Init() {
 		TextureSettings srgbTextureSettings;
 		srgbTextureSettings.IsSRGB = true;
 
@@ -56,86 +56,86 @@ namespace Arcane
 		skyboxFilePaths.push_back("res/skybox/front.png");
 		m_Skybox = new Skybox(skyboxFilePaths);
 
-		m_SceneCamera.setPosition(glm::vec3(90.0f, 80.0f, 180.0f));
+		m_SceneCamera.SetPosition(glm::vec3(90.0f, 80.0f, 180.0f));
 	}
 
-	void Scene3D::onUpdate(float deltaTime) {
+	void Scene3D::OnUpdate(float deltaTime) {
 		// Camera Update
-		m_SceneCamera.processInput(deltaTime);
+		m_SceneCamera.ProcessInput(deltaTime);
 
-		m_DynamicLightManager.setSpotLightDirection(0, m_SceneCamera.getFront());
-		m_DynamicLightManager.setSpotLightPosition(0, m_SceneCamera.getPosition());
+		m_DynamicLightManager.SetSpotLightDirection(0, m_SceneCamera.GetFront());
+		m_DynamicLightManager.SetSpotLightPosition(0, m_SceneCamera.GetPosition());
 	}
 
-	void Scene3D::addModelsToRenderer() {
+	void Scene3D::AddModelsToRenderer() {
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
-			if (curr->getTransparent()) {
-				m_ModelRenderer.submitTransparent(curr); 
+			if (curr->GetTransparent()) {
+				m_ModelRenderer.SubmitTransparent(curr); 
 			}
 			else {
-				m_ModelRenderer.submitOpaque(curr);
+				m_ModelRenderer.SubmitOpaque(curr);
 			}
 			iter++;
 		}
 	}
 
-	void Scene3D::addStaticModelsToRenderer() {
+	void Scene3D::AddStaticModelsToRenderer() {
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
-			if (curr->getStatic()) {
-				if (curr->getTransparent()) {
-					m_ModelRenderer.submitTransparent(curr);
+			if (curr->GetStatic()) {
+				if (curr->GetTransparent()) {
+					m_ModelRenderer.SubmitTransparent(curr);
 				}
 				else {
-					m_ModelRenderer.submitOpaque(curr);
+					m_ModelRenderer.SubmitOpaque(curr);
 				}
 			}
 			iter++;
 		}
 	}
 
-	void Scene3D::addTransparentModelsToRenderer() {
+	void Scene3D::AddTransparentModelsToRenderer() {
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
-			if (curr->getTransparent()) {
-				m_ModelRenderer.submitTransparent(curr);
+			if (curr->GetTransparent()) {
+				m_ModelRenderer.SubmitTransparent(curr);
 			}
 			iter++;
 		}
 	}
 
-	void Scene3D::addTransparentStaticModelsToRenderer() {
+	void Scene3D::AddTransparentStaticModelsToRenderer() {
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
-			if (curr->getStatic() && curr->getTransparent()) {
-				m_ModelRenderer.submitTransparent(curr);
+			if (curr->GetStatic() && curr->GetTransparent()) {
+				m_ModelRenderer.SubmitTransparent(curr);
 			}
 			iter++;
 		}
 	}
 
-	void Scene3D::addOpaqueModelsToRenderer() {
+	void Scene3D::AddOpaqueModelsToRenderer() {
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
-			if (!curr->getTransparent()) {
-				m_ModelRenderer.submitOpaque(curr);
+			if (!curr->GetTransparent()) {
+				m_ModelRenderer.SubmitOpaque(curr);
 			}
 			iter++;
 		}
 	}
 
-	void Scene3D::addOpaqueStaticModelsToRenderer() {
+	void Scene3D::AddOpaqueStaticModelsToRenderer() {
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
-			if (curr->getStatic() && !curr->getTransparent()) {
-				m_ModelRenderer.submitOpaque(curr);
+			if (curr->GetStatic() && !curr->GetTransparent()) {
+				m_ModelRenderer.SubmitOpaque(curr);
 			}
 			iter++;
 		}

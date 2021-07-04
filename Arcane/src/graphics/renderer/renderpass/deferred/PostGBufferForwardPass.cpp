@@ -13,61 +13,61 @@ namespace Arcane
 	PostGBufferForward::~PostGBufferForward() {}
 
 	LightingPassOutput PostGBufferForward::executeLightingPass(ShadowmapPassOutput &shadowmapData, LightingPassOutput &lightingPassData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
-		glViewport(0, 0, lightingPassData.outputFramebuffer->getWidth(), lightingPassData.outputFramebuffer->getHeight());
-		lightingPassData.outputFramebuffer->bind();
-		m_GLCache->setMultisample(false);
-		m_GLCache->setDepthTest(true);
+		glViewport(0, 0, lightingPassData.outputFramebuffer->GetWidth(), lightingPassData.outputFramebuffer->GetHeight());
+		lightingPassData.outputFramebuffer->Bind();
+		m_GLCache->SetMultisample(false);
+		m_GLCache->SetDepthTest(true);
 
 		// Setup
-		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
-		DynamicLightManager *lightManager = m_ActiveScene->getDynamicLightManager();
-		Skybox *skybox = m_ActiveScene->getSkybox();
-		ProbeManager *probeManager = m_ActiveScene->getProbeManager();
+		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
+		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		Skybox *skybox = m_ActiveScene->GetSkybox();
+		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
 		// Render skybox
 		skybox->Draw(camera);
 
 		// View setup + lighting setup
-		auto lightBindFunction = &DynamicLightManager::bindLightingUniforms;
+		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
 		if (renderOnlyStatic)
-			lightBindFunction = &DynamicLightManager::bindStaticLightingUniforms;
+			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
 
-		m_GLCache->switchShader(m_ModelShader);
-		if (m_GLCache->getUsesClipPlane()) {
-			m_ModelShader->setUniform("usesClipPlane", true);
-			m_ModelShader->setUniform("clipPlane", m_GLCache->getActiveClipPlane());
+		m_GLCache->SetShader(m_ModelShader);
+		if (m_GLCache->GetUsesClipPlane()) {
+			m_ModelShader->SetUniform("usesClipPlane", true);
+			m_ModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
 		}
 		else {
-			m_ModelShader->setUniform("usesClipPlane", false);
+			m_ModelShader->SetUniform("usesClipPlane", false);
 		}
 		(lightManager->*lightBindFunction) (m_ModelShader);
-		m_ModelShader->setUniform("viewPos", camera->getPosition());
-		m_ModelShader->setUniform("view", camera->getViewMatrix());
-		m_ModelShader->setUniform("projection", camera->getProjectionMatrix());
+		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
+		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
+		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Shadowmap code
 		bindShadowmap(m_ModelShader, shadowmapData);
 
 		// IBL code
 		if (useIBL) {
-			m_ModelShader->setUniform("computeIBL", 1);
-			probeManager->bindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+			m_ModelShader->SetUniform("computeIBL", 1);
+			probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 		}
 		else {
-			m_ModelShader->setUniform("computeIBL", 0);
+			m_ModelShader->SetUniform("computeIBL", 0);
 		}
 
 		// Render only transparent materials since we already rendered opaque using deferred
 		if (renderOnlyStatic) {
-			m_ActiveScene->addTransparentStaticModelsToRenderer();
+			m_ActiveScene->AddTransparentStaticModelsToRenderer();
 		}
 		else {
-			m_ActiveScene->addTransparentModelsToRenderer();
+			m_ActiveScene->AddTransparentModelsToRenderer();
 		}
 
 		// Render transparent objects
-		modelRenderer->setupTransparentRenderState();
-		modelRenderer->flushTransparent(m_ModelShader, MaterialRequired);
+		modelRenderer->SetupTransparentRenderState();
+		modelRenderer->FlushTransparent(m_ModelShader, MaterialRequired);
 
 		// Render pass output
 		LightingPassOutput passOutput;
@@ -76,8 +76,8 @@ namespace Arcane
 	}
 
 	void PostGBufferForward::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
-		shadowmapData.shadowmapFramebuffer->getDepthStencilTexture()->bind();
-		shader->setUniform("shadowmap", 0);
-		shader->setUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+		shadowmapData.shadowmapFramebuffer->GetDepthStencilTexture()->Bind();
+		shader->SetUniform("shadowmap", 0);
+		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 	}
 }

@@ -23,7 +23,7 @@ namespace Arcane
 	{
 	}
 
-	void DebugPane::setupPaneObjects() {
+	void DebugPane::SetupPaneObjects() {
 		if (s_CameraPosition != nullptr)
 			ImGui::Text("Camera Pos x:%.1f y:%.1f z:%.1f", s_CameraPosition->x, s_CameraPosition->y, s_CameraPosition->z);
 		if (s_FxaaEnabled != nullptr)

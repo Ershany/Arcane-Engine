@@ -20,22 +20,23 @@ namespace Arcane
 		s_Instance = this;
 
 		// Prepare the engine
+		ARC_LOG_INFO("Initializing Arcane Engine...");
 		m_Window = new Window(spec);
-		m_Window->init();
-		Arcane::TextureLoader::initializeDefaultTextures();
+		m_Window->Init();
+		Arcane::TextureLoader::InitializeDefaultTextures();
 		m_Scene3D = new Scene3D(m_Window);
 		m_Renderer = new MasterRenderer(m_Scene3D);
 		m_Manager = new InputManager();
 
 		// Initialize the renderer
-		m_Renderer->init();
+		m_Renderer->Init();
 	}
 
 	Application::~Application()
 	{
 		for (Layer *layer : m_LayerStack)
 		{
-			layer->onDetach();
+			layer->OnDetach();
 			delete layer;
 		}
 
@@ -48,9 +49,9 @@ namespace Arcane
 		delete m_Manager;
 	}
 
-	void Application::run()
+	void Application::Run()
 	{
-		onInit();
+		OnInit();
 
 		// Temp ImGui Windows
 		Arcane::RuntimePane runtimePane(glm::vec2(270.0f, 175.0f));
@@ -59,39 +60,39 @@ namespace Arcane
 
 		uint64_t frameCounter = 0;
 		Time deltaTime;
-		while (m_Running && !m_Window->closed())
+		while (m_Running && !m_Window->Closed())
 		{
-			deltaTime.update();
+			deltaTime.Update();
 
-			m_Window->update();
+			m_Window->Update();
 
 			// Render stuff
 			if (!m_Minimized)
 			{
 				// Wireframe stuff
 				#ifdef ARC_DEV_BUILD
-					if (debugPane.getWireframeMode())
+					if (debugPane.GetWireframeMode())
 						glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 					else
 						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 				#endif // ARC_DEV_BUILD
 
-				m_Window->bind();
-				m_Window->clear();
+				m_Window->Bind();
+				m_Window->Clear();
 				ImGui_ImplGlfwGL3_NewFrame();
 
 				//for (Layer *layer : m_LayerStack)
 					//layer->onUpdate()
-				m_Scene3D->onUpdate((float)deltaTime.getDeltaTime());
-				m_Renderer->render();
+				m_Scene3D->OnUpdate((float)deltaTime.GetDeltaTime());
+				m_Renderer->Render();
 
 				// Display panes
-				if (!Arcane::Window::getHideUI())
+				if (!Arcane::Window::GetHideUI())
 				{
-					Arcane::Window::bind();
-					runtimePane.render();
-					debugPane.render();
-					waterPane.render();
+					Arcane::Window::Bind();
+					runtimePane.Render();
+					debugPane.Render();
+					waterPane.Render();
 				}
 				ImGui::Render();
 				ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
@@ -100,39 +101,39 @@ namespace Arcane
 			}
 		}
 
-		onShutdown();
+		OnShutdown();
 	}
 
-	void Application::close()
+	void Application::Close()
 	{
 		m_Running = false;
 	}
 
-	void Application::onEvent(Event &event)
+	void Application::OnEvent(Event &event)
 	{
 		EventDispatcher dispatcher(event);
 		
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
-			(*--it)->onEvent(event);
+			(*--it)->OnEvent(event);
 			if (event.Handled)
 				break;
 		}
 	}
 
-	void Application::pushLayer(Layer *layer)
+	void Application::PushLayer(Layer *layer)
 	{
 		m_LayerStack.PushLayer(layer);
-		layer->onAttach();
+		layer->OnAttach();
 	}
 
-	void Application::pushOverlay(Layer *overlay)
+	void Application::PushOverlay(Layer *overlay)
 	{
 		m_LayerStack.PushOverlay(overlay);
-		overlay->onAttach();
+		overlay->OnAttach();
 	}
 
-	void Application::renderImGui()
+	void Application::RenderImGui()
 	{
 
 	}

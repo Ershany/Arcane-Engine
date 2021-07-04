@@ -10,28 +10,28 @@ namespace Arcane
 		GLCache();
 		~GLCache();
 
-		static GLCache* getInstance();
+		static GLCache* GetInstance();
 
-		void setDepthTest(bool choice);
-		void setStencilTest(bool choice);
-		void setBlend(bool choice);
-		void setFaceCull(bool choice);
-		void setMultisample(bool choice);
-		void setUsesClipPlane(bool choice);
+		void SetDepthTest(bool choice);
+		void SetStencilTest(bool choice);
+		void SetBlend(bool choice);
+		void SetFaceCull(bool choice);
+		void SetMultisample(bool choice);
+		void SetUsesClipPlane(bool choice);
 
-		void setDepthFunc(GLenum depthFunc);
-		void setStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask);
-		void setStencilOp(GLenum stencilFailOperation, GLenum depthFailOperation, GLenum depthPassOperation);
-		void setStencilWriteMask(unsigned int bitmask);
-		void setBlendFunc(GLenum src, GLenum dst);
-		void setCullFace(GLenum faceToCull);
-		void setClipPlane(glm::vec4 clipPlane);
+		void SetDepthFunc(GLenum depthFunc);
+		void SetStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask);
+		void SetStencilOp(GLenum stencilFailOperation, GLenum depthFailOperation, GLenum depthPassOperation);
+		void SetStencilWriteMask(unsigned int bitmask);
+		void SetBlendFunc(GLenum src, GLenum dst);
+		void SetCullFace(GLenum faceToCull);
+		void SetClipPlane(glm::vec4 clipPlane);
 
-		void switchShader(Shader *shader);
-		void switchShader(unsigned int shaderID);
+		void SetShader(Shader *shader);
+		void SetShader(unsigned int shaderID);
 
-		inline bool getUsesClipPlane() { return m_UsesClipPlane; }
-		inline const glm::vec4& getActiveClipPlane() { return m_ActiveClipPlane; }
+		inline bool GetUsesClipPlane() { return m_UsesClipPlane; }
+		inline const glm::vec4& GetActiveClipPlane() { return m_ActiveClipPlane; }
 	private:
 		// Toggles
 		bool m_DepthTest;

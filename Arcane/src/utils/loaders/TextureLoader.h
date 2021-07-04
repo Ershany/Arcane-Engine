@@ -7,23 +7,23 @@ namespace Arcane
 {
 	class TextureLoader {
 	public:
-		static void initializeDefaultTextures();
+		static void InitializeDefaultTextures();
 
 		// TODO: HDR loading
-		static Texture* load2DTexture(std::string &path, TextureSettings *settings = nullptr);
-		static Cubemap* loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
+		static Texture* Load2DTexture(std::string &path, TextureSettings *settings = nullptr);
+		static Cubemap* LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
 
-		inline static Texture* getWhiteTexture() { return s_WhiteTexture; }
-		inline static Texture* getBlackTexture() { return s_BlackTexture; }
-		inline static Texture* getDefaultAlbedo() { return s_DefaultAlbedo; }
-		inline static Texture* getDefaultNormal() { return s_DefaultNormal; }
-		inline static Texture* getDefaultMetallic() { return s_BlackTexture; }
-		inline static Texture* getDefaultRoughness() { return s_BlackTexture; }
-		inline static Texture* getDefaultAO() { return s_WhiteTexture; }
-		inline static Texture* getFullMetallic() { return s_WhiteTexture; }
-		inline static Texture* getNoMetallic() { return s_BlackTexture; }
-		inline static Texture* getFullRoughness() { return s_WhiteTexture; }
-		inline static Texture* getNoRoughness() { return s_BlackTexture; }
+		inline static Texture* GetWhiteTexture() { return s_WhiteTexture; }
+		inline static Texture* GetBlackTexture() { return s_BlackTexture; }
+		inline static Texture* GetDefaultAlbedo() { return s_DefaultAlbedo; }
+		inline static Texture* GetDefaultNormal() { return s_DefaultNormal; }
+		inline static Texture* GetDefaultMetallic() { return s_BlackTexture; }
+		inline static Texture* GetDefaultRoughness() { return s_BlackTexture; }
+		inline static Texture* GetDefaultAO() { return s_WhiteTexture; }
+		inline static Texture* GetFullMetallic() { return s_WhiteTexture; }
+		inline static Texture* GetNoMetallic() { return s_BlackTexture; }
+		inline static Texture* GetFullRoughness() { return s_WhiteTexture; }
+		inline static Texture* GetNoRoughness() { return s_BlackTexture; }
 	private:
 		static std::unordered_map<std::string, Texture*> m_TextureCache;
 		

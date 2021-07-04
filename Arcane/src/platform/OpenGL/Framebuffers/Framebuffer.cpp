@@ -15,9 +15,9 @@ namespace Arcane
 		glDeleteFramebuffers(1, &m_FBO);
 	}
 
-	void Framebuffer::createFramebuffer() {
-		bind();
-		if (!m_ColourTexture.isGenerated()) {
+	void Framebuffer::CreateFramebuffer() {
+		Bind();
+		if (!m_ColourTexture.IsGenerated()) {
 			// Indicate that there won't be a colour buffer for this FBO
 			glDrawBuffer(GL_NONE);
 			glReadBuffer(GL_NONE);
@@ -28,18 +28,18 @@ namespace Arcane
 			ARC_LOG_FATAL("Could not initialize the framebuffer");
 			return;
 		}
-		unbind();
+		Unbind();
 	}
 
-	Framebuffer& Framebuffer::addColorTexture(ColorAttachmentFormat textureFormat) {
+	Framebuffer& Framebuffer::AddColorTexture(ColorAttachmentFormat textureFormat) {
 #ifdef ARC_DEV_BUILD
-		if (m_ColourTexture.isGenerated()) {
+		if (m_ColourTexture.IsGenerated()) {
 			ARC_LOG_ERROR("Framebuffer already has a colour attachment");
 			return *this;
 		}
 #endif // ARC_DEV_BUILD
 
-		bind();
+		Bind();
 
 		TextureSettings colourTextureSettings;
 		colourTextureSettings.TextureFormat = textureFormat;
@@ -49,25 +49,25 @@ namespace Arcane
 		colourTextureSettings.TextureMagnificationFilterMode = GL_LINEAR;
 		colourTextureSettings.TextureAnisotropyLevel = 1.0f;
 		colourTextureSettings.HasMips = false;
-		m_ColourTexture.setTextureSettings(colourTextureSettings);
+		m_ColourTexture.SetTextureSettings(colourTextureSettings);
 
 		// Generate colour texture attachment
 		if (m_IsMultisampled) {
-			m_ColourTexture.generate2DMultisampleTexture(m_Width, m_Height);
-			setColorAttachment(m_ColourTexture.getTextureId(), GL_TEXTURE_2D_MULTISAMPLE);
+			m_ColourTexture.Generate2DMultisampleTexture(m_Width, m_Height);
+			SetColorAttachment(m_ColourTexture.GetTextureId(), GL_TEXTURE_2D_MULTISAMPLE);
 		}
 		else {
-			m_ColourTexture.generate2DTexture(m_Width, m_Height, GL_RGB);
-			setColorAttachment(m_ColourTexture.getTextureId(), GL_TEXTURE_2D);
+			m_ColourTexture.Generate2DTexture(m_Width, m_Height, GL_RGB);
+			SetColorAttachment(m_ColourTexture.GetTextureId(), GL_TEXTURE_2D);
 		}
 
-		unbind();
+		Unbind();
 		return *this;
 	}
 
-	Framebuffer& Framebuffer::addDepthStencilTexture(DepthStencilAttachmentFormat textureFormat) {
+	Framebuffer& Framebuffer::AddDepthStencilTexture(DepthStencilAttachmentFormat textureFormat) {
 #ifdef ARC_DEV_BUILD
-		if (m_DepthStencilTexture.isGenerated()) {
+		if (m_DepthStencilTexture.IsGenerated()) {
 			ARC_LOG_ERROR("Framebuffer already has a depth attachment");
 			return *this;
 		}
@@ -78,7 +78,7 @@ namespace Arcane
 			attachmentType = GL_DEPTH_ATTACHMENT;
 		}
 
-		bind();
+		Bind();
 
 		TextureSettings depthStencilSettings;
 		depthStencilSettings.TextureFormat = textureFormat;
@@ -90,23 +90,23 @@ namespace Arcane
 		depthStencilSettings.HasBorder = true;
 		depthStencilSettings.BorderColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		depthStencilSettings.HasMips = false;
-		m_DepthStencilTexture.setTextureSettings(depthStencilSettings);
+		m_DepthStencilTexture.SetTextureSettings(depthStencilSettings);
 
 		// Generate depth attachment
 		if (m_IsMultisampled) {
-			m_DepthStencilTexture.generate2DMultisampleTexture(m_Width, m_Height);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D_MULTISAMPLE, m_DepthStencilTexture.getTextureId(), 0);
+			m_DepthStencilTexture.Generate2DMultisampleTexture(m_Width, m_Height);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D_MULTISAMPLE, m_DepthStencilTexture.GetTextureId(), 0);
 		}
 		else {
-			m_DepthStencilTexture.generate2DTexture(m_Width, m_Height, GL_DEPTH_COMPONENT);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D, m_DepthStencilTexture.getTextureId(), 0);
+			m_DepthStencilTexture.Generate2DTexture(m_Width, m_Height, GL_DEPTH_COMPONENT);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, GL_TEXTURE_2D, m_DepthStencilTexture.GetTextureId(), 0);
 		}
 
-		unbind();
+		Unbind();
 		return *this;
 	}
 
-	Framebuffer& Framebuffer::addDepthStencilRBO(DepthStencilAttachmentFormat textureFormat) {
+	Framebuffer& Framebuffer::AddDepthStencilRBO(DepthStencilAttachmentFormat textureFormat) {
 #ifdef ARC_DEV_BUILD
 		if (m_DepthStencilRBO != 0) {
 			ARC_LOG_ERROR("Framebuffer already has a depth+stencil RBO attachment");
@@ -114,7 +114,7 @@ namespace Arcane
 		}
 #endif // ARC_DEV_BUILD
 
-		bind();
+		Bind();
 
 		GLenum attachmentType = GL_DEPTH_STENCIL_ATTACHMENT;
 		if (textureFormat == NormalizedDepthOnly) {
@@ -135,23 +135,23 @@ namespace Arcane
 		// Attach depth+stencil attachment
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachmentType, GL_RENDERBUFFER, m_DepthStencilRBO);
 
-		unbind();
+		Unbind();
 		return *this;
 	}
 
-	void Framebuffer::setColorAttachment(unsigned int target, unsigned int targetType, int mipToWriteTo) {
+	void Framebuffer::SetColorAttachment(unsigned int target, unsigned int targetType, int mipToWriteTo) {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, targetType, target, mipToWriteTo);
 	}
 
-	void Framebuffer::bind() {
+	void Framebuffer::Bind() {
 		glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 	}
 
-	void Framebuffer::unbind() {
+	void Framebuffer::Unbind() {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void Framebuffer::clear() {
+	void Framebuffer::Clear() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 }

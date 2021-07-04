@@ -9,10 +9,10 @@ namespace Arcane
 		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_WaterPass(scene), m_ForwardLightingPass(scene, true), m_EnvironmentProbePass(scene),
 		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene), m_PostGBufferForwardPass(scene)
 	{
-		m_GLCache = GLCache::getInstance();
+		m_GLCache = GLCache::GetInstance();
 	}
 
-	void MasterRenderer::init() {
+	void MasterRenderer::Init() {
 		// State that should never change
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
@@ -20,21 +20,21 @@ namespace Arcane
 		m_EnvironmentProbePass.pregenerateProbes();
 	}
 
-	void MasterRenderer::render() {
+	void MasterRenderer::Render() {
 		/* Forward Rendering */
 #if FORWARD_RENDER
 #if DEBUG_PROFILING
 		glFinish();
-		m_ProfilingTimer.reset();
+		m_ProfilingTimer.Reset();
 #endif // DEBUG_PROFILING
-		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->getCamera(), false);
+		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->GetCamera(), false);
 #if DEBUG_PROFILING
 		glFinish();
-		RuntimePane::setShadowmapTimer((float)m_ProfilingTimer.elapsed());
+		RuntimePane::SetShadowmapTimer((float)m_ProfilingTimer.Elapsed());
 #endif // DEBUG_PROFILING
 
-		LightingPassOutput lightingOutput = m_ForwardLightingPass.executeLightingPass(shadowmapOutput, m_ActiveScene->getCamera(), false, true);
-		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, lightingOutput, m_ActiveScene->getCamera());
+		LightingPassOutput lightingOutput = m_ForwardLightingPass.executeLightingPass(shadowmapOutput, m_ActiveScene->GetCamera(), false, true);
+		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, lightingOutput, m_ActiveScene->GetCamera());
 		m_PostProcessPass.executePostProcessPass(waterOutput.outputFramebuffer);
 
 
@@ -42,19 +42,19 @@ namespace Arcane
 #else
 #if DEBUG_PROFILING
 		glFinish();
-		m_ProfilingTimer.reset();
+		m_ProfilingTimer.Reset();
 #endif // DEBUG_PROFILING
-		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->getCamera(), false);
+		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->GetCamera(), false);
 #if DEBUG_PROFILING
 		glFinish();
-		RuntimePane::setShadowmapTimer((float)m_ProfilingTimer.elapsed());
+		RuntimePane::SetShadowmapTimer((float)m_ProfilingTimer.Elapsed());
 #endif // DEBUG_PROFILING
 
-		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.executeGeometryPass(m_ActiveScene->getCamera(), false);
-		PreLightingPassOutput preLightingOutput = m_PostProcessPass.executePreLightingPass(geometryOutput, m_ActiveScene->getCamera());
-		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executeLightingPass(shadowmapOutput, geometryOutput, preLightingOutput, m_ActiveScene->getCamera(), true);
-		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.executeLightingPass(shadowmapOutput, deferredLightingOutput, m_ActiveScene->getCamera(), false, true);
-		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, postGBufferForward, m_ActiveScene->getCamera());
+		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.executeGeometryPass(m_ActiveScene->GetCamera(), false);
+		PreLightingPassOutput preLightingOutput = m_PostProcessPass.executePreLightingPass(geometryOutput, m_ActiveScene->GetCamera());
+		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executeLightingPass(shadowmapOutput, geometryOutput, preLightingOutput, m_ActiveScene->GetCamera(), true);
+		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.executeLightingPass(shadowmapOutput, deferredLightingOutput, m_ActiveScene->GetCamera(), false, true);
+		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, postGBufferForward, m_ActiveScene->GetCamera());
 		m_PostProcessPass.executePostProcessPass(waterOutput.outputFramebuffer);
 
 #endif

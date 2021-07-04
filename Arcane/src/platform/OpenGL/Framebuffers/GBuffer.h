@@ -9,11 +9,11 @@ namespace Arcane
 		GBuffer(unsigned int width, unsigned int height);
 		~GBuffer();
 
-		inline Texture* getAlbedo() { return &m_GBufferRenderTargets[0]; }
-		inline Texture* getNormal() { return &m_GBufferRenderTargets[1]; }
-		inline Texture* getMaterialInfo() { return &m_GBufferRenderTargets[2]; }
+		inline Texture* GetAlbedo() { return &m_GBufferRenderTargets[0]; }
+		inline Texture* GetNormal() { return &m_GBufferRenderTargets[1]; }
+		inline Texture* GetMaterialInfo() { return &m_GBufferRenderTargets[2]; }
 	private:
-		void init();
+		void Init();
 	private:
 		// 0 RGBA8  ->       albedo.r     albedo.g        albedo.b     albedo's alpha
 		// 1 RGB32F ->       normal.x     normal.y        normal.z

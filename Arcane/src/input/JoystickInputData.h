@@ -31,16 +31,16 @@ namespace Arcane
 		JoystickInputData(char id = 0);
 		~JoystickInputData();
 
-		void update();
+		void Update();
 
-		inline void setConnection(bool isConnected) { m_Connected = isConnected; }
-		inline void setId(char id) { m_Id = id; }
-		inline void setDeadzone(float dead) { m_Deadzone = dead; }
-		inline char getNumButtons() { return m_NumButtons; }
-		inline glm::vec2& getLeftStick() { return m_LeftStick; }
-		inline glm::vec2& getRightStick() { return m_RightStick; }
-		inline glm::vec2& getTriggers() { return m_Triggers; }
-		inline bool isConnected() { return m_Connected; }
+		inline void SetConnection(bool isConnected) { m_Connected = isConnected; }
+		inline void SetId(char id) { m_Id = id; }
+		inline void SetDeadzone(float dead) { m_Deadzone = dead; }
+		inline char GetNumButtons() { return m_NumButtons; }
+		inline glm::vec2& GetLeftStick() { return m_LeftStick; }
+		inline glm::vec2& GetRightStick() { return m_RightStick; }
+		inline glm::vec2& GetTriggers() { return m_Triggers; }
+		inline bool IsConnected() { return m_Connected; }
 	private:
 		unsigned char m_ButtonStates[MAX_JOYSTICK_BUTTONS];
 

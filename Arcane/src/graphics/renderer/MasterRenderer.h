@@ -18,8 +18,8 @@ namespace Arcane
 	public:
 		MasterRenderer(Scene3D *scene);
 
-		void init();
-		void render();
+		void Init();
+		void Render();
 	private:
 		GLCache *m_GLCache;
 		Scene3D *m_ActiveScene;

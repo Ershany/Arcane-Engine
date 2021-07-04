@@ -15,16 +15,16 @@ namespace Arcane
 		}
 	}
 
-	void RenderableModel::draw(Shader *shader, RenderPassType pass) const {
+	void RenderableModel::Draw(Shader *shader, RenderPassType pass) const {
 		if(m_Model)
 			m_Model->Draw(shader, pass);
 	}
 
-	void RenderableModel::addChild(RenderableModel *child) {
+	void RenderableModel::AddChild(RenderableModel *child) {
 		if (child == this)
 			return;
 
 		m_Children.push_back(child);
-		child->setParent(this);
+		child->SetParent(this);
 	}
 }

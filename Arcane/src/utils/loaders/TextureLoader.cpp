@@ -9,7 +9,7 @@ namespace Arcane
 	Texture *TextureLoader::s_DefaultNormal;
 	Texture *TextureLoader::s_WhiteTexture; Texture *TextureLoader::s_BlackTexture;
 
-	Texture* TextureLoader::load2DTexture(std::string &path, TextureSettings *settings) {
+	Texture* TextureLoader::Load2DTexture(std::string &path, TextureSettings *settings) {
 		// Check the cache
 		auto iter = m_TextureCache.find(path);
 		if (iter != m_TextureCache.end()) {
@@ -40,7 +40,7 @@ namespace Arcane
 			texture = new Texture();
 		}
 
-		texture->generate2DTexture(width, height, dataFormat, GL_UNSIGNED_BYTE, data);
+		texture->Generate2DTexture(width, height, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		m_TextureCache.insert(std::pair<std::string, Texture*>(path, texture));
 		stbi_image_free(data);
@@ -48,10 +48,10 @@ namespace Arcane
 		return m_TextureCache[path];
 	}
 
-	Cubemap* TextureLoader::loadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings) {
+	Cubemap* TextureLoader::LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings) {
 		Cubemap *cubemap = new Cubemap();
 		if (settings != nullptr)
-			cubemap->setCubemapSettings(*settings);
+			cubemap->SetCubemapSettings(*settings);
 
 		std::vector<std::string> faces = { right, left, top, bottom, back, front };
 
@@ -68,7 +68,7 @@ namespace Arcane
 				case 4: dataFormat = GL_RGBA; break;
 				}
 
-				cubemap->generateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, width, height, dataFormat, data);
+				cubemap->GenerateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, width, height, dataFormat, data);
 				stbi_image_free(data);
 			}
 			else {
@@ -81,30 +81,30 @@ namespace Arcane
 		return cubemap;
 	}
 
-	void TextureLoader::initializeDefaultTextures() {
+	void TextureLoader::InitializeDefaultTextures() {
 		// Setup texture and minimal filtering because they are 1x1 textures so they require none
 		TextureSettings srgbTextureSettings;
 		srgbTextureSettings.IsSRGB = true;
 
-		s_DefaultAlbedo = load2DTexture(std::string("res/textures/default/defaultAlbedo.png"), &srgbTextureSettings);
-		s_DefaultAlbedo->bind();
-		s_DefaultAlbedo->setAnisotropicFilteringMode(1.0f);
-		s_DefaultAlbedo->setTextureMinFilter(GL_NEAREST);
-		s_DefaultAlbedo->setTextureMagFilter(GL_NEAREST);
-		s_DefaultNormal = load2DTexture(std::string("res/textures/default/defaultNormal.png"));
-		s_DefaultNormal->bind();
-		s_DefaultNormal->setAnisotropicFilteringMode(1.0f);
-		s_DefaultNormal->setTextureMinFilter(GL_NEAREST);
-		s_DefaultNormal->setTextureMagFilter(GL_NEAREST);
-		s_WhiteTexture = load2DTexture(std::string("res/textures/default/white.png"));
-		s_WhiteTexture->bind();
-		s_WhiteTexture->setAnisotropicFilteringMode(1.0f);
-		s_WhiteTexture->setTextureMinFilter(GL_NEAREST);
-		s_WhiteTexture->setTextureMagFilter(GL_NEAREST);
-		s_BlackTexture = load2DTexture(std::string("res/textures/default/black.png"));
-		s_BlackTexture->bind();
-		s_BlackTexture->setAnisotropicFilteringMode(1.0f);
-		s_BlackTexture->setTextureMinFilter(GL_NEAREST);
-		s_BlackTexture->setTextureMagFilter(GL_NEAREST);
+		s_DefaultAlbedo = Load2DTexture(std::string("res/textures/default/defaultAlbedo.png"), &srgbTextureSettings);
+		s_DefaultAlbedo->Bind();
+		s_DefaultAlbedo->SetAnisotropicFilteringMode(1.0f);
+		s_DefaultAlbedo->SetTextureMinFilter(GL_NEAREST);
+		s_DefaultAlbedo->SetTextureMagFilter(GL_NEAREST);
+		s_DefaultNormal = Load2DTexture(std::string("res/textures/default/defaultNormal.png"));
+		s_DefaultNormal->Bind();
+		s_DefaultNormal->SetAnisotropicFilteringMode(1.0f);
+		s_DefaultNormal->SetTextureMinFilter(GL_NEAREST);
+		s_DefaultNormal->SetTextureMagFilter(GL_NEAREST);
+		s_WhiteTexture = Load2DTexture(std::string("res/textures/default/white.png"));
+		s_WhiteTexture->Bind();
+		s_WhiteTexture->SetAnisotropicFilteringMode(1.0f);
+		s_WhiteTexture->SetTextureMinFilter(GL_NEAREST);
+		s_WhiteTexture->SetTextureMagFilter(GL_NEAREST);
+		s_BlackTexture = Load2DTexture(std::string("res/textures/default/black.png"));
+		s_BlackTexture->Bind();
+		s_BlackTexture->SetAnisotropicFilteringMode(1.0f);
+		s_BlackTexture->SetTextureMinFilter(GL_NEAREST);
+		s_BlackTexture->SetTextureMagFilter(GL_NEAREST);
 	}
 }

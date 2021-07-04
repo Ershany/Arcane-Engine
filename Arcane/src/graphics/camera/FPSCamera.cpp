@@ -11,9 +11,9 @@ namespace Arcane
 		m_Up = up;
 		m_CurrentYaw = yaw;
 		m_CurrentPitch = pitch;
-		updateCameraVectors();
+		UpdateCameraVectors();
 
-		DebugPane::bindCameraPositionValue(&m_Position);
+		DebugPane::BindCameraPositionValue(&m_Position);
 	}
 
 	FPSCamera::FPSCamera(float xPos, float yPos, float zPos, float xUp, float yUp, float zUp, float yaw = -90.0f, float pitch = 0.0f)
@@ -23,71 +23,71 @@ namespace Arcane
 		m_WorldUp = glm::vec3(xUp, yUp, zUp);
 		m_CurrentYaw = yaw;
 		m_CurrentPitch = pitch;
-		updateCameraVectors();
+		UpdateCameraVectors();
 	}
 
-	glm::mat4 FPSCamera::getViewMatrix() {
+	glm::mat4 FPSCamera::GetViewMatrix() {
 		return glm::lookAt(m_Position, m_Position + m_Front, m_Up);
 	}
 
-	glm::mat4 FPSCamera::getProjectionMatrix() {
-		return glm::perspective(glm::radians(m_CurrentFOV), (float)Window::getRenderResolutionWidth() / (float)Window::getRenderResolutionHeight(), NEAR_PLANE, FAR_PLANE);
+	glm::mat4 FPSCamera::GetProjectionMatrix() {
+		return glm::perspective(glm::radians(m_CurrentFOV), (float)Window::GetRenderResolutionWidth() / (float)Window::GetRenderResolutionHeight(), NEAR_PLANE, FAR_PLANE);
 	}
 
-	void FPSCamera::processInput(float deltaTime) {
+	void FPSCamera::ProcessInput(float deltaTime) {
 		// Movement speed
-		if (InputManager::isKeyPressed(GLFW_KEY_LEFT_SHIFT))
+		if (InputManager::IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
 			m_CurrentMovementSpeed = FPSCAMERA_MAX_SPEED * 4.0f;
-		else if (InputManager::isKeyPressed(GLFW_KEY_LEFT_ALT))
+		else if (InputManager::IsKeyPressed(GLFW_KEY_LEFT_ALT))
 			m_CurrentMovementSpeed = FPSCAMERA_MAX_SPEED / 4.0f;
 		else
 			m_CurrentMovementSpeed = FPSCAMERA_MAX_SPEED;
 
 		// Camera movement
 		glm::vec3 direction = glm::vec3(0.0f);
-		if (InputManager::isKeyPressed(GLFW_KEY_W))
+		if (InputManager::IsKeyPressed(GLFW_KEY_W))
 			direction += m_Front;
-		if (InputManager::isKeyPressed(GLFW_KEY_S))
+		if (InputManager::IsKeyPressed(GLFW_KEY_S))
 			direction -= m_Front;
-		if (InputManager::isKeyPressed(GLFW_KEY_A))
+		if (InputManager::IsKeyPressed(GLFW_KEY_A))
 			direction -= m_Right;
-		if (InputManager::isKeyPressed(GLFW_KEY_D))
+		if (InputManager::IsKeyPressed(GLFW_KEY_D))
 			direction += m_Right;
-		if (InputManager::isKeyPressed(GLFW_KEY_SPACE))
+		if (InputManager::IsKeyPressed(GLFW_KEY_SPACE))
 			direction += m_WorldUp;
-		if (InputManager::isKeyPressed(GLFW_KEY_LEFT_CONTROL))
+		if (InputManager::IsKeyPressed(GLFW_KEY_LEFT_CONTROL))
 			direction -= m_WorldUp;
-		direction += m_Front * JoystickManager::getLeftStick(0).y * 2.0f;
-		direction += m_Right * JoystickManager::getLeftStick(0).x * 2.0f;
-		direction += m_WorldUp * JoystickManager::getTriggers(0).y;
-		direction -= m_WorldUp * JoystickManager::getTriggers(0).x;
-		processCameraMovement(direction, deltaTime);
+		direction += m_Front * JoystickManager::GetLeftStick(0).y * 2.0f;
+		direction += m_Right * JoystickManager::GetLeftStick(0).x * 2.0f;
+		direction += m_WorldUp * JoystickManager::GetTriggers(0).y;
+		direction -= m_WorldUp * JoystickManager::GetTriggers(0).x;
+		ProcessCameraMovement(direction, deltaTime);
 
 
 		// Camera FOV
-		float scrollDelta = glm::clamp((float)(InputManager::getScrollYDelta() * 4.0 + (JoystickManager::getButton(0, ARCANE_GAMEPAD_A) - JoystickManager::getButton(0, ARCANE_GAMEPAD_B) * 2.0)), -4.0f, 4.0f);
-		processCameraFOV(scrollDelta);
+		float scrollDelta = glm::clamp((float)(InputManager::GetScrollYDelta() * 4.0 + (JoystickManager::GetButton(0, ARCANE_GAMEPAD_A) - JoystickManager::GetButton(0, ARCANE_GAMEPAD_B) * 2.0)), -4.0f, 4.0f);
+		ProcessCameraFOV(scrollDelta);
 
 		// Camera rotation
-		float mouseXDelta = (float)(InputManager::getMouseXDelta() + (JoystickManager::getRightStick(0).x * 20.0)) * FPSCAMERA_ROTATION_SENSITIVITY;
-		float mouseYDelta = (float)(-InputManager::getMouseYDelta() + (JoystickManager::getRightStick(0).y * 20.0)) * FPSCAMERA_ROTATION_SENSITIVITY;
-		processCameraRotation(mouseXDelta, mouseYDelta, true);
+		float mouseXDelta = (float)(InputManager::GetMouseXDelta() + (JoystickManager::GetRightStick(0).x * 20.0)) * FPSCAMERA_ROTATION_SENSITIVITY;
+		float mouseYDelta = (float)(-InputManager::GetMouseYDelta() + (JoystickManager::GetRightStick(0).y * 20.0)) * FPSCAMERA_ROTATION_SENSITIVITY;
+		ProcessCameraRotation(mouseXDelta, mouseYDelta, true);
 	}
 
-	void FPSCamera::invertPitch()
+	void FPSCamera::InvertPitch()
 	{
 		m_CurrentPitch = -m_CurrentPitch;
-		updateCameraVectors();
+		UpdateCameraVectors();
 	}
 
-	void FPSCamera::processCameraMovement(glm::vec3 &direction, float deltaTime) {
+	void FPSCamera::ProcessCameraMovement(glm::vec3 &direction, float deltaTime) {
 		float velocity = m_CurrentMovementSpeed * deltaTime;
 		m_Position += direction * velocity;
 	}
 
-	void FPSCamera::processCameraRotation(double xOffset, double yOffset, GLboolean constrainPitch = true) {
+	void FPSCamera::ProcessCameraRotation(double xOffset, double yOffset, GLboolean constrainPitch = true) {
 		// Make sure the user isn't interacting with the UI
-		if (!Window::getHideCursor())
+		if (!Window::GetHideCursor())
 			return;
 
 		m_CurrentYaw += (float)xOffset;
@@ -103,10 +103,10 @@ namespace Arcane
 			}
 		}
 
-		updateCameraVectors();
+		UpdateCameraVectors();
 	}
 
-	void FPSCamera::processCameraFOV(double offset) {
+	void FPSCamera::ProcessCameraFOV(double offset) {
 		if (offset != 0.0 && m_CurrentFOV >= 1.0 && m_CurrentFOV <= FPSCAMERA_MAX_FOV) {
 			m_CurrentFOV -= (float)offset;
 		}
@@ -118,7 +118,7 @@ namespace Arcane
 		}
 	}
 
-	void FPSCamera::updateCameraVectors() {
+	void FPSCamera::UpdateCameraVectors() {
 		m_Front.x = cos(glm::radians(m_CurrentYaw)) * cos(glm::radians(m_CurrentPitch));
 		m_Front.y = sin(glm::radians(m_CurrentPitch));
 		m_Front.z = sin(glm::radians(m_CurrentYaw)) * cos(glm::radians(m_CurrentPitch));

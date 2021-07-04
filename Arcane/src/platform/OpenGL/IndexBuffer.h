@@ -3,19 +3,19 @@
 namespace Arcane
 {
 	class IndexBuffer {
-	private:
-		unsigned int m_BufferID;
-		int m_Count;
 	public:
 		IndexBuffer();
 		IndexBuffer(unsigned int *data, int amount);
 		~IndexBuffer();
 
-		void load(unsigned int *data, int amount);
+		void Load(unsigned int *data, int amount);
 
-		void bind() const;
-		void unbind() const;
+		void Bind() const;
+		void Unbind() const;
 
-		inline int getCount() const { return m_Count; }
+		inline int GetCount() const { return m_Count; }
+	private:
+		unsigned int m_BufferID;
+		int m_Count;
 	};
 }

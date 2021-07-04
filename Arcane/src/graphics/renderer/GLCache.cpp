@@ -12,21 +12,21 @@ namespace Arcane
 		m_FaceToCull = GL_BACK;
 		m_Multisample = false;
 		m_UsesClipPlane = false;
-		setDepthTest(true);
-		setFaceCull(true);
-		setClipPlane(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		SetDepthTest(true);
+		SetFaceCull(true);
+		SetClipPlane(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
 	}
 
 	GLCache::~GLCache() {
 
 	}
 
-	GLCache* GLCache::getInstance() {
+	GLCache* GLCache::GetInstance() {
 		static GLCache cache;
 		return &cache;
 	}
 
-	void GLCache::setDepthTest(bool choice) {
+	void GLCache::SetDepthTest(bool choice) {
 		if (m_DepthTest != choice) {
 			m_DepthTest = choice;
 			if (m_DepthTest)
@@ -36,7 +36,7 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::setStencilTest(bool choice) {
+	void GLCache::SetStencilTest(bool choice) {
 		if (m_StencilTest != choice) {
 			m_StencilTest = choice;
 			if (m_StencilTest)
@@ -46,7 +46,7 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::setBlend(bool choice) {
+	void GLCache::SetBlend(bool choice) {
 		if (m_Blend != choice) {
 			m_Blend = choice;
 			if (m_Blend)
@@ -56,7 +56,7 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::setFaceCull(bool choice) {
+	void GLCache::SetFaceCull(bool choice) {
 		if (m_Cull != choice) {
 			m_Cull = choice;
 			if (m_Cull)
@@ -66,7 +66,7 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::setMultisample(bool choice) {
+	void GLCache::SetMultisample(bool choice) {
 		if (m_Multisample != choice) {
 			m_Multisample = choice;
 			if (m_Multisample)
@@ -76,7 +76,7 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::setUsesClipPlane(bool choice)
+	void GLCache::SetUsesClipPlane(bool choice)
 	{
 		if (m_UsesClipPlane != choice)
 		{
@@ -88,14 +88,14 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::setDepthFunc(GLenum depthFunc) {
+	void GLCache::SetDepthFunc(GLenum depthFunc) {
 		if (m_DepthFunc != depthFunc) {
 			m_DepthFunc = depthFunc;
 			glDepthFunc(m_DepthFunc);
 		}
 	}
 
-	void GLCache::setStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask) {
+	void GLCache::SetStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask) {
 		if (m_StencilTestFunc != testFunc || m_StencilFragValue != stencilFragValue || m_StencilFuncBitmask != stencilBitmask) {
 			m_StencilTestFunc = testFunc; 
 			m_StencilFragValue = stencilFragValue; 
@@ -105,7 +105,7 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::setStencilOp(GLenum stencilFailOperation, GLenum depthFailOperation, GLenum depthPassOperation) {
+	void GLCache::SetStencilOp(GLenum stencilFailOperation, GLenum depthFailOperation, GLenum depthPassOperation) {
 		if (m_StencilFailOperation != stencilFailOperation || m_DepthFailOperation != depthFailOperation || m_DepthPassOperation != depthPassOperation) {
 			m_StencilFailOperation = stencilFailOperation;
 			m_DepthFailOperation = depthFailOperation;
@@ -115,14 +115,14 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::setStencilWriteMask(unsigned int bitmask) {
+	void GLCache::SetStencilWriteMask(unsigned int bitmask) {
 		if (m_StencilWriteBitmask != bitmask) {
 			m_StencilWriteBitmask = bitmask;
 			glStencilMaskSeparate(GL_FRONT_AND_BACK, m_StencilWriteBitmask);
 		}
 	}
 
-	void GLCache::setBlendFunc(GLenum src, GLenum dst) {
+	void GLCache::SetBlendFunc(GLenum src, GLenum dst) {
 		if (m_BlendSrc != src || m_BlendDst != dst) {
 			m_BlendSrc = src;
 			m_BlendDst = dst;
@@ -130,26 +130,26 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::setCullFace(GLenum faceToCull) {
+	void GLCache::SetCullFace(GLenum faceToCull) {
 		if (m_FaceToCull != faceToCull) {
 			m_FaceToCull = faceToCull;
 			glCullFace(m_FaceToCull);
 		}
 	}
 
-	void GLCache::setClipPlane(glm::vec4 clipPlane)
+	void GLCache::SetClipPlane(glm::vec4 clipPlane)
 	{
 		m_ActiveClipPlane = clipPlane;
 	}
 
-	void GLCache::switchShader(Shader *shader) {
-		if (m_ActiveShaderID != shader->getShaderID()) {
-			m_ActiveShaderID = shader->getShaderID();
-			shader->enable();
+	void GLCache::SetShader(Shader *shader) {
+		if (m_ActiveShaderID != shader->GetShaderID()) {
+			m_ActiveShaderID = shader->GetShaderID();
+			shader->Enable();
 		}
 	}
 
-	void GLCache::switchShader(unsigned int shaderID) {
+	void GLCache::SetShader(unsigned int shaderID) {
 		if (m_ActiveShaderID != shaderID) {
 			m_ActiveShaderID = shaderID;
 			glUseProgram(shaderID);

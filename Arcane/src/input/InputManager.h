@@ -12,32 +12,32 @@ namespace Arcane
 		InputManager();
 		~InputManager();
 
-		void update();
+		void Update();
 
-		static bool isKeyPressed(unsigned int keycode);
-		static float getKeyPressure(unsigned int keycode);
-		static bool isMouseButtonPressed(unsigned int code);
-		static bool getButton(int keyCode);
-		static bool getButtonDown(int keyCode);
+		static bool IsKeyPressed(unsigned int keycode);
+		static float GetKeyPressure(unsigned int keycode);
+		static bool IsMouseButtonPressed(unsigned int code);
+		static bool GetButton(int keyCode);
+		static bool GetButtonDown(int keyCode);
 
-		void keyCallback(int key, int scancode, int action, int mods);
-		void mouseButtonCallback(int button, int action, int mods);
-		void cursorPositionCallback(double xpos, double ypos);
-		void scrollCallback(double xoffset, double yoffset);
-		void joystickCallback(int joystick, int event);
+		void KeyCallback(int key, int scancode, int action, int mods);
+		void MouseButtonCallback(int button, int action, int mods);
+		void CursorPositionCallback(double xpos, double ypos);
+		void ScrollCallback(double xoffset, double yoffset);
+		void JoystickCallback(int joystick, int event);
 
 		// Getters and setters
-		static inline double getMouseX() { return s_MouseX; }
-		static inline double getMouseY() { return s_MouseY; }
-		static inline double getMouseXDelta() { return s_MouseXDelta; }
-		static inline double getMouseYDelta() { return s_MouseYDelta; }
-		static inline double getScrollXDelta() { return s_ScrollXDelta; }
-		static inline double getScrollYDelta() { return s_ScrollYDelta; }
-		static inline void getMousePosition(double &x, double &y) { x = s_MouseX; y = s_MouseY; }
+		static inline double GetMouseX() { return s_MouseX; }
+		static inline double GetMouseY() { return s_MouseY; }
+		static inline double GetMouseXDelta() { return s_MouseXDelta; }
+		static inline double GetMouseYDelta() { return s_MouseYDelta; }
+		static inline double GetScrollXDelta() { return s_ScrollXDelta; }
+		static inline double GetScrollYDelta() { return s_ScrollYDelta; }
+		static inline void GetMousePosition(double &x, double &y) { x = s_MouseX; y = s_MouseY; }
 
-		static inline void setMouseX(double value) { s_MouseX = value; }
-		static inline void setMouseY(double value) { s_MouseY = value; }
-		static inline void setMousePos(double xPos, double yPos) { s_MouseX = xPos, s_MouseY = yPos; }
+		static inline void SetMouseX(double value) { s_MouseX = value; }
+		static inline void SetMouseY(double value) { s_MouseY = value; }
+		static inline void SetMousePos(double xPos, double yPos) { s_MouseX = xPos, s_MouseY = yPos; }
 	private:
 		JoystickManager m_JoystickManager;
 

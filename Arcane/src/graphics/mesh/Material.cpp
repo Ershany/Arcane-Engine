@@ -20,55 +20,55 @@ namespace Arcane
 		// Texture unit 3 is reserved for the brdfLUT
 		int currentTextureUnit = 4;
 
-		shader->setUniform("material.texture_albedo", currentTextureUnit);
+		shader->SetUniform("material.texture_albedo", currentTextureUnit);
 		if (m_AlbedoMap) {
-			m_AlbedoMap->bind(currentTextureUnit++);
+			m_AlbedoMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::getDefaultAlbedo()->bind(currentTextureUnit++);
+			TextureLoader::GetDefaultAlbedo()->Bind(currentTextureUnit++);
 		}
 
-		shader->setUniform("material.texture_normal", currentTextureUnit);
+		shader->SetUniform("material.texture_normal", currentTextureUnit);
 		if (m_NormalMap) {
-			m_NormalMap->bind(currentTextureUnit++);
+			m_NormalMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::getDefaultNormal()->bind(currentTextureUnit++);
+			TextureLoader::GetDefaultNormal()->Bind(currentTextureUnit++);
 		}
 
-		shader->setUniform("material.texture_metallic", currentTextureUnit);
+		shader->SetUniform("material.texture_metallic", currentTextureUnit);
 		if (m_MetallicMap) {
-			m_MetallicMap->bind(currentTextureUnit++);
+			m_MetallicMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::getDefaultMetallic()->bind(currentTextureUnit++);
+			TextureLoader::GetDefaultMetallic()->Bind(currentTextureUnit++);
 		}
 
-		shader->setUniform("material.texture_roughness", currentTextureUnit);
+		shader->SetUniform("material.texture_roughness", currentTextureUnit);
 		if (m_RoughnessMap) {
-			m_RoughnessMap->bind(currentTextureUnit++);
+			m_RoughnessMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::getDefaultRoughness()->bind(currentTextureUnit++);
+			TextureLoader::GetDefaultRoughness()->Bind(currentTextureUnit++);
 		}
 
-		shader->setUniform("material.texture_ao", currentTextureUnit);
+		shader->SetUniform("material.texture_ao", currentTextureUnit);
 		if (m_AmbientOcclusionMap) {
-			m_AmbientOcclusionMap->bind(currentTextureUnit++);
+			m_AmbientOcclusionMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::getDefaultAO()->bind(currentTextureUnit++);
+			TextureLoader::GetDefaultAO()->Bind(currentTextureUnit++);
 		}
 
-		shader->setUniform("material.texture_displacement", currentTextureUnit);
+		shader->SetUniform("material.texture_displacement", currentTextureUnit);
 		if (m_DisplacementMap) {
-			shader->setUniform("hasDisplacement", true);
-			shader->setUniform("minMaxDisplacementSteps", glm::vec2(m_ParallaxMinSteps, m_ParallelMaxSteps));
-			shader->setUniform("parallaxStrength", m_ParallaxStrength);
-			m_DisplacementMap->bind(currentTextureUnit++);
+			shader->SetUniform("hasDisplacement", true);
+			shader->SetUniform("minMaxDisplacementSteps", glm::vec2(m_ParallaxMinSteps, m_ParallelMaxSteps));
+			shader->SetUniform("parallaxStrength", m_ParallaxStrength);
+			m_DisplacementMap->Bind(currentTextureUnit++);
 		}
 		else {
-			shader->setUniform("hasDisplacement", false);
+			shader->SetUniform("hasDisplacement", false);
 		}
 	}
 }

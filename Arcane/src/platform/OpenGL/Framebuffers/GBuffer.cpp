@@ -4,15 +4,15 @@
 namespace Arcane
 {
 	GBuffer::GBuffer(unsigned int width, unsigned int height) : Framebuffer(width, height, false) {
-		init();
+		Init();
 	}
 
 	GBuffer::~GBuffer() {}
 
-	void GBuffer::init() {
-		addDepthStencilTexture(NormalizedDepthStencil);
+	void GBuffer::Init() {
+		AddDepthStencilTexture(NormalizedDepthStencil);
 
-		bind();
+		Bind();
 
 		// Render Target 1
 		{
@@ -24,9 +24,9 @@ namespace Arcane
 			renderTarget1.TextureMagnificationFilterMode = GL_NEAREST;
 			renderTarget1.TextureAnisotropyLevel = 1.0f;
 			renderTarget1.HasMips = false;
-			m_GBufferRenderTargets[0].setTextureSettings(renderTarget1);
-			m_GBufferRenderTargets[0].generate2DTexture(m_Width, m_Height, GL_RGB);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_GBufferRenderTargets[0].getTextureId(), 0);
+			m_GBufferRenderTargets[0].SetTextureSettings(renderTarget1);
+			m_GBufferRenderTargets[0].Generate2DTexture(m_Width, m_Height, GL_RGB);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_GBufferRenderTargets[0].GetTextureId(), 0);
 		}
 
 		// Render Target 2
@@ -39,9 +39,9 @@ namespace Arcane
 			renderTarget2.TextureMagnificationFilterMode = GL_NEAREST;
 			renderTarget2.TextureAnisotropyLevel = 1.0f;
 			renderTarget2.HasMips = false;
-			m_GBufferRenderTargets[1].setTextureSettings(renderTarget2);
-			m_GBufferRenderTargets[1].generate2DTexture(m_Width, m_Height, GL_RGB);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_GBufferRenderTargets[1].getTextureId(), 0);
+			m_GBufferRenderTargets[1].SetTextureSettings(renderTarget2);
+			m_GBufferRenderTargets[1].Generate2DTexture(m_Width, m_Height, GL_RGB);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_GBufferRenderTargets[1].GetTextureId(), 0);
 		}
 
 		// Render Target 3
@@ -54,9 +54,9 @@ namespace Arcane
 			renderTarget3.TextureMagnificationFilterMode = GL_NEAREST;
 			renderTarget3.TextureAnisotropyLevel = 1.0f;
 			renderTarget3.HasMips = false;
-			m_GBufferRenderTargets[2].setTextureSettings(renderTarget3);
-			m_GBufferRenderTargets[2].generate2DTexture(m_Width, m_Height, GL_RGB);
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_GBufferRenderTargets[2].getTextureId(), 0);
+			m_GBufferRenderTargets[2].SetTextureSettings(renderTarget3);
+			m_GBufferRenderTargets[2].Generate2DTexture(m_Width, m_Height, GL_RGB);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_GBufferRenderTargets[2].GetTextureId(), 0);
 		}
 
 		// Finally tell OpenGL that we will be rendering to all of the attachments
@@ -68,6 +68,6 @@ namespace Arcane
 			ARC_LOG_FATAL("Could not initialize GBuffer");
 			return;
 		}
-		unbind();
+		Unbind();
 	}
 }

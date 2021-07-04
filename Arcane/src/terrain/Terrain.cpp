@@ -5,7 +5,7 @@ namespace Arcane
 {
 	Terrain::Terrain(glm::vec3 &worldPosition) : m_Position(worldPosition)
 	{
-		m_GLCache = GLCache::getInstance();
+		m_GLCache = GLCache::GetInstance();
 
 		m_ModelMatrix = glm::translate(m_ModelMatrix, worldPosition);
 
@@ -43,9 +43,9 @@ namespace Arcane
 			for (unsigned int x = 0; x < m_SideVertexCount; x++) {
 				glm::vec2 positionXZ(x * m_SpaceBetweenVertices, z * m_SpaceBetweenVertices);
 
-				positions.push_back(glm::vec3(positionXZ.x, sampleHeightfieldBilinear(positionXZ.x, positionXZ.y, heightMapImage), positionXZ.y));
+				positions.push_back(glm::vec3(positionXZ.x, SampleHeightfieldBilinear(positionXZ.x, positionXZ.y, heightMapImage), positionXZ.y));
 				uvs.push_back(glm::vec2((float)x / (float)(m_SideVertexCount - 1), (float)z / (float)(m_SideVertexCount - 1)));
-				normals.push_back(calculateNormal(positionXZ.x, positionXZ.y, heightMapImage));
+				normals.push_back(CalculateNormal(positionXZ.x, positionXZ.y, heightMapImage));
 			}
 		}
 		stbi_image_free(heightMapImage);
@@ -120,36 +120,36 @@ namespace Arcane
 		TextureSettings srgbTextureSettings;
 		srgbTextureSettings.IsSRGB = true;
 
-		m_Textures[0] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassAlbedo.tga"), &srgbTextureSettings);
-		m_Textures[1] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtAlbedo.tga"), &srgbTextureSettings);
-		m_Textures[2] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesAlbedo.tga"), &srgbTextureSettings);
-		m_Textures[3] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockAlbedo.tga"), &srgbTextureSettings);
+		m_Textures[0] = TextureLoader::Load2DTexture(std::string("res/terrain/grass/grassAlbedo.tga"), &srgbTextureSettings);
+		m_Textures[1] = TextureLoader::Load2DTexture(std::string("res/terrain/dirt/dirtAlbedo.tga"), &srgbTextureSettings);
+		m_Textures[2] = TextureLoader::Load2DTexture(std::string("res/terrain/branches/branchesAlbedo.tga"), &srgbTextureSettings);
+		m_Textures[3] = TextureLoader::Load2DTexture(std::string("res/terrain/rock/rockAlbedo.tga"), &srgbTextureSettings);
 
-		m_Textures[4] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassNormal.tga"));
-		m_Textures[5] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtNormal.tga"));
-		m_Textures[6] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesNormal.tga"));
-		m_Textures[7] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockNormal.tga"));
+		m_Textures[4] = TextureLoader::Load2DTexture(std::string("res/terrain/grass/grassNormal.tga"));
+		m_Textures[5] = TextureLoader::Load2DTexture(std::string("res/terrain/dirt/dirtNormal.tga"));
+		m_Textures[6] = TextureLoader::Load2DTexture(std::string("res/terrain/branches/branchesNormal.tga"));
+		m_Textures[7] = TextureLoader::Load2DTexture(std::string("res/terrain/rock/rockNormal.tga"));
 
 		// We do not want these texture treated as one channel so store it as RGB
 		TextureSettings textureSettings;
 		textureSettings.TextureFormat = GL_RGB;
 
-		m_Textures[8] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassRoughness.tga"), &textureSettings);
-		m_Textures[9] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtRoughness.tga"), &textureSettings);
-		m_Textures[10] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesRoughness.tga"), &textureSettings);
-		m_Textures[11] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockRoughness.tga"), &textureSettings);
+		m_Textures[8] = TextureLoader::Load2DTexture(std::string("res/terrain/grass/grassRoughness.tga"), &textureSettings);
+		m_Textures[9] = TextureLoader::Load2DTexture(std::string("res/terrain/dirt/dirtRoughness.tga"), &textureSettings);
+		m_Textures[10] = TextureLoader::Load2DTexture(std::string("res/terrain/branches/branchesRoughness.tga"), &textureSettings);
+		m_Textures[11] = TextureLoader::Load2DTexture(std::string("res/terrain/rock/rockRoughness.tga"), &textureSettings);
 
-		m_Textures[12] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassMetallic.tga"), &textureSettings);
-		m_Textures[13] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtMetallic.tga"), &textureSettings);
-		m_Textures[14] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesMetallic.tga"), &textureSettings);
-		m_Textures[15] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockMetallic.tga"), &textureSettings);
+		m_Textures[12] = TextureLoader::Load2DTexture(std::string("res/terrain/grass/grassMetallic.tga"), &textureSettings);
+		m_Textures[13] = TextureLoader::Load2DTexture(std::string("res/terrain/dirt/dirtMetallic.tga"), &textureSettings);
+		m_Textures[14] = TextureLoader::Load2DTexture(std::string("res/terrain/branches/branchesMetallic.tga"), &textureSettings);
+		m_Textures[15] = TextureLoader::Load2DTexture(std::string("res/terrain/rock/rockMetallic.tga"), &textureSettings);
 
-		m_Textures[16] = TextureLoader::load2DTexture(std::string("res/terrain/grass/grassAO.tga"), &textureSettings);
-		m_Textures[17] = TextureLoader::load2DTexture(std::string("res/terrain/dirt/dirtAO.tga"), &textureSettings);
-		m_Textures[18] = TextureLoader::load2DTexture(std::string("res/terrain/branches/branchesAO.tga"), &textureSettings);
-		m_Textures[19] = TextureLoader::load2DTexture(std::string("res/terrain/rock/rockAO.tga"), &textureSettings);
+		m_Textures[16] = TextureLoader::Load2DTexture(std::string("res/terrain/grass/grassAO.tga"), &textureSettings);
+		m_Textures[17] = TextureLoader::Load2DTexture(std::string("res/terrain/dirt/dirtAO.tga"), &textureSettings);
+		m_Textures[18] = TextureLoader::Load2DTexture(std::string("res/terrain/branches/branchesAO.tga"), &textureSettings);
+		m_Textures[19] = TextureLoader::Load2DTexture(std::string("res/terrain/rock/rockAO.tga"), &textureSettings);
 
-		m_Textures[20] = TextureLoader::load2DTexture(std::string("res/terrain/blendMap.tga"), &textureSettings);
+		m_Textures[20] = TextureLoader::Load2DTexture(std::string("res/terrain/blendMap.tga"), &textureSettings);
 
 		m_Mesh = new Mesh(positions, uvs, normals, tangents, bitangents, indices);
 		m_Mesh->LoadData(true);
@@ -164,79 +164,79 @@ namespace Arcane
 		if (pass == MaterialRequired) {
 			int currentTextureUnit = 1;
 			// Textures
-			m_Textures[0]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_albedo1", currentTextureUnit++);
-			m_Textures[1]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_albedo2", currentTextureUnit++);
-			m_Textures[2]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_albedo3", currentTextureUnit++);
-			m_Textures[3]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_albedo4", currentTextureUnit++);
+			m_Textures[0]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_albedo1", currentTextureUnit++);
+			m_Textures[1]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_albedo2", currentTextureUnit++);
+			m_Textures[2]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_albedo3", currentTextureUnit++);
+			m_Textures[3]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_albedo4", currentTextureUnit++);
 
-			m_Textures[4]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_normal1", currentTextureUnit++);
-			m_Textures[5]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_normal2", currentTextureUnit++);
-			m_Textures[6]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_normal3", currentTextureUnit++);
-			m_Textures[7]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_normal4", currentTextureUnit++);
+			m_Textures[4]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_normal1", currentTextureUnit++);
+			m_Textures[5]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_normal2", currentTextureUnit++);
+			m_Textures[6]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_normal3", currentTextureUnit++);
+			m_Textures[7]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_normal4", currentTextureUnit++);
 
-			m_Textures[8]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_roughness1", currentTextureUnit++);
-			m_Textures[9]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_roughness2", currentTextureUnit++);
-			m_Textures[10]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_roughness3", currentTextureUnit++);
-			m_Textures[11]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_roughness4", currentTextureUnit++);
+			m_Textures[8]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_roughness1", currentTextureUnit++);
+			m_Textures[9]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_roughness2", currentTextureUnit++);
+			m_Textures[10]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_roughness3", currentTextureUnit++);
+			m_Textures[11]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_roughness4", currentTextureUnit++);
 
-			m_Textures[12]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_metallic1", currentTextureUnit++);
-			m_Textures[13]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_metallic2", currentTextureUnit++);
-			m_Textures[14]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_metallic3", currentTextureUnit++);
-			m_Textures[15]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_metallic4", currentTextureUnit++);
+			m_Textures[12]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_metallic1", currentTextureUnit++);
+			m_Textures[13]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_metallic2", currentTextureUnit++);
+			m_Textures[14]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_metallic3", currentTextureUnit++);
+			m_Textures[15]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_metallic4", currentTextureUnit++);
 
-			m_Textures[16]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_AO1", currentTextureUnit++);
-			m_Textures[17]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_AO2", currentTextureUnit++);
-			m_Textures[18]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_AO3", currentTextureUnit++);
-			m_Textures[19]->bind(currentTextureUnit);
-			shader->setUniform("material.texture_AO4", currentTextureUnit++);
+			m_Textures[16]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_AO1", currentTextureUnit++);
+			m_Textures[17]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_AO2", currentTextureUnit++);
+			m_Textures[18]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_AO3", currentTextureUnit++);
+			m_Textures[19]->Bind(currentTextureUnit);
+			shader->SetUniform("material.texture_AO4", currentTextureUnit++);
 
- 			m_Textures[20]->bind(currentTextureUnit);
- 			shader->setUniform("material.blendmap", currentTextureUnit++);
+ 			m_Textures[20]->Bind(currentTextureUnit);
+ 			shader->SetUniform("material.blendmap", currentTextureUnit++);
 
 			// Normal matrix
 			glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(m_ModelMatrix)));
-			shader->setUniform("normalMatrix", normalMatrix);
+			shader->SetUniform("normalMatrix", normalMatrix);
 
 			// Tiling amount
-			shader->setUniform("material.tilingAmount", m_TextureTilingAmount);
+			shader->SetUniform("material.tilingAmount", m_TextureTilingAmount);
 		}
 
 		// Only set normal matrix for non shadowmap pass
-		shader->setUniform("model", m_ModelMatrix);
+		shader->SetUniform("model", m_ModelMatrix);
 
-		m_GLCache->setDepthTest(true);
-		m_GLCache->setDepthFunc(GL_LESS);
-		m_GLCache->setBlend(false);
-		m_GLCache->setFaceCull(true);
-		m_GLCache->setCullFace(GL_BACK);
+		m_GLCache->SetDepthTest(true);
+		m_GLCache->SetDepthFunc(GL_LESS);
+		m_GLCache->SetBlend(false);
+		m_GLCache->SetFaceCull(true);
+		m_GLCache->SetCullFace(GL_BACK);
 		m_Mesh->Draw();
 	}
 
 	// Bilinear filtering for the terrain's normal
-	glm::vec3 Terrain::calculateNormal(float worldPosX, float worldPosZ, unsigned char *heightMapData) {
-		float heightR = sampleHeightfieldNearest(worldPosX + m_SpaceBetweenVertices * 2, worldPosZ                         , heightMapData);
-		float heightL = sampleHeightfieldNearest(worldPosX - m_SpaceBetweenVertices * 2, worldPosZ                         , heightMapData);
-		float heightU = sampleHeightfieldNearest(worldPosX                         , worldPosZ + m_SpaceBetweenVertices * 2, heightMapData);
-		float heightD = sampleHeightfieldNearest(worldPosX                         , worldPosZ - m_SpaceBetweenVertices * 2, heightMapData);
+	glm::vec3 Terrain::CalculateNormal(float worldPosX, float worldPosZ, unsigned char *heightMapData) {
+		float heightR = SampleHeightfieldNearest(worldPosX + m_SpaceBetweenVertices * 2, worldPosZ                         , heightMapData);
+		float heightL = SampleHeightfieldNearest(worldPosX - m_SpaceBetweenVertices * 2, worldPosZ                         , heightMapData);
+		float heightU = SampleHeightfieldNearest(worldPosX                         , worldPosZ + m_SpaceBetweenVertices * 2, heightMapData);
+		float heightD = SampleHeightfieldNearest(worldPosX                         , worldPosZ - m_SpaceBetweenVertices * 2, heightMapData);
 		
 		glm::vec3 normal(heightL - heightR, 2.0f, heightD - heightU);
 		normal = glm::normalize(normal);
@@ -244,32 +244,32 @@ namespace Arcane
 		return normal;
 	}
 
-	float Terrain::sampleHeightfieldBilinear(float worldPosX, float worldPosZ, unsigned char *heightMapData) {
+	float Terrain::SampleHeightfieldBilinear(float worldPosX, float worldPosZ, unsigned char *heightMapData) {
 		// Calculate weights
 		glm::vec2 weightsXZ = glm::vec2(worldPosX / m_SpaceBetweenVertices, worldPosZ / m_SpaceBetweenVertices);
 		float xFrac = weightsXZ.x - (int)weightsXZ.x;
 		float zFrac = weightsXZ.y - (int)weightsXZ.y;
 
 		// Get the values that should be lerped between
-		float topLeft = sampleHeightfieldNearest(worldPosX, worldPosZ, heightMapData);
-		float topRight = sampleHeightfieldNearest(worldPosX + m_SpaceBetweenVertices, worldPosZ, heightMapData);
-		float bottomLeft = sampleHeightfieldNearest(worldPosX, worldPosZ + m_SpaceBetweenVertices, heightMapData);
-		float bottomRight = sampleHeightfieldNearest(worldPosX + m_SpaceBetweenVertices, worldPosZ + m_SpaceBetweenVertices, heightMapData);
+		float topLeft = SampleHeightfieldNearest(worldPosX, worldPosZ, heightMapData);
+		float topRight = SampleHeightfieldNearest(worldPosX + m_SpaceBetweenVertices, worldPosZ, heightMapData);
+		float bottomLeft = SampleHeightfieldNearest(worldPosX, worldPosZ + m_SpaceBetweenVertices, heightMapData);
+		float bottomRight = SampleHeightfieldNearest(worldPosX + m_SpaceBetweenVertices, worldPosZ + m_SpaceBetweenVertices, heightMapData);
 
 		// Do the bilinear filtering
 		float terrainHeight = glm::mix(glm::mix(topLeft, topRight, xFrac), glm::mix(bottomLeft, bottomRight, xFrac), zFrac);
 		return terrainHeight;
 	}
 
-	float Terrain::sampleHeightfieldNearest(float worldPosX, float worldPosZ, unsigned char *heightMapData) {
+	float Terrain::SampleHeightfieldNearest(float worldPosX, float worldPosZ, unsigned char *heightMapData) {
 		// Get the xz coordinates of the index after cutting off the decimal
-		glm::vec2 terrainXZ = glm::vec2(clamp(worldPosX * m_TerrainToHeightfieldTextureConversion, 0.0f, (float)m_HeightfieldTextureSize - 0.0f), clamp(worldPosZ * m_TerrainToHeightfieldTextureConversion, 0.0f, (float)m_HeightfieldTextureSize - 1.0f));
+		glm::vec2 terrainXZ = glm::vec2(Clamp(worldPosX * m_TerrainToHeightfieldTextureConversion, 0.0f, (float)m_HeightfieldTextureSize - 0.0f), Clamp(worldPosZ * m_TerrainToHeightfieldTextureConversion, 0.0f, (float)m_HeightfieldTextureSize - 1.0f));
 
 		// Normalize height to [0, 1] then multiply it by the terrain's Y scale
 		return (heightMapData[(unsigned int)terrainXZ.x + ((unsigned int)terrainXZ.y * m_HeightfieldTextureSize)] / 255.0f) * m_TerrainSizeY;
 	}
 
-	float Terrain::clamp(float n, float lower, float upper) {
+	float Terrain::Clamp(float n, float lower, float upper) {
 		return std::max<float>(lower, std::min<float>(n, upper));
 	}
 }

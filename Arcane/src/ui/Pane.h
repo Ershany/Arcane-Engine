@@ -8,9 +8,9 @@ namespace Arcane
 	public:
 		Pane(std::string &paneName, glm::vec2 &paneSize);
 
-		void render();
+		void Render();
 	protected:
-		virtual void setupPaneObjects() = 0;
+		virtual void SetupPaneObjects() = 0;
 
 		std::string m_PaneName;
 		glm::vec2 m_PaneSize;

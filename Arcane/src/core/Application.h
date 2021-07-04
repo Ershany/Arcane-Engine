@@ -28,18 +28,18 @@ namespace Arcane
 
 		static inline Application& GetInstance() { return *s_Instance; }
 
-		void run();
-		void close();
+		void Run();
+		void Close();
 
-		virtual void onInit() {}
-		virtual void onShutdown() {}
-		virtual void onUpdate(float deltaTime) {}
+		virtual void OnInit() {}
+		virtual void OnShutdown() {}
+		virtual void OnUpdate(float deltaTime) {}
 
-		virtual void onEvent(Event &event);
+		virtual void OnEvent(Event &event);
 
-		void pushLayer(Layer *layer);
-		void pushOverlay(Layer *overlay);
-		void renderImGui();
+		void PushLayer(Layer *layer);
+		void PushOverlay(Layer *overlay);
+		void RenderImGui();
 
 		const ApplicationSpecification& GetSpecification() const { return m_Specification; }
 	private:

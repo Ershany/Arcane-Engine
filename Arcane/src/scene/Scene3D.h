@@ -18,23 +18,23 @@ namespace Arcane
 		Scene3D(Window *window);
 		~Scene3D();
 
-		void onUpdate(float deltaTime);
+		void OnUpdate(float deltaTime);
 
-		void addModelsToRenderer();
-		void addStaticModelsToRenderer();
-		void addTransparentModelsToRenderer();
-		void addTransparentStaticModelsToRenderer();
-		void addOpaqueModelsToRenderer();
-		void addOpaqueStaticModelsToRenderer();
+		void AddModelsToRenderer();
+		void AddStaticModelsToRenderer();
+		void AddTransparentModelsToRenderer();
+		void AddTransparentStaticModelsToRenderer();
+		void AddOpaqueModelsToRenderer();
+		void AddOpaqueStaticModelsToRenderer();
 
-		inline ModelRenderer* getModelRenderer() { return &m_ModelRenderer; }
-		inline Terrain* getTerrain() { return &m_Terrain; }
-		inline DynamicLightManager* getDynamicLightManager() { return &m_DynamicLightManager; }
-		inline ProbeManager* getProbeManager() { return &m_ProbeManager; }
-		inline FPSCamera* getCamera() { return &m_SceneCamera; }
-		inline Skybox* getSkybox() { return m_Skybox; }
+		inline ModelRenderer* GetModelRenderer() { return &m_ModelRenderer; }
+		inline Terrain* GetTerrain() { return &m_Terrain; }
+		inline DynamicLightManager* GetDynamicLightManager() { return &m_DynamicLightManager; }
+		inline ProbeManager* GetProbeManager() { return &m_ProbeManager; }
+		inline FPSCamera* GetCamera() { return &m_SceneCamera; }
+		inline Skybox* GetSkybox() { return m_Skybox; }
 	private:
-		void init();
+		void Init();
 	private:
 		// Global Data
 		GLCache *m_GLCache;

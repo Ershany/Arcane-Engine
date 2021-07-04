@@ -19,7 +19,7 @@ namespace Arcane
 
 		void Draw(ICamera *camera);
 
-		Cubemap* getSkyboxCubemap() { return m_SkyboxCubemap; }
+		Cubemap* GetSkyboxCubemap() { return m_SkyboxCubemap; }
 	private:
 		Shader *m_SkyboxShader;
 		GLCache *m_GLCache;

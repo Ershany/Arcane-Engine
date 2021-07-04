@@ -15,20 +15,20 @@ namespace Arcane
 	public:
 		ModelRenderer(FPSCamera *camera);
 
-		void submitOpaque(RenderableModel *renderable);
-		void submitTransparent(RenderableModel *renderable);
+		void SubmitOpaque(RenderableModel *renderable);
+		void SubmitTransparent(RenderableModel *renderable);
 		
-		void setupOpaqueRenderState();
-		void setupTransparentRenderState();
+		void SetupOpaqueRenderState();
+		void SetupTransparentRenderState();
 
-		void flushOpaque(Shader *shader, RenderPassType pass);
-		void flushTransparent(Shader *shader, RenderPassType pass);
+		void FlushOpaque(Shader *shader, RenderPassType pass);
+		void FlushTransparent(Shader *shader, RenderPassType pass);
 	public:
 		Quad NDC_Plane;
 		Cube NDC_Cube;
 	private:
-		void ModelRenderer::setupModelMatrix(RenderableModel *renderable, Shader *shader, RenderPassType pass);
-
+		void ModelRenderer::SetupModelMatrix(RenderableModel *renderable, Shader *shader, RenderPassType pass);
+	private:
 		std::deque<RenderableModel*> m_OpaqueRenderQueue;
 		std::deque<RenderableModel*> m_TransparentRenderQueue;
 

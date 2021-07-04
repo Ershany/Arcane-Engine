@@ -4,6 +4,6 @@ namespace Arcane
 { 
 	class FileUtils {
 	public:
-		static std::string readFile(const std::string &filepath);
+		static std::string ReadFile(const std::string &filepath);
 	};
 } 

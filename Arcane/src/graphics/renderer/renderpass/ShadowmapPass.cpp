@@ -10,7 +10,7 @@ namespace Arcane
 		m_ShadowmapShader = ShaderLoader::loadShader("src/shaders/Shadowmap_Generation.glsl");
 
 		m_ShadowmapFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y, false);
-		m_ShadowmapFramebuffer->addDepthStencilTexture(NormalizedDepthOnly).createFramebuffer();
+		m_ShadowmapFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 	}
 
 	ShadowmapPass::ShadowmapPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_ShadowmapFramebuffer(customFramebuffer)
@@ -24,38 +24,38 @@ namespace Arcane
 	}
 
 	ShadowmapPassOutput ShadowmapPass::generateShadowmaps(ICamera *camera, bool renderOnlyStatic) {
-		glViewport(0, 0, m_ShadowmapFramebuffer->getWidth(), m_ShadowmapFramebuffer->getHeight());
-		m_ShadowmapFramebuffer->bind();
-		m_ShadowmapFramebuffer->clear();
+		glViewport(0, 0, m_ShadowmapFramebuffer->GetWidth(), m_ShadowmapFramebuffer->GetHeight());
+		m_ShadowmapFramebuffer->Bind();
+		m_ShadowmapFramebuffer->Clear();
 
 		// Setup
-		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
-		Terrain *terrain = m_ActiveScene->getTerrain();
-		DynamicLightManager *lightManager = m_ActiveScene->getDynamicLightManager();
+		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
+		Terrain *terrain = m_ActiveScene->GetTerrain();
+		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
 
 		// View setup
-		m_GLCache->switchShader(m_ShadowmapShader);
-		glm::vec3 dirLightShadowmapLookAtPos = camera->getPosition() + (glm::normalize(camera->getFront()) * 50.0f);
-		glm::vec3 dirLightShadowmapEyePos = dirLightShadowmapLookAtPos + (-lightManager->getDirectionalLightDirection(0) * 100.0f);
+		m_GLCache->SetShader(m_ShadowmapShader);
+		glm::vec3 dirLightShadowmapLookAtPos = camera->GetPosition() + (glm::normalize(camera->GetFront()) * 50.0f);
+		glm::vec3 dirLightShadowmapEyePos = dirLightShadowmapLookAtPos + (-lightManager->GetDirectionalLightDirection(0) * 100.0f);
 		glm::mat4 directionalLightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, SHADOWMAP_NEAR_PLANE, SHADOWMAP_FAR_PLANE);
 		glm::mat4 directionalLightView = glm::lookAt(dirLightShadowmapEyePos, dirLightShadowmapLookAtPos, glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 directionalLightViewProjMatrix = directionalLightProjection * directionalLightView;
-		m_ShadowmapShader->setUniform("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);
+		m_ShadowmapShader->SetUniform("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);
 
 		// Setup model renderer
 		if (renderOnlyStatic) {
-			m_ActiveScene->addStaticModelsToRenderer();
+			m_ActiveScene->AddStaticModelsToRenderer();
 		}
 		else {
-			m_ActiveScene->addModelsToRenderer();
+			m_ActiveScene->AddModelsToRenderer();
 		}
 
 		// Render models
-		m_GLCache->setDepthTest(true);
-		m_GLCache->setBlend(false);
-		m_GLCache->setFaceCull(false);
-		modelRenderer->flushOpaque(m_ShadowmapShader, NoMaterialRequired);
-		modelRenderer->flushTransparent(m_ShadowmapShader, NoMaterialRequired);
+		m_GLCache->SetDepthTest(true);
+		m_GLCache->SetBlend(false);
+		m_GLCache->SetFaceCull(false);
+		modelRenderer->FlushOpaque(m_ShadowmapShader, NoMaterialRequired);
+		modelRenderer->FlushTransparent(m_ShadowmapShader, NoMaterialRequired);
 
 		// Render terrain
 		terrain->Draw(m_ShadowmapShader, NoMaterialRequired);

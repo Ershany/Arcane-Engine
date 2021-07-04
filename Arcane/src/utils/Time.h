@@ -4,14 +4,14 @@ namespace Arcane
 {
 	struct Time {
 	private:
-		GLdouble lastFrame;
-		GLdouble delta;
+		GLdouble m_LastFrame;
+		GLdouble m_Delta;
 	public:
 		Time();
 
-		void update();
+		void Update();
 
 		// Getters
-		inline GLdouble getDeltaTime() const { return delta; }
+		inline GLdouble GetDeltaTime() const { return m_Delta; }
 	};
 }

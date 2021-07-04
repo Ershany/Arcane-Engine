@@ -19,14 +19,14 @@ namespace Arcane
 		ProbeManager(ProbeBlendSetting sceneProbeBlendSetting);
 		~ProbeManager();
 
-		void addProbe(LightProbe *probe);
-		void addProbe(ReflectionProbe *probe);
+		void AddProbe(LightProbe *probe);
+		void AddProbe(ReflectionProbe *probe);
 
-		inline void setLightProbeFallback(LightProbe *probe) { m_LightProbeFallback = probe; }
-		inline void setReflectionProbeFallback(ReflectionProbe *probe) { m_ReflectionProbeFallback = probe; }
+		inline void SetLightProbeFallback(LightProbe *probe) { m_LightProbeFallback = probe; }
+		inline void SetReflectionProbeFallback(ReflectionProbe *probe) { m_ReflectionProbeFallback = probe; }
 
 		// Assumes shader is bound
-		void bindProbes(glm::vec3 &renderPosition, Shader *shader);
+		void BindProbes(glm::vec3 &renderPosition, Shader *shader);
 	private:
 		ProbeBlendSetting m_ProbeBlendSetting;
 		

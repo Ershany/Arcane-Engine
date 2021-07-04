@@ -4,12 +4,12 @@
 namespace Arcane
 {
 	Time::Time() {
-		lastFrame = glfwGetTime();
-		delta = 0;
+		m_LastFrame = glfwGetTime();
+		m_Delta = 0;
 	}
 
-	void Time::update() {
-		delta = glfwGetTime() - lastFrame;
-		lastFrame = glfwGetTime();
+	void Time::Update() {
+		m_Delta = glfwGetTime() - m_LastFrame;
+		m_LastFrame = glfwGetTime();
 	}
 }

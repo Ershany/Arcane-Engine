@@ -9,7 +9,7 @@ namespace Arcane
 
 	JoystickInputData::~JoystickInputData() {}
 
-	void JoystickInputData::update() {
+	void JoystickInputData::Update() {
 		// Get axis positions
 		int count;
 		const float* axes = glfwGetJoystickAxes(m_Id, &count);

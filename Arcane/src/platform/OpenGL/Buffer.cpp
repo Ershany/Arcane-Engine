@@ -9,25 +9,25 @@ namespace Arcane
 
 	Buffer::Buffer(float *data, int amount, unsigned int componentCount) {
 		glGenBuffers(1, &m_BufferID);
-		load(data, amount, componentCount);
+		Load(data, amount, componentCount);
 	}
 
 	Buffer::~Buffer() {
 		glDeleteBuffers(1, &m_BufferID);
 	}
 
-	void Buffer::load(float *data, int amount, unsigned int componentCount) {
+	void Buffer::Load(float *data, int amount, unsigned int componentCount) {
 		m_ComponentCount = componentCount;
 
-		bind();
+		Bind();
 		glBufferData(GL_ARRAY_BUFFER, amount * sizeof(float), data, GL_STATIC_DRAW);
 	}
 
-	void Buffer::bind() const {
+	void Buffer::Bind() const {
 		glBindBuffer(GL_ARRAY_BUFFER, m_BufferID);
 	}
 
-	void Buffer::unbind() const {
+	void Buffer::Unbind() const {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }

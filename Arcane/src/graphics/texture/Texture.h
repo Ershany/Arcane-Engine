@@ -34,37 +34,37 @@ namespace Arcane
 		~Texture();
 
 		// Generation functions
-		void generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, GLenum pixelDataType = GL_UNSIGNED_BYTE, const void *data = nullptr);
-		void generate2DMultisampleTexture(unsigned int width, unsigned int height);
-		void generateMips(); // Will attempt to generate mipmaps, only works if the texture has already been generated
+		void Generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, GLenum pixelDataType = GL_UNSIGNED_BYTE, const void *data = nullptr);
+		void Generate2DMultisampleTexture(unsigned int width, unsigned int height);
+		void GenerateMips(); // Will attempt to generate mipmaps, only works if the texture has already been generated
 
-		void bind(int unit = 0);
-		void unbind();
+		void Bind(int unit = 0);
+		void Unbind();
 
 		// Texture Tuning Functions (Works for pre-generation and post-generation)
-		void setTextureWrapS(GLenum textureWrapMode);
-		void setTextureWrapT(GLenum textureWrapMode);
-		void setHasBorder(bool hasBorder);
-		void setBorderColour(glm::vec4 &borderColour);
-		void setTextureMinFilter(GLenum textureFilterMode);
-		void setTextureMagFilter(GLenum textureFilterMode);
-		void setAnisotropicFilteringMode(float textureAnisotropyLevel);
-		void setMipBias(int mipBias);
-		void setHasMips(bool hasMips);
+		void SetTextureWrapS(GLenum textureWrapMode);
+		void SetTextureWrapT(GLenum textureWrapMode);
+		void SetHasBorder(bool hasBorder);
+		void SetBorderColour(glm::vec4 &borderColour);
+		void SetTextureMinFilter(GLenum textureFilterMode);
+		void SetTextureMagFilter(GLenum textureFilterMode);
+		void SetAnisotropicFilteringMode(float textureAnisotropyLevel);
+		void SetMipBias(int mipBias);
+		void SetHasMips(bool hasMips);
 
 		// Pre-generation controls only
-		inline void setTextureSettings(TextureSettings settings) { m_TextureSettings = settings; }
-		inline void setTextureFormat(GLenum format) { m_TextureSettings.TextureFormat = format; }
+		inline void SetTextureSettings(TextureSettings settings) { m_TextureSettings = settings; }
+		inline void SetTextureFormat(GLenum format) { m_TextureSettings.TextureFormat = format; }
 
 		// Don't use this to bind the texture and use it. Call the Bind() function instead
-		inline unsigned int getTextureId() const { return m_TextureId; }
-		inline unsigned int getTextureTarget() const { return m_TextureTarget; }
-		inline bool isGenerated() const { return m_TextureId != 0; }
-		inline unsigned int getWidth() const { return m_Width; }
-		inline unsigned int getHeight() const { return m_Height; }
-		inline const TextureSettings& getTextureSettings() const { return m_TextureSettings; }
+		inline unsigned int GetTextureId() const { return m_TextureId; }
+		inline unsigned int GetTextureTarget() const { return m_TextureTarget; }
+		inline bool IsGenerated() const { return m_TextureId != 0; }
+		inline unsigned int GetWidth() const { return m_Width; }
+		inline unsigned int GetHeight() const { return m_Height; }
+		inline const TextureSettings& GetTextureSettings() const { return m_TextureSettings; }
 	private:
-		void applyTextureSettings();
+		void ApplyTextureSettings();
 	private:
 		unsigned int m_TextureId;
 		GLenum m_TextureTarget;

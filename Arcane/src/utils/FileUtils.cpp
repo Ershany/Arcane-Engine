@@ -3,7 +3,7 @@
 
 namespace Arcane
 {
-	std::string FileUtils::readFile(const std::string &filepath) {
+	std::string FileUtils::ReadFile(const std::string &filepath) {
 		std::ifstream ifs(filepath, std::ios::in, std::ios::binary);
 		std::string result;
 

@@ -21,14 +21,14 @@ namespace Arcane
 
 	InputManager::~InputManager() {}
 
-	void InputManager::update() {
+	void InputManager::Update() {
 		s_MouseXDelta = s_MouseYDelta = 0;
 		s_ScrollXDelta = 0; s_ScrollYDelta = 0;
 
-		m_JoystickManager.update();
+		m_JoystickManager.Update();
 	}
 
-	bool InputManager::isKeyPressed(unsigned int keycode) {
+	bool InputManager::IsKeyPressed(unsigned int keycode) {
 #ifdef ARC_DEV_BUILD
 		if (keycode < 0 || keycode >= MAX_KEYS)
 		{
@@ -39,7 +39,7 @@ namespace Arcane
 		return s_Keys[keycode];
 	}
 
-	float InputManager::getKeyPressure(unsigned int keycode) {
+	float InputManager::GetKeyPressure(unsigned int keycode) {
 #ifdef ARC_DEV_BUILD
 		if (keycode < 0 || keycode >= MAX_KEYS)
 		{
@@ -50,7 +50,7 @@ namespace Arcane
 		return s_KeyPressure[keycode];
 	}
 
-	bool InputManager::isMouseButtonPressed(unsigned int code) {
+	bool InputManager::IsMouseButtonPressed(unsigned int code) {
 #ifdef ARC_DEV_BUILD
 		if (code < 0 || code >= MAX_BUTTONS)
 		{
@@ -61,32 +61,32 @@ namespace Arcane
 		return s_Buttons[code];
 	}
 
-	void InputManager::keyCallback(int key, int scancode, int action, int mods) {
+	void InputManager::KeyCallback(int key, int scancode, int action, int mods) {
 		s_Keys[key] = action != GLFW_RELEASE;
 		s_KeyPressure[key] = s_Keys[key];
 	}
 
-	void InputManager::mouseButtonCallback(int button, int action, int mods) {
+	void InputManager::MouseButtonCallback(int button, int action, int mods) {
 		s_Buttons[button] = action != GLFW_RELEASE;
 	}
 
-	void InputManager::cursorPositionCallback(double xpos, double ypos) {
+	void InputManager::CursorPositionCallback(double xpos, double ypos) {
 		s_MouseXDelta = xpos - s_MouseX;
 		s_MouseYDelta = ypos - s_MouseY;
 		s_MouseX = xpos;
 		s_MouseY = ypos;
 	}
 
-	void InputManager::scrollCallback(double xoffset, double yoffset) {
+	void InputManager::ScrollCallback(double xoffset, double yoffset) {
 		s_ScrollXDelta = xoffset;
 		s_ScrollYDelta = yoffset;
 	}
 
-	void InputManager::joystickCallback(int joystick, int event) {
-		m_JoystickManager.joystickConnectionCallback(joystick, event);
+	void InputManager::JoystickCallback(int joystick, int event) {
+		m_JoystickManager.JoystickConnectionCallback(joystick, event);
 	}
 
-	bool InputManager::getButton(int keyCode) {
+	bool InputManager::GetButton(int keyCode) {
 #ifdef ARC_DEV_BUILD
 		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
 		{
@@ -97,7 +97,7 @@ namespace Arcane
 		return s_Keys[keyCode] != GLFW_RELEASE;
 	}
 
-	bool InputManager::getButtonDown(int keyCode) {
+	bool InputManager::GetButtonDown(int keyCode) {
 #ifdef ARC_DEV_BUILD
 		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
 		{

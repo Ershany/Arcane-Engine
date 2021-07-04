@@ -8,16 +8,16 @@ namespace Arcane
 	public:
 		RuntimePane(glm::vec2 &panePosition);
 
-		virtual void setupPaneObjects();
+		virtual void SetupPaneObjects();
 
-		static inline float getShadowmapTimer() { return s_ShadowmapTimer; }
-		static inline float getSsaoTimer() { return s_SsaoTimer; }
-		static inline float getFxaaTimer() { return s_FxaaTimer; }
-		static inline void setShadowmapTimer(float frameTime) { s_ShadowmapTimer = frameTime; }
-		static inline void setSsaoTimer(float frameTime) { s_SsaoTimer = frameTime; }
-		static inline void setFxaaTimer(float frameTime) { s_FxaaTimer = frameTime; }
-		static inline float getWaterTimer() { return s_WaterTimer; }
-		static inline void setWaterTimer(float frameTime) { s_WaterTimer = frameTime; }
+		static inline float GetShadowmapTimer() { return s_ShadowmapTimer; }
+		static inline float GetSsaoTimer() { return s_SsaoTimer; }
+		static inline float GetFxaaTimer() { return s_FxaaTimer; }
+		static inline void SetShadowmapTimer(float frameTime) { s_ShadowmapTimer = frameTime; }
+		static inline void SetSsaoTimer(float frameTime) { s_SsaoTimer = frameTime; }
+		static inline void SetFxaaTimer(float frameTime) { s_FxaaTimer = frameTime; }
+		static inline float GetWaterTimer() { return s_WaterTimer; }
+		static inline void SetWaterTimer(float frameTime) { s_WaterTimer = frameTime; }
 	private:
 		static float s_ShadowmapTimer;
 		static float s_SsaoTimer;

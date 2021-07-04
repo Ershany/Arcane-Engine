@@ -9,7 +9,7 @@ namespace Arcane
 		m_ModelShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Model_GeometryPass.glsl");
 		m_TerrainShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_Terrain_GeometryPass.glsl");
 
-		m_GBuffer = new GBuffer(Window::getRenderResolutionWidth(), Window::getRenderResolutionHeight());
+		m_GBuffer = new GBuffer(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight());
 	}
 
 	DeferredGeometryPass::DeferredGeometryPass(Scene3D *scene, GBuffer *customGBuffer) : RenderPass(scene), m_AllocatedGBuffer(false), m_GBuffer(customGBuffer) {
@@ -24,55 +24,55 @@ namespace Arcane
 	}
 
 	GeometryPassOutput DeferredGeometryPass::executeGeometryPass(ICamera *camera, bool renderOnlyStatic) {
-		glViewport(0, 0, m_GBuffer->getWidth(), m_GBuffer->getHeight());
-		m_GBuffer->bind();
-		m_GBuffer->clear();
-		m_GLCache->setBlend(false);
-		m_GLCache->setMultisample(false);
+		glViewport(0, 0, m_GBuffer->GetWidth(), m_GBuffer->GetHeight());
+		m_GBuffer->Bind();
+		m_GBuffer->Clear();
+		m_GLCache->SetBlend(false);
+		m_GLCache->SetMultisample(false);
 
 		// Setup initial stencil state
-		m_GLCache->setStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		m_GLCache->setStencilWriteMask(0x00);
-		m_GLCache->setStencilTest(true);
+		m_GLCache->SetStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		m_GLCache->SetStencilWriteMask(0x00);
+		m_GLCache->SetStencilTest(true);
 
 		// Setup
-		ModelRenderer *modelRenderer = m_ActiveScene->getModelRenderer();
-		Terrain *terrain = m_ActiveScene->getTerrain();
+		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
+		Terrain *terrain = m_ActiveScene->GetTerrain();
 
-		m_GLCache->switchShader(m_ModelShader);
-		m_ModelShader->setUniform("viewPos", camera->getPosition());
-		m_ModelShader->setUniform("view", camera->getViewMatrix());
-		m_ModelShader->setUniform("projection", camera->getProjectionMatrix());
+		m_GLCache->SetShader(m_ModelShader);
+		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
+		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
+		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Setup model renderer for opaque objects only
 		if (renderOnlyStatic) {
-			m_ActiveScene->addOpaqueStaticModelsToRenderer();
+			m_ActiveScene->AddOpaqueStaticModelsToRenderer();
 		}
 		else {
-			m_ActiveScene->addOpaqueModelsToRenderer();
+			m_ActiveScene->AddOpaqueModelsToRenderer();
 		}
 
 		// Render opaque objects (use stencil to denote models for the deferred lighting pass)
-		m_GLCache->setStencilWriteMask(0xFF);
-		m_GLCache->setStencilFunc(GL_ALWAYS, DeferredStencilValue::ModelStencilValue, 0xFF);
-		modelRenderer->setupOpaqueRenderState();
-		modelRenderer->flushOpaque(m_ModelShader, MaterialRequired);
-		m_GLCache->setStencilWriteMask(0x00);
+		m_GLCache->SetStencilWriteMask(0xFF);
+		m_GLCache->SetStencilFunc(GL_ALWAYS, DeferredStencilValue::ModelStencilValue, 0xFF);
+		modelRenderer->SetupOpaqueRenderState();
+		modelRenderer->FlushOpaque(m_ModelShader, MaterialRequired);
+		m_GLCache->SetStencilWriteMask(0x00);
 
 		// Setup terrain information
-		m_GLCache->switchShader(m_TerrainShader);
-		m_TerrainShader->setUniform("view", camera->getViewMatrix());
-		m_TerrainShader->setUniform("projection", camera->getProjectionMatrix());
+		m_GLCache->SetShader(m_TerrainShader);
+		m_TerrainShader->SetUniform("view", camera->GetViewMatrix());
+		m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Render the terrain (use stencil to denote the terrain for the deferred lighting pass)
-		m_GLCache->setStencilWriteMask(0xFF);
-		m_GLCache->setStencilFunc(GL_ALWAYS, DeferredStencilValue::TerrainStencilValue, 0xFF);
+		m_GLCache->SetStencilWriteMask(0xFF);
+		m_GLCache->SetStencilFunc(GL_ALWAYS, DeferredStencilValue::TerrainStencilValue, 0xFF);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
-		m_GLCache->setStencilWriteMask(0x00);
+		m_GLCache->SetStencilWriteMask(0x00);
 
 
 		// Reset state
-		m_GLCache->setStencilTest(false);
+		m_GLCache->SetStencilTest(false);
 
 		// Render pass output
 		GeometryPassOutput passOutput;

@@ -4,14 +4,14 @@
 namespace Arcane
 {
 	CubemapCamera::CubemapCamera() : m_CenterPosition(0.0f, 0.0f, 0.0f) {
-		switchCameraToFace(0);
+		SwitchCameraToFace(0);
 	}
 
 	CubemapCamera::CubemapCamera(glm::vec3 &centerPosiiton) : m_CenterPosition(centerPosiiton) {
-		switchCameraToFace(0);
+		SwitchCameraToFace(0);
 	}
 
-	void CubemapCamera::switchCameraToFace(int cubeFaceIndex) {
+	void CubemapCamera::SwitchCameraToFace(int cubeFaceIndex) {
 		switch (cubeFaceIndex) {
 		case 0:
 			m_Front.x = 1.0f; m_Front.y = 0.0f; m_Front.z = 0.0f;
@@ -40,11 +40,11 @@ namespace Arcane
 		}
 	}
 
-	glm::mat4 CubemapCamera::getViewMatrix() {
+	glm::mat4 CubemapCamera::GetViewMatrix() {
 		return glm::lookAt(m_CenterPosition, m_CenterPosition + m_Front, m_Up);
 	}
 	
-	glm::mat4 CubemapCamera::getProjectionMatrix() {
+	glm::mat4 CubemapCamera::GetProjectionMatrix() {
 		return glm::perspective(glm::radians(90.0f), 1.0f, NEAR_PLANE, FAR_PLANE);
 	}
 }

@@ -14,25 +14,25 @@ namespace Arcane
 		Window(const ApplicationSpecification &spec);
 		~Window();
 
-		void init();
+		void Init();
 
 		/**
 		* Will swap the screen buffers and will poll all window/input events
 		*/
-		void update();
-		bool closed() const;
-		static void clear();
-		static void bind();
+		void Update();
+		bool Closed() const;
+		static void Clear();
+		static void Bind();
 
-		static inline bool getHideCursor() { return s_HideCursor; }
-		static inline bool getHideUI() { return s_HideUI; }
-		static inline int getWidth() { return s_Width; }
-		static inline int getHeight() { return s_Height; }
-		static inline int getRenderResolutionWidth() { return s_RenderResolutionWidth; }
-		static inline int getRenderResolutionHeight() { return s_RenderResolutionHeight; }
+		static inline bool GetHideCursor() { return s_HideCursor; }
+		static inline bool GetHideUI() { return s_HideUI; }
+		static inline int GetWidth() { return s_Width; }
+		static inline int GetHeight() { return s_Height; }
+		static inline int GetRenderResolutionWidth() { return s_RenderResolutionWidth; }
+		static inline int GetRenderResolutionHeight() { return s_RenderResolutionHeight; }
 	private:
-		bool initInternal();
-		void setFullscreenResolution();
+		bool InitInternal();
+		void SetFullscreenResolution();
 
 		// Callback Functions
 		static friend void error_callback(int error, const char* description);

@@ -20,7 +20,7 @@ namespace Arcane
 	{
 	}
 
-	void WaterPane::setupPaneObjects()
+	void WaterPane::SetupPaneObjects()
 	{
 #ifdef ARC_DEV_BUILD
 		ImGui::Checkbox("Enable Clear Water", s_ClearWater);

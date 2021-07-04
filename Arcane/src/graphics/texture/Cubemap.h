@@ -31,20 +31,20 @@ namespace Arcane
 		Cubemap(CubemapSettings &settings = CubemapSettings());
 		~Cubemap();
 
-		void generateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum dataFormat, const unsigned char *data);
+		void GenerateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum dataFormat, const unsigned char *data);
 
-		void bind(int unit = 0);
-		void unbind();
+		void Bind(int unit = 0);
+		void Unbind();
 
 		// Pre-generation controls only
-		inline void setCubemapSettings(CubemapSettings settings) { m_CubemapSettings = settings; }
+		inline void SetCubemapSettings(CubemapSettings settings) { m_CubemapSettings = settings; }
 
 		// Getters
-		unsigned int getCubemapID() { return m_CubemapID; }
-		inline unsigned int getFaceWidth() { return m_FaceWidth; }
-		inline unsigned int getFaceHeight() { return m_FaceHeight; }
+		unsigned int GetCubemapID() { return m_CubemapID; }
+		inline unsigned int GetFaceWidth() { return m_FaceWidth; }
+		inline unsigned int GetFaceHeight() { return m_FaceHeight; }
 	private:
-		void applyCubemapSettings();
+		void ApplyCubemapSettings();
 	private:
 		unsigned int m_CubemapID;
 

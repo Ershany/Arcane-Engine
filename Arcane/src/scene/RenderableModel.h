@@ -11,23 +11,23 @@ namespace Arcane
 		~RenderableModel();
 
 		// Assumes shader is already bound by the renderer
-		void draw(Shader *shader, RenderPassType pass) const;
+		void Draw(Shader *shader, RenderPassType pass) const;
 
-		void addChild(RenderableModel *child);
+		void AddChild(RenderableModel *child);
 
 
-		inline const glm::vec3& getPosition() const { return m_Position; }
-		inline const glm::vec3& getScale() const { return m_Scale; }
-		inline const glm::quat& getOrientation() const { return m_Orientation; }
-		inline const RenderableModel* getParent() const { return m_Parent; }
-		inline bool getTransparent() const { return m_IsTransparent; }
-		inline bool getStatic() const { return m_IsStatic; }
+		inline const glm::vec3& GetPosition() const { return m_Position; }
+		inline const glm::vec3& GetScale() const { return m_Scale; }
+		inline const glm::quat& GetOrientation() const { return m_Orientation; }
+		inline const RenderableModel* GetParent() const { return m_Parent; }
+		inline bool GetTransparent() const { return m_IsTransparent; }
+		inline bool GetStatic() const { return m_IsStatic; }
 
-		inline void setPosition(glm::vec3 &other) { m_Position = other; }
-		inline void setScale(glm::vec3 &other) { m_Scale = other; }
-		inline void setOrientation(float radianRotation, glm::vec3 rotationAxis) { m_Orientation = glm::angleAxis(radianRotation, rotationAxis); }
-		inline void setTransparent(bool choice) { m_IsTransparent = choice; }
-		inline void setParent(RenderableModel *parent) { m_Parent = parent; }
+		inline void SetPosition(glm::vec3 &other) { m_Position = other; }
+		inline void SetScale(glm::vec3 &other) { m_Scale = other; }
+		inline void SetOrientation(float radianRotation, glm::vec3 rotationAxis) { m_Orientation = glm::angleAxis(radianRotation, rotationAxis); }
+		inline void SetTransparent(bool choice) { m_IsTransparent = choice; }
+		inline void SetParent(RenderableModel *parent) { m_Parent = parent; }
 	private:
 		// Transformation data
 		glm::vec3 m_Position, m_Scale;
