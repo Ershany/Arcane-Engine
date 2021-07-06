@@ -42,6 +42,9 @@ namespace Arcane
 		void RenderImGui();
 
 		const ApplicationSpecification& GetSpecification() const { return m_Specification; }
+
+		static const char* GetConfigName();
+		static const char* GetPlatformName();
 	private:
 		ApplicationSpecification m_Specification;
 

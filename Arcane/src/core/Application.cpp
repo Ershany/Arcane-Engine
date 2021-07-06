@@ -137,4 +137,26 @@ namespace Arcane
 	{
 
 	}
+
+	const char* Application::GetConfigName()
+	{
+#if defined(ARC_DEBUG)
+		return "Debug";
+#elif defined(ARC_RELEASE)
+		return "Release";
+#elif defined(ARC_FINAL)
+		return "Final";
+#else
+		#error Undefined Config
+#endif
+	}
+
+	const char* Application::GetPlatformName()
+	{
+#if defined(ARC_PLATFORM_WINDOWS)
+		return "Windows";
+#else
+		#error Undefined Platform
+#endif
+	}
 }
