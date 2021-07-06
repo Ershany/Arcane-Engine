@@ -31,7 +31,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 // Arcane
-#include <Defs.h>
-#include <utils/Logger.h>
-#include <core/Base.h>
-#include <core/events/Event.h>
+#include <Arcane/Defs.h>
+#include <Arcane/Util/Logger.h>
+#include <Arcane/Core/Base.h>
+#include <Arcane/Core/Events/Event.h>
