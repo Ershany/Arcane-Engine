@@ -23,7 +23,7 @@ namespace Arcane
 	class Application : public Singleton
 	{
 	public:
-		Application(const ApplicationSpecification &spec);
+		Application(const ApplicationSpecification &specification);
 		virtual ~Application();
 
 		static inline Application& GetInstance() { return *s_Instance; }

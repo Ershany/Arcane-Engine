@@ -16,13 +16,13 @@ namespace Arcane
 {
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const ApplicationSpecification &spec) : m_Specification(spec)
+	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification)
 	{
 		s_Instance = this;
 
 		// Prepare the engine
 		ARC_LOG_INFO("Initializing Arcane Engine...");
-		m_Window = new Window(spec);
+		m_Window = new Window(specification);
 		m_Window->Init();
 		Arcane::TextureLoader::InitializeDefaultTextures();
 		m_Scene3D = new Scene3D(m_Window);

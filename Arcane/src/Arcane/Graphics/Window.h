@@ -11,7 +11,7 @@ namespace Arcane
 
 	class Window {
 	public:
-		Window(const ApplicationSpecification &spec);
+		Window(const ApplicationSpecification &specification);
 		~Window();
 
 		void Init();

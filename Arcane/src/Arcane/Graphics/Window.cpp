@@ -10,13 +10,13 @@ namespace Arcane
 	int Window::s_RenderResolutionWidth; int Window::s_RenderResolutionHeight;
 	bool Window::s_VSync;
 
-	Window::Window(const ApplicationSpecification &spec) {
-		m_Title = spec.Name.c_str();
-		s_Width = spec.WindowWidth;
-		s_Height = spec.WindowHeight;
-		s_RenderResolutionWidth = spec.RenderResolutionWidth;
-		s_RenderResolutionHeight = spec.RenderResolutionHeight;
-		s_VSync = spec.VSync;
+	Window::Window(const ApplicationSpecification &specification) {
+		m_Title = specification.Name.c_str();
+		s_Width = specification.WindowWidth;
+		s_Height = specification.WindowHeight;
+		s_RenderResolutionWidth = specification.RenderResolutionWidth;
+		s_RenderResolutionHeight = specification.RenderResolutionHeight;
+		s_VSync = specification.VSync;
 		s_HideCursor = true;
 		s_HideUI = false;
 	}
