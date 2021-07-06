@@ -6,7 +6,8 @@
 #pragma once
 
 #include <Arcane/Core/Application.h>
-#include <Arcane/Core/events/Event.h>
+#include <Arcane/Core/Events/Event.h>
+#include <Arcane/Core/Layer.h>
 
 #include <Arcane/Graphics/Camera/FPSCamera.h>
 #include <Arcane/Graphics/Camera/CubemapCamera.h>

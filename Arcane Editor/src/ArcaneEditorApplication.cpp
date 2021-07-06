@@ -1,6 +1,8 @@
 #include <Arcane.h>
 #include <Arcane/ArcaneEntryPoint.h>
 
+#include <EditorLayer.h>
+
 class ArcaneEditorApplication : public Arcane::Application
 {
 public:
@@ -12,7 +14,7 @@ public:
 
 	virtual void OnInit() override
 	{
-		//PushLayer(new Arcane::EditorLayer());
+		PushLayer(new Arcane::EditorLayer());
 	}
 };
 
