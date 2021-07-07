@@ -60,10 +60,12 @@ namespace Arcane
 			direction += m_WorldUp;
 		if (InputManager::IsKeyPressed(GLFW_KEY_LEFT_CONTROL))
 			direction -= m_WorldUp;
+#if 0 // Temporary controls for controller to test controller data
 		direction += m_Front * JoystickManager::GetLeftStick(0).y * 2.0f;
 		direction += m_Right * JoystickManager::GetLeftStick(0).x * 2.0f;
 		direction += m_WorldUp * JoystickManager::GetTriggers(0).y;
 		direction -= m_WorldUp * JoystickManager::GetTriggers(0).x;
+#endif
 		ProcessCameraMovement(direction, deltaTime);
 
 
@@ -72,8 +74,8 @@ namespace Arcane
 		ProcessCameraFOV(scrollDelta);
 
 		// Camera rotation
-		float mouseXDelta = (float)(InputManager::GetMouseXDelta() + (JoystickManager::GetRightStick(0).x * 20.0)) * FPSCAMERA_ROTATION_SENSITIVITY;
-		float mouseYDelta = (float)(-InputManager::GetMouseYDelta() + (JoystickManager::GetRightStick(0).y * 20.0)) * FPSCAMERA_ROTATION_SENSITIVITY;
+		float mouseXDelta = (float)InputManager::GetMouseXDelta() /*+ ((float)JoystickManager::GetRightStick(0).x * 20.0)*/ * FPSCAMERA_ROTATION_SENSITIVITY;
+		float mouseYDelta = (float)-InputManager::GetMouseYDelta() /*+ ((float)JoystickManager::GetRightStick(0).y * 20.0)*/ * FPSCAMERA_ROTATION_SENSITIVITY;
 		ProcessCameraRotation(mouseXDelta, mouseYDelta, true);
 	}
 

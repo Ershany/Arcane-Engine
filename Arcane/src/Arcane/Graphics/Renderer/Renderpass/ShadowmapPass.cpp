@@ -11,7 +11,7 @@ namespace Arcane
 {
 	ShadowmapPass::ShadowmapPass(Scene3D *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
-		m_ShadowmapShader = ShaderLoader::loadShader("src/shaders/Shadowmap_Generation.glsl");
+		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
 
 		m_ShadowmapFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y, false);
 		m_ShadowmapFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
@@ -19,7 +19,7 @@ namespace Arcane
 
 	ShadowmapPass::ShadowmapPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_ShadowmapFramebuffer(customFramebuffer)
 	{
-		m_ShadowmapShader = ShaderLoader::loadShader("src/shaders/Shadowmap_Generation.glsl");
+		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
 	}
 
 	ShadowmapPass::~ShadowmapPass() {

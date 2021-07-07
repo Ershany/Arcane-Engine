@@ -31,8 +31,8 @@ namespace Arcane
 			m_SceneCaptureCubemap.GenerateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, GL_RGB, nullptr);
 		}
 
-		m_ConvolutionShader = ShaderLoader::loadShader("src/shaders/LightProbe_Convolution.glsl");
-		m_ImportanceSamplingShader = ShaderLoader::loadShader("src/shaders/ReflectionProbe_ImportanceSampling.glsl");
+		m_ConvolutionShader = ShaderLoader::LoadShader("LightProbe_Convolution.glsl");
+		m_ImportanceSamplingShader = ShaderLoader::LoadShader("ReflectionProbe_ImportanceSampling.glsl");
 	}
 
 	ForwardProbePass::~ForwardProbePass() {}
@@ -49,7 +49,7 @@ namespace Arcane
 	}
 
 	void ForwardProbePass::generateBRDFLUT() {
-		Shader *brdfIntegrationShader = ShaderLoader::loadShader("src/shaders/BRDF_Integration.glsl");
+		Shader *brdfIntegrationShader = ShaderLoader::LoadShader("BRDF_Integration.glsl");
 		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		
 		// Texture settings for the BRDF LUT

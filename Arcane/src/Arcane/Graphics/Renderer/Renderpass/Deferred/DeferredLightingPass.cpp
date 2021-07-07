@@ -13,7 +13,7 @@ namespace Arcane
 {
 	DeferredLightingPass::DeferredLightingPass(Scene3D *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
-		m_LightingShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_LightingPass.glsl");
+		m_LightingShader = ShaderLoader::LoadShader("deferred/PBR_LightingPass.glsl");
 
 		m_Framebuffer = new Framebuffer(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false);
 		m_Framebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthStencil).CreateFramebuffer();
@@ -21,7 +21,7 @@ namespace Arcane
 
 	DeferredLightingPass::DeferredLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
-		m_LightingShader = ShaderLoader::loadShader("src/shaders/deferred/PBR_LightingPass.glsl");
+		m_LightingShader = ShaderLoader::LoadShader("deferred/PBR_LightingPass.glsl");
 	}
 
 	DeferredLightingPass::~DeferredLightingPass() {

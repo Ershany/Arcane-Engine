@@ -25,7 +25,7 @@ namespace Arcane
 		, m_SceneReflectionFramebuffer(WATER_REFLECTION_RESOLUTION_WIDTH, WATER_REFLECTION_RESOLUTION_HEIGHT, false)
 #endif
 	{
-		m_WaterShader = ShaderLoader::loadShader("src/shaders/Water.glsl");
+		m_WaterShader = ShaderLoader::LoadShader("Water.glsl");
 
 		m_SceneReflectionFramebuffer.AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
 		m_SceneRefractionFramebuffer.AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();

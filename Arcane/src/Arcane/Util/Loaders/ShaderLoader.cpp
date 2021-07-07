@@ -6,11 +6,13 @@
 namespace Arcane
 {
 	// Static declarations
+	std::string ShaderLoader::s_ShaderFilepath;
 	std::unordered_map<std::size_t, Shader*> ShaderLoader::s_ShaderCache;
 	std::hash<std::string> ShaderLoader::s_Hasher;
 
-	Shader* ShaderLoader::loadShader(const std::string &path) {
-		std::size_t hash = s_Hasher(path);
+	Shader* ShaderLoader::LoadShader(const std::string &path) {
+		std::string shaderPath = s_ShaderFilepath + path;
+		std::size_t hash = s_Hasher(shaderPath);
 
 		// Check the cache
 		auto iter = s_ShaderCache.find(hash);
@@ -19,7 +21,7 @@ namespace Arcane
 		}
 
 		// Load the shader
-		Shader *shader = new Shader(path);
+		Shader *shader = new Shader(shaderPath);
 
 		s_ShaderCache.insert(std::pair<std::size_t, Shader*>(hash, shader));
 		return s_ShaderCache[hash];

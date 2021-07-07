@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Renderer/MasterRenderer.h>
 #include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Util/Loaders/TextureLoader.h>
 #include <Arcane/Util/Time.h>
 #include <Arcane/UI/DebugPane.h>
@@ -24,6 +25,7 @@ namespace Arcane
 		ARC_LOG_INFO("Initializing Arcane Engine...");
 		m_Window = new Window(specification);
 		m_Window->Init();
+		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
 		Arcane::TextureLoader::InitializeDefaultTextures();
 		m_Scene3D = new Scene3D(m_Window);
 		m_Renderer = new MasterRenderer(m_Scene3D);

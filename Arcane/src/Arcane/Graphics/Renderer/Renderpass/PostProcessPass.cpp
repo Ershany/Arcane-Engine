@@ -20,17 +20,17 @@ namespace Arcane
 		m_SsaoNoiseTexture(), m_ProfilingTimer(), m_EffectsTimer()
 	{
 		// Shader setup
-		m_PassthroughShader = ShaderLoader::loadShader("src/shaders/post_process/Copy.glsl");
-		m_TonemapGammaCorrectShader = ShaderLoader::loadShader("src/shaders/TonemapGammaCorrect.glsl");
-		m_FxaaShader = ShaderLoader::loadShader("src/shaders/post_process/fxaa/FXAA.glsl");
-		m_SsaoShader = ShaderLoader::loadShader("src/shaders/post_process/ssao/SSAO.glsl");
-		m_SsaoBlurShader = ShaderLoader::loadShader("src/shaders/post_process/ssao/SSAO_Blur.glsl");
-		m_BloomBrightPassShader = ShaderLoader::loadShader("src/shaders/post_process/bloom/BloomBrightPass.glsl");
-		m_BloomGaussianBlurShader = ShaderLoader::loadShader("src/shaders/post_process/bloom/BloomGaussianBlur.glsl");
-		m_BloomComposite = ShaderLoader::loadShader("src/shaders/post_process/bloom/Composite.glsl");
-		m_VignetteShader = ShaderLoader::loadShader("src/shaders/post_process/vignette/vignette.glsl");
-		m_ChromaticAberrationShader = ShaderLoader::loadShader("src/shaders/post_process/chromatic_aberration/ChromaticAberration.glsl");
-		m_FilmGrainShader = ShaderLoader::loadShader("src/shaders/post_process/film_grain/FilmGrain.glsl");
+		m_PassthroughShader = ShaderLoader::LoadShader("post_process/Copy.glsl");
+		m_TonemapGammaCorrectShader = ShaderLoader::LoadShader("TonemapGammaCorrect.glsl");
+		m_FxaaShader = ShaderLoader::LoadShader("post_process/fxaa/FXAA.glsl");
+		m_SsaoShader = ShaderLoader::LoadShader("post_process/ssao/SSAO.glsl");
+		m_SsaoBlurShader = ShaderLoader::LoadShader("post_process/ssao/SSAO_Blur.glsl");
+		m_BloomBrightPassShader = ShaderLoader::LoadShader("post_process/bloom/BloomBrightPass.glsl");
+		m_BloomGaussianBlurShader = ShaderLoader::LoadShader("post_process/bloom/BloomGaussianBlur.glsl");
+		m_BloomComposite = ShaderLoader::LoadShader("post_process/bloom/Composite.glsl");
+		m_VignetteShader = ShaderLoader::LoadShader("post_process/vignette/vignette.glsl");
+		m_ChromaticAberrationShader = ShaderLoader::LoadShader("post_process/chromatic_aberration/ChromaticAberration.glsl");
+		m_FilmGrainShader = ShaderLoader::LoadShader("post_process/film_grain/FilmGrain.glsl");
 
 		// Framebuffer setup
 		m_SsaoRenderTarget.AddColorTexture(NormalizedSingleChannel8).CreateFramebuffer();

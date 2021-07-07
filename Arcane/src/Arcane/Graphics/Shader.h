@@ -1,10 +1,15 @@
 #pragma once
 
+#include <Arcane/Util/Loaders/ShaderLoader.h>
+
 namespace Arcane
 {
-	class Shader {
-	public:
+	class Shader
+	{
+		friend class ShaderLoader;
+	private:
 		Shader(const std::string &path);
+	public:
 		~Shader();
 
 		void Enable() const;
