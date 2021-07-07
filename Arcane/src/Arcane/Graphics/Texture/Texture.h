@@ -29,8 +29,9 @@ namespace Arcane
 
 	class Texture {
 	public:
+		Texture();
+		Texture(TextureSettings &settings);
 		Texture(const Texture &texture); // Copies another texture and its settings
-		Texture(TextureSettings &settings = TextureSettings()); // If nothing is supplied, it will construct default settings
 		~Texture();
 
 		// Generation functions

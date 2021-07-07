@@ -22,7 +22,7 @@ namespace Arcane
 		float SampleHeightfieldBilinear(float worldPosX, float worldPosZ, unsigned char *heightMapData);
 		float SampleHeightfieldNearest(float worldPosX, float worldPosZ, unsigned char *heightMapData);
 
-		float Terrain::Clamp(float n, float lower, float upper);
+		float Clamp(float n, float lower, float upper);
 	private:
 		GLCache *m_GLCache;
 

@@ -27,7 +27,7 @@ namespace Arcane
 		Quad NDC_Plane;
 		Cube NDC_Cube;
 	private:
-		void ModelRenderer::SetupModelMatrix(RenderableModel *renderable, Shader *shader, RenderPassType pass);
+		void SetupModelMatrix(RenderableModel *renderable, Shader *shader, RenderPassType pass);
 	private:
 		std::deque<RenderableModel*> m_OpaqueRenderQueue;
 		std::deque<RenderableModel*> m_TransparentRenderQueue;

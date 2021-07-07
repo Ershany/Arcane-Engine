@@ -28,7 +28,8 @@ namespace Arcane
 
 	class Cubemap {
 	public:
-		Cubemap(CubemapSettings &settings = CubemapSettings());
+		Cubemap();
+		Cubemap(CubemapSettings &settings);
 		~Cubemap();
 
 		void GenerateCubemapFace(GLenum face, unsigned int faceWidth, unsigned int faceHeight, GLenum dataFormat, const unsigned char *data);

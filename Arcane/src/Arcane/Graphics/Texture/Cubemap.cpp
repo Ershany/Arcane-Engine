@@ -3,6 +3,8 @@
 
 namespace Arcane
 {
+	Cubemap::Cubemap() : m_CubemapID(0), m_FaceWidth(0), m_FaceHeight(0), m_FacesGenerated(0), m_CubemapSettings() {}
+
 	Cubemap::Cubemap(CubemapSettings &settings) : m_CubemapID(0), m_FaceWidth(0), m_FaceHeight(0), m_FacesGenerated(0), m_CubemapSettings(settings) {}
 
 	Cubemap::~Cubemap() {
