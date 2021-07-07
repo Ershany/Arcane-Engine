@@ -12,6 +12,11 @@ public:
 
 	}
 
+	~ArcaneEditorApplication()
+	{
+
+	}
+
 	virtual void OnInit() override
 	{
 		PushLayer(new Arcane::EditorLayer());
