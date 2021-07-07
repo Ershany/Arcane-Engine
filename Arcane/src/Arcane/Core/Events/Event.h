@@ -29,11 +29,11 @@ namespace Arcane
 		EventFlagsKeyboard = BIT(4)
 	};
 
-#define EVENT_TYPE(type) static EventType GetStaticType() { return EventType::##type; }\
+#define EVENT_TYPE(type) static EventType GetStaticType() { return type; }\
 								virtual EventType GetEventType() const override { return GetStaticType(); }\
 								virtual const char* GetName() const override { return #type; }
 
-#define EVENT_CATEGORY_FLAGS(category) virtual int GetCategoryEventFlags() const override { return category; }
+#define EVENT_CATEGORY_FLAGS(category) virtual uint8_t GetCategoryEventFlags() const override { return static_cast<uint8_t>(category); }
 
 	class Event
 	{

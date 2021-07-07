@@ -245,7 +245,10 @@
     <ClInclude Include="src\Arcane\Core\Application.h" />
     <ClInclude Include="src\Arcane\Core\Assert.h" />
     <ClInclude Include="src\Arcane\Core\Base.h" />
+    <ClInclude Include="src\Arcane\Core\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Arcane\Core\Events\Event.h" />
+    <ClInclude Include="src\Arcane\Core\Events\KeyEvent.h" />
+    <ClInclude Include="src\Arcane\Core\Events\MouseEvent.h" />
     <ClInclude Include="src\Arcane\Core\Layer.h" />
     <ClInclude Include="src\Arcane\Core\LayerStack.h" />
     <ClInclude Include="src\Arcane\Defs.h" />

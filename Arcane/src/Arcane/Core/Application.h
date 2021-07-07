@@ -2,6 +2,7 @@
 
 #include <Arcane/Core/LayerStack.h>
 #include <Arcane/Core/Events/Event.h>
+#include "Arcane/Core/Events/ApplicationEvent.h"
 #include <Arcane/Util/Singleton.h>
 
 #include <Arcane/UI/DebugPane.h>
