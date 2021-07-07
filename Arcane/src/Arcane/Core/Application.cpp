@@ -8,16 +8,13 @@
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Util/Loaders/TextureLoader.h>
 #include <Arcane/Util/Time.h>
-#include <Arcane/UI/DebugPane.h>
-#include <Arcane/UI/RuntimePane.h>
-#include <Arcane/UI/WaterPane.h>
 #include <Arcane/Core/Layer.h>
 
 namespace Arcane
 {
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification)
+	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification), m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
 	{
 		s_Instance = this;
 
@@ -56,11 +53,6 @@ namespace Arcane
 	{
 		OnInit();
 
-		// Temp ImGui Windows
-		Arcane::RuntimePane runtimePane(glm::vec2(270.0f, 175.0f));
-		Arcane::DebugPane debugPane(glm::vec2(270.0f, 400.0f));
-		Arcane::WaterPane waterPane(glm::vec2(270.0f, 400.0f));
-
 		uint64_t frameCounter = 0;
 		Time deltaTime;
 		while (m_Running && !m_Window->Closed())
@@ -74,7 +66,7 @@ namespace Arcane
 			{
 				// Wireframe stuff
 				#ifdef ARC_DEV_BUILD
-					if (debugPane.GetWireframeMode())
+					if (m_DebugPane.GetWireframeMode())
 						glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 					else
 						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -82,23 +74,13 @@ namespace Arcane
 
 				m_Window->Bind();
 				m_Window->Clear();
-				ImGui_ImplGlfwGL3_NewFrame();
 
-				//for (Layer *layer : m_LayerStack)
-					//layer->onUpdate()
 				m_Scene3D->OnUpdate((float)deltaTime.GetDeltaTime());
-				m_Renderer->Render();
+				for (Layer *layer : m_LayerStack)
+					layer->OnUpdate((float)deltaTime.GetDeltaTime());
 
-				// Display panes
-				if (!Arcane::Window::GetHideUI())
-				{
-					Arcane::Window::Bind();
-					runtimePane.Render();
-					debugPane.Render();
-					waterPane.Render();
-				}
-				ImGui::Render();
-				ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+				m_Renderer->Render();
+				RenderImGui();
 
 				++frameCounter;
 			}
@@ -138,7 +120,19 @@ namespace Arcane
 
 	void Application::RenderImGui()
 	{
+		ImGui_ImplGlfwGL3_NewFrame();
+		if (!Arcane::Window::GetHideUI())
+		{
+			Arcane::Window::Bind();
+			m_RuntimePane.Render();
+			m_DebugPane.Render();
+			m_WaterPane.Render();
+		}
+		ImGui::Render();
+		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
+		for (Layer *layer : m_LayerStack)
+			layer->OnImGuiRender();
 	}
 
 	const char* Application::GetConfigName()

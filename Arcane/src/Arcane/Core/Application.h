@@ -4,6 +4,10 @@
 #include <Arcane/Core/Events/Event.h>
 #include <Arcane/Util/Singleton.h>
 
+#include <Arcane/UI/DebugPane.h>
+#include <Arcane/UI/RuntimePane.h>
+#include <Arcane/UI/WaterPane.h>
+
 namespace Arcane
 {
 	class Window;
@@ -59,6 +63,11 @@ namespace Arcane
 		bool m_Minimized = false;
 
 		static Application *s_Instance;
+
+		// Temp ImGui Windows
+		Arcane::RuntimePane m_RuntimePane;
+		Arcane::DebugPane m_DebugPane;
+		Arcane::WaterPane m_WaterPane;
 	};
 
 	// Implemented by the client
