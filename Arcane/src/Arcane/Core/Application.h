@@ -4,8 +4,6 @@
 #include <Arcane/Core/Events/Event.h>
 #include <Arcane/Util/Singleton.h>
 
-#include <string>
-
 namespace Arcane
 {
 	class Window;
