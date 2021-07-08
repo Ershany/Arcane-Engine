@@ -10,8 +10,11 @@
 #include <Arcane/Util/Time.h>
 #include <Arcane/Core/Layer.h>
 
+extern bool g_ApplicationRunning;
 namespace Arcane
 {
+#define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
+
 	Application* Application::s_Instance = nullptr;
 
 	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification), m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
@@ -20,7 +23,7 @@ namespace Arcane
 
 		// Prepare the engine
 		ARC_LOG_INFO("Initializing Arcane Engine...");
-		m_Window = new Window(specification);
+		m_Window = new Window(this, specification);
 		m_Window->Init();
 		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
 		Arcane::TextureLoader::InitializeDefaultTextures();
@@ -97,6 +100,7 @@ namespace Arcane
 	void Application::OnEvent(Event &event)
 	{
 		EventDispatcher dispatcher(event);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
@@ -155,5 +159,14 @@ namespace Arcane
 #else
 		#error Undefined Platform
 #endif
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent &event)
+	{
+		ARC_LOG_INFO("Shutting down engine..");
+		m_Running = false;
+		g_ApplicationRunning = false;
+
+		return true;
 	}
 }

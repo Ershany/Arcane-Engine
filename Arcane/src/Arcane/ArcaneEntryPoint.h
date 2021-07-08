@@ -10,10 +10,13 @@ bool g_ApplicationRunning = true;
 
 int main(int argc, char **argv)
 {
-	Arcane::Application *app = Arcane::CreateApplication(argc, argv);
-	ARC_ASSERT(app, "Application is null!");
-	app->Run();
-	delete app;
+	while (g_ApplicationRunning)
+	{
+		Arcane::Application *app = Arcane::CreateApplication(argc, argv);
+		ARC_ASSERT(app, "Application is null!");
+		app->Run();
+		delete app;
+	}
 }
 
 #endif

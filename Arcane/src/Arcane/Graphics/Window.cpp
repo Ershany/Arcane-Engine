@@ -1,6 +1,8 @@
 #include "arcpch.h"
 #include "Window.h"
 
+#include <Arcane/Graphics/Window.h>
+
 namespace Arcane
 {
 	// Static declarations
@@ -10,8 +12,9 @@ namespace Arcane
 	int Window::s_RenderResolutionWidth; int Window::s_RenderResolutionHeight;
 	bool Window::s_VSync;
 
-	Window::Window(const ApplicationSpecification &specification) {
-		m_Title = specification.Name.c_str();
+	Window::Window(Application *application, const ApplicationSpecification &specification)
+		: m_Application(application), m_Title(specification.Name.c_str())
+	{
 		s_Width = specification.WindowWidth;
 		s_Height = specification.WindowHeight;
 		s_RenderResolutionWidth = specification.RenderResolutionWidth;
@@ -82,6 +85,7 @@ namespace Arcane
 		glfwMakeContextCurrent(m_Window);
 		glfwSetWindowUserPointer(m_Window, this);
 		glfwSetErrorCallback(error_callback);
+		glfwSetWindowCloseCallback(m_Window, window_close_callback);
 		glfwSetWindowSizeCallback(m_Window, window_resize_callback);
 		glfwSetFramebufferSizeCallback(m_Window, framebuffer_resize_callback);
 		glfwSetKeyCallback(m_Window, key_callback);
@@ -167,6 +171,14 @@ namespace Arcane
 		ARC_LOG_ERROR("Error: {0} - {1}", error, description);
 	}
 
+	static void window_close_callback(GLFWwindow *window)
+	{
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+
+		WindowCloseEvent event;
+		win->m_Application->OnEvent(event);
+	}
+
 	static void window_resize_callback(GLFWwindow *window, int width, int height) {
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 		if (width == 0 || height == 0) {
@@ -178,6 +190,9 @@ namespace Arcane
 			win->s_Height = height;
 		}
 		glViewport(0, 0, win->s_Width, win->s_Height);
+
+		WindowResizeEvent event(static_cast<uint32_t>(win->s_Width), static_cast<uint32_t>(win->s_Height));
+		win->m_Application->OnEvent(event);
 	}
 
 	static void framebuffer_resize_callback(GLFWwindow *window, int width, int height) {

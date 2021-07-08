@@ -52,6 +52,8 @@ namespace Arcane
 		static const char* GetConfigName();
 		static const char* GetPlatformName();
 	private:
+		bool OnWindowClose(WindowCloseEvent &event);
+	private:
 		ApplicationSpecification m_Specification;
 
 		Window *m_Window;
