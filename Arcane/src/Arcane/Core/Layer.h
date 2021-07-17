@@ -5,7 +5,7 @@ namespace Arcane
 	class Layer
 	{
 	public:
-		Layer(const std::string &debugName = "Layer");
+		Layer(ARC_DEV_ONLY(const std::string &debugName = "Layer"));
 		virtual ~Layer();
 
 		virtual void OnAttach() {}
@@ -14,8 +14,8 @@ namespace Arcane
 		virtual void OnImGuiRender() {}
 		virtual void OnEvent(Event &event) {}
 
-		inline const std::string& GetName() const { return m_DebugName; }
+		ARC_DEV_ONLY(inline const std::string& GetName() const { return m_DebugName; })
 	protected:
-		std::string m_DebugName;
+		ARC_DEV_ONLY(std::string m_DebugName);
 	};
 }

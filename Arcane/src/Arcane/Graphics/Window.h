@@ -3,7 +3,6 @@
 #include <Arcane/Input/InputManager.h>
 #include <Arcane/Core/Application.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
-#include <Arcane/Vendor/Imgui/imgui_impl_glfw_gl3.h>
 
 namespace Arcane
 {
@@ -24,6 +23,7 @@ namespace Arcane
 		static void Clear();
 		static void Bind();
 
+		inline GLFWwindow* GetNativeWindow() { return m_Window; }
 		static inline bool GetHideCursor() { return s_HideCursor; }
 		static inline bool GetHideUI() { return s_HideUI; }
 		static inline int GetWidth() { return s_Width; }

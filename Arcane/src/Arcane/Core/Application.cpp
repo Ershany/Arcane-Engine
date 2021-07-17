@@ -9,6 +9,7 @@
 #include <Arcane/Util/Loaders/TextureLoader.h>
 #include <Arcane/Util/Time.h>
 #include <Arcane/Core/Layer.h>
+#include <Arcane/ImGui/ImGuiLayer.h>
 
 extern bool g_ApplicationRunning;
 namespace Arcane
@@ -33,6 +34,12 @@ namespace Arcane
 
 		// Initialize the renderer
 		m_Renderer->Init();
+
+		if (m_Specification.EnableImGui)
+		{
+			m_ImGuiLayer = ImGuiLayer::Create(ARC_DEV_ONLY("Engine ImGui Layer"));
+			PushOverlay(m_ImGuiLayer);
+		}
 	}
 
 	Application::~Application()
@@ -83,7 +90,9 @@ namespace Arcane
 					layer->OnUpdate((float)deltaTime.GetDeltaTime());
 
 				m_Renderer->Render();
-				RenderImGui();
+
+				if (m_Specification.EnableImGui)
+					RenderImGui();
 
 				++frameCounter;
 			}
@@ -124,16 +133,13 @@ namespace Arcane
 
 	void Application::RenderImGui()
 	{
-		ImGui_ImplGlfwGL3_NewFrame();
-		if (!Arcane::Window::GetHideUI())
-		{
-			Arcane::Window::Bind();
-			m_RuntimePane.Render();
-			m_DebugPane.Render();
-			m_WaterPane.Render();
-		}
-		ImGui::Render();
-		ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+		m_ImGuiLayer->Begin();
+
+		m_RuntimePane.Render();
+		m_DebugPane.Render();
+		m_WaterPane.Render();
+
+		m_ImGuiLayer->End();
 
 		for (Layer *layer : m_LayerStack)
 			layer->OnImGuiRender();

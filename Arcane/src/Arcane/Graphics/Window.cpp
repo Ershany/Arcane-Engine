@@ -1,7 +1,7 @@
 #include "arcpch.h"
 #include "Window.h"
 
-#include <Arcane/Graphics/Window.h>
+#include <Arcane/Vendor/Imgui/examples/imgui_impl_glfw.h>
 
 namespace Arcane
 {
@@ -27,8 +27,6 @@ namespace Arcane
 	Window::~Window() {
 		glfwDestroyWindow(m_Window);
 		glfwTerminate();
-		ImGui_ImplGlfwGL3_Shutdown();
-		ImGui::DestroyContext();
 	}
 
 	void Window::Init()
@@ -112,11 +110,6 @@ namespace Arcane
 
 		// Setup default OpenGL viewport
 		glViewport(0, 0, s_Width, s_Height);
-
-		// Setup ImGui bindings
-		ImGui::CreateContext();
-		ImGui_ImplGlfwGL3_Init(m_Window, false);
-		ImGui::StyleColorsDark();
 
 		// Error callback setup
 #ifdef ARC_DEV_BUILD

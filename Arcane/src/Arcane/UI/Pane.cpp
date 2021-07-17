@@ -7,7 +7,7 @@ namespace Arcane
 	}
 
 	void Pane::Render() {
-		ImGui::Begin(m_PaneName.c_str(), nullptr, ImVec2(m_PaneSize.x, m_PaneSize.y));
+		ImGui::Begin(m_PaneName.c_str());
 		SetupPaneObjects();
 		ImGui::End();
 	}

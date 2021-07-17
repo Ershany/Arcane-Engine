@@ -16,6 +16,7 @@ namespace Arcane
 	class Scene3D;
 	class MasterRenderer;
 	class InputManager;
+	class ImGuiLayer;
 
 	struct ApplicationSpecification
 	{
@@ -33,6 +34,7 @@ namespace Arcane
 		virtual ~Application();
 
 		static inline Application& GetInstance() { return *s_Instance; }
+		inline Window* GetWindow() { return m_Window; }
 
 		void Run();
 		void Close();
@@ -65,9 +67,11 @@ namespace Arcane
 		bool m_Running = true;
 		bool m_Minimized = false;
 
+		ImGuiLayer *m_ImGuiLayer;
+
 		static Application *s_Instance;
 
-		// Temp ImGui Windows
+		// Temp Location
 		Arcane::RuntimePane m_RuntimePane;
 		Arcane::DebugPane m_DebugPane;
 		Arcane::WaterPane m_WaterPane;
