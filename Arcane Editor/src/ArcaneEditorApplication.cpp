@@ -30,5 +30,6 @@ Arcane::Application* Arcane::CreateApplication(int argc, char **argv)
 	specification.WindowWidth = 1600;
 	specification.WindowHeight = 900;
 	specification.VSync = true;
+	specification.EnableImGui = true;
 	return new ArcaneEditorApplication(specification);
 }
