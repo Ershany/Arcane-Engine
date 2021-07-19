@@ -1,7 +1,7 @@
 # Arcane-Engine
 Arcane Engine is a real-time, physically based renderer built with OpenGL. A large focus of this project is to implement modern real-time graphical effects, while also making it easy to read and understand. Arcane supports forward and deferred rendering, by using the benefits of each to its advantage.
 
-![Arcane Logo](https://user-images.githubusercontent.com/11170417/79674060-a3768400-81ad-11ea-9011-a55b27c001dd.png)
+![Arcane Logo](https://user-images.githubusercontent.com/11170417/79673959-8a210800-81ac-11ea-9474-3a44ee664152.png)
 
 # Render Examples
 [Tech Reel 2019](https://www.youtube.com/watch?v=sc02q6MXvVo)
