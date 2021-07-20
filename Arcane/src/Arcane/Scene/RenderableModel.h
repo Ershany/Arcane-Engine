@@ -24,6 +24,7 @@ namespace Arcane
 		inline const RenderableModel* GetParent() const { return m_Parent; }
 		inline bool GetTransparent() const { return m_IsTransparent; }
 		inline bool GetStatic() const { return m_IsStatic; }
+		inline const Model* GetModel() const { return m_Model; }
 
 		inline void SetPosition(glm::vec3 &other) { m_Position = other; }
 		inline void SetScale(glm::vec3 &other) { m_Scale = other; }

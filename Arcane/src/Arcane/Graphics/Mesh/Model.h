@@ -20,6 +20,8 @@ namespace Arcane
 		void Draw(Shader *shader, RenderPassType pass) const;
 
 		inline std::vector<Mesh>& GetMeshes() { return m_Meshes; }
+
+		inline const std::string& GetName() const { return m_Name; }
 	private:
 		void LoadModel(const std::string &path);
 		void ProcessNode(aiNode *node, const aiScene *scene);
@@ -28,5 +30,6 @@ namespace Arcane
 	private:
 		std::vector<Mesh> m_Meshes;
 		std::string m_Directory;
+		std::string m_Name;
 	};
 }

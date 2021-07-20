@@ -2,6 +2,8 @@
 
 #include <Arcane.h>
 
+#include <Arcane/Editor/ScenePanel.h>
+
 namespace Arcane
 {
 	class EditorLayer : public Layer
@@ -16,5 +18,12 @@ namespace Arcane
 
 		virtual void OnImGuiRender() override;
 		virtual void OnEvent(Event &event) override;
+
+		void NewScene();
+		void OpenScene(const std::string& filepath);
+	private:
+		Scene3D *m_EditorScene;
+
+		ScenePanel m_ScenePanel;
 	};
 }

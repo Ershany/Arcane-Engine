@@ -2,12 +2,12 @@
 
 #include <Arcane/Core/Application.h>
 
+#include <Arcane/Vendor/Imgui/imgui.h>
 
 extern bool g_ApplicationRunning;
-
 namespace Arcane
 {
-	EditorLayer::EditorLayer()
+	EditorLayer::EditorLayer() : m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_ScenePanel(m_EditorScene)
 	{
 
 	}
@@ -159,11 +159,23 @@ namespace Arcane
 			ImGui::EndMenuBar();
 		}
 
+		m_ScenePanel.OnImGuiRender();
+
 		ImGui::End();
 	}
 
 	void EditorLayer::OnEvent(Event &event)
 	{
 
+	}
+
+	void EditorLayer::NewScene()
+	{
+
+	}
+
+	void EditorLayer::OpenScene(const std::string& filepath)
+	{
+		// TODO: Open scene and set the current/editor scene to point to it
 	}
 }

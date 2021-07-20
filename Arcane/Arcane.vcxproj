@@ -157,6 +157,7 @@
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
     <ClCompile Include="src\Arcane\Core\Layer.cpp" />
     <ClCompile Include="src\Arcane\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Arcane\Editor\ScenePanel.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.cpp" />
@@ -264,6 +265,7 @@
     <ClInclude Include="src\Arcane\Core\Layer.h" />
     <ClInclude Include="src\Arcane\Core\LayerStack.h" />
     <ClInclude Include="src\Arcane\Defs.h" />
+    <ClInclude Include="src\Arcane\Editor\ScenePanel.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.h" />
