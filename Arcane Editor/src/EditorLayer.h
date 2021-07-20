@@ -2,6 +2,8 @@
 
 #include <Arcane.h>
 
+#include <Arcane/Editor/ConsolePanel.h>
+#include <Arcane/Editor/EditorViewport.h>
 #include <Arcane/Editor/ScenePanel.h>
 
 namespace Arcane
@@ -24,6 +26,8 @@ namespace Arcane
 	private:
 		Scene3D *m_EditorScene;
 
+		EditorViewport m_EditorViewport;
+		ConsolePanel m_ConsolePanel;
 		ScenePanel m_ScenePanel;
 	};
 }

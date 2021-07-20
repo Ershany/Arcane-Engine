@@ -7,7 +7,7 @@
 extern bool g_ApplicationRunning;
 namespace Arcane
 {
-	EditorLayer::EditorLayer() : m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_ScenePanel(m_EditorScene)
+	EditorLayer::EditorLayer() : m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_EditorViewport(), m_ConsolePanel(), m_ScenePanel(m_EditorScene)
 	{
 
 	}
@@ -159,6 +159,8 @@ namespace Arcane
 			ImGui::EndMenuBar();
 		}
 
+		m_EditorViewport.OnImGuiRender();
+		m_ConsolePanel.OnImGuiRender();
 		m_ScenePanel.OnImGuiRender();
 
 		ImGui::End();

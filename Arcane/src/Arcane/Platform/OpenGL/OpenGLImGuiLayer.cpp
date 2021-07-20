@@ -92,6 +92,6 @@ namespace Arcane
 
 	void OpenGLImGuiLayer::OnImGuiRender()
 	{
-		ImGui::ShowDemoWindow();
+
 	}
 }

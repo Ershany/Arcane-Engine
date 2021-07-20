@@ -12,15 +12,15 @@ namespace Arcane
 	void ScenePanel::OnImGuiRender()
 	{
 		ImGui::Begin("Scene Hierarchy");
-
-		if (m_Scene)
 		{
-			for (auto renderableModel = m_Scene->GetRenderableModelsBegin(), renderableModelEnd = m_Scene->GetRenderableModelsEnd(); renderableModel != renderableModelEnd; ++renderableModel)
+			if (m_Scene)
 			{
-				DrawEntityNode(*renderableModel);
+				for (auto renderableModel = m_Scene->GetRenderableModelsBegin(), renderableModelEnd = m_Scene->GetRenderableModelsEnd(); renderableModel != renderableModelEnd; ++renderableModel)
+				{
+					DrawEntityNode(*renderableModel);
+				}
 			}
 		}
-
 		ImGui::End();
 	}
 

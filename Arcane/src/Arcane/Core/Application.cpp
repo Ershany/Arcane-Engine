@@ -135,9 +135,9 @@ namespace Arcane
 	{
 		m_ImGuiLayer->Begin();
 
-		m_RuntimePane.Render();
-		m_DebugPane.Render();
-		m_WaterPane.Render();
+		//m_RuntimePane.Render();
+		//m_DebugPane.Render();
+		//m_WaterPane.Render();
 
 		for (Layer *layer : m_LayerStack)
 			layer->OnImGuiRender();
