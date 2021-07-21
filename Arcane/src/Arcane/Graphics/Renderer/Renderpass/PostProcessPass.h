@@ -16,7 +16,7 @@ namespace Arcane
 		virtual ~PostProcessPass() override;
 
 		PreLightingPassOutput executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera);
-		void executePostProcessPass(Framebuffer *framebufferToProcess);
+		PostProcessPassOutput executePostProcessPass(Framebuffer *framebufferToProcess);
 
 		// Post Processing Effects
 		void tonemapGammaCorrect(Framebuffer *target, Texture *hdrTexture);
@@ -28,7 +28,6 @@ namespace Arcane
 	private:
 		inline float lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:
-		Shader *m_PassthroughShader;
 		Shader *m_TonemapGammaCorrectShader;
 		Shader *m_FxaaShader;
 		Shader *m_SsaoShader, *m_SsaoBlurShader;

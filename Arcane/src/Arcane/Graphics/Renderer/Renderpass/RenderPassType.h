@@ -5,17 +5,25 @@
 
 namespace Arcane
 {
-	enum RenderPassType {
+	enum RenderPassType
+	{
 		MaterialRequired,
 		NoMaterialRequired
 	};
 
-	struct ShadowmapPassOutput {
+	struct PostProcessPassOutput
+	{
+		Framebuffer *outFramebuffer;
+	};
+
+	struct ShadowmapPassOutput
+	{
 		glm::mat4 directionalLightViewProjMatrix;
 		Framebuffer *shadowmapFramebuffer;
 	};
 
-	struct LightingPassOutput {
+	struct LightingPassOutput
+	{
 		Framebuffer *outputFramebuffer;
 	};
 
@@ -24,11 +32,13 @@ namespace Arcane
 		Framebuffer *outputFramebuffer;
 	};
 
-	struct GeometryPassOutput {
+	struct GeometryPassOutput
+	{
 		GBuffer *outputGBuffer;
 	};
 
-	struct PreLightingPassOutput {
+	struct PreLightingPassOutput
+	{
 		Texture *ssaoTexture;
 	};
 }

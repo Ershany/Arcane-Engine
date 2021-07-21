@@ -20,7 +20,6 @@ namespace Arcane
 		m_SsaoNoiseTexture(), m_ProfilingTimer(), m_EffectsTimer()
 	{
 		// Shader setup
-		m_PassthroughShader = ShaderLoader::LoadShader("post_process/Copy.glsl");
 		m_TonemapGammaCorrectShader = ShaderLoader::LoadShader("TonemapGammaCorrect.glsl");
 		m_FxaaShader = ShaderLoader::LoadShader("post_process/fxaa/FXAA.glsl");
 		m_SsaoShader = ShaderLoader::LoadShader("post_process/ssao/SSAO.glsl");
@@ -175,7 +174,9 @@ namespace Arcane
 		return passOutput;
 	}
 
-	void PostProcessPass::executePostProcessPass(Framebuffer *framebufferToProcess) {
+	PostProcessPassOutput PostProcessPass::executePostProcessPass(Framebuffer *framebufferToProcess) {
+		PostProcessPassOutput output;
+
 		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		GLCache *glCache = GLCache::GetInstance();
 
@@ -249,13 +250,9 @@ namespace Arcane
 		RuntimePane::SetFxaaTimer((float)m_ProfilingTimer.Elapsed());
 #endif // DEBUG_PROFILING
 
-		// Finally render the scene to the window's framebuffer
-		Window::Bind();
-		Window::Clear();
-		m_GLCache->SetShader(m_PassthroughShader);
-		m_PassthroughShader->SetUniform("input_texture", 0);
-		inputFramebuffer->GetColourTexture()->Bind(0);
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		// Finally return the output frame after being post processed
+		output.outFramebuffer = inputFramebuffer;
+		return output;
 	}
 
 	void PostProcessPass::tonemapGammaCorrect(Framebuffer *target, Texture *hdrTexture) {

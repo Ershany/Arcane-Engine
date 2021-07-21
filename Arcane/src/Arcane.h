@@ -9,6 +9,7 @@
 #include <Arcane/Core/Events/Event.h>
 #include <Arcane/Core/Layer.h>
 
+#include <Arcane/Graphics/Renderer/MasterRenderer.h>
 #include <Arcane/Graphics/Camera/FPSCamera.h>
 #include <Arcane/Graphics/Camera/CubemapCamera.h>
 #include <Arcane/Graphics/IBL/ProbeManager.h>
