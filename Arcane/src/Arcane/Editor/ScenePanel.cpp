@@ -5,7 +5,7 @@
 
 namespace Arcane
 {
-	ScenePanel::ScenePanel(Scene3D *scene) : m_Scene(scene)
+	ScenePanel::ScenePanel(Scene3D *scene, InspectorPanel *inspectorPanel) : m_Scene(scene), m_InspectorPanel(inspectorPanel)
 	{
 	}
 
@@ -25,12 +25,15 @@ namespace Arcane
 	}
 
 	// TODO: Should move to an entity system. This is needed for ECS as well. For now leave it as RenderableModel until new system is added
-	void ScenePanel::DrawEntityNode(const RenderableModel *entity)
+	void ScenePanel::DrawEntityNode(RenderableModel *entity)
 	{
 		const char *name = "Unnamed Entity";
 		if (entity->GetModel())
 			name = entity->GetModel()->GetName().c_str();
 
-		ImGui::Text(name);
+		if (ImGui::Selectable(name))
+		{
+			m_InspectorPanel->SetFocusedEntity(entity);
+		}
 	}
 }

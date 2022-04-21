@@ -159,6 +159,7 @@
     <ClCompile Include="src\Arcane\Core\LayerStack.cpp" />
     <ClCompile Include="src\Arcane\Editor\ConsolePanel.cpp" />
     <ClCompile Include="src\Arcane\Editor\EditorViewport.cpp" />
+    <ClCompile Include="src\Arcane\Editor\InspectorPanel.cpp" />
     <ClCompile Include="src\Arcane\Editor\ScenePanel.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="src\Arcane\Defs.h" />
     <ClInclude Include="src\Arcane\Editor\ConsolePanel.h" />
     <ClInclude Include="src\Arcane\Editor\EditorViewport.h" />
+    <ClInclude Include="src\Arcane\Editor\InspectorPanel.h" />
     <ClInclude Include="src\Arcane\Editor\ScenePanel.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.h" />

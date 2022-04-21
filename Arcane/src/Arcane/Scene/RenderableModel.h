@@ -19,7 +19,9 @@ namespace Arcane
 
 
 		inline const glm::vec3& GetPosition() const { return m_Position; }
+		inline glm::vec3& GetPositionRef() { return m_Position; }
 		inline const glm::vec3& GetScale() const { return m_Scale; }
+		inline glm::vec3& GetScaleRef() { return m_Scale; }
 		inline const glm::quat& GetOrientation() const { return m_Orientation; }
 		inline const RenderableModel* GetParent() const { return m_Parent; }
 		inline bool GetTransparent() const { return m_IsTransparent; }

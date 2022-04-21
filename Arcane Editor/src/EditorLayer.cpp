@@ -7,7 +7,7 @@
 extern bool g_ApplicationRunning;
 namespace Arcane
 {
-	EditorLayer::EditorLayer() : m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_EditorViewport(), m_ConsolePanel(), m_ScenePanel(m_EditorScene)
+	EditorLayer::EditorLayer() : m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_EditorViewport(), m_ConsolePanel(), m_InspectorPanel(), m_ScenePanel(m_EditorScene, &m_InspectorPanel)
 	{
 
 	}
@@ -34,25 +34,6 @@ namespace Arcane
 
 	void EditorLayer::OnImGuiRender()
 	{
-		/*
-		static bool openBool = true;
-		static ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None;
-
-		ImGuiIO& io = ImGui::GetIO();
-		ImGuiStyle& style = ImGui::GetStyle();
-
-		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-		ImGui::Begin("DockSpace Demo", &openBool, window_flags);
-
-		// Setup dock space
-		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
-		{
-			ImGuiID dockspaceID = ImGui::GetID("DockingSpace");
-			ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), opt_flags);
-		}
-
-		ImGui::End();
-		*/
 		ImGuiIO& io = ImGui::GetIO();
 		ImGuiStyle& style = ImGui::GetStyle();
 
@@ -162,6 +143,7 @@ namespace Arcane
 		m_EditorViewport.OnImGuiRender();
 		m_ConsolePanel.OnImGuiRender();
 		m_ScenePanel.OnImGuiRender();
+		m_InspectorPanel.OnImGuiRender();
 
 		ImGui::End();
 	}

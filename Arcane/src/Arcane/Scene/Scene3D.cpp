@@ -33,11 +33,11 @@ namespace Arcane
 		m_RenderableModels.push_back(new RenderableModel(glm::vec3(815.0f, 150.0f, 1242.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), pbrGun, nullptr, true, false));
 
 		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(946.9f, 165.5f, 859.0f), glm::vec3(100.0f, 100.0f, 100.0f), glm ::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), new Model(Cube()), nullptr, true, false));
-		//pbrGun->getMeshes()[0].getMaterial().setAlbedoMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_A.tga"), &srgbTextureSettings));
-		//pbrGun->getMeshes()[0].getMaterial().setNormalMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga")));
-		//pbrGun->getMeshes()[0].getMaterial().setMetallicMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga")));
-		//pbrGun->getMeshes()[0].getMaterial().setRoughnessMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga")));
-		//pbrGun->getMeshes()[0].getMaterial().setAmbientOcclusionMap(TextureLoader::load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga")));
+		//pbrGun->GetMeshes()[0].GetMaterial().SetAlbedoMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_A.tga"), &srgbTextureSettings));
+		//pbrGun->GetMeshes()[0].GetMaterial().SetNormalMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga")));
+		//pbrGun->GetMeshes()[0].GetMaterial().SetMetallicMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga")));
+		//pbrGun->GetMeshes()[0].GetMaterial().SetRoughnessMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga")));
+		//pbrGun->GetMeshes()[0].GetMaterial().SetAmbientOcclusionMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga")));
 
 		Model *hyruleShield = new Arcane::Model("res/3D_Models/Hyrule_Shield/HShield.obj");
 		m_RenderableModels.push_back(new RenderableModel(glm::vec3(946.9f, 165.5f, 859.0f), glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), hyruleShield, nullptr, false, false));

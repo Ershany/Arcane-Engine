@@ -27,7 +27,7 @@ namespace Arcane
 		inline void SetBitangents(std::vector<glm::vec3> &bitangents) { m_Bitangents = bitangents; }
 		inline void SetIndices(std::vector<unsigned int> &indices) { m_Indices = indices; }
 
-		inline Material& SetMaterial() { return m_Material; }
+		inline Material& GetMaterial() { return m_Material; }
 	protected:
 		unsigned int m_VAO, m_VBO, m_IBO;
 		Material m_Material;
