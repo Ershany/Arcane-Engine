@@ -22,6 +22,7 @@ namespace Arcane
 		inline std::vector<Mesh>& GetMeshes() { return m_Meshes; }
 
 		inline const std::string& GetName() const { return m_Name; }
+		inline std::string& GetNameRef() { return m_Name; }
 	private:
 		void LoadModel(const std::string &path);
 		void ProcessNode(aiNode *node, const aiScene *scene);

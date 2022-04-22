@@ -17,5 +17,7 @@ namespace Arcane
 	private:
 		Scene3D *m_Scene;
 		InspectorPanel *m_InspectorPanel;
+
+		std::string m_SelectedEntity;
 	};
 }
