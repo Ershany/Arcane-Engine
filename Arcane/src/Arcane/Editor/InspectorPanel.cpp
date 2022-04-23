@@ -17,11 +17,52 @@ namespace Arcane
 			if (m_FocusedEntity)
 			{
 				// TODO: Display each component info for the selected entity
-				DrawVec3Control("Translation", m_FocusedEntity->GetPositionRef());
-				glm::vec3 rotation = glm::degrees(glm::eulerAngles(m_FocusedEntity->GetOrientation()));
-				DrawVec3Control("Rotation", rotation, 5.0f);
-				m_FocusedEntity->SetOrientation(glm::quat(glm::radians(rotation)));
-				DrawVec3Control("Scale", m_FocusedEntity->GetScaleRef());
+				if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					DrawVec3Control("Translation", m_FocusedEntity->GetPositionRef());
+					glm::vec3 rotation = glm::degrees(glm::eulerAngles(m_FocusedEntity->GetOrientation()));
+					DrawVec3Control("Rotation", rotation, 5.0f);
+					m_FocusedEntity->SetOrientation(glm::quat(glm::radians(rotation)));
+					DrawVec3Control("Scale", m_FocusedEntity->GetScaleRef());
+				}
+				if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					Material &meshMaterial = m_FocusedEntity->GetModel()->GetMeshes()[0].GetMaterial();
+					const char *items[] = { "Opaque", "Transparent" };
+					int choice = -1;
+					ImGui::Combo("Rendering Mode", &choice, items, IM_ARRAYSIZE(items));
+					ImGui::Text("Texture Maps");
+					if (meshMaterial.GetAlbedoMap())
+					{
+						ImGui::Text("Albedo");
+						ImGui::Image((ImTextureID)meshMaterial.GetAlbedoMap()->GetTextureId(), ImVec2(100, 100));
+					}
+					if (meshMaterial.GetNormalMap())
+					{
+						ImGui::Text("Normals");
+						ImGui::Image((ImTextureID)meshMaterial.GetNormalMap()->GetTextureId(), ImVec2(100, 100));
+					}
+					if (meshMaterial.GetMetallicMap())
+					{
+						ImGui::Text("Metallic");
+						ImGui::Image((ImTextureID)meshMaterial.GetMetallicMap()->GetTextureId(), ImVec2(100, 100));
+					}
+					if (meshMaterial.GetRoughnessMap())
+					{
+						ImGui::Text("Roughness");
+						ImGui::Image((ImTextureID)meshMaterial.GetRoughnessMap()->GetTextureId(), ImVec2(100, 100));
+					}
+					if (meshMaterial.GetAmbientOcclusionMap())
+					{
+						ImGui::Text("Ambient Occlusion");
+						ImGui::Image((ImTextureID)meshMaterial.GetAmbientOcclusionMap()->GetTextureId(), ImVec2(100, 100));
+					}
+					if (meshMaterial.GetDisplacementMap())
+					{
+						ImGui::Text("Displacement");
+						ImGui::Image((ImTextureID)meshMaterial.GetDisplacementMap()->GetTextureId(), ImVec2(100, 100));
+					}
+				}
 			}
 		}
 		ImGui::End();

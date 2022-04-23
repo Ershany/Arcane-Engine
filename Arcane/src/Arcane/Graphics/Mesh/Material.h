@@ -20,6 +20,13 @@ namespace Arcane
 		inline void SetAmbientOcclusionMap(Texture *texture) { m_AmbientOcclusionMap = texture; }
 		inline void SetDisplacementMap(Texture *texture) { m_DisplacementMap = texture; }
 
+		inline Texture* GetAlbedoMap() { return m_AlbedoMap; }
+		inline Texture* GetNormalMap() { return m_NormalMap; }
+		inline Texture* GetMetallicMap() { return m_MetallicMap; }
+		inline Texture* GetRoughnessMap() { return m_RoughnessMap; }
+		inline Texture* GetAmbientOcclusionMap() { return m_AmbientOcclusionMap; }
+		inline Texture* GetDisplacementMap() { return m_DisplacementMap; }
+
 		inline void SetDisplacmentStrength(float strength) { m_ParallaxStrength = strength; }
 	private:
 		Texture *m_AlbedoMap, *m_NormalMap, *m_MetallicMap, *m_RoughnessMap, *m_AmbientOcclusionMap, *m_DisplacementMap;
