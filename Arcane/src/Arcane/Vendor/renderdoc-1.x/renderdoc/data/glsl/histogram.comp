@@ -1,0 +1,186 @@
+/******************************************************************************
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2020-2022 Baldur Karlsson
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ ******************************************************************************/
+
+#if defined(OPENGL_CORE)
+#extension GL_ARB_compute_shader : require
+#extension GL_ARB_shader_storage_buffer_object : require
+
+// safe to assume this extension in compute shaders as it pre-dates compute shaders
+#extension GL_ARB_shading_language_420pack : require
+#endif
+
+#define HISTOGRAM_UBO
+
+#include "glsl_ubos.h"
+
+#if defined(VULKAN)
+#include "vk_texsample.h"
+#elif defined(OPENGL_ES)
+#include "gles_texsample.h"
+#elif defined(OPENGL)
+#include "gl_texsample.h"
+#endif
+
+layout(binding = 0, std430) buffer minmaxresultdest
+{
+  uint result[HGRAM_NUM_BUCKETS];
+}
+dest;
+
+layout(local_size_x = HGRAM_TILES_PER_BLOCK, local_size_y = HGRAM_TILES_PER_BLOCK) in;
+
+void main()
+{
+  uvec3 tid = gl_LocalInvocationID;
+  uvec3 gid = gl_WorkGroupID;
+
+  int texType = SHADER_RESTYPE;
+
+  uvec3 texDim = uvec3(histogram_minmax.HistogramTextureResolution);
+
+  uint blocksX = uint(ceil(float(texDim.x) / float(HGRAM_PIXELS_PER_TILE * HGRAM_TILES_PER_BLOCK)));
+
+  uvec2 topleft = (gid.xy * HGRAM_TILES_PER_BLOCK + tid.xy) * HGRAM_PIXELS_PER_TILE;
+
+  int i = 0;
+
+  for(uint y = topleft.y; y < min(texDim.y, topleft.y + HGRAM_PIXELS_PER_TILE); y++)
+  {
+    for(uint x = topleft.x; x < min(texDim.x, topleft.x + HGRAM_PIXELS_PER_TILE); x++)
+    {
+      uvec4 bucketIdx = uvec4(HGRAM_NUM_BUCKETS + 1u);
+
+#if UINT_TEX
+      {
+        uvec4 data = SampleTextureUInt4(
+            texType, vec2(x, y) / histogram_minmax.HistogramTextureResolution.xy,
+            histogram_minmax.HistogramSlice, histogram_minmax.HistogramMip,
+            histogram_minmax.HistogramSample, histogram_minmax.HistogramTextureResolution);
+
+        if((histogram_minmax.HistogramChannels & 0x1u) == 0u)
+          data.x = uint(histogram_minmax.HistogramMax + 1.0f);
+        if((histogram_minmax.HistogramChannels & 0x2u) == 0u)
+          data.y = uint(histogram_minmax.HistogramMax + 1.0f);
+        if((histogram_minmax.HistogramChannels & 0x4u) == 0u)
+          data.z = uint(histogram_minmax.HistogramMax + 1.0f);
+        if((histogram_minmax.HistogramChannels & 0x8u) == 0u)
+          data.w = uint(histogram_minmax.HistogramMax + 1.0f);
+
+        if(histogram_minmax.HistogramChannels > 0u)
+        {
+          vec4 normalisedVal = (vec4(data) - vec4(histogram_minmax.HistogramMin)) /
+                               vec4(histogram_minmax.HistogramMax - histogram_minmax.HistogramMin);
+
+          if(normalisedVal.x < 0.0f)
+            normalisedVal.x = 2.0f;
+          if(normalisedVal.y < 0.0f)
+            normalisedVal.y = 2.0f;
+          if(normalisedVal.z < 0.0f)
+            normalisedVal.z = 2.0f;
+          if(normalisedVal.w < 0.0f)
+            normalisedVal.w = 2.0f;
+
+          bucketIdx = uvec4(floor(normalisedVal * float(HGRAM_NUM_BUCKETS)));
+        }
+      }
+#elif SINT_TEX
+      {
+        ivec4 data = SampleTextureSInt4(
+            texType, vec2(x, y) / histogram_minmax.HistogramTextureResolution.xy,
+            histogram_minmax.HistogramSlice, histogram_minmax.HistogramMip,
+            histogram_minmax.HistogramSample, histogram_minmax.HistogramTextureResolution);
+
+        if((histogram_minmax.HistogramChannels & 0x1u) == 0u)
+          data.x = int(histogram_minmax.HistogramMax + 1.0f);
+        if((histogram_minmax.HistogramChannels & 0x2u) == 0u)
+          data.y = int(histogram_minmax.HistogramMax + 1.0f);
+        if((histogram_minmax.HistogramChannels & 0x4u) == 0u)
+          data.z = int(histogram_minmax.HistogramMax + 1.0f);
+        if((histogram_minmax.HistogramChannels & 0x8u) == 0u)
+          data.w = int(histogram_minmax.HistogramMax + 1.0f);
+
+        if(histogram_minmax.HistogramChannels > 0u)
+        {
+          vec4 normalisedVal = (vec4(data) - vec4(histogram_minmax.HistogramMin)) /
+                               vec4(histogram_minmax.HistogramMax - histogram_minmax.HistogramMin);
+
+          if(normalisedVal.x < 0.0f)
+            normalisedVal.x = 2.0f;
+          if(normalisedVal.y < 0.0f)
+            normalisedVal.y = 2.0f;
+          if(normalisedVal.z < 0.0f)
+            normalisedVal.z = 2.0f;
+          if(normalisedVal.w < 0.0f)
+            normalisedVal.w = 2.0f;
+
+          bucketIdx = uvec4(floor(normalisedVal * float(HGRAM_NUM_BUCKETS)));
+        }
+      }
+#else
+      {
+        vec4 data = SampleTextureFloat4(
+            texType, vec2(x, y) / histogram_minmax.HistogramTextureResolution.xy,
+            histogram_minmax.HistogramSlice, histogram_minmax.HistogramMip,
+            histogram_minmax.HistogramSample, histogram_minmax.HistogramTextureResolution,
+            histogram_minmax.HistogramYUVDownsampleRate, histogram_minmax.HistogramYUVAChannels);
+
+        if((histogram_minmax.HistogramChannels & 0x1u) == 0u)
+          data.x = float(histogram_minmax.HistogramMax + 1.0f);
+        if((histogram_minmax.HistogramChannels & 0x2u) == 0u)
+          data.y = float(histogram_minmax.HistogramMax + 1.0f);
+        if((histogram_minmax.HistogramChannels & 0x4u) == 0u)
+          data.z = float(histogram_minmax.HistogramMax + 1.0f);
+        if((histogram_minmax.HistogramChannels & 0x8u) == 0u)
+          data.w = float(histogram_minmax.HistogramMax + 1.0f);
+
+        if(histogram_minmax.HistogramChannels > 0u)
+        {
+          vec4 normalisedVal = (vec4(data) - vec4(histogram_minmax.HistogramMin)) /
+                               vec4(histogram_minmax.HistogramMax - histogram_minmax.HistogramMin);
+
+          if(normalisedVal.x < 0.0f)
+            normalisedVal.x = 2.0f;
+          if(normalisedVal.y < 0.0f)
+            normalisedVal.y = 2.0f;
+          if(normalisedVal.z < 0.0f)
+            normalisedVal.z = 2.0f;
+          if(normalisedVal.w < 0.0f)
+            normalisedVal.w = 2.0f;
+
+          bucketIdx = uvec4(floor(normalisedVal * float(HGRAM_NUM_BUCKETS)));
+        }
+      }
+#endif
+
+      if(bucketIdx.x < HGRAM_NUM_BUCKETS)
+        atomicAdd(dest.result[bucketIdx.x], 1U);
+      if(bucketIdx.y < HGRAM_NUM_BUCKETS)
+        atomicAdd(dest.result[bucketIdx.y], 1U);
+      if(bucketIdx.z < HGRAM_NUM_BUCKETS)
+        atomicAdd(dest.result[bucketIdx.z], 1U);
+      if(bucketIdx.w < HGRAM_NUM_BUCKETS)
+        atomicAdd(dest.result[bucketIdx.w], 1U);
+    }
+  }
+}

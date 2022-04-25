@@ -1,0 +1,905 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Development|Win32">
+      <Configuration>Development</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development|x64">
+      <Configuration>Development</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <UseNativeEnvironment>true</UseNativeEnvironment>
+    <ProjectGuid>{E2B46D67-90E2-40B6-9597-72930E7845E5}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>renderdoc</RootNamespace>
+    <ProjectName>renderdoc</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\util\WindowsSDKTarget.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <LinkIncremental>false</LinkIncremental>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(SolutionDir)\breakpad;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <ExcludePath>$(ExcludePath)</ExcludePath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)renderdoc\;$(SolutionDir)renderdoc\3rdparty\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>RDOC_DLL_FILE=$(ProjectName);RENDERDOC_EXPORTS;RENDERDOC_PLATFORM_WIN32;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4100</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+      <AdditionalOptions>/w44062 /w44840 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>ws2_32.lib;kernel32.lib;user32.lib;shlwapi.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>$(ProjectDir)os\win32\comexport.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Development'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)$(Platform)\$(Configuration)\breakpad_common.lib;$(SolutionDir)$(Platform)\$(Configuration)\crash_generation_client.lib;$(SolutionDir)$(Platform)\$(Configuration)\exception_handler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="3rdparty\android\android_manifest.h" />
+    <ClInclude Include="3rdparty\catch\catch.hpp" />
+    <ClInclude Include="3rdparty\catch\official\catch.hpp" />
+    <ClInclude Include="3rdparty\compressonator\BC1_Encode_kernel.h" />
+    <ClInclude Include="3rdparty\compressonator\BC2_Encode_kernel.h" />
+    <ClInclude Include="3rdparty\compressonator\BC3_Encode_kernel.h" />
+    <ClInclude Include="3rdparty\compressonator\BC4_Encode_kernel.h" />
+    <ClInclude Include="3rdparty\compressonator\BC5_Encode_kernel.h" />
+    <ClInclude Include="3rdparty\compressonator\BC6_Encode_kernel.h" />
+    <ClInclude Include="3rdparty\compressonator\BC7_Encode_Kernel.h" />
+    <ClInclude Include="3rdparty\compressonator\BCn_Common_Kernel.h" />
+    <ClInclude Include="3rdparty\compressonator\CMP_Core.h" />
+    <ClInclude Include="3rdparty\compressonator\cmp_math_vec4.h" />
+    <ClInclude Include="3rdparty\compressonator\Common_Def.h" />
+    <ClInclude Include="3rdparty\half\half.hpp" />
+    <ClInclude Include="3rdparty\interceptor-lib\lib\AArch64\target_aarch64.h" />
+    <ClInclude Include="3rdparty\interceptor-lib\lib\ARM\target_arm.h" />
+    <ClInclude Include="3rdparty\interceptor-lib\lib\code_generator.h" />
+    <ClInclude Include="3rdparty\interceptor-lib\lib\constant_pool_data_expr.h" />
+    <ClInclude Include="3rdparty\interceptor-lib\lib\disassembler.h" />
+    <ClInclude Include="3rdparty\interceptor-lib\lib\error.h" />
+    <ClInclude Include="3rdparty\interceptor-lib\lib\linker.h" />
+    <ClInclude Include="3rdparty\interceptor-lib\lib\memory_manager.h" />
+    <ClInclude Include="3rdparty\interceptor-lib\lib\target.h" />
+    <ClInclude Include="3rdparty\jpeg-compressor\jpgd.h" />
+    <ClInclude Include="3rdparty\jpeg-compressor\jpge.h" />
+    <ClInclude Include="3rdparty\lz4\lz4.h" />
+    <ClInclude Include="3rdparty\md5\md5.h" />
+    <ClInclude Include="3rdparty\miniz\miniz.h" />
+    <ClInclude Include="3rdparty\plthook\plthook.h" />
+    <ClInclude Include="3rdparty\pugixml\pugiconfig.hpp" />
+    <ClInclude Include="3rdparty\pugixml\pugixml.hpp" />
+    <ClInclude Include="3rdparty\stb\stb_image.h" />
+    <ClInclude Include="3rdparty\stb\stb_image_resize.h" />
+    <ClInclude Include="3rdparty\stb\stb_image_write.h" />
+    <ClInclude Include="3rdparty\stb\stb_truetype.h" />
+    <ClInclude Include="3rdparty\superluminal\PerformanceAPI_capi.h" />
+    <ClInclude Include="3rdparty\superluminal\superluminal.h" />
+    <ClInclude Include="3rdparty\tinyexr\tinyexr.h" />
+    <ClInclude Include="3rdparty\tinyfiledialogs\tinyfiledialogs.h" />
+    <ClInclude Include="3rdparty\zstd\bitstream.h" />
+    <ClInclude Include="3rdparty\zstd\compiler.h" />
+    <ClInclude Include="3rdparty\zstd\cpu.h" />
+    <ClInclude Include="3rdparty\zstd\debug.h" />
+    <ClInclude Include="3rdparty\zstd\error_private.h" />
+    <ClInclude Include="3rdparty\zstd\fse.h" />
+    <ClInclude Include="3rdparty\zstd\hist.h" />
+    <ClInclude Include="3rdparty\zstd\huf.h" />
+    <ClInclude Include="3rdparty\zstd\mem.h" />
+    <ClInclude Include="3rdparty\zstd\pool.h" />
+    <ClInclude Include="3rdparty\zstd\threading.h" />
+    <ClInclude Include="3rdparty\zstd\xxhash.h" />
+    <ClInclude Include="3rdparty\zstd\zstd_compress_internal.h" />
+    <ClInclude Include="3rdparty\zstd\zstd_double_fast.h" />
+    <ClInclude Include="3rdparty\zstd\zstd_errors.h" />
+    <ClInclude Include="3rdparty\zstd\zstd_fast.h" />
+    <ClInclude Include="3rdparty\zstd\zstd_internal.h" />
+    <ClInclude Include="3rdparty\zstd\zstdmt_compress.h" />
+    <ClInclude Include="3rdparty\zstd\zstd_lazy.h" />
+    <ClInclude Include="3rdparty\zstd\zstd_ldm.h" />
+    <ClInclude Include="3rdparty\zstd\zstd_opt.h" />
+    <ClInclude Include="3rdparty\zstd\zstd.h" />
+    <ClInclude Include="android\android.h" />
+    <ClInclude Include="android\android_utils.h" />
+    <ClInclude Include="android\jdwp.h" />
+    <ClInclude Include="api\app\renderdoc_app.h" />
+    <ClInclude Include="api\replay\apidefs.h" />
+    <ClInclude Include="api\replay\rdcdatetime.h" />
+    <ClInclude Include="api\replay\capture_options.h" />
+    <ClInclude Include="api\replay\common_pipestate.h" />
+    <ClInclude Include="api\replay\control_types.h" />
+    <ClInclude Include="api\replay\d3d11_pipestate.h" />
+    <ClInclude Include="api\replay\d3d12_pipestate.h" />
+    <ClInclude Include="api\replay\data_types.h" />
+    <ClInclude Include="api\replay\gl_pipestate.h" />
+    <ClInclude Include="api\replay\pipestate.h" />
+    <ClInclude Include="api\replay\rdcarray.h" />
+    <ClInclude Include="api\replay\rdcflatmap.h" />
+    <ClInclude Include="api\replay\rdcpair.h" />
+    <ClInclude Include="api\replay\rdcstr.h" />
+    <ClInclude Include="api\replay\renderdoc_replay.h" />
+    <ClInclude Include="api\replay\replay_enums.h" />
+    <ClInclude Include="api\replay\resourceid.h" />
+    <ClInclude Include="api\replay\shader_types.h" />
+    <ClInclude Include="api\replay\stringise.h" />
+    <ClInclude Include="api\replay\structured_data.h" />
+    <ClInclude Include="api\replay\version.h" />
+    <ClInclude Include="api\replay\vk_pipestate.h" />
+    <ClInclude Include="common\common.h" />
+    <ClInclude Include="common\custom_assert.h" />
+    <ClInclude Include="common\dds_readwrite.h" />
+    <ClInclude Include="common\formatting.h" />
+    <ClInclude Include="common\globalconfig.h" />
+    <ClInclude Include="common\shader_cache.h" />
+    <ClInclude Include="common\threading.h" />
+    <ClInclude Include="common\timing.h" />
+    <ClInclude Include="common\wrapped_pool.h" />
+    <ClInclude Include="core\bit_flag_iterator.h" />
+    <ClInclude Include="core\settings.h" />
+    <ClInclude Include="core\core.h" />
+    <ClInclude Include="core\crash_handler.h" />
+    <ClInclude Include="core\intervals.h" />
+    <ClInclude Include="core\plugins.h" />
+    <ClInclude Include="core\precompiled.h" />
+    <ClInclude Include="core\remote_server.h" />
+    <ClInclude Include="core\replay_proxy.h" />
+    <ClInclude Include="core\resource_manager.h" />
+    <ClInclude Include="core\sparse_page_table.h" />
+    <ClInclude Include="data\embedded_files.h" />
+    <ClInclude Include="data\glsl\glsl_ubos.h" />
+    <ClInclude Include="data\glsl\glsl_ubos_cpp.h" />
+    <ClInclude Include="data\glsl\gl_texsample.h" />
+    <ClInclude Include="data\glsl\gles_texsample.h" />
+    <ClInclude Include="data\glsl\glsl_globals.h" />
+    <ClInclude Include="data\glsl\vk_texsample.h" />
+    <ClInclude Include="data\glsl_shaders.h" />
+    <ClInclude Include="data\hlsl\hlsl_cbuffers.h" />
+    <ClInclude Include="data\hlsl\hlsl_custom_prefix.h" />
+    <ClInclude Include="data\resource.h" />
+    <ClInclude Include="hooks\hooks.h" />
+    <ClInclude Include="maths\camera.h" />
+    <ClInclude Include="maths\formatpacking.h" />
+    <ClInclude Include="maths\half_convert.h" />
+    <ClInclude Include="maths\matrix.h" />
+    <ClInclude Include="maths\quat.h" />
+    <ClInclude Include="maths\vec.h" />
+    <ClInclude Include="os\os_specific.h" />
+    <ClInclude Include="os\posix\posix_network.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="os\posix\posix_specific.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="os\win32\dia2_stubs.h" />
+    <ClInclude Include="os\win32\win32_specific.h" />
+    <ClInclude Include="replay\dummy_driver.h" />
+    <ClInclude Include="replay\replay_driver.h" />
+    <ClInclude Include="replay\replay_controller.h" />
+    <ClInclude Include="serialise\codecs\vk_cpp_codec_common.h" />
+    <ClInclude Include="serialise\lz4io.h" />
+    <ClInclude Include="serialise\rdcfile.h" />
+    <ClInclude Include="serialise\serialiser.h" />
+    <ClInclude Include="serialise\streamio.h" />
+    <ClInclude Include="serialise\zstdio.h" />
+    <ClInclude Include="strings\string_utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="3rdparty\catch\catch.cpp" />
+    <ClCompile Include="3rdparty\compressonator\BC1_Encode_kernel.cpp" />
+    <ClCompile Include="3rdparty\compressonator\BC2_Encode_kernel.cpp" />
+    <ClCompile Include="3rdparty\compressonator\BC3_Encode_kernel.cpp" />
+    <ClCompile Include="3rdparty\compressonator\BC4_Encode_kernel.cpp" />
+    <ClCompile Include="3rdparty\compressonator\BC5_Encode_kernel.cpp" />
+    <ClCompile Include="3rdparty\compressonator\BC6_Encode_kernel.cpp" />
+    <ClCompile Include="3rdparty\compressonator\BC7_Encode_Kernel.cpp" />
+    <ClCompile Include="3rdparty\interceptor-lib\lib\AArch64\target_aarch64.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\ARM\target_arm.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\code_generator.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\constant_pool_data_expr.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\disassembler.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\error.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\interceptor.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\linker.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\memory_manager.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\target.cc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\jpeg-compressor\jpgd.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\jpeg-compressor\jpge.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\lz4\lz4.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\md5\md5.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\miniz\miniz.c">
+      <DisableSpecificWarnings>4100;4127</DisableSpecificWarnings>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\plthook\plthook_elf.c">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="3rdparty\pugixml\pugixml.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\stb\stb_impl.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\superluminal\superluminal.cpp" />
+    <ClCompile Include="3rdparty\tinyexr\tinyexr.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="3rdparty\tinyfiledialogs\tinyfiledialogs.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\debug.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\hist.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_double_fast.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_fast.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_lazy.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_ldm.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_opt.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\entropy_common.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\error_private.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\fse_decompress.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\pool.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\threading.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\xxhash.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_common.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\fse_compress.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\huf_compress.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstdmt_compress.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_compress.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\huf_decompress.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_decompress.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <ClCompile Include="android\android.cpp" />
+    <ClCompile Include="android\android_manifest.cpp" />
+    <ClCompile Include="android\android_patch.cpp" />
+    <ClCompile Include="android\android_tools.cpp" />
+    <ClCompile Include="android\android_utils.cpp" />
+    <ClCompile Include="android\jdwp.cpp" />
+    <ClCompile Include="android\jdwp_connection.cpp" />
+    <ClCompile Include="android\jdwp_util.cpp" />
+    <ClCompile Include="common\common.cpp" />
+    <ClCompile Include="common\dds_readwrite.cpp" />
+    <ClCompile Include="common\threading_tests.cpp" />
+    <ClCompile Include="core\bit_flag_iterator_tests.cpp" />
+    <ClCompile Include="core\settings.cpp" />
+    <ClCompile Include="core\core.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="core\image_viewer.cpp" />
+    <ClCompile Include="core\intervals_tests.cpp" />
+    <ClCompile Include="core\plugins.cpp" />
+    <ClCompile Include="core\precompiled.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="core\sparse_page_table.cpp" />
+    <ClCompile Include="core\target_control.cpp" />
+    <ClCompile Include="core\remote_server.cpp" />
+    <ClCompile Include="core\replay_proxy.cpp" />
+    <ClCompile Include="core\resource_manager.cpp" />
+    <ClCompile Include="data\glsl_shaders.cpp" />
+    <ClCompile Include="hooks\hooks.cpp" />
+    <ClCompile Include="maths\camera.cpp" />
+    <ClCompile Include="maths\formatpacking.cpp" />
+    <ClCompile Include="maths\matrix.cpp" />
+    <ClCompile Include="maths\vec.cpp" />
+    <ClCompile Include="os\os_specific.cpp" />
+    <ClCompile Include="os\posix\android\android_callstack.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_hook.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_network.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_process.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_stringio.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_threading.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_callstack.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_hook.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_network.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_process.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_stringio.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_threading.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_callstack.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_hook.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_network.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_process.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_stringio.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_threading.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_callstack.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_hook.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_network.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_process.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_stringio.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_threading.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_libentry.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_network.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_process.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_stringio.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_threading.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="os\win32\sys_win32_hooks.cpp" />
+    <ClCompile Include="os\win32\win32_callstack.cpp" />
+    <ClCompile Include="os\win32\win32_hook.cpp" />
+    <ClCompile Include="os\win32\win32_libentry.cpp" />
+    <ClCompile Include="os\win32\win32_network.cpp" />
+    <ClCompile Include="os\win32\win32_process.cpp" />
+    <ClCompile Include="os\win32\win32_shellext.cpp" />
+    <ClCompile Include="os\win32\win32_stringio.cpp" />
+    <ClCompile Include="os\win32\win32_threading.cpp" />
+    <ClCompile Include="replay\app_api.cpp" />
+    <ClCompile Include="replay\basic_types_tests.cpp" />
+    <ClCompile Include="replay\capture_file.cpp" />
+    <ClCompile Include="replay\capture_options.cpp" />
+    <ClCompile Include="replay\dummy_driver.cpp" />
+    <ClCompile Include="replay\entry_points.cpp" />
+    <ClCompile Include="replay\replay_driver.cpp" />
+    <ClCompile Include="replay\replay_output.cpp" />
+    <ClCompile Include="replay\replay_controller.cpp" />
+    <ClCompile Include="serialise\codecs\chrome_json_codec.cpp" />
+    <ClCompile Include="serialise\codecs\xml_codec.cpp" />
+    <ClCompile Include="serialise\comp_io_tests.cpp" />
+    <ClCompile Include="serialise\lz4io.cpp" />
+    <ClCompile Include="serialise\rdcfile.cpp" />
+    <ClCompile Include="serialise\serialiser.cpp" />
+    <ClCompile Include="serialise\serialiser_tests.cpp" />
+    <ClCompile Include="serialise\streamio.cpp" />
+    <ClCompile Include="serialise\streamio_tests.cpp" />
+    <ClCompile Include="serialise\zstdio.cpp" />
+    <ClCompile Include="strings\grisu2.cpp" />
+    <ClCompile Include="strings\string_utils.cpp" />
+    <ClCompile Include="strings\utf8printf.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="data\renderdoc.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="api\replay\pipestate.inl" />
+    <None Include="api\replay\renderdoc_tostr.inl" />
+    <None Include="data\glsl\array2ms.comp" />
+    <None Include="data\glsl\blit.vert" />
+    <None Include="data\glsl\checkerboard.frag" />
+    <None Include="data\glsl\deptharr2ms.frag" />
+    <None Include="data\glsl\depthms2arr.frag" />
+    <None Include="data\glsl\discard.frag" />
+    <None Include="data\glsl\fixedcol.frag" />
+    <None Include="data\glsl\gltext.frag" />
+    <None Include="data\glsl\gltext.vert" />
+    <None Include="data\glsl\histogram.comp" />
+    <None Include="data\glsl\mesh.comp" />
+    <None Include="data\glsl\mesh.frag" />
+    <None Include="data\glsl\mesh.geom" />
+    <None Include="data\glsl\mesh.vert" />
+    <None Include="data\glsl\minmaxresult.comp" />
+    <None Include="data\glsl\minmaxtile.comp" />
+    <None Include="data\glsl\ms2array.comp" />
+    <None Include="data\glsl\pixelhistory_mscopy.comp" />
+    <None Include="data\glsl\pixelhistory_mscopy_depth.comp" />
+    <None Include="data\glsl\pixelhistory_primid.frag" />
+    <None Include="data\glsl\quadresolve.frag" />
+    <None Include="data\glsl\quadwrite.frag" />
+    <None Include="data\glsl\shaderdebug_sample.vert" />
+    <None Include="data\glsl\texdisplay.frag" />
+    <None Include="data\glsl\texremap.frag" />
+    <None Include="data\glsl\vktext.frag" />
+    <None Include="data\glsl\vktext.vert" />
+    <None Include="data\glsl\trisize.frag" />
+    <None Include="data\glsl\trisize.geom" />
+    <None Include="data\hlsl\hlsl_texsample.h" />
+    <None Include="data\hlsl\misc.hlsl" />
+    <None Include="data\hlsl\text.hlsl" />
+    <None Include="data\hlsl\histogram.hlsl" />
+    <None Include="data\hlsl\mesh.hlsl" />
+    <None Include="data\hlsl\multisample.hlsl" />
+    <None Include="data\hlsl\pixelhistory.hlsl" />
+    <None Include="data\hlsl\quadoverdraw.hlsl" />
+    <None Include="data\hlsl\texdisplay.hlsl" />
+    <None Include="os\win32\comexport.def" />
+    <None Include="librenderdoc.so-gdb.py" />
+    <None Include="replay\renderdoc_serialise.inl" />
+    <None Include="data\hlsl\texremap.hlsl" />
+    <None Include="data\hlsl\fixedcol.hlsl" />
+  </ItemGroup>
+  <!-- try to bake shaders needed in DXIL now, in case we won't be able to find a dxc at runtime -->
+  <UsingTask TaskName="GetDXCExecutable" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <DXC ParameterType="System.String" Required="False" Output="True" />
+      <SDKPath ParameterType="System.String" Required="True" Output="False" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Class" Language="cs">
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
+namespace DXCEnumerateAndCheck {
+  public class GetDXCExecutable : Microsoft.Build.Utilities.Task {
+    public override bool Execute() {
+      string[] dirs = System.IO.Directory.GetDirectories(SDKPath, "10.*");
+      // sort and reverse so we try from latest to oldest
+      System.Array.Sort(dirs);
+      System.Array.Reverse(dirs);
+
+      // look for the latest dxc.exe available that works
+      foreach(string path in dirs)
+      {
+        string dxcCheck = System.IO.Path.Combine(path, "x64", "dxc.exe");
+        if(System.IO.File.Exists(dxcCheck))
+        {
+          // check that dxc.exe is runnable, some dxc.exe are broken
+          try
+          {
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.UseShellExecute = false;
+            psi.FileName = dxcCheck;
+            psi.CreateNoWindow = true;
+            Process.Start(psi);
+            DXC = dxcCheck;
+            return true;
+          }
+          catch(Exception ex)
+          {
+            // keep going, maybe we'll find one that works
+          }
+        }
+      }
+      // always succeed even if we don't find dxc
+      return true;
+    }
+
+    [Microsoft.Build.Framework.Required] public string SDKPath { get; set; }
+    [Microsoft.Build.Framework.Output] public string DXC { get; set; }
+  }
+}
+      </Code>
+    </Task>
+  </UsingTask>
+  <Target Name="_findDXC" BeforeTargets="PrepareForBuild">
+    <GetDXCExecutable SDKPath="$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v10.0@InstallationFolder)bin" ContinueOnError="WarnAndContinue">
+      <Output TaskParameter="DXC" PropertyName="DXCExecutable" />
+    </GetDXCExecutable>
+    <Message Condition="$(DXCExecutable.Length) == 0" Importance="high" Text="Can't build DXIL shaders without DXC. Install windows 10 SDK to bake DXIL shaders." />
+    <PropertyGroup>
+      <DXILBakedDir>$(IntDir)</DXILBakedDir>
+      <DXILBakedDirParam>$(DXILBakedDir.Replace('\', '/'))</DXILBakedDirParam>
+    </PropertyGroup>
+    <ItemGroup Condition="$(DXCExecutable.Length) &gt; 0">
+      <ResourceCompile>
+        <AdditionalIncludeDirectories>$(DXILBakedDirParam)</AdditionalIncludeDirectories>
+        <PreprocessorDefinitions>RENDERDOC_BAKED_DXC_SHADERS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      </ResourceCompile>
+    </ItemGroup>
+  </Target>
+  <Target Name="_bakeShaders" BeforeTargets="PrepareForBuild" Condition="$(DXCExecutable.Length) &gt; 0" Inputs="data\hlsl\fixedcol.hlsl;data\hlsl\quadoverdraw.hlsl" Outputs="$(DXILBakedDir)\fixedcol_0.dxbc;$(DXILBakedDir)\fixedcol_1.dxbc;$(DXILBakedDir)\fixedcol_2.dxbc;$(DXILBakedDir)\fixedcol_3.dxbc;$(DXILBakedDir)\quadwrite.dxbc">
+    <Message Text="Baking DXIL Shaders with $(DXCExecutable)" Importance="High" />
+    <MakeDir Directories="$(DXILBakedDir)" />
+    <Exec Command="&quot;$(DXCExecutable)&quot; &quot;$(ProjectDir)data\hlsl\fixedcol.hlsl&quot; -T ps_6_0 -DVARIANT=0 -E main -Qstrip_reflect -Fo &quot;$(DXILBakedDir)fixedcol_0.dxbc&quot;" />
+    <Exec Command="&quot;$(DXCExecutable)&quot; &quot;$(ProjectDir)data\hlsl\fixedcol.hlsl&quot; -T ps_6_0 -DVARIANT=1 -E main -Qstrip_reflect -Fo &quot;$(DXILBakedDir)fixedcol_1.dxbc&quot;" />
+    <Exec Command="&quot;$(DXCExecutable)&quot; &quot;$(ProjectDir)data\hlsl\fixedcol.hlsl&quot; -T ps_6_0 -DVARIANT=2 -E main -Qstrip_reflect -Fo &quot;$(DXILBakedDir)fixedcol_2.dxbc&quot;" />
+    <Exec Command="&quot;$(DXCExecutable)&quot; &quot;$(ProjectDir)data\hlsl\fixedcol.hlsl&quot; -T ps_6_0 -DVARIANT=3 -E main -Qstrip_reflect -Fo &quot;$(DXILBakedDir)fixedcol_3.dxbc&quot;" />
+    <Exec Command="&quot;$(DXCExecutable)&quot; &quot;$(ProjectDir)data\hlsl\quadoverdraw.hlsl&quot; -T ps_6_0 -E RENDERDOC_QuadOverdrawPS -Qstrip_reflect -Fo &quot;$(DXILBakedDir)quadwrite.dxbc&quot;" />
+  </Target>
+  <ItemGroup>
+    <Natvis Include="renderdoc.natvis" />
+  </ItemGroup>
+  <Target Name="_jsonProcess" BeforeTargets="PrepareForBuild">
+    <!-- Read the version.h -->
+    <PropertyGroup>
+      <VersionFile>$([System.IO.File]::ReadAllText('$(SolutionDir)renderdoc/api/replay/version.h').Trim())</VersionFile>
+    </PropertyGroup>
+    <!-- Extract the major and minor lines -->
+    <PropertyGroup>
+      <!-- Find the start of the line -->
+      <MajorVersionStart>$(VersionFile.IndexOf('#define RENDERDOC_VERSION_MAJOR'))</MajorVersionStart>
+      <!-- Take the rest of the file and split it by newline to get an array of lines,
+           Take the first line and split it by space
+           Take the third item. This is #define MAJOR foo
+                                            0     1    2
+      -->
+      <MajorVersion>$(VersionFile.Substring($(MajorVersionStart)).Split('
+')[0].Split(' ')[2])</MajorVersion>
+      <MinorVersionStart>$(VersionFile.IndexOf('#define RENDERDOC_VERSION_MINOR'))</MinorVersionStart>
+      <MinorVersion>$(VersionFile.Substring($(MinorVersionStart)).Split('
+')[0].Split(' ')[2])</MinorVersion>
+    </PropertyGroup>
+    <Message Text="Processing layer JSON file for RenderDoc $(MajorVersion).$(MinorVersion)" Importance="High" />
+    <!-- Read the template json, replace the major/minor versions -->
+    <PropertyGroup>
+      <VulkanEnableVar>ENABLE_VULKAN_$(ProjectName)_CAPTURE</VulkanEnableVar>
+      <JSONContents>$([System.IO.File]::ReadAllText('$(SolutionDir)renderdoc/driver/vulkan/renderdoc.json').Replace('@RENDERDOC_VERSION_MAJOR@', '$(MajorVersion)').Replace('@RENDERDOC_VERSION_MINOR@', '$(MinorVersion)').Replace('@VULKAN_LAYER_MODULE_PATH@', '.\\$(ProjectName).dll').Replace('@VULKAN_ENABLE_VAR@', $(VulkanEnableVar.ToUpper())))</JSONContents>
+    </PropertyGroup>
+    <!-- Write it out to the output directory -->
+    <WriteLinesToFile File="$(OutDir)$(ProjectName).json" Lines="$(JSONContents)" Overwrite="true" />
+  </Target>
+  <ItemGroup>
+    <ProjectReference Include="driver\d3d11\renderdoc_d3d11.vcxproj">
+      <Project>{f1e59a05-60d4-4927-9e57-dd191eae90ef}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\d3d12\renderdoc_d3d12.vcxproj">
+      <Project>{9e6b10a2-84b4-434d-abdb-43be4ea650f4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\d3d8\renderdoc_d3d8.vcxproj">
+      <Project>{9c4487e8-eeb0-4a7f-bd81-23f81cd24e22}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\d3d9\renderdoc_d3d9.vcxproj">
+      <Project>{44044776-9469-4079-b587-abfff6574aa4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\dxgi\renderdoc_dxgi.vcxproj">
+      <Project>{2a793574-bd3c-46d4-9788-c339d9550ce1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\gl\renderdoc_gl.vcxproj">
+      <Project>{f92fcda6-a261-4eec-9cd0-73a11fbcc459}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\ihv\amd\AMD.vcxproj">
+      <Project>{5de5a561-548a-4dd7-90f0-06a2b39eae9a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\ihv\arm\ARM.vcxproj">
+      <Project>{F9CCE6CA-0CA3-4A22-9C7B-881369955E62}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\ihv\intel\Intel.vcxproj">
+      <Project>{7fcb5fc5-1dbd-4da6-83a0-6ba4e945bda5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\ihv\nv\NV.vcxproj">
+      <Project>{40349ad9-5558-4df4-84e2-11934de90a11}</Project>
+    </ProjectReference>
+    <ProjectReference Include="driver\vulkan\renderdoc_vulkan.vcxproj">
+      <Project>{88c5dac6-30a0-4cfd-af51-540a977d1f3f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="renderdoc_version.vcxproj">
+      <Project>{257fd75c-4d17-4a23-a754-23bfd85887a0}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(WindowsSdkDir_10)\Redist\D3D\x64\d3dcompiler_47.dll" Condition="Exists('$(WindowsSdkDir_10)\Redist\D3D\x64\d3dcompiler_47.dll') AND '$(Platform)'=='x64'">
+      <Link>d3dcompiler_47.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+    <Content Include="$(WindowsSdkDir_10)\Redist\D3D\x86\d3dcompiler_47.dll" Condition="Exists('$(WindowsSdkDir_10)\Redist\D3D\x86\d3dcompiler_47.dll') AND '$(Platform)'=='Win32'">
+      <Link>d3dcompiler_47.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <Target Name="AfterBuild" AfterTargets="Build">
+    <Copy SourceFiles="$(ProjectDir)api\app\renderdoc_app.h" DestinationFolder="$(OutDir)">
+    </Copy>
+    <Copy SourceFiles="$(ProjectDir)3rdparty\dbghelp\$(Platform)\symsrv.dll" DestinationFolder="$(OutDir)">
+    </Copy>
+    <Copy SourceFiles="$(ProjectDir)3rdparty\dbghelp\$(Platform)\symsrv.yes" DestinationFolder="$(OutDir)">
+    </Copy>
+    <Copy SourceFiles="$(ProjectDir)3rdparty\dbghelp\$(Platform)\dbghelp.dll" DestinationFolder="$(OutDir)">
+    </Copy>
+  </Target>
+</Project>

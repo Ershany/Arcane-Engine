@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Development|Win32">
+      <Configuration>Development</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development|x64">
+      <Configuration>Development</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{0AAE0AD1-371B-4A36-9ED1-80E10E960605}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>renderdoc_spirv</RootNamespace>
+    <ProjectName>spirv</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\util\WindowsSDKTarget.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(SolutionDir)\breakpad;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <ExcludePath>$(ExcludePath)</ExcludePath>
+    <TargetName>driver_$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)renderdoc\;$(SolutionDir)renderdoc\3rdparty\;$(SolutionDir)renderdoc\3rdparty\glslang\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>AMD_EXTENSIONS;NV_EXTENSIONS;GLSLANG_OSINCLUDE_WIN32;RENDERDOC_EXPORTS;RENDERDOC_PLATFORM_WIN32;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level3</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalOptions>/w44062 /w44840 %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4100</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Development'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\GenericCodeGen\CodeGen.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\GenericCodeGen\Link.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\Constant.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\glslang_tab.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\InfoSink.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\Initialize.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\Intermediate.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\intermOut.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\IntermTraverse.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\iomapper.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\attribute.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\limits.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\linkValidate.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\parseConst.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\ParseContextBase.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\ParseHelper.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\PoolAlloc.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\preprocessor\Pp.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\preprocessor\PpAtom.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\preprocessor\PpContext.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\preprocessor\PpScanner.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\preprocessor\PpTokens.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\propagateNoContraction.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\reflection.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\RemoveTree.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\Scan.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\ShaderLang.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\SymbolTable.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\Versions.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\OSDependent\Unix\ossource.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\3rdparty\glslang\glslang\OSDependent\Windows\ossource.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\OGLCompilersDLL\InitializeDll.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\GlslangToSpv.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\InReadableOrder.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\Logger.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\SpvBuilder.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\SpvPostProcess.cpp" />
+    <ClCompile Include="..\..\..\3rdparty\glslang\SPIRV\SpvTools.cpp" />
+    <ClCompile Include="glslang_compile.cpp" />
+    <ClCompile Include="precompiled.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_common.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_compile.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_debug.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_debug_glsl450.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_debug_setup.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_disassemble.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_editor.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_processor.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_reflect.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_gen.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="spirv_stringise.cpp">
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\arrays.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\BaseTypes.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\Common.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\ConstantUnion.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\InfoSink.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\InitializeGlobals.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\intermediate.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\PoolAlloc.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\ResourceLimits.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\revision.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\ShHandle.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Include\Types.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\glslang_tab.cpp.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\gl_types.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\Initialize.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\iomapper.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\attribute.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\LiveTraverser.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\localintermediate.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\ParseHelper.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\preprocessor\PpContext.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\preprocessor\PpTokens.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\propagateNoContraction.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\reflection.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\RemoveTree.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\Scan.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\ScanContext.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\SymbolTable.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\MachineIndependent\Versions.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\OSDependent\osinclude.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\glslang\Public\ShaderLang.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\OGLCompilersDLL\InitializeDll.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\bitutils.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\GLSL.ext.KHR.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\GLSL.ext.EXT.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\GLSL.ext.AMD.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\GLSL.ext.NV.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\GLSL.std.450.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\GlslangToSpv.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\hex_float.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\Logger.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\spirv.hpp" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\SpvBuilder.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\spvIR.h" />
+    <ClInclude Include="..\..\..\3rdparty\glslang\SPIRV\SpvTools.h" />
+    <ClInclude Include="glslang_compile.h" />
+    <ClInclude Include="precompiled.h" />
+    <ClInclude Include="spirv_common.h" />
+    <ClInclude Include="spirv_compile.h" />
+    <ClInclude Include="spirv_debug.h" />
+    <ClInclude Include="spirv_editor.h" />
+    <ClInclude Include="spirv_gen.h" />
+    <ClInclude Include="spirv_op_helpers.h" />
+    <ClInclude Include="spirv_processor.h" />
+    <ClInclude Include="spirv_reflect.h" />
+    <ClInclude Include="var_dispatch_helpers.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
