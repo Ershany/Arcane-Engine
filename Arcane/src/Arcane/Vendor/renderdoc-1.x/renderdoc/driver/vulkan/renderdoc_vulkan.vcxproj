@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Development|Win32">
+      <Configuration>Development</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development|x64">
+      <Configuration>Development</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{88C5DAC6-30A0-4CFD-AF51-540A977D1F3F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>renderdoc_vulkan</RootNamespace>
+    <ProjectName>vulkan</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\util\WindowsSDKTarget.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(SolutionDir)\breakpad;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <ExcludePath>$(ExcludePath)</ExcludePath>
+    <TargetName>driver_$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)renderdoc\;$(SolutionDir)renderdoc\3rdparty\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>VK_USE_PLATFORM_WIN32_KHR;RENDERDOC_EXPORTS;RENDERDOC_PLATFORM_WIN32;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DisableSpecificWarnings>4100</DisableSpecificWarnings>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+      <AdditionalOptions>/w44062 /w44840 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Development'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="imagestate_tests.cpp" />
+    <ClCompile Include="imgrefs_tests.cpp" />
+    <ClCompile Include="precompiled.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="vk_apple.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="vk_msaa_buffer_conv.cpp" />
+    <ClCompile Include="vk_shader_feedback.cpp" />
+    <ClCompile Include="vk_image_states.cpp" />
+    <ClCompile Include="vk_next_chains.cpp" />
+    <ClCompile Include="vk_outputwindow.cpp" />
+    <ClCompile Include="vk_overlay.cpp" />
+    <ClCompile Include="vk_postvs.cpp" />
+    <ClCompile Include="vk_rendermesh.cpp" />
+    <ClCompile Include="vk_rendertext.cpp" />
+    <ClCompile Include="vk_rendertexture.cpp" />
+    <ClCompile Include="vk_serialise.cpp">
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ClCompile Include="vk_shaderdebug.cpp" />
+    <ClCompile Include="vk_shader_cache.cpp" />
+    <ClCompile Include="vk_stringise.cpp" />
+    <ClCompile Include="vk_counters.cpp" />
+    <ClCompile Include="vk_dispatchtables.cpp" />
+    <ClCompile Include="vk_initstate.cpp" />
+    <ClCompile Include="vk_memory.cpp" />
+    <ClCompile Include="vk_state.cpp" />
+    <ClCompile Include="vk_layer.cpp" />
+    <ClCompile Include="vk_layer_android.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="vk_common.cpp" />
+    <ClCompile Include="vk_core.cpp" />
+    <ClCompile Include="vk_debug.cpp" />
+    <ClCompile Include="vk_info.cpp" />
+    <ClCompile Include="vk_manager.cpp" />
+    <ClCompile Include="vk_pixelhistory.cpp" />
+    <ClCompile Include="vk_replay.cpp" />
+    <ClCompile Include="vk_win32.cpp" />
+    <ClCompile Include="vk_posix.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="vk_linux.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="vk_android.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="vk_ggp.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="vk_resources.cpp" />
+    <ClCompile Include="wrappers\vk_cmd_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_dynamic_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_descriptor_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_device_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_draw_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_get_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_misc_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_queue_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_resource_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_shader_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_sync_funcs.cpp" />
+    <ClCompile Include="wrappers\vk_wsi_funcs.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="official\vk_layer.h" />
+    <ClInclude Include="official\vk_platform.h" />
+    <ClInclude Include="official\vulkan.h" />
+    <ClInclude Include="official\vulkan_android.h" />
+    <ClInclude Include="official\vulkan_core.h" />
+    <ClInclude Include="official\vulkan_fuchsia.h" />
+    <ClInclude Include="official\vulkan_ggp.h" />
+    <ClInclude Include="official\vulkan_ios.h" />
+    <ClInclude Include="official\vulkan_macos.h" />
+    <ClInclude Include="official\vulkan_metal.h" />
+    <ClInclude Include="official\vulkan_vi.h" />
+    <ClInclude Include="official\vulkan_wayland.h" />
+    <ClInclude Include="official\vulkan_win32.h" />
+    <ClInclude Include="official\vulkan_xcb.h" />
+    <ClInclude Include="official\vulkan_xlib.h" />
+    <ClInclude Include="official\vulkan_xlib_xrandr.h" />
+    <ClInclude Include="precompiled.h" />
+    <ClInclude Include="vk_common.h" />
+    <ClInclude Include="vk_core.h" />
+    <ClInclude Include="vk_debug.h" />
+    <ClInclude Include="vk_dispatchtables.h" />
+    <ClInclude Include="vk_dispatch_defs.h" />
+    <ClInclude Include="vk_hookset_defs.h" />
+    <ClInclude Include="vk_info.h" />
+    <ClInclude Include="vk_manager.h" />
+    <ClInclude Include="vk_rendertext.h" />
+    <ClInclude Include="vk_replay.h" />
+    <ClInclude Include="vk_resources.h" />
+    <ClInclude Include="vk_shader_cache.h" />
+    <ClInclude Include="vk_state.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="renderdoc.json" />
+    <None Include="vk_apple_helpers.mm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\shaders\spirv\renderdoc_spirv.vcxproj">
+      <Project>{0aae0ad1-371b-4a36-9ed1-80e10e960605}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

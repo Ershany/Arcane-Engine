@@ -1,0 +1,1142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{97bbc5c9-b6a8-429b-a2d6-16fea62eed1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Serialise">
+      <UniqueIdentifier>{ff594035-e059-4ceb-a85c-ec4dbc83d029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Replay">
+      <UniqueIdentifier>{205098b7-5360-41d3-b186-6fe15b1b4e4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{c1ae2bd1-c932-42f6-8997-a4553322bdfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Maths">
+      <UniqueIdentifier>{0e2454ca-656b-499c-bb19-07cf1da7e703}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{a9a0e0ca-e0e6-4ebb-a21e-f971943c46ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OS">
+      <UniqueIdentifier>{ffbf4a4f-115e-415f-a800-b372db445027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OS\Win32">
+      <UniqueIdentifier>{6308ad7d-d930-4fed-9d4b-68bb66b29a78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty">
+      <UniqueIdentifier>{36ccf267-d6c1-41c9-87c3-92c1dfcbe88b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\networking">
+      <UniqueIdentifier>{1d17fb69-fd1a-44a6-a530-05642d97ddc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\hlsl">
+      <UniqueIdentifier>{0ecdcd74-a30b-457e-8b22-92bd58405c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API">
+      <UniqueIdentifier>{7d6b0f22-1180-4767-b284-cc87f54ec012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\Replay">
+      <UniqueIdentifier>{4e047f61-a78b-4a09-abbb-6c839a4fe177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="API\In-App">
+      <UniqueIdentifier>{188b97fd-b9d4-47a6-a51a-48bc00e6fc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\File Formats">
+      <UniqueIdentifier>{eb0686f4-bcb3-4edd-b488-937b1491909b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\stb">
+      <UniqueIdentifier>{5f5e3b49-5091-4a26-b24b-723ebb95ba78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\jpeg-compressor">
+      <UniqueIdentifier>{d7a4190d-f68a-4e08-877f-04be35995e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\lz4">
+      <UniqueIdentifier>{043f5a32-683e-4b56-bcc6-512444b40d70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Strings">
+      <UniqueIdentifier>{ce0b860f-38b7-48af-b49d-7dcb23378f82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\tinyexr">
+      <UniqueIdentifier>{aadadb32-abbc-45b3-8f86-026eed994ba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hooks">
+      <UniqueIdentifier>{3e51a921-b167-4794-937d-e77573a928b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OS\Posix">
+      <UniqueIdentifier>{410640a4-ebf0-479a-8d08-ae277e2ded84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OS\Posix\Linux">
+      <UniqueIdentifier>{5168e1dc-8d41-4aff-b99c-1ffa2af33f95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OS\Posix\Android">
+      <UniqueIdentifier>{16bdcbe1-31de-4732-aaaf-8d77039a26ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OS\Posix\Apple">
+      <UniqueIdentifier>{2d03f185-425a-4de5-8eeb-67dce5e56de9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\glsl">
+      <UniqueIdentifier>{188ad934-e74f-4805-b74b-167f8760fab6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\plthook">
+      <UniqueIdentifier>{1d6900f0-278c-4801-a720-f7deafc63fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\tinyfiledialogs">
+      <UniqueIdentifier>{25fdbb3b-123c-48c3-8ad3-286345771d07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PCH">
+      <UniqueIdentifier>{364a44c3-ab9f-44d1-ab3f-e9f640202224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\catch">
+      <UniqueIdentifier>{af7852be-f538-40f0-be6a-19078ba71639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\zstd">
+      <UniqueIdentifier>{184cdbbc-02cf-4839-914b-350b03745b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\pugixml">
+      <UniqueIdentifier>{50c142cb-d8b9-44f7-a68a-ab9015975ea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Serialise\Compressors">
+      <UniqueIdentifier>{3cb4fd0e-7cd9-45a3-99d2-1158f27ec438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Serialise\Container File">
+      <UniqueIdentifier>{95eea12f-e6e5-4638-acd6-72e71dcd8853}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Serialise\Stream I/O">
+      <UniqueIdentifier>{3b8694d9-cb25-45e0-a1c2-8cc8cd03df3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Serialise\Codecs">
+      <UniqueIdentifier>{dc39ebda-045d-4d75-8ef9-0c927be3c7ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Android">
+      <UniqueIdentifier>{f9ed2873-6120-4b34-a3c2-e57b2de31eb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\android">
+      <UniqueIdentifier>{6e798cbc-0eae-4f48-9d7c-f3fe58bd32dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\interceptor-lib">
+      <UniqueIdentifier>{0362a726-a8e6-436e-b523-893693163440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\interceptor-lib\ARM">
+      <UniqueIdentifier>{cb120bec-b864-4240-9b04-369ce8d60316}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\interceptor-lib\AArch64">
+      <UniqueIdentifier>{7894d954-a38a-450f-9780-a38f73df1208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\catch\official">
+      <UniqueIdentifier>{c46ee73c-e0dd-446d-b9a3-38c3ee0433fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\miniz">
+      <UniqueIdentifier>{5994c355-880b-45b9-b17a-2e9e1fc2044a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Serialise\Codecs\cpp_codec">
+      <UniqueIdentifier>{27f41754-8fa8-4a78-afb8-f63a32473540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Serialise\Codecs\cpp_codec\vulkan">
+      <UniqueIdentifier>{ee6a7f7e-becf-43f0-8c7f-e0109a364ebb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OS\Posix\GGP">
+      <UniqueIdentifier>{b76c42f4-d523-4417-a474-56d278d35a36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\compressonator">
+      <UniqueIdentifier>{3d212b9b-bf42-40db-84a3-b94e064fd281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\superluminal">
+      <UniqueIdentifier>{11053d6b-5b03-44ff-80f3-088d34c66b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\half">
+      <UniqueIdentifier>{1b49d2aa-1cfb-4f0a-8fcf-1065af55ea2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3rdparty\md5">
+      <UniqueIdentifier>{fcbf71ce-3767-435c-9aa2-e1327b9016f4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="maths\camera.h">
+      <Filter>Common\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\matrix.h">
+      <Filter>Common\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\quat.h">
+      <Filter>Common\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="serialise\serialiser.h">
+      <Filter>Common\Serialise</Filter>
+    </ClInclude>
+    <ClInclude Include="data\resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="hooks\hooks.h">
+      <Filter>Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="common\common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\globalconfig.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\wrapped_pool.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\vec.h">
+      <Filter>Common\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="common\threading.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\timing.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="os\os_specific.h">
+      <Filter>OS</Filter>
+    </ClInclude>
+    <ClInclude Include="core\resource_manager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\formatpacking.h">
+      <Filter>Common\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="core\replay_proxy.h">
+      <Filter>Core\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="core\crash_handler.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="replay\replay_driver.h">
+      <Filter>Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="replay\replay_controller.h">
+      <Filter>Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="core\core.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="maths\half_convert.h">
+      <Filter>Common\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\control_types.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\d3d11_pipestate.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\data_types.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\gl_pipestate.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\replay_enums.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\shader_types.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\app\renderdoc_app.h">
+      <Filter>API\In-App</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\renderdoc_replay.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="common\dds_readwrite.h">
+      <Filter>Common\File Formats</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\jpeg-compressor\jpge.h">
+      <Filter>3rdparty\jpeg-compressor</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\jpeg-compressor\jpgd.h">
+      <Filter>3rdparty\jpeg-compressor</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\lz4\lz4.h">
+      <Filter>3rdparty\lz4</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\stb\stb_image.h">
+      <Filter>3rdparty\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\stb\stb_image_write.h">
+      <Filter>3rdparty\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\stb\stb_truetype.h">
+      <Filter>3rdparty\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\tinyexr\tinyexr.h">
+      <Filter>3rdparty\tinyexr</Filter>
+    </ClInclude>
+    <ClInclude Include="data\embedded_files.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\capture_options.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\vk_pipestate.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="common\shader_cache.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\custom_assert.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="os\win32\win32_specific.h">
+      <Filter>OS\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="os\posix\posix_specific.h">
+      <Filter>OS\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="data\glsl_shaders.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="data\glsl\gl_texsample.h">
+      <Filter>Resources\glsl</Filter>
+    </ClInclude>
+    <ClInclude Include="data\glsl\gles_texsample.h">
+      <Filter>Resources\glsl</Filter>
+    </ClInclude>
+    <ClInclude Include="data\glsl\vk_texsample.h">
+      <Filter>Resources\glsl</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\d3d12_pipestate.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\plthook\plthook.h">
+      <Filter>3rdparty\plthook</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\stb\stb_image_resize.h">
+      <Filter>3rdparty\stb</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\version.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\tinyfiledialogs\tinyfiledialogs.h">
+      <Filter>3rdparty\tinyfiledialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="os\win32\dia2_stubs.h">
+      <Filter>OS\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="core\precompiled.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="core\plugins.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\catch\catch.hpp">
+      <Filter>3rdparty\catch</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstd.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstdmt_compress.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\bitstream.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\compiler.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\error_private.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\fse.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\huf.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\mem.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\pool.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\cpu.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\debug.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\hist.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstd_compress_internal.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstd_double_fast.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstd_fast.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstd_lazy.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstd_ldm.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\threading.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\xxhash.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstd_errors.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstd_internal.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\zstd\zstd_opt.h">
+      <Filter>3rdparty\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\pugixml\pugiconfig.hpp">
+      <Filter>3rdparty\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\pugixml\pugixml.hpp">
+      <Filter>3rdparty\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="strings\string_utils.h">
+      <Filter>Common\Strings</Filter>
+    </ClInclude>
+    <ClInclude Include="serialise\lz4io.h">
+      <Filter>Common\Serialise\Compressors</Filter>
+    </ClInclude>
+    <ClInclude Include="serialise\zstdio.h">
+      <Filter>Common\Serialise\Compressors</Filter>
+    </ClInclude>
+    <ClInclude Include="serialise\rdcfile.h">
+      <Filter>Common\Serialise\Container File</Filter>
+    </ClInclude>
+    <ClInclude Include="serialise\streamio.h">
+      <Filter>Common\Serialise\Stream I/O</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\stringise.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\structured_data.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\common_pipestate.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="os\posix\posix_network.h">
+      <Filter>OS\Posix</Filter>
+    </ClInclude>
+    <ClInclude Include="android\android.h">
+      <Filter>Android</Filter>
+    </ClInclude>
+    <ClInclude Include="android\android_utils.h">
+      <Filter>Android</Filter>
+    </ClInclude>
+    <ClInclude Include="android\jdwp.h">
+      <Filter>Android</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\android\android_manifest.h">
+      <Filter>3rdparty\android</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\interceptor-lib\lib\code_generator.h">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\interceptor-lib\lib\constant_pool_data_expr.h">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\interceptor-lib\lib\disassembler.h">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\interceptor-lib\lib\error.h">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\interceptor-lib\lib\linker.h">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\interceptor-lib\lib\memory_manager.h">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\interceptor-lib\lib\target.h">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\interceptor-lib\lib\ARM\target_arm.h">
+      <Filter>3rdparty\interceptor-lib\ARM</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\interceptor-lib\lib\AArch64\target_aarch64.h">
+      <Filter>3rdparty\interceptor-lib\AArch64</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\catch\official\catch.hpp">
+      <Filter>3rdparty\catch\official</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\miniz\miniz.h">
+      <Filter>3rdparty\miniz</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\pipestate.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="core\intervals.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="serialise\codecs\vk_cpp_codec_common.h">
+      <Filter>Common\Serialise\Codecs\cpp_codec\vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="data\glsl\glsl_ubos_cpp.h">
+      <Filter>Resources\glsl</Filter>
+    </ClInclude>
+    <ClInclude Include="data\glsl\glsl_ubos.h">
+      <Filter>Resources\glsl</Filter>
+    </ClInclude>
+    <ClInclude Include="data\hlsl\hlsl_cbuffers.h">
+      <Filter>Resources\hlsl</Filter>
+    </ClInclude>
+    <ClInclude Include="data\glsl\glsl_globals.h">
+      <Filter>Resources\glsl</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\rdcstr.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="core\bit_flag_iterator.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\remote_server.h">
+      <Filter>Core\networking</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\rdcarray.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\rdcpair.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\rdcdatetime.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\apidefs.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\resourceid.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="common\formatting.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="core\settings.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\BC1_Encode_kernel.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\BC2_Encode_kernel.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\BC3_Encode_kernel.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\BC4_Encode_kernel.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\BC5_Encode_kernel.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\BC6_Encode_kernel.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\BC7_Encode_Kernel.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\BCn_Common_Kernel.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\CMP_Core.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\cmp_math_vec4.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\compressonator\Common_Def.h">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\half\half.hpp">
+      <Filter>3rdparty\half</Filter>
+    </ClInclude>
+    <ClInclude Include="api\replay\rdcflatmap.h">
+      <Filter>API\Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\superluminal\superluminal.h">
+      <Filter>3rdparty\superluminal</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\superluminal\PerformanceAPI_capi.h">
+      <Filter>3rdparty\superluminal</Filter>
+    </ClInclude>
+    <ClInclude Include="core\sparse_page_table.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdparty\md5\md5.h">
+      <Filter>3rdparty\md5</Filter>
+    </ClInclude>
+    <ClInclude Include="replay\dummy_driver.h">
+      <Filter>Replay</Filter>
+    </ClInclude>
+    <ClInclude Include="data\hlsl\hlsl_custom_prefix.h">
+      <Filter>Resources\hlsl</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="maths\camera.cpp">
+      <Filter>Common\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\matrix.cpp">
+      <Filter>Common\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\serialiser.cpp">
+      <Filter>Common\Serialise</Filter>
+    </ClCompile>
+    <ClCompile Include="hooks\hooks.cpp">
+      <Filter>Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="common\common.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="os\win32\win32_callstack.cpp">
+      <Filter>OS\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="os\win32\win32_process.cpp">
+      <Filter>OS\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="os\os_specific.cpp">
+      <Filter>OS</Filter>
+    </ClCompile>
+    <ClCompile Include="os\win32\win32_threading.cpp">
+      <Filter>OS\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="os\win32\win32_stringio.cpp">
+      <Filter>OS\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="core\resource_manager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="os\win32\win32_shellext.cpp">
+      <Filter>OS\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="os\win32\win32_network.cpp">
+      <Filter>OS\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="core\replay_proxy.cpp">
+      <Filter>Core\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="replay\entry_points.cpp">
+      <Filter>Replay</Filter>
+    </ClCompile>
+    <ClCompile Include="replay\replay_output.cpp">
+      <Filter>Replay</Filter>
+    </ClCompile>
+    <ClCompile Include="replay\replay_controller.cpp">
+      <Filter>Replay</Filter>
+    </ClCompile>
+    <ClCompile Include="core\core.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="os\win32\win32_hook.cpp">
+      <Filter>OS\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="common\dds_readwrite.cpp">
+      <Filter>Common\File Formats</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\jpeg-compressor\jpge.cpp">
+      <Filter>3rdparty\jpeg-compressor</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\jpeg-compressor\jpgd.cpp">
+      <Filter>3rdparty\jpeg-compressor</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\lz4\lz4.c">
+      <Filter>3rdparty\lz4</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\stb\stb_impl.c">
+      <Filter>3rdparty\stb</Filter>
+    </ClCompile>
+    <ClCompile Include="core\image_viewer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\tinyexr\tinyexr.cpp">
+      <Filter>3rdparty\tinyexr</Filter>
+    </ClCompile>
+    <ClCompile Include="os\win32\win32_libentry.cpp">
+      <Filter>OS\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="os\win32\sys_win32_hooks.cpp">
+      <Filter>OS\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="replay\app_api.cpp">
+      <Filter>API\In-App</Filter>
+    </ClCompile>
+    <ClCompile Include="replay\capture_options.cpp">
+      <Filter>Replay</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_callstack.cpp">
+      <Filter>OS\Posix\Android</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_stringio.cpp">
+      <Filter>OS\Posix\Android</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_callstack.cpp">
+      <Filter>OS\Posix\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_stringio.cpp">
+      <Filter>OS\Posix\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_libentry.cpp">
+      <Filter>OS\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_network.cpp">
+      <Filter>OS\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_process.cpp">
+      <Filter>OS\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_stringio.cpp">
+      <Filter>OS\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\posix_threading.cpp">
+      <Filter>OS\Posix</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_callstack.cpp">
+      <Filter>OS\Posix\Apple</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_process.cpp">
+      <Filter>OS\Posix\Apple</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_stringio.cpp">
+      <Filter>OS\Posix\Apple</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_threading.cpp">
+      <Filter>OS\Posix\Apple</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_process.cpp">
+      <Filter>OS\Posix\Android</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_threading.cpp">
+      <Filter>OS\Posix\Android</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_process.cpp">
+      <Filter>OS\Posix\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_threading.cpp">
+      <Filter>OS\Posix\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="data\glsl_shaders.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="core\remote_server.cpp">
+      <Filter>Core\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="core\target_control.cpp">
+      <Filter>Core\networking</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\plthook\plthook_elf.c">
+      <Filter>3rdparty\plthook</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_hook.cpp">
+      <Filter>OS\Posix\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_hook.cpp">
+      <Filter>OS\Posix\Android</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_hook.cpp">
+      <Filter>OS\Posix\Apple</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\tinyfiledialogs\tinyfiledialogs.c">
+      <Filter>3rdparty\tinyfiledialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="replay\capture_file.cpp">
+      <Filter>Replay</Filter>
+    </ClCompile>
+    <ClCompile Include="replay\replay_driver.cpp">
+      <Filter>Replay</Filter>
+    </ClCompile>
+    <ClCompile Include="core\precompiled.cpp">
+      <Filter>PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="core\plugins.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\catch\catch.cpp">
+      <Filter>3rdparty\catch</Filter>
+    </ClCompile>
+    <ClCompile Include="replay\basic_types_tests.cpp">
+      <Filter>Replay</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\entropy_common.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\error_private.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\fse_compress.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\fse_decompress.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\huf_compress.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\huf_decompress.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\pool.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\threading.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\xxhash.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\debug.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\hist.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_double_fast.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_fast.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_lazy.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_ldm.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_opt.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_common.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_compress.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstd_decompress.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\zstd\zstdmt_compress.c">
+      <Filter>3rdparty\zstd</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\pugixml\pugixml.cpp">
+      <Filter>3rdparty\pugixml</Filter>
+    </ClCompile>
+    <ClCompile Include="strings\grisu2.cpp">
+      <Filter>Common\Strings</Filter>
+    </ClCompile>
+    <ClCompile Include="strings\string_utils.cpp">
+      <Filter>Common\Strings</Filter>
+    </ClCompile>
+    <ClCompile Include="strings\utf8printf.cpp">
+      <Filter>Common\Strings</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\comp_io_tests.cpp">
+      <Filter>Common\Serialise\Compressors</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\lz4io.cpp">
+      <Filter>Common\Serialise\Compressors</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\zstdio.cpp">
+      <Filter>Common\Serialise\Compressors</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\streamio.cpp">
+      <Filter>Common\Serialise\Stream I/O</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\streamio_tests.cpp">
+      <Filter>Common\Serialise\Stream I/O</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\rdcfile.cpp">
+      <Filter>Common\Serialise\Container File</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\codecs\xml_codec.cpp">
+      <Filter>Common\Serialise\Codecs</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\serialiser_tests.cpp">
+      <Filter>Common\Serialise</Filter>
+    </ClCompile>
+    <ClCompile Include="serialise\codecs\chrome_json_codec.cpp">
+      <Filter>Common\Serialise\Codecs</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\linux\linux_network.cpp">
+      <Filter>OS\Posix\Linux</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\apple\apple_network.cpp">
+      <Filter>OS\Posix\Apple</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\android\android_network.cpp">
+      <Filter>OS\Posix\Android</Filter>
+    </ClCompile>
+    <ClCompile Include="android\android.cpp">
+      <Filter>Android</Filter>
+    </ClCompile>
+    <ClCompile Include="android\android_tools.cpp">
+      <Filter>Android</Filter>
+    </ClCompile>
+    <ClCompile Include="android\android_utils.cpp">
+      <Filter>Android</Filter>
+    </ClCompile>
+    <ClCompile Include="android\android_patch.cpp">
+      <Filter>Android</Filter>
+    </ClCompile>
+    <ClCompile Include="android\jdwp.cpp">
+      <Filter>Android</Filter>
+    </ClCompile>
+    <ClCompile Include="android\jdwp_connection.cpp">
+      <Filter>Android</Filter>
+    </ClCompile>
+    <ClCompile Include="android\jdwp_util.cpp">
+      <Filter>Android</Filter>
+    </ClCompile>
+    <ClCompile Include="android\android_manifest.cpp">
+      <Filter>Android</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\code_generator.cc">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\constant_pool_data_expr.cc">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\disassembler.cc">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\error.cc">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\interceptor.cc">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\linker.cc">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\memory_manager.cc">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\target.cc">
+      <Filter>3rdparty\interceptor-lib</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\ARM\target_arm.cc">
+      <Filter>3rdparty\interceptor-lib\ARM</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\interceptor-lib\lib\AArch64\target_aarch64.cc">
+      <Filter>3rdparty\interceptor-lib\AArch64</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\miniz\miniz.c">
+      <Filter>3rdparty\miniz</Filter>
+    </ClCompile>
+    <ClCompile Include="common\threading_tests.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="core\intervals_tests.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_callstack.cpp">
+      <Filter>OS\Posix\GGP</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_hook.cpp">
+      <Filter>OS\Posix\GGP</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_network.cpp">
+      <Filter>OS\Posix\GGP</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_process.cpp">
+      <Filter>OS\Posix\GGP</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_stringio.cpp">
+      <Filter>OS\Posix\GGP</Filter>
+    </ClCompile>
+    <ClCompile Include="os\posix\ggp\ggp_threading.cpp">
+      <Filter>OS\Posix\GGP</Filter>
+    </ClCompile>
+    <ClCompile Include="core\bit_flag_iterator_tests.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\formatpacking.cpp">
+      <Filter>Common\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="maths\vec.cpp">
+      <Filter>Common\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="core\settings.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\compressonator\BC1_Encode_kernel.cpp">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\compressonator\BC2_Encode_kernel.cpp">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\compressonator\BC3_Encode_kernel.cpp">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\compressonator\BC4_Encode_kernel.cpp">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\compressonator\BC5_Encode_kernel.cpp">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\compressonator\BC6_Encode_kernel.cpp">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\compressonator\BC7_Encode_Kernel.cpp">
+      <Filter>3rdparty\compressonator</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\superluminal\superluminal.cpp">
+      <Filter>3rdparty\superluminal</Filter>
+    </ClCompile>
+    <ClCompile Include="core\sparse_page_table.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdparty\md5\md5.c">
+      <Filter>3rdparty\md5</Filter>
+    </ClCompile>
+    <ClCompile Include="replay\dummy_driver.cpp">
+      <Filter>Replay</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="os\win32\comexport.def">
+      <Filter>OS\Win32</Filter>
+    </None>
+    <None Include="data\hlsl\histogram.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\hlsl\multisample.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\hlsl\mesh.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\glsl\array2ms.comp">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\blit.vert">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\checkerboard.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\fixedcol.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\histogram.comp">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\mesh.comp">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\mesh.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\mesh.geom">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\mesh.vert">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\minmaxresult.comp">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\minmaxtile.comp">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\ms2array.comp">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\pixelhistory_primid.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\quadresolve.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\quadwrite.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\texdisplay.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\trisize.geom">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\trisize.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\deptharr2ms.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\depthms2arr.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="api\replay\renderdoc_tostr.inl">
+      <Filter>API\Replay</Filter>
+    </None>
+    <None Include="replay\renderdoc_serialise.inl">
+      <Filter>Replay</Filter>
+    </None>
+    <None Include="api\replay\pipestate.inl">
+      <Filter>Replay</Filter>
+    </None>
+    <None Include="data\glsl\vktext.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\vktext.vert">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\gltext.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\gltext.vert">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\hlsl\hlsl_texsample.h">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\hlsl\text.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\hlsl\misc.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\hlsl\pixelhistory.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\hlsl\quadoverdraw.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\hlsl\fixedcol.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\hlsl\texdisplay.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="data\glsl\texremap.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\hlsl\texremap.hlsl">
+      <Filter>Resources\hlsl</Filter>
+    </None>
+    <None Include="librenderdoc.so-gdb.py" />
+    <None Include="data\glsl\shaderdebug_sample.vert">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\pixelhistory_mscopy.comp">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\pixelhistory_mscopy_depth.comp">
+      <Filter>Resources\glsl</Filter>
+    </None>
+    <None Include="data\glsl\discard.frag">
+      <Filter>Resources\glsl</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="data\renderdoc.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="renderdoc.natvis" />
+  </ItemGroup>
+</Project>

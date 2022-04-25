@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>QRenderDoc</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../Resources/resources.qrc">
+    <normaloff>:/logo.svg</normaloff>:/logo.svg</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="ToolWindowManager" name="toolWindowManager" native="true"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_Tools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="action_Resolve_Symbols"/>
+    <addaction name="action_Recompress_Capture"/>
+    <addaction name="separator"/>
+    <addaction name="action_Start_Replay_Loop"/>
+    <addaction name="action_Create_RGP_Profile"/>
+    <addaction name="action_Open_RGP_Profile"/>
+    <addaction name="separator"/>
+    <addaction name="extension_dummy_Tools"/>
+    <addaction name="separator"/>
+    <addaction name="action_Settings"/>
+    <addaction name="action_Manage_Extensions"/>
+    <addaction name="action_Manage_Remote_Servers"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <widget class="QMenu" name="menu_Recent_Capture_Files">
+     <property name="title">
+      <string>&amp;Recent Captures</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="action_Clear_Capture_Files_History"/>
+    </widget>
+    <widget class="QMenu" name="menu_Recent_Capture_Settings">
+     <property name="title">
+      <string>Recent Capture Settings</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="action_Clear_Capture_Settings_History"/>
+    </widget>
+    <widget class="QMenu" name="menu_Export_As">
+     <property name="title">
+      <string>&amp;Export As...</string>
+     </property>
+     <property name="toolTipsVisible">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QMenu" name="menu_Import_From">
+     <property name="title">
+      <string>&amp;Import From...</string>
+     </property>
+     <property name="toolTipsVisible">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <addaction name="action_Launch_Application"/>
+    <addaction name="action_Attach_to_Running_Instance"/>
+    <addaction name="action_Inject_into_Process"/>
+    <addaction name="separator"/>
+    <addaction name="action_Open_Capture"/>
+    <addaction name="action_Open_Capture_with_Options"/>
+    <addaction name="action_Save_Capture_Inplace"/>
+    <addaction name="action_Save_Capture_As"/>
+    <addaction name="action_Close_Capture"/>
+    <addaction name="separator"/>
+    <addaction name="extension_dummy_File"/>
+    <addaction name="separator"/>
+    <addaction name="menu_Import_From"/>
+    <addaction name="menu_Export_As"/>
+    <addaction name="separator"/>
+    <addaction name="menu_Recent_Capture_Files"/>
+    <addaction name="menu_Recent_Capture_Settings"/>
+    <addaction name="separator"/>
+    <addaction name="action_Exit"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menu_Window">
+    <property name="title">
+     <string>&amp;Window</string>
+    </property>
+    <widget class="QMenu" name="menu_Save_Layout">
+     <property name="title">
+      <string>&amp;Save Layout</string>
+     </property>
+     <addaction name="action_Save_Default_Layout"/>
+     <addaction name="separator"/>
+     <addaction name="action_Save_Layout_1"/>
+     <addaction name="action_Save_Layout_2"/>
+     <addaction name="action_Save_Layout_3"/>
+     <addaction name="action_Save_Layout_4"/>
+     <addaction name="action_Save_Layout_5"/>
+     <addaction name="action_Save_Layout_6"/>
+    </widget>
+    <widget class="QMenu" name="menu_Load_Layout">
+     <property name="title">
+      <string>&amp;Load Layout</string>
+     </property>
+     <addaction name="action_Load_Default_Layout"/>
+     <addaction name="separator"/>
+     <addaction name="action_Load_Layout_1"/>
+     <addaction name="action_Load_Layout_2"/>
+     <addaction name="action_Load_Layout_3"/>
+     <addaction name="action_Load_Layout_4"/>
+     <addaction name="action_Load_Layout_5"/>
+     <addaction name="action_Load_Layout_6"/>
+    </widget>
+    <addaction name="menu_Save_Layout"/>
+    <addaction name="menu_Load_Layout"/>
+    <addaction name="separator"/>
+    <addaction name="action_Launch_Application_Window"/>
+    <addaction name="action_Python_Shell"/>
+    <addaction name="action_Event_Browser"/>
+    <addaction name="action_Texture_Viewer"/>
+    <addaction name="action_Pipeline_State"/>
+    <addaction name="action_API_Inspector"/>
+    <addaction name="action_Mesh_Output"/>
+    <addaction name="action_Errors_and_Warnings"/>
+    <addaction name="action_Timeline"/>
+    <addaction name="action_Statistics_Viewer"/>
+    <addaction name="action_Counter_Viewer"/>
+    <addaction name="action_Resource_Inspector"/>
+    <addaction name="action_Comments"/>
+    <addaction name="action_Diagnostic_Log"/>
+    <addaction name="separator"/>
+    <addaction name="extension_dummy_Window"/>
+   </widget>
+   <widget class="QMenu" name="menu_Help">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <widget class="QMenu" name="menu_Reported_Bugs">
+     <property name="title">
+      <string>&amp;Reported Bugs</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="action_Clear_Reported_Bugs"/>
+    </widget>
+    <addaction name="action_View_Documentation"/>
+    <addaction name="action_View_Diagnostic_Log_File"/>
+    <addaction name="action_Show_Tips"/>
+    <addaction name="separator"/>
+    <addaction name="action_Send_Error_Report"/>
+    <addaction name="menu_Reported_Bugs"/>
+    <addaction name="separator"/>
+    <addaction name="extension_dummy_Help"/>
+    <addaction name="separator"/>
+    <addaction name="action_Check_for_Updates"/>
+    <addaction name="separator"/>
+    <addaction name="action_Source_on_GitHub"/>
+    <addaction name="action_Build_Release_Downloads"/>
+    <addaction name="action_About"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menu_Window"/>
+   <addaction name="menu_Tools"/>
+   <addaction name="menu_Help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_Launch_Application">
+   <property name="text">
+    <string>&amp;Launch Application</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="action_Attach_to_Running_Instance">
+   <property name="text">
+    <string>&amp;Attach to Running Instance</string>
+   </property>
+  </action>
+  <action name="action_Inject_into_Process">
+   <property name="text">
+    <string>&amp;Inject into Process</string>
+   </property>
+  </action>
+  <action name="action_Open_Capture">
+   <property name="text">
+    <string>&amp;Open Capture</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_Save_Capture_Inplace">
+   <property name="text">
+    <string>&amp;Save Capture</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_Close_Capture">
+   <property name="text">
+    <string>&amp;Close Capture</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F4</string>
+   </property>
+  </action>
+  <action name="action_Exit">
+   <property name="text">
+    <string>E&amp;xit</string>
+   </property>
+  </action>
+  <action name="action_Python_Shell">
+   <property name="text">
+    <string>P&amp;ython Shell</string>
+   </property>
+  </action>
+  <action name="action_Event_Browser">
+   <property name="text">
+    <string>&amp;Event Browser</string>
+   </property>
+  </action>
+  <action name="action_Texture_Viewer">
+   <property name="text">
+    <string>&amp;Texture Viewer</string>
+   </property>
+  </action>
+  <action name="action_Pipeline_State">
+   <property name="text">
+    <string>&amp;Pipeline State</string>
+   </property>
+  </action>
+  <action name="action_API_Inspector">
+   <property name="text">
+    <string>&amp;API Inspector</string>
+   </property>
+  </action>
+  <action name="action_Mesh_Output">
+   <property name="text">
+    <string>&amp;Mesh Viewer</string>
+   </property>
+  </action>
+  <action name="action_Errors_and_Warnings">
+   <property name="text">
+    <string>Errors and &amp;Warnings</string>
+   </property>
+  </action>
+  <action name="action_Timeline">
+   <property name="text">
+    <string>T&amp;imeline</string>
+   </property>
+  </action>
+  <action name="action_Save_Default_Layout">
+   <property name="text">
+    <string>&amp;Default Layout</string>
+   </property>
+  </action>
+  <action name="action_Load_Default_Layout">
+   <property name="text">
+    <string>&amp;Default Layout</string>
+   </property>
+  </action>
+  <action name="action_Save_Layout_1">
+   <property name="text">
+    <string>Layout &amp;1</string>
+   </property>
+  </action>
+  <action name="action_Save_Layout_2">
+   <property name="text">
+    <string>Layout &amp;2</string>
+   </property>
+  </action>
+  <action name="action_Save_Layout_3">
+   <property name="text">
+    <string>Layout &amp;3</string>
+   </property>
+  </action>
+  <action name="action_Save_Layout_4">
+   <property name="text">
+    <string>Layout &amp;4</string>
+   </property>
+  </action>
+  <action name="action_Save_Layout_5">
+   <property name="text">
+    <string>Layout &amp;5</string>
+   </property>
+  </action>
+  <action name="action_Save_Layout_6">
+   <property name="text">
+    <string>Layout &amp;6</string>
+   </property>
+  </action>
+  <action name="action_Load_Layout_1">
+   <property name="text">
+    <string>Layout &amp;1</string>
+   </property>
+  </action>
+  <action name="action_Load_Layout_2">
+   <property name="text">
+    <string>Layout &amp;2</string>
+   </property>
+  </action>
+  <action name="action_Load_Layout_3">
+   <property name="text">
+    <string>Layout &amp;3</string>
+   </property>
+  </action>
+  <action name="action_Load_Layout_4">
+   <property name="text">
+    <string>Layout &amp;4</string>
+   </property>
+  </action>
+  <action name="action_Load_Layout_5">
+   <property name="text">
+    <string>Layout &amp;5</string>
+   </property>
+  </action>
+  <action name="action_Load_Layout_6">
+   <property name="text">
+    <string>Layout &amp;6</string>
+   </property>
+  </action>
+  <action name="action_Resolve_Symbols">
+   <property name="text">
+    <string>&amp;Resolve Symbols</string>
+   </property>
+  </action>
+  <action name="action_Settings">
+   <property name="text">
+    <string>&amp;Settings</string>
+   </property>
+  </action>
+  <action name="action_Manage_Remote_Servers">
+   <property name="text">
+    <string>&amp;Manage Remote Servers</string>
+   </property>
+  </action>
+  <action name="action_View_Documentation">
+   <property name="text">
+    <string>View &amp;Documentation</string>
+   </property>
+  </action>
+  <action name="action_View_Diagnostic_Log_File">
+   <property name="text">
+    <string>View Diagnostic &amp;Log File</string>
+   </property>
+  </action>
+  <action name="action_Send_Error_Report">
+   <property name="text">
+    <string>Send &amp;Error Report</string>
+   </property>
+  </action>
+  <action name="action_Source_on_GitHub">
+   <property name="text">
+    <string>Source on GitHub</string>
+   </property>
+  </action>
+  <action name="action_Build_Release_Downloads">
+   <property name="text">
+    <string>Build/Release Downloads</string>
+   </property>
+  </action>
+  <action name="action_About">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="action_Clear_Capture_Files_History">
+   <property name="text">
+    <string>Clear History</string>
+   </property>
+  </action>
+  <action name="action_Clear_Capture_Settings_History">
+   <property name="text">
+    <string>Clear History</string>
+   </property>
+  </action>
+  <action name="action_Statistics_Viewer">
+   <property name="text">
+    <string>&amp;Statistics Viewer</string>
+   </property>
+  </action>
+  <action name="action_Show_Tips">
+   <property name="text">
+    <string>Show Tips</string>
+   </property>
+  </action>
+  <action name="action_Launch_Application_Window">
+   <property name="text">
+    <string>&amp;Launch Application</string>
+   </property>
+  </action>
+  <action name="action_Start_Replay_Loop">
+   <property name="text">
+    <string>Start Replay &amp;Loop</string>
+   </property>
+  </action>
+  <action name="action_Counter_Viewer">
+   <property name="text">
+    <string>Performance &amp;Counter Viewer</string>
+   </property>
+  </action>
+  <action name="action_Resource_Inspector">
+   <property name="text">
+    <string>&amp;Resource Inspector</string>
+   </property>
+  </action>
+  <action name="action_Save_Capture_As">
+   <property name="text">
+    <string>Sa&amp;ve Capture As</string>
+   </property>
+  </action>
+  <action name="action_Comments">
+   <property name="text">
+    <string>Capture C&amp;omments</string>
+   </property>
+  </action>
+  <action name="action_Recompress_Capture">
+   <property name="text">
+    <string>Re&amp;compress Capture</string>
+   </property>
+  </action>
+  <action name="action_Clear_Reported_Bugs">
+   <property name="text">
+    <string>&amp;Clear Reported Bugs</string>
+   </property>
+  </action>
+  <action name="action_Check_for_Updates">
+   <property name="text">
+    <string>Check for updates</string>
+   </property>
+  </action>
+  <action name="action_Create_RGP_Profile">
+   <property name="text">
+    <string>Create new RGP Profile</string>
+   </property>
+  </action>
+  <action name="action_Open_RGP_Profile">
+   <property name="text">
+    <string>Open RGP Profile</string>
+   </property>
+  </action>
+  <action name="extension_dummy_Tools">
+   <property name="text">
+    <string notr="true">__extensions__</string>
+   </property>
+  </action>
+  <action name="extension_dummy_Help">
+   <property name="text">
+    <string notr="true">__extensions__</string>
+   </property>
+  </action>
+  <action name="extension_dummy_Window">
+   <property name="text">
+    <string notr="true">__extensions__</string>
+   </property>
+  </action>
+  <action name="extension_dummy_File">
+   <property name="text">
+    <string notr="true">__extensions__</string>
+   </property>
+  </action>
+  <action name="action_Manage_Extensions">
+   <property name="text">
+    <string>Manage Extensions</string>
+   </property>
+  </action>
+  <action name="action_Diagnostic_Log">
+   <property name="text">
+    <string>Dia&amp;gnostic Log</string>
+   </property>
+  </action>
+  <action name="action_Open_Capture_with_Options">
+   <property name="text">
+    <string>Open Capture with Options</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ToolWindowManager</class>
+   <extends>QWidget</extends>
+   <header>3rdparty/toolwindowmanager/ToolWindowManager.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../Resources/resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

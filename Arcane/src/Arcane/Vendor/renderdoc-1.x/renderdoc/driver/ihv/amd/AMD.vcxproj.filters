@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Counters">
+      <UniqueIdentifier>{db3f483b-32db-4d57-bf48-4f0ef2322be0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="official">
+      <UniqueIdentifier>{345b73a2-79ed-4c89-8f45-b8aa2d211a7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="official\GPUPerfAPI">
+      <UniqueIdentifier>{ef917fc9-3eef-4565-9fbe-e1d3e02460e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="official\DXExt">
+      <UniqueIdentifier>{310145c9-318c-4c14-ac19-1bb04a050349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ISA">
+      <UniqueIdentifier>{54c2d261-eb6a-48cc-a741-2857a8148559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="official\RGA">
+      <UniqueIdentifier>{b6dd5672-5467-4d86-8d48-685a9751f1b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="official\RGA\elf">
+      <UniqueIdentifier>{2d5a0ef9-0cd2-4354-88e2-f7ab466308bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="official\RGA\Common">
+      <UniqueIdentifier>{47a6fd91-f76e-4faa-9e5c-4bb899be9796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RGP">
+      <UniqueIdentifier>{9977fd12-32d0-49d3-b20d-c38b0df2dc95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="official\ags">
+      <UniqueIdentifier>{38a2da39-3393-42d3-aa9f-58c8811963e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ags">
+      <UniqueIdentifier>{2ce9ee54-2687-42e5-89e9-c16ba9fb12ad}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="amd_counters.cpp">
+      <Filter>Counters</Filter>
+    </ClCompile>
+    <ClCompile Include="amd_isa.cpp">
+      <Filter>ISA</Filter>
+    </ClCompile>
+    <ClCompile Include="amd_isa_win32.cpp">
+      <Filter>ISA</Filter>
+    </ClCompile>
+    <ClCompile Include="amd_isa_posix.cpp">
+      <Filter>ISA</Filter>
+    </ClCompile>
+    <ClCompile Include="amd_isa_devices.cpp">
+      <Filter>ISA</Filter>
+    </ClCompile>
+    <ClCompile Include="amd_rgp.cpp">
+      <Filter>RGP</Filter>
+    </ClCompile>
+    <ClCompile Include="amd_hooks.cpp">
+      <Filter>ags</Filter>
+    </ClCompile>
+    <ClCompile Include="ags_wrapper.cpp">
+      <Filter>ags</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="amd_counters.h">
+      <Filter>Counters</Filter>
+    </ClInclude>
+    <ClInclude Include="official\DXExt\AmdDxExt.h">
+      <Filter>official\DXExt</Filter>
+    </ClInclude>
+    <ClInclude Include="official\DXExt\AmdDxExtApi.h">
+      <Filter>official\DXExt</Filter>
+    </ClInclude>
+    <ClInclude Include="official\DXExt\AmdDxExtIface.h">
+      <Filter>official\DXExt</Filter>
+    </ClInclude>
+    <ClInclude Include="amd_isa.h">
+      <Filter>ISA</Filter>
+    </ClInclude>
+    <ClInclude Include="official\RGA\elf\elf_common.h">
+      <Filter>official\RGA\elf</Filter>
+    </ClInclude>
+    <ClInclude Include="official\RGA\elf\elf32.h">
+      <Filter>official\RGA\elf</Filter>
+    </ClInclude>
+    <ClInclude Include="official\RGA\Common\AmdDxGsaCompile.h">
+      <Filter>official\RGA\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="amd_isa_devices.h">
+      <Filter>ISA</Filter>
+    </ClInclude>
+    <ClInclude Include="official\DXExt\AmdExtD3D.h">
+      <Filter>official\DXExt</Filter>
+    </ClInclude>
+    <ClInclude Include="official\DXExt\AmdExtD3DCommandListMarkerApi.h">
+      <Filter>official\DXExt</Filter>
+    </ClInclude>
+    <ClInclude Include="official\RGA\Common\AsicReg\devices.h">
+      <Filter>official\RGA\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="amd_rgp.h">
+      <Filter>RGP</Filter>
+    </ClInclude>
+    <ClInclude Include="official\GPUPerfAPI\Include\gpu_perf_api.h">
+      <Filter>official\GPUPerfAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="official\GPUPerfAPI\Include\gpu_perf_api_counters.h">
+      <Filter>official\GPUPerfAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="official\GPUPerfAPI\Include\gpu_perf_api_function_types.h">
+      <Filter>official\GPUPerfAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="official\GPUPerfAPI\Include\gpu_perf_api_functions.h">
+      <Filter>official\GPUPerfAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="official\GPUPerfAPI\Include\gpu_perf_api_interface_loader.h">
+      <Filter>official\GPUPerfAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="official\GPUPerfAPI\Include\gpu_perf_api_stub.h">
+      <Filter>official\GPUPerfAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="official\GPUPerfAPI\Include\gpu_perf_api_types.h">
+      <Filter>official\GPUPerfAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="official\ags\amd_ags.h">
+      <Filter>official\ags</Filter>
+    </ClInclude>
+    <ClInclude Include="ags_wrapper.h">
+      <Filter>ags</Filter>
+    </ClInclude>
+    <ClInclude Include="official\GPUPerfAPI\Include\gpu_perf_api_vk.h">
+      <Filter>official\GPUPerfAPI</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
