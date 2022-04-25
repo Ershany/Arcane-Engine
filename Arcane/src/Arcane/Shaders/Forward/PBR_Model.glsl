@@ -59,6 +59,11 @@ struct Material {
 	sampler2D texture_roughness;
 	sampler2D texture_ao;
 	sampler2D texture_displacement;
+
+	vec4 albedoColour;
+	float metallicValue, roughnessValue; // Used if textures aren't provided
+
+	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture;
 };
 
 struct DirLight {
@@ -147,11 +152,12 @@ void main() {
 	}
 
 	// Sample textures
-	vec3 albedo = texture(material.texture_albedo, textureCoordinates).rgb;
-	float albedoAlpha = texture(material.texture_albedo, textureCoordinates).w;
+	vec4 sampledAlbedo = material.hasAlbedoTexture ? texture(material.texture_albedo, textureCoordinates).rgba * material.albedoColour : material.albedoColour;
+	vec3 albedo = sampledAlbedo.rgb;
+	float albedoAlpha = sampledAlbedo.w;
 	vec3 normal = texture(material.texture_normal, textureCoordinates).rgb;
-	float metallic = texture(material.texture_metallic, textureCoordinates).r;
-	float unclampedRoughness = texture(material.texture_roughness, textureCoordinates).r; // Used for indirect specular (reflections)
+	float metallic = material.hasMetallicTexture ? texture(material.texture_metallic, textureCoordinates).r : material.metallicValue;
+	float unclampedRoughness = material.hasRoughnessTexture ? texture(material.texture_roughness, textureCoordinates).r : material.roughnessValue; // Used for indirect specular (reflections)
 	float roughness = max(unclampedRoughness, 0.04); // Used for calculations since specular highlights will be too fine, and will cause flicker
 	float ao = texture(material.texture_ao, textureCoordinates).r;
 

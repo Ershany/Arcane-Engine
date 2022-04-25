@@ -8,7 +8,6 @@ namespace Arcane
 {
 	// Static declarations
 	std::unordered_map<std::string, Texture*> TextureLoader::m_TextureCache;
-	Texture *TextureLoader::s_DefaultAlbedo;
 	Texture *TextureLoader::s_DefaultNormal;
 	Texture *TextureLoader::s_WhiteTexture; Texture *TextureLoader::s_BlackTexture;
 
@@ -89,11 +88,6 @@ namespace Arcane
 		TextureSettings srgbTextureSettings;
 		srgbTextureSettings.IsSRGB = true;
 
-		s_DefaultAlbedo = Load2DTexture(std::string("res/textures/default/defaultAlbedo.png"), &srgbTextureSettings);
-		s_DefaultAlbedo->Bind();
-		s_DefaultAlbedo->SetAnisotropicFilteringMode(1.0f);
-		s_DefaultAlbedo->SetTextureMinFilter(GL_NEAREST);
-		s_DefaultAlbedo->SetTextureMagFilter(GL_NEAREST);
 		s_DefaultNormal = Load2DTexture(std::string("res/textures/default/defaultNormal.png"));
 		s_DefaultNormal->Bind();
 		s_DefaultNormal->SetAnisotropicFilteringMode(1.0f);

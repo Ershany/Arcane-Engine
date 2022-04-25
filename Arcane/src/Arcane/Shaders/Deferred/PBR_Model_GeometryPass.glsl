@@ -56,6 +56,12 @@ struct Material {
 	sampler2D texture_roughness;
 	sampler2D texture_ao;
 	sampler2D texture_displacement;
+
+	// Used if textures aren't provided
+	vec4 albedoColour;
+	float metallicValue, roughnessValue;
+
+	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture;
 };
 
 in mat3 TBN;
@@ -81,10 +87,10 @@ void main() {
 	}
 
 	// Sample textures
-	vec4 albedo = texture(material.texture_albedo, textureCoordinates);
+	vec4 albedo = material.hasAlbedoTexture ? texture(material.texture_albedo, textureCoordinates).rgba * material.albedoColour : material.albedoColour;
 	vec3 normal = texture(material.texture_normal, textureCoordinates).rgb;
-	float metallic = texture(material.texture_metallic, textureCoordinates).r;
-	float roughness = max(texture(material.texture_roughness, textureCoordinates).r, 0.04);
+	float metallic = material.hasMetallicTexture ? texture(material.texture_metallic, textureCoordinates).r : material.metallicValue;
+	float roughness = material.hasRoughnessTexture ? texture(material.texture_roughness, textureCoordinates).r : material.roughnessValue;
 	float ao = texture(material.texture_ao, textureCoordinates).r;
 
 	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space

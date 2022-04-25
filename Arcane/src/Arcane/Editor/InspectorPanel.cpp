@@ -1,6 +1,7 @@
 #include "arcpch.h"
 #include "InspectorPanel.h"
 
+#include <Arcane/Util/Loaders/TextureLoader.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
 
 namespace Arcane
@@ -32,36 +33,36 @@ namespace Arcane
 					int choice = -1;
 					ImGui::Combo("Rendering Mode", &choice, items, IM_ARRAYSIZE(items));
 					ImGui::Text("Texture Maps");
-					if (meshMaterial.GetAlbedoMap())
+					ImGui::Separator();
+
+					ImGui::Image(meshMaterial.GetAlbedoMap() ? (ImTextureID)meshMaterial.GetAlbedoMap()->GetTextureId() : (ImTextureID)TextureLoader::GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+					ImGui::Text("Albedo"); ImGui::SameLine();
+					ImGui::ColorEdit4("##Albedo Colour", (float*)&meshMaterial.GetAlbedoColourRef(), ImGuiColorEditFlags_DisplayRGB);
+
+					ImGui::Image(meshMaterial.GetRoughnessMap() ? (ImTextureID)meshMaterial.GetRoughnessMap()->GetTextureId() : (ImTextureID)TextureLoader::GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+					ImGui::Text("Roughness");
+					if (!meshMaterial.GetRoughnessMap())
 					{
-						ImGui::Text("Albedo");
-						ImGui::Image((ImTextureID)meshMaterial.GetAlbedoMap()->GetTextureId(), ImVec2(100, 100));
+						ImGui::SameLine();
+						ImGui::SliderFloat("##Roughness Slider", &meshMaterial.GetRoughnessValueRef(), 0.0f, 1.0f, "%.2f");
 					}
-					if (meshMaterial.GetNormalMap())
+
+					ImGui::Image(meshMaterial.GetMetallicMap() ? (ImTextureID)meshMaterial.GetMetallicMap()->GetTextureId() : (ImTextureID)TextureLoader::GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+					ImGui::Text("Metallic");
+					if (!meshMaterial.GetMetallicMap())
 					{
-						ImGui::Text("Normals");
-						ImGui::Image((ImTextureID)meshMaterial.GetNormalMap()->GetTextureId(), ImVec2(100, 100));
+						ImGui::SameLine();
+						ImGui::SliderFloat("##Metallic Slider", &meshMaterial.GetMetallicValueRef(), 0.0f, 1.0f, "%.2f");
 					}
-					if (meshMaterial.GetMetallicMap())
-					{
-						ImGui::Text("Metallic");
-						ImGui::Image((ImTextureID)meshMaterial.GetMetallicMap()->GetTextureId(), ImVec2(100, 100));
-					}
-					if (meshMaterial.GetRoughnessMap())
-					{
-						ImGui::Text("Roughness");
-						ImGui::Image((ImTextureID)meshMaterial.GetRoughnessMap()->GetTextureId(), ImVec2(100, 100));
-					}
-					if (meshMaterial.GetAmbientOcclusionMap())
-					{
-						ImGui::Text("Ambient Occlusion");
-						ImGui::Image((ImTextureID)meshMaterial.GetAmbientOcclusionMap()->GetTextureId(), ImVec2(100, 100));
-					}
-					if (meshMaterial.GetDisplacementMap())
-					{
-						ImGui::Text("Displacement");
-						ImGui::Image((ImTextureID)meshMaterial.GetDisplacementMap()->GetTextureId(), ImVec2(100, 100));
-					}
+
+					ImGui::Image(meshMaterial.GetNormalMap() ? (ImTextureID)meshMaterial.GetNormalMap()->GetTextureId() : (ImTextureID)TextureLoader::GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+					ImGui::Text("Normals");
+
+					ImGui::Image(meshMaterial.GetAmbientOcclusionMap() ? (ImTextureID)meshMaterial.GetAmbientOcclusionMap()->GetTextureId() : (ImTextureID)TextureLoader::GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+					ImGui::Text("Ambient Occlusion");
+
+					ImGui::Image(meshMaterial.GetDisplacementMap() ? (ImTextureID)meshMaterial.GetDisplacementMap()->GetTextureId() : (ImTextureID)TextureLoader::GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+					ImGui::Text("Displacement");
 				}
 			}
 		}
