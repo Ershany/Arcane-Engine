@@ -39,7 +39,7 @@ namespace Arcane
 		m_GLCache->SetDepthTest(false);
 		m_GLCache->SetMultisample(false);
 
-		// Move the depth + stencil of the GBuffer to the our framebuffer
+		// Move the depth + stencil of the GBuffer to our framebuffer
 		// NOTE: Framebuffers have to have identical depth + stencil formats for this to work
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, geometryData.outputGBuffer->GetFramebuffer());
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer->GetFramebuffer());

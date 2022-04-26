@@ -20,6 +20,9 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -157,6 +160,11 @@
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
     <ClCompile Include="src\Arcane\Core\Layer.cpp" />
     <ClCompile Include="src\Arcane\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Arcane\Editor\ConsolePanel.cpp" />
+    <ClCompile Include="src\Arcane\Editor\EditorViewport.cpp" />
+    <ClCompile Include="src\Arcane\Editor\GraphicsSettings.cpp" />
+    <ClCompile Include="src\Arcane\Editor\InspectorPanel.cpp" />
+    <ClCompile Include="src\Arcane\Editor\ScenePanel.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.cpp" />
@@ -264,6 +272,11 @@
     <ClInclude Include="src\Arcane\Core\Layer.h" />
     <ClInclude Include="src\Arcane\Core\LayerStack.h" />
     <ClInclude Include="src\Arcane\Defs.h" />
+    <ClInclude Include="src\Arcane\Editor\ConsolePanel.h" />
+    <ClInclude Include="src\Arcane\Editor\EditorViewport.h" />
+    <ClInclude Include="src\Arcane\Editor\GraphicsSettings.h" />
+    <ClInclude Include="src\Arcane\Editor\InspectorPanel.h" />
+    <ClInclude Include="src\Arcane\Editor\ScenePanel.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.h" />

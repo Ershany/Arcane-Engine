@@ -38,7 +38,7 @@ namespace Arcane
 		//SetDarkThemeColors();
 		//ImGui::StyleColorsClassic();
 
-		// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+		// When a viewport is created need to check rounding and colour to make it look identical to our window
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
@@ -47,10 +47,9 @@ namespace Arcane
 		}
 		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15f, 0.15f, 0.15f, style.Colors[ImGuiCol_WindowBg].w);
 
+		// Setup other bindings
 		Application &app = Application::GetInstance();
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow()->GetNativeWindow());
-
-		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(window, false);
 		ImGui_ImplOpenGL3_Init("#version 430");
 	}

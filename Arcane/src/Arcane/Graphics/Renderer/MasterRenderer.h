@@ -13,6 +13,7 @@
 namespace Arcane
 {
 	class Scene3D;
+	class Shader;
 
 	class MasterRenderer
 	{
@@ -21,9 +22,17 @@ namespace Arcane
 
 		void Init();
 		void Render();
+
+		inline void SetRenderToSwapchain(bool choice) { m_RenderToSwapchain = choice; }
+
+		inline Texture* GetFinalOutputTexture() { return m_FinalOutputTexture; }
+		inline PostProcessPass* GetPostProcessPass() { return &m_PostProcessPass; }
 	private:
 		GLCache *m_GLCache;
 		Scene3D *m_ActiveScene;
+
+		Texture *m_FinalOutputTexture;
+		Shader *m_PassthroughShader;
 
 		// Other passes
 		ShadowmapPass m_ShadowmapPass;
@@ -38,6 +47,9 @@ namespace Arcane
 		DeferredGeometryPass m_DeferredGeometryPass;
 		DeferredLightingPass m_DeferredLightingPass;
 		PostGBufferForward m_PostGBufferForwardPass;
+
+		// Controls
+		bool m_RenderToSwapchain;
 
 		Timer m_ProfilingTimer;
 	};

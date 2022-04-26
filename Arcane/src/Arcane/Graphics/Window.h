@@ -34,16 +34,23 @@ namespace Arcane
 		bool InitInternal();
 		void SetFullscreenResolution();
 
+#ifdef ARC_DEV_BUILD
+		static friend void UpdateUIState(GLFWwindow *window, int key, int scancode, int action, int mods);
+#endif // ARC_DEV_BUILD
+
 		// Callback Functions
 		static friend void error_callback(int error, const char* description);
 		static friend void window_close_callback(GLFWwindow *window);
 		static friend void window_resize_callback(GLFWwindow *window, int width, int height);
 		static friend void framebuffer_resize_callback(GLFWwindow *window, int width, int height);
 		static friend void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
+		static friend void key_callback_imgui(GLFWwindow *window, int key, int scancode, int action, int mods);
 		static friend void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+		static friend void mouse_button_callback_imgui(GLFWwindow* window, int button, int action, int mods);
 		static friend void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 		static friend void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-		static friend void char_callback(GLFWwindow* window, unsigned int c);
+		static friend void scroll_callback_imgui(GLFWwindow* window, double xoffset, double yoffset);
+		static friend void char_callback_imgui(GLFWwindow* window, unsigned int c);
 		static friend void joystick_callback(int joystick, int event);
 		static friend void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 	private:
@@ -56,5 +63,7 @@ namespace Arcane
 		static int s_Width, s_Height;
 		static int s_RenderResolutionWidth, s_RenderResolutionHeight;
 		static bool s_VSync;
+
+		static bool s_EnableImGui;
 	};
 }

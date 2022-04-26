@@ -39,6 +39,7 @@ namespace Arcane
 		}
 
 		m_Directory = path.substr(0, path.find_last_of('/'));
+		m_Name = path.substr(path.find_last_of("/\\") + 1);
 
 		ProcessNode(scene->mRootNode, scene);
 	}

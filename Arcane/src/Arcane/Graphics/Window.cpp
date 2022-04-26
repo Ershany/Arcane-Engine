@@ -11,6 +11,7 @@ namespace Arcane
 	int Window::s_Width; int Window::s_Height;
 	int Window::s_RenderResolutionWidth; int Window::s_RenderResolutionHeight;
 	bool Window::s_VSync;
+	bool Window::s_EnableImGui;
 
 	Window::Window(Application *application, const ApplicationSpecification &specification)
 		: m_Application(application), m_Title(specification.Name.c_str())
@@ -22,6 +23,7 @@ namespace Arcane
 		s_VSync = specification.VSync;
 		s_HideCursor = true;
 		s_HideUI = false;
+		s_EnableImGui = specification.EnableImGui;
 	}
 
 	Window::~Window() {
@@ -86,12 +88,21 @@ namespace Arcane
 		glfwSetWindowCloseCallback(m_Window, window_close_callback);
 		glfwSetWindowSizeCallback(m_Window, window_resize_callback);
 		glfwSetFramebufferSizeCallback(m_Window, framebuffer_resize_callback);
-		glfwSetKeyCallback(m_Window, key_callback);
-		glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
 		glfwSetCursorPosCallback(m_Window, cursor_position_callback);
-		glfwSetScrollCallback(m_Window, scroll_callback);
-		glfwSetCharCallback(m_Window, char_callback);
 		glfwSetJoystickCallback(joystick_callback);
+		if (s_EnableImGui)
+		{
+			glfwSetKeyCallback(m_Window, key_callback_imgui);
+			glfwSetMouseButtonCallback(m_Window, mouse_button_callback_imgui);
+			glfwSetScrollCallback(m_Window, scroll_callback_imgui);
+			glfwSetCharCallback(m_Window, char_callback_imgui);
+		}
+		else
+		{
+			glfwSetKeyCallback(m_Window, key_callback);
+			glfwSetMouseButtonCallback(m_Window, mouse_button_callback);
+			glfwSetScrollCallback(m_Window, scroll_callback);
+		}
 
 		// Check to see if v-sync was enabled and act accordingly
 		if (s_VSync) {
@@ -192,12 +203,12 @@ namespace Arcane
 		Window* win = (Window*)glfwGetWindowUserPointer(window);
 	}
 
-	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-		Window* win = (Window*)glfwGetWindowUserPointer(window);
-		g_InputManager.KeyCallback(key, scancode, action, mods);
-		ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
 #ifdef ARC_DEV_BUILD
-		if (key == GLFW_KEY_P && action == GLFW_RELEASE) {
+	static void UpdateUIState(GLFWwindow *window, int key, int scancode, int action, int mods)
+	{
+		Window* win = (Window*)glfwGetWindowUserPointer(window);
+		if (key == GLFW_KEY_P && action == GLFW_RELEASE)
+		{
 			win->s_HideCursor = !win->s_HideCursor;
 			GLenum cursorOption = win->s_HideCursor ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL;
 			glfwSetInputMode(win->m_Window, GLFW_CURSOR, cursorOption);
@@ -206,10 +217,29 @@ namespace Arcane
 		{
 			win->s_HideUI = !win->s_HideUI;
 		}
+	}
 #endif // ARC_DEV_BUILD
+
+	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+		g_InputManager.KeyCallback(key, scancode, action, mods);
+
+		ARC_DEV_ONLY(UpdateUIState(window, key, scancode, action, mods));
+	}
+
+	static void key_callback_imgui(GLFWwindow *window, int key, int scancode, int action, int mods)
+	{
+		g_InputManager.KeyCallback(key, scancode, action, mods);
+		ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
+
+		ARC_DEV_ONLY(UpdateUIState(window, key, scancode, action, mods));
 	}
 
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+		g_InputManager.MouseButtonCallback(button, action, mods);
+	}
+
+	static void mouse_button_callback_imgui(GLFWwindow* window, int button, int action, int mods)
+	{
 		g_InputManager.MouseButtonCallback(button, action, mods);
 		ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
 	}
@@ -220,10 +250,14 @@ namespace Arcane
 	
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 		g_InputManager.ScrollCallback(xoffset, yoffset);
+	}
+
+	static void scroll_callback_imgui(GLFWwindow* window, double xoffset, double yoffset) {
+		g_InputManager.ScrollCallback(xoffset, yoffset);
 		ImGui_ImplGlfw_ScrollCallback(window, xoffset, yoffset);
 	}
 
-	static void char_callback(GLFWwindow* window, unsigned int c) {
+	static void char_callback_imgui(GLFWwindow* window, unsigned int c) {
 		ImGui_ImplGlfw_CharCallback(window, c);
 	}
 

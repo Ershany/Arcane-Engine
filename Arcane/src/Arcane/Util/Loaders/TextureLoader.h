@@ -17,10 +17,7 @@ namespace Arcane
 
 		inline static Texture* GetWhiteTexture() { return s_WhiteTexture; }
 		inline static Texture* GetBlackTexture() { return s_BlackTexture; }
-		inline static Texture* GetDefaultAlbedo() { return s_DefaultAlbedo; }
 		inline static Texture* GetDefaultNormal() { return s_DefaultNormal; }
-		inline static Texture* GetDefaultMetallic() { return s_BlackTexture; }
-		inline static Texture* GetDefaultRoughness() { return s_BlackTexture; }
 		inline static Texture* GetDefaultAO() { return s_WhiteTexture; }
 		inline static Texture* GetFullMetallic() { return s_WhiteTexture; }
 		inline static Texture* GetNoMetallic() { return s_BlackTexture; }
@@ -30,7 +27,6 @@ namespace Arcane
 		static std::unordered_map<std::string, Texture*> m_TextureCache;
 		
 		// Default Textures
-		static Texture *s_DefaultAlbedo;
 		static Texture *s_DefaultNormal;
 		static Texture *s_WhiteTexture, *s_BlackTexture;
 	};

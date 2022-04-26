@@ -35,6 +35,8 @@ namespace Arcane
 
 		static inline Application& GetInstance() { return *s_Instance; }
 		inline Window* GetWindow() { return m_Window; }
+		inline Scene3D* GetScene() { return m_Scene3D; }
+		inline MasterRenderer* GetRenderer() { return m_Renderer; }
 
 		void Run();
 		void Close();
