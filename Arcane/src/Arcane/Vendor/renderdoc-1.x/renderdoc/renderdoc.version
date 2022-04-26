@@ -1,0 +1,24 @@
+{
+        global:
+                _init;
+                _fini;
+                gl[A-Z]*;
+                egl[A-Z]*;
+                vk_icd*;
+                dlopen;
+                dlsym;
+                fork;
+                execl;
+                execlp;
+                execle;
+                execlpe;
+                execv;
+                execvp;
+                execve;
+                execvpe;
+                _exit;
+                RENDERDOC_*;
+                VK_LAYER_RENDERDOC_*;
+        local:
+                *;
+};

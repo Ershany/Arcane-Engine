@@ -1,0 +1,191 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define IDC_STATIC -1
+#include <winresrc.h>
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#define IDC_STATIC -1\r\n"
+    "#include <winresrc.h>\r\n"
+    "\r\n"
+    "\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United Kingdom) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION RENDERDOC_VERSION_MAJOR,RENDERDOC_VERSION_MINOR,0,0
+ PRODUCTVERSION RENDERDOC_VERSION_MAJOR,RENDERDOC_VERSION_MINOR,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080904b0"
+        BEGIN
+            VALUE "CompanyName", "Baldur Karlsson"
+            VALUE "FileDescription", "Core DLL for RenderDoc"
+            VALUE "FileVersion", MAJOR_MINOR_VERSION_STRING ".0.0"
+            VALUE "InternalName", "renderdoc"
+            VALUE "LegalCopyright", "Copyright © 2021 Baldur Karlsson"
+            VALUE "OriginalFilename", "renderdoc.dll"
+            VALUE "ProductName", "RenderDoc"
+            VALUE "ProductVersion", FULL_VERSION_STRING
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x809, 1200
+    END
+END
+
+#endif    // English (United Kingdom) resources
+/////////////////////////////////////////////////////////////////////////////
+
+RESOURCE_misc_hlsl         TYPE_EMBED   "hlsl/misc.hlsl"
+RESOURCE_text_hlsl         TYPE_EMBED   "hlsl/text.hlsl"
+RESOURCE_hlsl_texsample_h  TYPE_EMBED   "hlsl/hlsl_texsample.h"
+RESOURCE_histogram_hlsl    TYPE_EMBED   "hlsl/histogram.hlsl"
+RESOURCE_hlsl_cbuffers_h   TYPE_EMBED   "hlsl/hlsl_cbuffers.h"
+RESOURCE_multisample_hlsl  TYPE_EMBED   "hlsl/multisample.hlsl"
+RESOURCE_mesh_hlsl         TYPE_EMBED   "hlsl/mesh.hlsl"
+RESOURCE_texdisplay_hlsl   TYPE_EMBED   "hlsl/texdisplay.hlsl"
+RESOURCE_pixelhistory_hlsl TYPE_EMBED   "hlsl/pixelhistory.hlsl"
+RESOURCE_quadoverdraw_hlsl TYPE_EMBED   "hlsl/quadoverdraw.hlsl"
+RESOURCE_texremap_hlsl     TYPE_EMBED   "hlsl/texremap.hlsl"
+RESOURCE_fixedcol_hlsl     TYPE_EMBED   "hlsl/fixedcol.hlsl"
+
+#ifdef RENDERDOC_BAKED_DXC_SHADERS
+
+#if !defined(CONCAT)
+#define CONCAT2(a, b) a##b
+#define CONCAT(a, b) CONCAT2(a, b)
+#endif
+
+RESOURCE_fixedcol_0_dxbc   TYPE_EMBED  fixedcol_0.dxbc
+RESOURCE_fixedcol_1_dxbc   TYPE_EMBED  fixedcol_1.dxbc
+RESOURCE_fixedcol_2_dxbc   TYPE_EMBED  fixedcol_2.dxbc
+RESOURCE_fixedcol_3_dxbc   TYPE_EMBED  fixedcol_3.dxbc
+RESOURCE_quadwrite_dxbc    TYPE_EMBED  quadwrite.dxbc
+
+#else
+
+RESOURCE_fixedcol_0_dxbc   TYPE_EMBED   "hlsl/empty.dxbc"
+RESOURCE_fixedcol_1_dxbc   TYPE_EMBED   "hlsl/empty.dxbc"
+RESOURCE_fixedcol_2_dxbc   TYPE_EMBED   "hlsl/empty.dxbc"
+RESOURCE_fixedcol_3_dxbc   TYPE_EMBED   "hlsl/empty.dxbc"
+RESOURCE_quadwrite_dxbc    TYPE_EMBED   "hlsl/empty.dxbc"
+
+#endif
+
+RESOURCE_sourcecodepro_ttf TYPE_EMBED   "sourcecodepro.ttf"
+
+RESOURCE_glsl_blit_vert                TYPE_EMBED   "glsl/blit.vert"
+RESOURCE_glsl_checkerboard_frag        TYPE_EMBED   "glsl/checkerboard.frag"
+RESOURCE_glsl_texdisplay_frag          TYPE_EMBED   "glsl/texdisplay.frag"
+RESOURCE_glsl_vktext_vert              TYPE_EMBED   "glsl/vktext.vert"
+RESOURCE_glsl_vktext_frag              TYPE_EMBED   "glsl/vktext.frag"
+RESOURCE_glsl_fixedcol_frag            TYPE_EMBED   "glsl/fixedcol.frag"
+RESOURCE_glsl_mesh_vert                TYPE_EMBED   "glsl/mesh.vert"
+RESOURCE_glsl_mesh_geom                TYPE_EMBED   "glsl/mesh.geom"
+RESOURCE_glsl_mesh_frag                TYPE_EMBED   "glsl/mesh.frag"
+RESOURCE_glsl_minmaxtile_comp          TYPE_EMBED   "glsl/minmaxtile.comp"
+RESOURCE_glsl_minmaxresult_comp        TYPE_EMBED   "glsl/minmaxresult.comp"
+RESOURCE_glsl_histogram_comp           TYPE_EMBED   "glsl/histogram.comp"
+RESOURCE_glsl_pixelhistory_mscopy_comp TYPE_EMBED   "glsl/pixelhistory_mscopy.comp"
+RESOURCE_glsl_pixelhistory_mscopy_depth_comp TYPE_EMBED   "glsl/pixelhistory_mscopy_depth.comp"
+RESOURCE_glsl_pixelhistory_primid_frag TYPE_EMBED   "glsl/pixelhistory_primid.frag"
+RESOURCE_glsl_glsl_ubos_h              TYPE_EMBED   "glsl/glsl_ubos.h"
+RESOURCE_glsl_gl_texsample_h           TYPE_EMBED   "glsl/gl_texsample.h"
+RESOURCE_glsl_vk_texsample_h           TYPE_EMBED   "glsl/vk_texsample.h"
+RESOURCE_glsl_quadresolve_frag         TYPE_EMBED   "glsl/quadresolve.frag"
+RESOURCE_glsl_quadwrite_frag           TYPE_EMBED   "glsl/quadwrite.frag"
+RESOURCE_glsl_mesh_comp                TYPE_EMBED   "glsl/mesh.comp"
+RESOURCE_glsl_array2ms_comp            TYPE_EMBED   "glsl/array2ms.comp"
+RESOURCE_glsl_ms2array_comp            TYPE_EMBED   "glsl/ms2array.comp"
+RESOURCE_glsl_trisize_geom             TYPE_EMBED   "glsl/trisize.geom"
+RESOURCE_glsl_trisize_frag             TYPE_EMBED   "glsl/trisize.frag"
+RESOURCE_glsl_deptharr2ms_frag         TYPE_EMBED   "glsl/deptharr2ms.frag"
+RESOURCE_glsl_depthms2arr_frag         TYPE_EMBED   "glsl/depthms2arr.frag"
+RESOURCE_glsl_gles_texsample_h         TYPE_EMBED   "glsl/gles_texsample.h"
+RESOURCE_glsl_gltext_vert              TYPE_EMBED   "glsl/gltext.vert"
+RESOURCE_glsl_gltext_frag              TYPE_EMBED   "glsl/gltext.frag"
+RESOURCE_glsl_glsl_globals_h           TYPE_EMBED   "glsl/glsl_globals.h"
+RESOURCE_glsl_texremap_frag            TYPE_EMBED   "glsl/texremap.frag"
+RESOURCE_glsl_shaderdebug_sample_vert  TYPE_EMBED   "glsl/shaderdebug_sample.vert"
+RESOURCE_glsl_discard_frag             TYPE_EMBED   "glsl/discard.frag"
+RESOURCE_glsl_vk_ms2buffer_comp        TYPE_EMBED   "glsl/vk_ms2buffer.comp" 
+RESOURCE_glsl_vk_depthms2buffer_comp   TYPE_EMBED   "glsl/vk_depthms2buffer.comp"
+RESOURCE_glsl_vk_buffer2ms_comp        TYPE_EMBED   "glsl/vk_buffer2ms.comp" 
+RESOURCE_glsl_vk_depthbuf2ms_frag      TYPE_EMBED   "glsl/vk_depthbuf2ms.frag"
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

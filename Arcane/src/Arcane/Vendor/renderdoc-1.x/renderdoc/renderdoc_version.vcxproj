@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Development|Win32">
+      <Configuration>Development</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Development|x64">
+      <Configuration>Development</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{257FD75C-4D17-4A23-A754-23BFD85887A0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>version</RootNamespace>
+    <ProjectName>version</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\util\WindowsSDKTarget.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>$(SolutionDir)\breakpad;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <ExcludePath>$(ExcludePath)</ExcludePath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Platform)'=='x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <!-- Thanks to https://stackoverflow.com/a/43815817/4070143 -->
+  <!-- fetch the path of the assembly, and unescape it so MSBuild doesn't choke on brackets in "Program Files (x86)" -->
+  <PropertyGroup>
+    <LibGit2SharpPath>$([MSBuild]::Unescape("$(DevEnvDir)\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\LibGit2Sharp.dll"))</LibGit2SharpPath>
+    <LibGit2SharpPath Condition="!exists('$(LibGit2SharpPath)')">$([MSBuild]::Unescape("$(VSInstallDir)\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\LibGit2Sharp.dll"))</LibGit2SharpPath>
+    <!-- if the path still doesn't work, unset and we'll do manual ref lookups instead -->
+    <LibGit2SharpPath Condition="!exists('$(LibGit2SharpPath)')"></LibGit2SharpPath>
+    <!-- on MSBuild 17 (VS2022 and up) the LibGit2Sharp.dll can't load its git dll because of architecture mismatches, so do manual ref lookups -->
+    <LibGit2SharpPath Condition="'$(MSBuildVersion.Length)' > 0 And '$(MSBuildVersion.Substring(0,2))' >= 17"></LibGit2SharpPath>
+  </PropertyGroup>
+  <!-- Declare the task with some inline code -->
+  <UsingTask TaskName="GetGitCommitDotNet" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Sha1 ParameterType="System.String" Required="False" Output="True" />
+      <Repository ParameterType="System.String" Required="True" Output="False" />
+      <LibGit2SharpAssemblyPath ParameterType="System.String" Required="True" Output="False" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="$(LibGit2SharpPath)" />
+      <Code Type="Class" Language="cs">
+<![CDATA[
+using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
+namespace GitIntrospection {
+  public class GetGitCommitDotNet : Microsoft.Build.Utilities.Task {
+    public override bool Execute() {
+      System.AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => {
+        if (args.Name.Contains("LibGit2Sharp")) {
+          return System.Reflection.Assembly.LoadFrom(LibGit2SharpAssemblyPath);
+        }
+        return null;
+      };
+      GetCommit();
+      return !Log.HasLoggedErrors;
+    }
+    private void GetCommit() {
+      try {
+        Sha1 = (new LibGit2Sharp.Repository(Repository)).Commits.First().Id.Sha;
+      } catch(LibGit2Sharp.RepositoryNotFoundException) {
+      }
+    }
+
+    [Microsoft.Build.Framework.Required] public string Repository { get; set; }
+    [Microsoft.Build.Framework.Required] public string LibGit2SharpAssemblyPath { get; set; }
+    [Microsoft.Build.Framework.Output] public string Sha1 { get; set; }
+  }
+}
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <UsingTask TaskName="GetGitCommitManual" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Sha1 ParameterType="System.String" Required="False" Output="True" />
+      <Repository ParameterType="System.String" Required="True" Output="False" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Class" Language="cs">
+<![CDATA[
+using System;
+using System.IO;
+
+namespace GitIntrospection {
+  public class GetGitCommitManual : Microsoft.Build.Utilities.Task {
+    public override bool Execute() {
+      GetCommit();
+      return !Log.HasLoggedErrors;
+    }
+    private void GetCommit() {
+      string HEADpath = Repository + ".git\\HEAD";
+      if(File.Exists(HEADpath)) {
+        string HEADref = File.ReadAllText(HEADpath).Trim();
+
+        if(HEADref.StartsWith("ref: ")) {
+          string refpath = Repository + ".git\\" + HEADref.Substring(5).Replace('/', '\\');
+          if(File.Exists(refpath))
+            Sha1 = File.ReadAllText(refpath).Trim();
+        } else {
+          Sha1 = HEADref;
+        }
+      }
+    }
+
+    [Microsoft.Build.Framework.Required] public string Repository { get; set; }
+    [Microsoft.Build.Framework.Output] public string Sha1 { get; set; }
+  }
+}
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <PropertyGroup><DisableFastUpToDateCheck>true</DisableFastUpToDateCheck></PropertyGroup>
+  <!-- Only actually run the task if we located the assembly for LibGit2Sharp. Otherwise silently skip this step. -->
+  <Target Name="RunTaskDotNet" BeforeTargets="PrepareForBuild" Condition="exists('$(LibGit2SharpPath)')">
+    <GetGitCommitDotNet Repository="$(SolutionDir)" LibGit2SharpAssemblyPath="$(LibGit2SharpPath)" ContinueOnError="WarnAndContinue">
+      <Output TaskParameter="Sha1" PropertyName="CommitId" />
+    </GetGitCommitDotNet>
+    <Message Importance="high" Text="Fetched Git commit: '$(CommitId)'" Condition="$(CommitId.Length) &gt; 0" />
+    <Message Importance="high" Text="Couldn't fetch git commit" Condition="$(CommitId.Length) == 0" />
+    <ItemGroup Condition="$(CommitId.Length) &gt; 0">
+      <ClCompile>
+        <PreprocessorDefinitions>GIT_COMMIT_HASH="$(CommitId)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      </ClCompile>
+    </ItemGroup>
+  </Target>
+  <!-- Similarly, only run this task if we didn't locate the assembly (or thought we couldn't use it) -->
+  <Target Name="RunTaskManual" BeforeTargets="PrepareForBuild" Condition="!exists('$(LibGit2SharpPath)')">
+    <GetGitCommitManual Repository="$(SolutionDir)" ContinueOnError="WarnAndContinue">
+      <Output TaskParameter="Sha1" PropertyName="CommitId" />
+    </GetGitCommitManual>
+    <Message Importance="high" Text="Read Git commit: '$(CommitId)'" Condition="$(CommitId.Length) &gt; 0" />
+    <Message Importance="high" Text="Couldn't read git commit" Condition="$(CommitId.Length) == 0" />
+    <ItemGroup Condition="$(CommitId.Length) &gt; 0">
+      <ClCompile>
+        <PreprocessorDefinitions>GIT_COMMIT_HASH="$(CommitId)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      </ClCompile>
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <ClCompile Include="replay\version.cpp" />
+  </ItemGroup>
+</Project>
