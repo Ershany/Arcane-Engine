@@ -26,6 +26,7 @@ namespace Arcane
 		inline void SetRenderToSwapchain(bool choice) { m_RenderToSwapchain = choice; }
 
 		inline Texture* GetFinalOutputTexture() { return m_FinalOutputTexture; }
+		inline PostProcessPass* GetPostProcessPass() { return &m_PostProcessPass; }
 	private:
 		GLCache *m_GLCache;
 		Scene3D *m_ActiveScene;

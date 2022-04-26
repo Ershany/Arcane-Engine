@@ -4,6 +4,7 @@
 
 #include <Arcane/Editor/ConsolePanel.h>
 #include <Arcane/Editor/EditorViewport.h>
+#include <Arcane/Editor/GraphicsSettings.h>
 #include <Arcane/Editor/InspectorPanel.h>
 #include <Arcane/Editor/ScenePanel.h>
 
@@ -31,5 +32,9 @@ namespace Arcane
 		ConsolePanel m_ConsolePanel;
 		ScenePanel m_ScenePanel;
 		InspectorPanel m_InspectorPanel;
+
+		GraphicsSettings m_GraphicsSettings;
+
+		bool m_ShowGraphicsSettings;
 	};
 }

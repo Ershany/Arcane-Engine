@@ -9,7 +9,6 @@
 #include <Arcane/UI/RuntimePane.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Util/Loaders/TextureLoader.h>
-#include <Arcane/UI/DebugPane.h>
 
 namespace Arcane
 {
@@ -17,7 +16,7 @@ namespace Arcane
 		m_TonemappedNonLinearTarget(Window::GetWidth(), Window::GetHeight(), false), m_ScreenRenderTarget(Window::GetWidth(), Window::GetHeight(), false), m_ResolveRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_BrightPassRenderTarget(Window::GetWidth(), Window::GetHeight(), false),
 		m_BloomFullRenderTarget(Window::GetWidth(), Window::GetHeight(), false), m_BloomHalfRenderTarget((unsigned int)(Window::GetWidth() * 0.5f), (unsigned int)(Window::GetHeight() * 0.5f), false), m_BloomQuarterRenderTarget((unsigned int)(Window::GetWidth() * 0.25f), (unsigned int)(Window::GetHeight() * 0.25f), false), m_BloomEightRenderTarget((unsigned int)(Window::GetWidth() * 0.125f), (unsigned int)(Window::GetHeight() * 0.125f), false),
 		m_FullRenderTarget(Window::GetWidth(), Window::GetHeight(), false), m_HalfRenderTarget((unsigned int)(Window::GetWidth() * 0.5f), (unsigned int)(Window::GetHeight() * 0.5f), false), m_QuarterRenderTarget((unsigned int)(Window::GetWidth() * 0.25f), (unsigned int)(Window::GetWidth() * 0.25f), false), m_EightRenderTarget((unsigned int)(Window::GetWidth() * 0.125f), (unsigned int)(Window::GetHeight() * 0.125f), false),
-		m_SsaoNoiseTexture(), m_ProfilingTimer(), m_EffectsTimer()
+		m_VignetteTexture(nullptr), m_SsaoNoiseTexture(), m_ProfilingTimer(), m_EffectsTimer()
 	{
 		// Shader setup
 		m_TonemapGammaCorrectShader = ShaderLoader::LoadShader("TonemapGammaCorrect.glsl");
@@ -81,21 +80,6 @@ namespace Arcane
 		ssaoNoiseTextureSettings.HasMips = false;
 		m_SsaoNoiseTexture.SetTextureSettings(ssaoNoiseTextureSettings);
 		m_SsaoNoiseTexture.Generate2DTexture(4, 4, GL_RGB, GL_FLOAT, &noiseSSAO[0]);
-
-		// Debug stuff
-		DebugPane::BindFxaaEnabled(&m_FxaaEnabled);
-		DebugPane::BindGammaCorrectionValue(&m_GammaCorrection);
-		DebugPane::BindExposureValue(&m_Exposure);
-		DebugPane::BindBloomThresholdValue(&m_BloomThreshold);
-		DebugPane::BindSsaoEnabled(&m_SsaoEnabled);
-		DebugPane::BindSsaoSampleRadiusValue(&m_SsaoSampleRadius);
-		DebugPane::BindSsaoStrengthValue(&m_SsaoStrength);
-		DebugPane::BindVignetteEnabled(&m_VignetteEnabled);
-		DebugPane::BindVignetteIntensityValue(&m_VignetteIntensity);
-		DebugPane::BindChromaticAberrationEnabled(&m_ChromaticAberrationEnabled);
-		DebugPane::BindChromaticAberrationIntensityValue(&m_ChromaticAberrationIntensity);
-		DebugPane::BindFilmGrainEnabled(&m_FilmGrainEnabled);
-		DebugPane::BindFilmGrainIntensityValue(&m_FilmGrainIntensity);
 	}
 
 	PostProcessPass::~PostProcessPass() {}

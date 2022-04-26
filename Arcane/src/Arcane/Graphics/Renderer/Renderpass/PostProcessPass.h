@@ -25,6 +25,32 @@ namespace Arcane
 		void chromaticAberration(Framebuffer *target, Texture *texture);
 		void filmGrain(Framebuffer *target, Texture *texture);
 		Texture* bloom(Texture *hdrSceneTexture);
+
+		// Tonemap bindings
+		inline float& GetGammaCorrectionRef() { return m_GammaCorrection; }
+		inline float& GetExposureRef() { return m_Exposure; }
+
+		// SSAO bindings
+		inline bool& GetSsaoEnabledRef() { return m_SsaoEnabled; }
+		inline float& GetSsaoSampleRadiusRef() { return m_SsaoSampleRadius; }
+		inline float& GetSsaoStrengthRef() { return m_SsaoStrength; }
+
+		// FXAA bindings
+		inline bool& GetFxaaEnabledRef() { return m_FxaaEnabled; }
+
+		// Vignette bindings
+		inline bool& GetVignetteEnabledRef() { return m_VignetteEnabled; }
+		inline Texture* GetVignetteTexture() { return m_VignetteTexture; }
+		inline glm::vec3& GetVignetteColourRef() { return m_VignetteColour; }
+		inline float& GetVignetteIntensityRef() { return m_VignetteIntensity; }
+
+		// Chromatic Aberration bindings
+		inline bool& GetChromaticAberrationEnabledRef() { return m_ChromaticAberrationEnabled; }
+		inline float& GetChromaticAberrationIntensityRef() { return m_ChromaticAberrationIntensity; }
+
+		// Film Grain bindings
+		inline bool& GetFilmGrainEnabledRef() { return m_FilmGrainEnabled; }
+		inline float& GetFilmGrainIntensityRef() { return m_FilmGrainIntensity; }
 	private:
 		inline float lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:

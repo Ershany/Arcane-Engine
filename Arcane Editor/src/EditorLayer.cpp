@@ -7,10 +7,9 @@
 extern bool g_ApplicationRunning;
 namespace Arcane
 {
-	EditorLayer::EditorLayer() : m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_EditorViewport(), m_ConsolePanel(), m_InspectorPanel(), m_ScenePanel(m_EditorScene, &m_InspectorPanel)
-	{
-
-	}
+	EditorLayer::EditorLayer() : m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_EditorViewport(), m_ConsolePanel(), m_GraphicsSettings(Arcane::Application::GetInstance().GetRenderer()), 
+		m_InspectorPanel(), m_ScenePanel(m_EditorScene, &m_InspectorPanel), m_ShowGraphicsSettings(false)
+	{}
 
 	EditorLayer::~EditorLayer()
 	{
@@ -118,10 +117,11 @@ namespace Arcane
 				ImGui::EndMenu();
 			}
 
-			if (ImGui::BeginMenu("View"))
+			if (ImGui::BeginMenu("Settings"))
 			{
 				ImGui::MenuItem("Asset Manager", NULL, false, false);
 				ImGui::Separator();
+				ImGui::MenuItem("Graphics Settings", NULL, &m_ShowGraphicsSettings);
 				ImGui::MenuItem("Physics Settings", NULL, false, false);
 				ImGui::MenuItem("Project Settings", NULL, false, false);
 				ImGui::EndMenu();
@@ -144,6 +144,7 @@ namespace Arcane
 		m_ConsolePanel.OnImGuiRender();
 		m_ScenePanel.OnImGuiRender();
 		m_InspectorPanel.OnImGuiRender();
+		if (m_ShowGraphicsSettings) m_GraphicsSettings.OnImGuiRender(&m_ShowGraphicsSettings);
 
 		ImGui::End();
 	}
