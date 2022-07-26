@@ -11,7 +11,6 @@
 #include <Arcane/Core/Layer.h>
 #include <Arcane/ImGui/ImGuiLayer.h>
 
-
 extern bool g_ApplicationRunning;
 namespace Arcane
 {
