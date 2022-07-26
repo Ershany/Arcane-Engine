@@ -49,6 +49,9 @@ namespace Arcane
 		hyruleShield->GetMeshes()[0].GetMaterial().SetRoughnessMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Roughness].tga")));
 		hyruleShield->GetMeshes()[0].GetMaterial().SetAmbientOcclusionMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Occlusion].tga")));
 
+		//Model *simpsonsBuilding = new Arcane::Model("res/3D_Models/Simpsons/MoesTavern.obj");
+		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(20.0f, 15.0f, 30.0f), glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), simpsonsBuilding, nullptr, false, false));
+
 		//Model *sponza = new Arcane::Model("res/3D_Models/Sponza/sponza.obj");
 		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(67.0f, 110.0f, 133.0f), glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), sponza, nullptr, true, false));
 

@@ -1,6 +1,7 @@
 #pragma once
 
 // C/C++
+#include <filesystem>
 #include <cmath>
 #include <fstream>
 #include <vector>
@@ -24,6 +25,8 @@
 #include <glm/gtx/norm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <Arcane/Vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>
 
 // Arcane
 #include <Arcane/Defs.h>
