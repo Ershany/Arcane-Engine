@@ -9,7 +9,7 @@ class PremakeConfiguration:
 	premakeZipDownloadUrl = f"https://github.com/premake/premake-core/releases/download/v{premakeVersion}/premake-{premakeVersion}-windows.zip"
 	premakeLicenseUrl = "https://raw.githubusercontent.com/premake/premake-core/master/LICENSE.txt"
 	premakeDirectory = "./Dependencies/premake/bin"
-	
+
 	@classmethod
 	def Validate(config):
 		if not config.CheckIfPremakeIsInstalled():
@@ -18,7 +18,7 @@ class PremakeConfiguration:
 			
 		print(f"Correct Premake located at {os.path.abspath(config.premakeDirectory)}")
 		return True
-		
+
 	@classmethod
 	def CheckIfPremakeIsInstalled(config):
 		premakeExe = Path(f"{config.premakeDirectory}/premake5.exe")
@@ -26,7 +26,7 @@ class PremakeConfiguration:
 			return config.InstallPremake()
 			
 		return True
-		
+
 	@classmethod
 	def InstallPremake(config):
 		permissionGranted = False
@@ -45,11 +45,11 @@ class PremakeConfiguration:
 		
 		premakeLicensePath = f"{config.premakeDirectory}/LICENSE.txt"
 		print("Downloading {0:s} to {1:s}".format(config.premakeLicenseUrl, premakeLicensePath))
-        ArcaneUtils.DownloadFile(config.premakeLicenseUrl, premakeLicensePath)
-        print(f"Premake License file has been downloaded to '{config.premakeDirectory}'")
+		ArcaneUtils.DownloadFile(config.premakeLicenseUrl, premakeLicensePath)
+		print(f"Premake License file has been downloaded to '{config.premakeDirectory}'")
 		
 		return True
-	
-	
+
+
 if __name__ == "__main__":
 	PremakeConfiguration.Validate()
