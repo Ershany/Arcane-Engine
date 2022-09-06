@@ -11,7 +11,7 @@ class PythonConfiguration:
 		for packageName in ["request"]:
 			if not config.__ValidatePackage(packageName):
 				return # cannot validate
-	
+
 	@classmethod
 	def __ValidatePython(config, versionMajorRequired=3, versionMinorRequired=3):
 		if sys.version is not None:
@@ -23,13 +23,13 @@ class PythonConfiguration:
 				return False
 			return True
 		return False
-		
+
 	@classmethod
 	def __ValidatePackage(config, packageName):
 		if importlib_util.find_spec(packageName) is None:
 			return config.__InstallPackage(packageName)
 		return True
-	
+
 	@classmethod
 	def __InstallPackage(config, packageName):
 		permissionGranted = False
@@ -43,6 +43,6 @@ class PythonConfiguration:
 		subprocess.check_call(['python', '-m', 'pip', 'install', packageName])
 		
 		return config.__ValidatePackage(packageName)
-		
+
 if __name__ == "__main__":
 	PythonConfiguration.Validate()
