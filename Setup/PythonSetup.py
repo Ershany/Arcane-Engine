@@ -8,7 +8,7 @@ class PythonConfiguration:
 		if not config.__ValidatePython():
 			return # cannot validate
 		
-		for packageName in ["request"]:
+		for packageName in ["requests"]:
 			if not config.__ValidatePackage(packageName):
 				return # cannot validate
 
