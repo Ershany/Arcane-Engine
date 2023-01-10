@@ -1,0 +1,21 @@
+-r
+E:\Github Projects\Arcane-Engine\Arcane Editor\VTune Profiler Results\Arcane Editor\r001tr
+--stack-stitching
+--data-limit-mb=1000
+--disk-space-limit=0
+--mrte-type=java,dotnet,python
+--itt-config=openmp
+--stack-unwind-limit=8388608
+--itt-config=frame
+--itt-config=task,event,counter
+--stackwalk=offline
+--mrte-mode=auto
+--type=cpu:counters:nostack
+--type=cpu:stack
+--interval=10
+--type=threading:stack
+--type=waiting:stack
+--type=io:stack
+--app-working-dir=E:\Github Projects\Arcane-Engine\Arcane Editor\
+--
+E:\Github Projects\Arcane-Engine\bin\Arcane Editor-x64-Debug\Arcane Editor.exe

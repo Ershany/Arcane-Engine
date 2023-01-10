@@ -6,7 +6,7 @@
 #include <Arcane/Graphics/Texture/Texture.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
-#include <Arcane/Util/Loaders/TextureLoader.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardLightingPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/ShadowmapPass.h>
@@ -33,8 +33,9 @@ namespace Arcane
 		m_ResolveFramebuffer.AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
 #endif
 
-		m_WaveTexture = TextureLoader::Load2DTexture(std::string("res/water/dudv.png"));
-		m_WaterNormalMap = TextureLoader::Load2DTexture(std::string("res/water/normals.png"));
+		AssetManager &assetManager = AssetManager::GetInstance();
+		m_WaveTexture = assetManager.Load2DTextureAsync(std::string("res/water/dudv.png"));
+		m_WaterNormalMap = assetManager.Load2DTextureAsync(std::string("res/water/normals.png"));
 
 		// Values that can be tweaked in the editor
 		WaterPane::BindClearWater(&m_EnableClearWater);

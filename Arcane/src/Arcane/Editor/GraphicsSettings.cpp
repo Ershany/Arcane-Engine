@@ -1,7 +1,7 @@
 #include "arcpch.h"
 #include "GraphicsSettings.h"
 
-#include <Arcane/Util/Loaders/TextureLoader.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
 
 namespace Arcane
@@ -59,7 +59,7 @@ namespace Arcane
 					ImGui::PushID("Vignette Arcane Effect");
 					ImGui::Checkbox("Enabled", &postProcessPass->GetVignetteEnabledRef());
 					Texture *vignetteTexture = postProcessPass->GetVignetteTexture();
-					ImGui::Image(postProcessPass->GetVignetteTexture() ? (ImTextureID)vignetteTexture->GetTextureId() : (ImTextureID)TextureLoader::GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+					ImGui::Image(postProcessPass->GetVignetteTexture() ? (ImTextureID)vignetteTexture->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
 					if (ImGui::IsItemHovered() && vignetteTexture)
 					{
 						ImGui::BeginTooltip();

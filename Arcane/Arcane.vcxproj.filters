@@ -234,6 +234,9 @@
     <ClCompile Include="src\Arcane\Editor\GraphicsSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\arcpch.h">
@@ -501,6 +504,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Editor\GraphicsSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Arcane\Core\Threads\ThreadSafeQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

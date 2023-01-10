@@ -84,8 +84,8 @@ Arcane::Application* Arcane::CreateApplication(int argc, char **argv)
 	specification.Name = "Arcane Editor";
 	specification.WindowWidth = 2560;
 	specification.WindowHeight = 1440;
-	specification.RenderResolutionWidth = 1920;
-	specification.RenderResolutionHeight = 1080;
+	specification.RenderResolutionWidth = 1920 * SUPERSAMPLING_FACTOR;
+	specification.RenderResolutionHeight = 1080 * SUPERSAMPLING_FACTOR;
 	specification.VSync = true;
 	specification.EnableImGui = true;
 

@@ -4,7 +4,8 @@ namespace Arcane
 {
 	class Shader;
 
-	class ShaderLoader {
+	class ShaderLoader
+	{
 	public:
 		static Shader* LoadShader(const std::string &path);
 		inline static void SetShaderFilepath(const std::string &path) { s_ShaderFilepath = path; }
