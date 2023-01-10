@@ -12,7 +12,7 @@ namespace Arcane
 
 	void TextureLoader::Load2DTextureData(std::string &path, TextureGenerationData &inOutData)
 	{
-		// Load the texture data
+		// Load the texture data from file
 		int numComponents;
 		inOutData.data = stbi_load(path.c_str(), &inOutData.width, &inOutData.height, &numComponents, 0);
 		if (!inOutData.data)
@@ -36,38 +36,30 @@ namespace Arcane
 		stbi_image_free(inOutData.data);
 	}
 
-	Cubemap* TextureLoader::LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings)
+	void TextureLoader::LoadCubemapTextureData(std::string &path, CubemapGenerationData &inOutData)
 	{
-		Cubemap *cubemap = new Cubemap();
-		if (settings != nullptr)
-			cubemap->SetCubemapSettings(*settings);
-
-		std::vector<std::string> faces = { right, left, top, bottom, back, front };
-
-		// Load the textures for the cubemap
-		int width, height, numComponents;
-		for (unsigned int i = 0; i < 6; ++i) {
-			unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &numComponents, 0);
-
-			if (data) {
-				GLenum dataFormat;
-				switch (numComponents) {
-				case 1: dataFormat = GL_RED;  break;
-				case 3: dataFormat = GL_RGB;  break;
-				case 4: dataFormat = GL_RGBA; break;
-				}
-
-				cubemap->GenerateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, width, height, dataFormat, data);
-				stbi_image_free(data);
-			}
-			else {
-				ARC_LOG_ERROR("Couldn't load cubemap using 6 filepaths. Filepath error: {0}", faces[i]);
-				stbi_image_free(data);
-				return cubemap;
-			}
+		// Load the cubemap data from file
+		int numComponents;
+		inOutData.data = stbi_load(path.c_str(), &inOutData.width, &inOutData.height, &numComponents, 0);
+		if (!inOutData.data)
+		{
+			ARC_LOG_ERROR("Failed to load cubemap face: {0}, at path: {1}", inOutData.face, path);
+			stbi_image_free(inOutData.data);
+			return;
 		}
-		
-		return cubemap;
+
+		switch (numComponents)
+		{
+		case 1: inOutData.dataFormat = GL_RED;  break;
+		case 3: inOutData.dataFormat = GL_RGB;  break;
+		case 4: inOutData.dataFormat = GL_RGBA; break;
+		}
+	}
+
+	void TextureLoader::GenerateCubemapTexture(std::string &path, CubemapGenerationData &inOutData)
+	{
+		inOutData.cubemap->GenerateCubemapFace(inOutData.face, inOutData.width, inOutData.height, inOutData.dataFormat, inOutData.data);
+		stbi_image_free(inOutData.data);
 	}
 
 	void TextureLoader::InitializeDefaultTextures()
