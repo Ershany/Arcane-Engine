@@ -13,6 +13,9 @@
 // Render Settings
 #define FORWARD_RENDER 0
 
+// Streaming Settings
+#define TEXTURE_LOADS_PER_FRAME 5
+
 // AA Settings
 #define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering & for water
 #define SUPERSAMPLING_FACTOR 1 // 1 means window resolution will be the render resolution

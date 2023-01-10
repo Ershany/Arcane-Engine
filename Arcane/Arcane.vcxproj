@@ -198,6 +198,7 @@
     <ClCompile Include="src\Arcane\Input\JoystickManager.cpp" />
     <ClCompile Include="src\Arcane\main.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.cpp" />
+    <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">NotUsing</PrecompiledHeader>
@@ -271,6 +272,7 @@
     <ClInclude Include="src\Arcane\Core\Events\MouseEvent.h" />
     <ClInclude Include="src\Arcane\Core\Layer.h" />
     <ClInclude Include="src\Arcane\Core\LayerStack.h" />
+    <ClInclude Include="src\Arcane\Core\Threads\ThreadSafeQueue.h" />
     <ClInclude Include="src\Arcane\Defs.h" />
     <ClInclude Include="src\Arcane\Editor\ConsolePanel.h" />
     <ClInclude Include="src\Arcane\Editor\EditorViewport.h" />
@@ -310,6 +312,7 @@
     <ClInclude Include="src\Arcane\Input\InputManager.h" />
     <ClInclude Include="src\Arcane\Input\JoystickManager.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h" />
+    <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_rectpack.h" />

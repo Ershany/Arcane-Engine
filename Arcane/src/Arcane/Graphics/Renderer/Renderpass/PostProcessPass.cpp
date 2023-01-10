@@ -8,7 +8,7 @@
 #include <Arcane/Scene/Scene3D.h>
 #include <Arcane/UI/RuntimePane.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
-#include <Arcane/Util/Loaders/TextureLoader.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 
 namespace Arcane
 {
@@ -92,7 +92,7 @@ namespace Arcane
 #endif // DEBUG_PROFILING
 		PreLightingPassOutput passOutput;
 		if (!m_SsaoEnabled) {
-			passOutput.ssaoTexture = TextureLoader::GetWhiteTexture();
+			passOutput.ssaoTexture = AssetManager::GetInstance().GetWhiteTexture();
 			return passOutput;
 		}
 

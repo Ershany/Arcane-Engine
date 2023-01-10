@@ -3,7 +3,7 @@
 
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Mesh/Mesh.h>
-#include <Arcane/Util/Loaders/TextureLoader.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 
 namespace Arcane
 {
@@ -135,7 +135,7 @@ namespace Arcane
 
 			TextureSettings textureSettings;
 			textureSettings.IsSRGB = isSRGB;
-			return TextureLoader::Load2DTexture(fileToSearch, &textureSettings);
+			return AssetManager::GetInstance().Load2DTextureAsync(fileToSearch, &textureSettings);
 		}
 
 		return nullptr;

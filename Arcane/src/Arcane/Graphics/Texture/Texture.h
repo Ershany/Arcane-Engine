@@ -42,7 +42,7 @@ namespace Arcane
 		void Bind(int unit = 0);
 		void Unbind();
 
-		// Texture Tuning Functions (Works for pre-generation and post-generation)
+		// Texture Tuning Functions (Works for pre-generation and post-generation). For post generation you need to bind the texture before calling
 		void SetTextureWrapS(GLenum textureWrapMode);
 		void SetTextureWrapT(GLenum textureWrapMode);
 		void SetHasBorder(bool hasBorder);

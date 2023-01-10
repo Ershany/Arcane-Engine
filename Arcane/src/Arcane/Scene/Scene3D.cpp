@@ -9,7 +9,7 @@
 #include <Arcane/Graphics/Mesh/Common/Quad.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Scene/RenderableModel.h>
-#include <Arcane/Util/Loaders/TextureLoader.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 
 namespace Arcane
 {
@@ -26,28 +26,30 @@ namespace Arcane
 	}
 
 	void Scene3D::Init() {
+		AssetManager &assetManager = AssetManager::GetInstance();
+
 		TextureSettings srgbTextureSettings;
 		srgbTextureSettings.IsSRGB = true;
 
 		Model *pbrGun = new Arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
 		m_RenderableModels.push_back(new RenderableModel(glm::vec3(-32.60f, -9.28f, 48.48f), glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), pbrGun, nullptr, true, false));
-		pbrGun->GetMeshes()[0].GetMaterial().SetAlbedoMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_A.tga"), &srgbTextureSettings));
-		pbrGun->GetMeshes()[0].GetMaterial().SetNormalMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga")));
-		pbrGun->GetMeshes()[0].GetMaterial().SetMetallicMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga")));
-		pbrGun->GetMeshes()[0].GetMaterial().SetRoughnessMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga")));
-		pbrGun->GetMeshes()[0].GetMaterial().SetAmbientOcclusionMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga")));
+		pbrGun->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_A.tga"), &srgbTextureSettings));
+		pbrGun->GetMeshes()[0].GetMaterial().SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga")));
+		pbrGun->GetMeshes()[0].GetMaterial().SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga")));
+		pbrGun->GetMeshes()[0].GetMaterial().SetRoughnessMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga")));
+		pbrGun->GetMeshes()[0].GetMaterial().SetAmbientOcclusionMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga")));
 
 		Model *sphere = new Arcane::Model("res/3D_Models/Sphere/globe-sphere.obj");
 		m_RenderableModels.push_back(new RenderableModel(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), sphere, nullptr, true, false));
-		sphere->GetMeshes()[0].GetMaterial().SetAlbedoMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Sphere/rustediron2_basecolor.png"), &srgbTextureSettings));
+		sphere->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Sphere/rustediron2_basecolor.png"), &srgbTextureSettings));
 
 		Model *hyruleShield = new Arcane::Model("res/3D_Models/Hyrule_Shield/HShield.obj");
 		m_RenderableModels.push_back(new RenderableModel(glm::vec3(-7.4f, -7.6f, -31.4f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), hyruleShield, nullptr, false, false));
-		hyruleShield->GetMeshes()[0].GetMaterial().SetAlbedoMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Albedo].tga"), &srgbTextureSettings));
-		hyruleShield->GetMeshes()[0].GetMaterial().SetNormalMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Normal].tga")));
-		hyruleShield->GetMeshes()[0].GetMaterial().SetMetallicMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Metallic].tga")));
-		hyruleShield->GetMeshes()[0].GetMaterial().SetRoughnessMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Roughness].tga")));
-		hyruleShield->GetMeshes()[0].GetMaterial().SetAmbientOcclusionMap(TextureLoader::Load2DTexture(std::string("res/3D_Models/Hyrule_Shield/HShield_[Occlusion].tga")));
+		hyruleShield->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Albedo].tga"), &srgbTextureSettings));
+		hyruleShield->GetMeshes()[0].GetMaterial().SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Normal].tga")));
+		hyruleShield->GetMeshes()[0].GetMaterial().SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Metallic].tga")));
+		hyruleShield->GetMeshes()[0].GetMaterial().SetRoughnessMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Roughness].tga")));
+		hyruleShield->GetMeshes()[0].GetMaterial().SetAmbientOcclusionMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Occlusion].tga")));
 
 		//Model *simpsonsBuilding = new Arcane::Model("res/3D_Models/Simpsons/MoesTavern.obj");
 		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(20.0f, 15.0f, 30.0f), glm::vec3(3.0f, 3.0f, 3.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), simpsonsBuilding, nullptr, false, false));
