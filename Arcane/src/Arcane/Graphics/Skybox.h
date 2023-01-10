@@ -11,7 +11,7 @@ namespace Arcane
 
 	class Skybox {
 	public:
-		Skybox(const std::vector<std::string> &filePaths);
+		Skybox(std::vector<std::string> &filePaths);
 
 		void Draw(ICamera *camera);
 

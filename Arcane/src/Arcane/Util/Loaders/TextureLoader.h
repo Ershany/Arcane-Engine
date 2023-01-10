@@ -17,18 +17,27 @@ namespace Arcane
 		Texture *texture;
 	};
 
+	struct CubemapGenerationData
+	{
+		int width, height;
+		GLenum dataFormat;
+		unsigned char *data;
+		Cubemap *cubemap;
+		GLenum face;
+	};
+
 	class TextureLoader
 	{
 		friend class AssetManager;
 		friend class Application;
-	public:
-		// TODO: HDR loading
-		static Cubemap* LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
 	private:
 		static void InitializeDefaultTextures();
 
 		static void Load2DTextureData(std::string &path, TextureGenerationData &inOutData);
 		static void Generate2DTexture(std::string &path, TextureGenerationData &inOutData);
+
+		static void LoadCubemapTextureData(std::string &path, CubemapGenerationData &inOutData);
+		static void GenerateCubemapTexture(std::string &path, CubemapGenerationData &inOutData);
 	private:
 		// Default Textures
 		static Texture *s_DefaultNormal;

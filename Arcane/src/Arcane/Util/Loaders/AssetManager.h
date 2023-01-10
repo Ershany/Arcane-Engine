@@ -13,6 +13,12 @@ namespace Arcane
 		TextureGenerationData generationData;
 	};
 
+	struct CubemapLoadJob
+	{
+		std::string texturePath;
+		CubemapGenerationData generationData;
+	};
+
 	class AssetManager : public Singleton
 	{
 	public:
@@ -21,11 +27,16 @@ namespace Arcane
 
 		static AssetManager& GetInstance();
 		bool TexturesInProgress();
+		bool CubemapsInProgress();
 
 		Texture* Load2DTexture(std::string &path, TextureSettings *settings = nullptr);
 		Texture* Load2DTextureAsync(std::string &path, TextureSettings *settings = nullptr);
 
-		void Update(int texturesPerFrame);
+		// TODO: HDR loading
+		Cubemap* LoadCubemapTexture(std::string &right, std::string &left, std::string &top, std::string &bottom, std::string &back, std::string &front, CubemapSettings *settings = nullptr);
+		Cubemap* LoadCubemapTextureAsync(std::string &right, std::string &left, std::string &top, std::string &bottom, std::string &back, std::string &front, CubemapSettings *settings = nullptr);
+
+		void Update(int texturesPerFrame, int cubemapFacesPerFrame);
 
 		inline static Texture* GetWhiteTexture() { return TextureLoader::s_WhiteTexture; }
 		inline static Texture* GetBlackTexture() { return TextureLoader::s_BlackTexture; }
@@ -48,5 +59,8 @@ namespace Arcane
 		std::unordered_map<std::string, Texture*> m_TextureCache;
 		ThreadSafeQueue<TextureLoadJob> m_LoadingTexturesQueue;
 		ThreadSafeQueue<TextureLoadJob> m_GenerateTexturesQueue;
+
+		ThreadSafeQueue<CubemapLoadJob> m_LoadingCubemapQueue;
+		ThreadSafeQueue<CubemapLoadJob> m_GenerateCubemapQueue;
 	};
 }
