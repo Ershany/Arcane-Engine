@@ -237,7 +237,6 @@
     <ClCompile Include="src\Arcane\UI\Pane.cpp" />
     <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
     <ClCompile Include="src\Arcane\Util\FileUtils.cpp" />
-    <ClCompile Include="src\Arcane\Util\Loaders\MeshLoader.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\ShaderLoader.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\TextureLoader.cpp" />
     <ClCompile Include="src\Arcane\Util\Logger.cpp" />
@@ -338,7 +337,6 @@
     <ClInclude Include="src\Arcane\UI\Pane.h" />
     <ClInclude Include="src\Arcane\UI\RuntimePane.h" />
     <ClInclude Include="src\Arcane\Util\FileUtils.h" />
-    <ClInclude Include="src\Arcane\Util\Loaders\MeshLoader.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\ShaderLoader.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\TextureLoader.h" />
     <ClInclude Include="src\Arcane\Util\Logger.h" />

@@ -195,9 +195,6 @@
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Arcane\Util\Loaders\MeshLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Arcane\Util\Loaders\ShaderLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -450,9 +447,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Util\Loaders\MeshLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Util\Loaders\ShaderLoader.h">

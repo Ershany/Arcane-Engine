@@ -16,6 +16,7 @@
 // Streaming Settings
 #define TEXTURE_LOADS_PER_FRAME 2
 #define CUBEMAP_FACES_PER_FRAME 2
+#define MODELS_PER_FRAME 1
 
 // AA Settings
 #define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering & for water

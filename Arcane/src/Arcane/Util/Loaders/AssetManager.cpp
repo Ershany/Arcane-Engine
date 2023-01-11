@@ -2,6 +2,7 @@
 #include "AssetManager.h"
 
 #include <Arcane/Graphics/Texture/Cubemap.h>
+#include <Arcane/Graphics/Mesh/Model.h>
 
 namespace Arcane
 {
@@ -30,14 +31,45 @@ namespace Arcane
 		return manager;
 	}
 
-	bool AssetManager::TexturesInProgress()
+	Model* AssetManager::LoadModel(std::string &path)
 	{
-		return !m_LoadingTexturesQueue.Empty() || !m_GenerateTexturesQueue.Empty();
+		// Check the cache
+		auto iter = m_ModelCache.find(path);
+		if (iter != m_ModelCache.end())
+		{
+			return iter->second;
+		}
+
+		Model *model = new Model();
+
+		model->LoadModel(path);
+		model->GenerateGpuData();
+
+		m_ModelCache.insert(std::pair<std::string, Model*>(path, model));
+
+		return model;
 	}
 
-	bool AssetManager::CubemapsInProgress()
+	Model* AssetManager::LoadModelAsync(std::string &path)
 	{
-		return !m_LoadingCubemapQueue.Empty() || !m_GenerateCubemapQueue.Empty();
+		// Check the cache
+		auto iter = m_ModelCache.find(path);
+		if (iter != m_ModelCache.end())
+		{
+			return iter->second;
+		}
+
+		Model *model = new Model();
+
+		ModelLoadJob job;
+		job.path = path;
+		job.model = model;
+		m_ModelCache.insert(std::pair<std::string, Model*>(path, model));
+		
+		++m_AssetsInFlight;
+		m_LoadingModelQueue.Push(job);
+
+		return model;
 	}
 
 	// Function force loads a texture on the main thread and blocks until it is generated
@@ -103,6 +135,7 @@ namespace Arcane
 		job.generationData.texture = texture;
 		m_TextureCache.insert(std::pair<std::string, Texture*>(path, texture));
 
+		++m_AssetsInFlight;
 		m_LoadingTexturesQueue.Push(job);
 
 		return texture;
@@ -146,6 +179,8 @@ namespace Arcane
 			job.texturePath = faces[i];
 			job.generationData.face = (GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			job.generationData.cubemap = cubemap;
+
+			++m_AssetsInFlight;
 			m_LoadingCubemapQueue.Push(job);
 		}
 
@@ -162,14 +197,7 @@ namespace Arcane
 				if (m_LoadingTexturesQueue.TryPop(loadJob))
 				{
 					TextureLoader::Load2DTextureData(loadJob.texturePath, loadJob.generationData);
-					if (loadJob.generationData.data)
-					{
-						m_GenerateTexturesQueue.Push(loadJob);
-					}
-					else
-					{
-						delete loadJob.generationData.texture;
-					}
+					m_GenerateTexturesQueue.Push(loadJob);
 				}
 			}
 			if (!m_LoadingCubemapQueue.Empty())
@@ -178,14 +206,16 @@ namespace Arcane
 				if (m_LoadingCubemapQueue.TryPop(loadJob))
 				{
 					TextureLoader::LoadCubemapTextureData(loadJob.texturePath, loadJob.generationData);
-					if (loadJob.generationData.data)
-					{
-						m_GenerateCubemapQueue.Push(loadJob);
-					}
-					else
-					{
-						delete loadJob.generationData.data;
-					}
+					m_GenerateCubemapQueue.Push(loadJob);
+				}
+			}
+			if (!m_LoadingModelQueue.Empty())
+			{
+				ModelLoadJob loadJob;
+				if (m_LoadingModelQueue.TryPop(loadJob))
+				{
+					loadJob.model->LoadModel(loadJob.path);
+					m_GenerateModelQueue.Push(loadJob);
 				}
 			}
 
@@ -196,7 +226,7 @@ namespace Arcane
 		}
 	}
 
-	void AssetManager::Update(int texturesPerFrame, int cubemapFacesPerFrame)
+	void AssetManager::Update(int texturesPerFrame, int cubemapFacesPerFrame, int modelsPerFrame)
 	{
 		// Must be done on the main thread since OpenGL is single-threaded in nature
 		while (!m_GenerateTexturesQueue.Empty())
@@ -204,7 +234,15 @@ namespace Arcane
 			TextureLoadJob loadJob;
 			if (m_GenerateTexturesQueue.TryPop(loadJob))
 			{
+				if (!loadJob.generationData.data)
+				{
+					delete loadJob.generationData.texture;
+					--m_AssetsInFlight;
+					break;
+				}
+
 				TextureLoader::Generate2DTexture(loadJob.texturePath, loadJob.generationData);
+				--m_AssetsInFlight;
 
 				if (--texturesPerFrame <= 0)
 					break;
@@ -215,9 +253,36 @@ namespace Arcane
 			CubemapLoadJob loadJob;
 			if (m_GenerateCubemapQueue.TryPop(loadJob))
 			{
+				if (!loadJob.generationData.data)
+				{
+					delete loadJob.generationData.data;
+					--m_AssetsInFlight;
+					break;
+				}
+
 				TextureLoader::GenerateCubemapTexture(loadJob.texturePath, loadJob.generationData);
+				--m_AssetsInFlight;
 
 				if (--cubemapFacesPerFrame <= 0)
+					break;
+			}
+		}
+		while (!m_GenerateModelQueue.Empty())
+		{
+			ModelLoadJob loadJob;
+			if (m_GenerateModelQueue.TryPop(loadJob))
+			{
+				if (loadJob.model->m_Meshes.size() == 0)
+				{
+					delete loadJob.model;
+					--m_AssetsInFlight;
+					break;
+				}
+
+				loadJob.model->GenerateGpuData();
+				--m_AssetsInFlight;
+
+				if (--modelsPerFrame <= 0)
 					break;
 			}
 		}
