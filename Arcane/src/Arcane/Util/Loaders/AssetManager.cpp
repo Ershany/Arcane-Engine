@@ -220,9 +220,10 @@ namespace Arcane
 			}
 
 			// Should these asset threads be sleeping?
-			// unsigned int workLoadSizeRemaining = m_LoadingTexturesQueue.Size();
-			// const int msToWait = workLoadSizeRemaining > 0 ? 10 : 50;
-			//std::this_thread::sleep_for(std::chrono::milliseconds(msToWait));
+			unsigned int workLoadSizeRemaining = m_LoadingTexturesQueue.Size() + m_LoadingCubemapQueue.Size() + m_LoadingModelQueue.Size();
+			const int msToWait = 10;
+			if (workLoadSizeRemaining <= 0)
+				std::this_thread::sleep_for(std::chrono::milliseconds(msToWait));
 		}
 	}
 
