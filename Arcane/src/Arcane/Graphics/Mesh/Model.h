@@ -12,8 +12,9 @@ namespace Arcane
 	class Shader;
 
 	class Model {
+		friend class AssetManager;
 	public:
-		Model(const char *path);
+		Model();
 		Model(const Mesh &mesh);
 		Model(const std::vector<Mesh> &meshes);
 		
@@ -25,8 +26,10 @@ namespace Arcane
 		inline std::string& GetNameRef() { return m_Name; }
 	private:
 		void LoadModel(const std::string &path);
+		void GenerateGpuData();
+
 		void ProcessNode(aiNode *node, const aiScene *scene);
-		Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene);
+		void ProcessMesh(aiMesh *mesh, const aiScene *scene);
 		Texture* LoadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB);
 	private:
 		std::vector<Mesh> m_Meshes;

@@ -161,6 +161,7 @@ namespace Arcane
 
 		m_Mesh = new Mesh(positions, uvs, normals, tangents, bitangents, indices);
 		m_Mesh->LoadData(true);
+		m_Mesh->GenerateGpuData();
 	}
 
 	Terrain::~Terrain() {
