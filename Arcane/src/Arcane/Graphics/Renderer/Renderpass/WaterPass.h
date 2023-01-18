@@ -7,14 +7,14 @@
 namespace Arcane
 {
 	class Shader;
-	class Scene3D;
+	class Scene;
 	class ICamera;
 	class Texture;
 
 	class WaterPass : public RenderPass
 	{
 	public:
-		WaterPass(Scene3D *scene);
+		WaterPass(Scene *scene);
 		virtual ~WaterPass() override;
 
 		WaterPassOutput executeWaterPass(ShadowmapPassOutput &shadowmapData, LightingPassOutput &postTransparency, ICamera *camera);

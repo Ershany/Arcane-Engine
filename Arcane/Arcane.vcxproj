@@ -57,19 +57,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane\src;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Arcane\src\Arcane\Vendor\Imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane\src;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Arcane\src\Arcane\Vendor\Imgui;$(SolutionDir)Arcane\src\Arcane\Vendor\entt\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane\src;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Arcane\src\Arcane\Vendor\Imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane\src;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Arcane\src\Arcane\Vendor\Imgui;$(SolutionDir)Arcane\src\Arcane\Vendor\entt\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Final|x64'">
-    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane\src;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Arcane\src\Arcane\Vendor\Imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\SOIL\include;$(SolutionDir)Dependencies\GLM\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeType-GL\include;$(SolutionDir)Arcane\src;$(SolutionDir)Dependencies\spdlog\include;$(SolutionDir)Arcane\src\Arcane\Vendor\Imgui;$(SolutionDir)Arcane\src\Arcane\Vendor\entt\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\SOIL\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)bin\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
@@ -198,6 +198,10 @@
     <ClCompile Include="src\Arcane\Input\JoystickManager.cpp" />
     <ClCompile Include="src\Arcane\main.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.cpp" />
+    <ClCompile Include="src\Arcane\UI\DebugPane.cpp" />
+    <ClCompile Include="src\Arcane\UI\Pane.cpp" />
+    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
+    <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -231,11 +235,8 @@
     <ClCompile Include="src\Arcane\Platform\OpenGL\Framebuffer\Framebuffer.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\IndexBuffer.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\VertexArray.cpp" />
-    <ClCompile Include="src\Arcane\Scene\Scene3D.cpp" />
+    <ClCompile Include="src\Arcane\Scene\Scene.cpp" />
     <ClCompile Include="src\Arcane\Terrain\Terrain.cpp" />
-    <ClCompile Include="src\Arcane\UI\DebugPane.cpp" />
-    <ClCompile Include="src\Arcane\UI\Pane.cpp" />
-    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
     <ClCompile Include="src\Arcane\Util\FileUtils.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\ShaderLoader.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\TextureLoader.cpp" />
@@ -257,7 +258,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Arcane.h" />
@@ -311,6 +311,12 @@
     <ClInclude Include="src\Arcane\Input\InputManager.h" />
     <ClInclude Include="src\Arcane\Input\JoystickManager.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h" />
+    <ClInclude Include="src\Arcane\Scene\Components.h" />
+    <ClInclude Include="src\Arcane\Scene\Entity.h" />
+    <ClInclude Include="src\Arcane\UI\DebugPane.h" />
+    <ClInclude Include="src\Arcane\UI\Pane.h" />
+    <ClInclude Include="src\Arcane\UI\RuntimePane.h" />
+    <ClInclude Include="src\Arcane\UI\WaterPane.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.h" />
@@ -331,11 +337,8 @@
     <ClInclude Include="src\Arcane\Platform\OpenGL\Framebuffer\Framebuffer.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\IndexBuffer.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\VertexArray.h" />
-    <ClInclude Include="src\Arcane\Scene\Scene3D.h" />
+    <ClInclude Include="src\Arcane\Scene\Scene.h" />
     <ClInclude Include="src\Arcane\Terrain\Terrain.h" />
-    <ClInclude Include="src\Arcane\UI\DebugPane.h" />
-    <ClInclude Include="src\Arcane\UI\Pane.h" />
-    <ClInclude Include="src\Arcane\UI\RuntimePane.h" />
     <ClInclude Include="src\Arcane\Util\FileUtils.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\ShaderLoader.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\TextureLoader.h" />
@@ -349,7 +352,6 @@
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_rect_pack.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_textedit.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_truetype.h" />
-    <ClInclude Include="src\Arcane\UI\WaterPane.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomBrightPass.glsl" />

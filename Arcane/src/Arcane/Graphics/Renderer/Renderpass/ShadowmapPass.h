@@ -5,13 +5,13 @@
 namespace Arcane
 {
 	class ICamera;
-	class Scene3D;
+	class Scene;
 	class Shader;
 
 	class ShadowmapPass : public RenderPass {
 	public:
-		ShadowmapPass(Scene3D *scene);
-		ShadowmapPass(Scene3D *scene, Framebuffer *customFramebuffer);
+		ShadowmapPass(Scene *scene);
+		ShadowmapPass(Scene *scene, Framebuffer *customFramebuffer);
 		virtual ~ShadowmapPass() override;
 
 		ShadowmapPassOutput generateShadowmaps(ICamera *camera, bool renderOnlyStatic);

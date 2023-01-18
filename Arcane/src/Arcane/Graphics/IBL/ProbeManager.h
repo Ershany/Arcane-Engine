@@ -10,7 +10,7 @@ namespace Arcane
 	{
 		PROBES_DISABLED, // Ignores probes and uses the skybox
 		PROBES_SIMPLE, // Uses the closest probe (no blending)
-		PROBES_BLEND // Blends adjacent probes
+		PROBES_BLEND // Blends adjacent probes (TODO: Make this work)
 	};
 
 	class ProbeManager {

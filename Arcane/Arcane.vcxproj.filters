@@ -156,22 +156,10 @@
     <ClCompile Include="src\Arcane\Scene\RenderableModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Arcane\Scene\Scene3D.cpp">
+    <ClCompile Include="src\Arcane\Scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Arcane\Terrain\Terrain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\UI\DebugPane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\UI\Pane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\UI\WaterPane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Arcane\Util\FileUtils.cpp">
@@ -232,6 +220,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Arcane\UI\DebugPane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Arcane\UI\Pane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Arcane\UI\WaterPane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -398,22 +398,10 @@
     <ClInclude Include="src\Arcane\Scene\RenderableModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Arcane\Scene\Scene3D.h">
+    <ClInclude Include="src\Arcane\Scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Terrain\Terrain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\UI\DebugPane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\UI\Pane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\UI\RuntimePane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\UI\WaterPane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Util\FileUtils.h">
@@ -504,6 +492,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Core\Threads\ThreadSafeQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Arcane\Scene\Components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Arcane\UI\DebugPane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Arcane\UI\Pane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Arcane\UI\RuntimePane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Arcane\UI\WaterPane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Arcane\Scene\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

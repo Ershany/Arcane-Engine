@@ -26,7 +26,7 @@ namespace Arcane
 		void NewScene();
 		void OpenScene(const std::string& filepath);
 	private:
-		Scene3D *m_EditorScene;
+		Scene *m_EditorScene;
 
 		EditorViewport m_EditorViewport;
 		ConsolePanel m_ConsolePanel;

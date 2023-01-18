@@ -5,19 +5,19 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
 namespace Arcane
 {
-	DeferredGeometryPass::DeferredGeometryPass(Scene3D *scene) : RenderPass(scene), m_AllocatedGBuffer(true) {
+	DeferredGeometryPass::DeferredGeometryPass(Scene *scene) : RenderPass(scene), m_AllocatedGBuffer(true) {
 		m_ModelShader = ShaderLoader::LoadShader("deferred/PBR_Model_GeometryPass.glsl");
 		m_TerrainShader = ShaderLoader::LoadShader("deferred/PBR_Terrain_GeometryPass.glsl");
 
 		m_GBuffer = new GBuffer(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight());
 	}
 
-	DeferredGeometryPass::DeferredGeometryPass(Scene3D *scene, GBuffer *customGBuffer) : RenderPass(scene), m_AllocatedGBuffer(false), m_GBuffer(customGBuffer) {
+	DeferredGeometryPass::DeferredGeometryPass(Scene *scene, GBuffer *customGBuffer) : RenderPass(scene), m_AllocatedGBuffer(false), m_GBuffer(customGBuffer) {
 		m_ModelShader = ShaderLoader::LoadShader("deferred/PBR_Model_GeometryPass.glsl");
 		m_TerrainShader = ShaderLoader::LoadShader("deferred/PBR_Terrain_GeometryPass.glsl");
 	}

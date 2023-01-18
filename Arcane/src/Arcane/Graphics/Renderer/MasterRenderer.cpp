@@ -4,12 +4,12 @@
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/UI/RuntimePane.h>
 
 namespace Arcane
 {
-	MasterRenderer::MasterRenderer(Scene3D *scene) : m_ActiveScene(scene),
+	MasterRenderer::MasterRenderer(Scene *scene) : m_ActiveScene(scene),
 		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_WaterPass(scene), m_ForwardLightingPass(scene, true), m_EnvironmentProbePass(scene),
 		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene), m_PostGBufferForwardPass(scene),
 		m_RenderToSwapchain(true)

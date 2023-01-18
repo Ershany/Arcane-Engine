@@ -7,12 +7,12 @@
 namespace Arcane
 {
 	class Shader;
-	class Scene3D;
+	class Scene;
 	class ICamera;
 
 	class PostProcessPass : public RenderPass {
 	public:
-		PostProcessPass(Scene3D *scene);
+		PostProcessPass(Scene *scene);
 		virtual ~PostProcessPass() override;
 
 		PreLightingPassOutput executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera);

@@ -18,7 +18,7 @@ namespace Arcane
 
 	void EditorLayer::OnAttach()
 	{
-
+		auto gun = Arcane::Application::GetInstance().GetScene()->CreateEntity();
 	}
 
 	void EditorLayer::OnDetach()

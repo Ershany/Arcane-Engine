@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Scene/RenderableModel.h>
 
 namespace Arcane

@@ -13,7 +13,7 @@ namespace Arcane
 {
 	class Window;
 	class Layer;
-	class Scene3D;
+	class Scene;
 	class MasterRenderer;
 	class InputManager;
 	class ImGuiLayer;
@@ -35,7 +35,7 @@ namespace Arcane
 
 		static inline Application& GetInstance() { return *s_Instance; }
 		inline Window* GetWindow() { return m_Window; }
-		inline Scene3D* GetScene() { return m_Scene3D; }
+		inline Scene* GetScene() { return m_ActiveScene; }
 		inline MasterRenderer* GetRenderer() { return m_Renderer; }
 
 		void Run();
@@ -56,12 +56,14 @@ namespace Arcane
 		static const char* GetConfigName();
 		static const char* GetPlatformName();
 	private:
+		void InternalInit();
+
 		bool OnWindowClose(WindowCloseEvent &event);
 	private:
 		ApplicationSpecification m_Specification;
 
 		Window *m_Window;
-		Scene3D *m_Scene3D;
+		Scene *m_ActiveScene;
 		MasterRenderer *m_Renderer;
 		InputManager *m_Manager;
 		LayerStack m_LayerStack;

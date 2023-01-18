@@ -1,7 +1,7 @@
 ﻿#include "arcpch.h"
 #include "ForwardProbePass.h"
 
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Graphics/Mesh/Common/Cube.h>
 #include <Arcane/Graphics/IBL/ProbeManager.h>
 #include <Arcane/Graphics/IBL/LightProbe.h>
@@ -15,7 +15,7 @@
 
 namespace Arcane
 {
-	ForwardProbePass::ForwardProbePass(Scene3D *scene) : RenderPass(scene),
+	ForwardProbePass::ForwardProbePass(Scene *scene) : RenderPass(scene),
 		m_SceneCaptureShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false),
 		m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION, false), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION, false)
 	{

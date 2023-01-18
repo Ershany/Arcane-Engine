@@ -1,7 +1,7 @@
 #include "arcpch.h"
 #include "ShadowmapPass.h"
 
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
@@ -9,7 +9,7 @@
 
 namespace Arcane
 {
-	ShadowmapPass::ShadowmapPass(Scene3D *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
+	ShadowmapPass::ShadowmapPass(Scene *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
 
@@ -17,7 +17,7 @@ namespace Arcane
 		m_ShadowmapFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 	}
 
-	ShadowmapPass::ShadowmapPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_ShadowmapFramebuffer(customFramebuffer)
+	ShadowmapPass::ShadowmapPass(Scene *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_ShadowmapFramebuffer(customFramebuffer)
 	{
 		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
 	}

@@ -5,7 +5,7 @@
 
 namespace Arcane
 {
-	ScenePanel::ScenePanel(Scene3D *scene, InspectorPanel *inspectorPanel) : m_Scene(scene), m_InspectorPanel(inspectorPanel), m_SelectedEntity("")
+	ScenePanel::ScenePanel(Scene *scene, InspectorPanel *inspectorPanel) : m_Scene(scene), m_InspectorPanel(inspectorPanel), m_SelectedEntity("")
 	{
 	}
 

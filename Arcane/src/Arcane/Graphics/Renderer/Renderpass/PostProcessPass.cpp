@@ -5,14 +5,14 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/UI/RuntimePane.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 
 namespace Arcane
 {
-	PostProcessPass::PostProcessPass(Scene3D *scene) : RenderPass(scene), m_SsaoRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false), m_SsaoBlurRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false),
+	PostProcessPass::PostProcessPass(Scene *scene) : RenderPass(scene), m_SsaoRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false), m_SsaoBlurRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false),
 		m_TonemappedNonLinearTarget(Window::GetWidth(), Window::GetHeight(), false), m_ScreenRenderTarget(Window::GetWidth(), Window::GetHeight(), false), m_ResolveRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_BrightPassRenderTarget(Window::GetWidth(), Window::GetHeight(), false),
 		m_BloomFullRenderTarget(Window::GetWidth(), Window::GetHeight(), false), m_BloomHalfRenderTarget((unsigned int)(Window::GetWidth() * 0.5f), (unsigned int)(Window::GetHeight() * 0.5f), false), m_BloomQuarterRenderTarget((unsigned int)(Window::GetWidth() * 0.25f), (unsigned int)(Window::GetHeight() * 0.25f), false), m_BloomEightRenderTarget((unsigned int)(Window::GetWidth() * 0.125f), (unsigned int)(Window::GetHeight() * 0.125f), false),
 		m_FullRenderTarget(Window::GetWidth(), Window::GetHeight(), false), m_HalfRenderTarget((unsigned int)(Window::GetWidth() * 0.5f), (unsigned int)(Window::GetHeight() * 0.5f), false), m_QuarterRenderTarget((unsigned int)(Window::GetWidth() * 0.25f), (unsigned int)(Window::GetWidth() * 0.25f), false), m_EightRenderTarget((unsigned int)(Window::GetWidth() * 0.125f), (unsigned int)(Window::GetHeight() * 0.125f), false),

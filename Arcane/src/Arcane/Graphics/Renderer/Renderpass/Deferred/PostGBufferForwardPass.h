@@ -5,12 +5,12 @@
 namespace Arcane
 {
 	class Shader;
-	class Scene3D;
+	class Scene;
 	class ICamera;
 
 	class PostGBufferForward : public RenderPass {
 	public:
-		PostGBufferForward(Scene3D *scene);
+		PostGBufferForward(Scene *scene);
 		virtual ~PostGBufferForward() override;
 
 		LightingPassOutput executeLightingPass(ShadowmapPassOutput &shadowmapData, LightingPassOutput &lightingPassData, ICamera *camera, bool renderOnlyStatic, bool useIBL);

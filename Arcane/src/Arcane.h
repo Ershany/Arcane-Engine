@@ -24,7 +24,9 @@
 #include <Arcane/Input/InputManager.h>
 #include <Arcane/Input/JoystickManager.h>
 
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Entity.h>
+#include <Arcane/Scene/Scene.h>
+#include <Arcane/Scene/Components.h>
 
 #include <Arcane/Util/Logger.h>
 #include <Arcane/Util/FileUtils.h>

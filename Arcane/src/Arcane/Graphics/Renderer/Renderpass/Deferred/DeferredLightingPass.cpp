@@ -6,12 +6,12 @@
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Deferred/DeferredGeometryPass.h>
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
 namespace Arcane
 {
-	DeferredLightingPass::DeferredLightingPass(Scene3D *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
+	DeferredLightingPass::DeferredLightingPass(Scene *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_LightingShader = ShaderLoader::LoadShader("deferred/PBR_LightingPass.glsl");
 
@@ -19,7 +19,7 @@ namespace Arcane
 		m_Framebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthStencil).CreateFramebuffer();
 	}
 
-	DeferredLightingPass::DeferredLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
+	DeferredLightingPass::DeferredLightingPass(Scene *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
 		m_LightingShader = ShaderLoader::LoadShader("deferred/PBR_LightingPass.glsl");
 	}

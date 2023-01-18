@@ -5,12 +5,12 @@
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Skybox.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
 namespace Arcane
 {
-	PostGBufferForward::PostGBufferForward(Scene3D *scene) : RenderPass(scene)
+	PostGBufferForward::PostGBufferForward(Scene *scene) : RenderPass(scene)
 	{
 		m_ModelShader = ShaderLoader::LoadShader("forward/PBR_Model.glsl");
 	}

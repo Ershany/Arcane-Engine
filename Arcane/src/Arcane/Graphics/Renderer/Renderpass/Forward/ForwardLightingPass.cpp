@@ -6,12 +6,12 @@
 #include <Arcane/Graphics/Skybox.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
 namespace Arcane
 {
-	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, bool shouldMultisample) : RenderPass(scene), m_AllocatedFramebuffer(true)
+	ForwardLightingPass::ForwardLightingPass(Scene *scene, bool shouldMultisample) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_ModelShader = ShaderLoader::LoadShader("forward/PBR_Model.glsl");
 		m_TerrainShader = ShaderLoader::LoadShader("forward/PBR_Terrain.glsl");
@@ -20,7 +20,7 @@ namespace Arcane
 		m_Framebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthStencil).CreateFramebuffer();
 	}
 
-	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
+	ForwardLightingPass::ForwardLightingPass(Scene *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
 		m_ModelShader = ShaderLoader::LoadShader("forward/PBR_Model.glsl");
 		m_TerrainShader = ShaderLoader::LoadShader("forward/PBR_Terrain.glsl");

@@ -1,5 +1,5 @@
 #include "arcpch.h"
-#include "Scene3D.h"
+#include "Scene.h"
 
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Skybox.h>
@@ -8,12 +8,14 @@
 #include <Arcane/Graphics/Mesh/Common/Sphere.h>
 #include <Arcane/Graphics/Mesh/Common/Quad.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Scene/Entity.h>
+#include <Arcane/Scene/Components.h>
 #include <Arcane/Scene/RenderableModel.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 
 namespace Arcane
 {
-	Scene3D::Scene3D(Window *window)
+	Scene::Scene(Window *window)
 		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_ModelRenderer(GetCamera()), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_ProbeManager(m_SceneProbeBlendSetting)
 	{
 		m_GLCache = GLCache::GetInstance();
@@ -21,11 +23,13 @@ namespace Arcane
 		Init();
 	}
 
-	Scene3D::~Scene3D() {
+	Scene::~Scene()
+	{
 		
 	}
 
-	void Scene3D::Init() {
+	void Scene::Init()
+	{
 		AssetManager &assetManager = AssetManager::GetInstance();
 
 		TextureSettings srgbTextureSettings;
@@ -73,7 +77,17 @@ namespace Arcane
 		m_Skybox = new Skybox(skyboxFilePaths);
 	}
 
-	void Scene3D::OnUpdate(float deltaTime) {
+	Entity Scene::CreateEntity(const std::string &name)
+	{
+		Entity entity = { this, m_Registry.create() };
+		auto tag = entity.AddComponent<TagComponent>();
+		tag.Tag = name.empty() ? "Default Name" : name;
+		entity.AddComponent<TransformComponent>();
+		return entity;
+	}
+
+	void Scene::OnUpdate(float deltaTime)
+	{
 		// Camera Update
 		m_SceneCamera.ProcessInput(deltaTime);
 
@@ -81,7 +95,8 @@ namespace Arcane
 		m_DynamicLightManager.SetSpotLightPosition(0, m_SceneCamera.GetPosition());
 	}
 
-	void Scene3D::AddModelsToRenderer() {
+	void Scene::AddModelsToRenderer()
+	{
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
@@ -95,7 +110,8 @@ namespace Arcane
 		}
 	}
 
-	void Scene3D::AddStaticModelsToRenderer() {
+	void Scene::AddStaticModelsToRenderer()
+	{
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
@@ -111,7 +127,8 @@ namespace Arcane
 		}
 	}
 
-	void Scene3D::AddTransparentModelsToRenderer() {
+	void Scene::AddTransparentModelsToRenderer()
+	{
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
@@ -122,7 +139,8 @@ namespace Arcane
 		}
 	}
 
-	void Scene3D::AddTransparentStaticModelsToRenderer() {
+	void Scene::AddTransparentStaticModelsToRenderer()
+	{
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
@@ -133,7 +151,8 @@ namespace Arcane
 		}
 	}
 
-	void Scene3D::AddOpaqueModelsToRenderer() {
+	void Scene::AddOpaqueModelsToRenderer()
+	{
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;
@@ -144,7 +163,8 @@ namespace Arcane
 		}
 	}
 
-	void Scene3D::AddOpaqueStaticModelsToRenderer() {
+	void Scene::AddOpaqueStaticModelsToRenderer()
+	{
 		auto iter = m_RenderableModels.begin();
 		while (iter != m_RenderableModels.end()) {
 			RenderableModel *curr = *iter;

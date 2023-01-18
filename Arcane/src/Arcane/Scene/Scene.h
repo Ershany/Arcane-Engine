@@ -6,17 +6,24 @@
 #include <Arcane/Graphics/Renderer/ModelRenderer.h>
 #include <Arcane/Terrain/Terrain.h>
 
+#include "entt.hpp"
+
 namespace Arcane
 {
+	class Entity;
 	class Window;
 	class Skybox;
 	class GLCache;
 	class RenderableModel;
 
-	class Scene3D {
+	class Scene
+	{
+		friend class Entity;
 	public:
-		Scene3D(Window *window);
-		~Scene3D();
+		Scene(Window *window);
+		~Scene();
+
+		Entity CreateEntity(const std::string &name = std::string());
 
 		void OnUpdate(float deltaTime);
 
@@ -41,6 +48,9 @@ namespace Arcane
 	private:
 		// Global Data
 		GLCache *m_GLCache;
+
+		// Collection of entities in our scene
+		entt::registry m_Registry;
 
 		// Scene parameters
 		ProbeBlendSetting m_SceneProbeBlendSetting = PROBES_SIMPLE;

@@ -5,15 +5,15 @@
 namespace Arcane
 {
 	class GLCache;
-	class Scene3D;
+	class Scene;
 
 	class RenderPass {
 	public:
-		RenderPass(Scene3D *scene);
+		RenderPass(Scene *scene);
 		virtual ~RenderPass();
 	protected:
 		GLCache *m_GLCache;
 
-		Scene3D *m_ActiveScene;
+		Scene *m_ActiveScene;
 	};
 }
