@@ -1,16 +1,16 @@
 #pragma once
 
-#include <Arcane/Graphics/Renderer/MasterRenderer.h>
+#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderer.h>
 
 namespace Arcane
 {
 	class GraphicsSettings
 	{
 	public:
-		GraphicsSettings(MasterRenderer *renderer);
+		GraphicsSettings(MasterRenderPass *renderer);
 
 		void OnImGuiRender(bool *pOpen);
 	private:
-		MasterRenderer *m_Renderer;
+		MasterRenderPass *m_MasterRenderPass;
 	};
 }

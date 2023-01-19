@@ -188,7 +188,7 @@
     <ClCompile Include="src\Arcane\Graphics\Mesh\Model.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Mesh\Mesh.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\GLCache.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Renderer\MasterRenderer.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderer.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardProbePass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardLightingPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.cpp" />
@@ -302,7 +302,7 @@
     <ClInclude Include="src\Arcane\Graphics\Mesh\Model.h" />
     <ClInclude Include="src\Arcane\Graphics\Mesh\Mesh.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\GLCache.h" />
-    <ClInclude Include="src\Arcane\Graphics\Renderer\MasterRenderer.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderer.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardProbePass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardLightingPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.h" />

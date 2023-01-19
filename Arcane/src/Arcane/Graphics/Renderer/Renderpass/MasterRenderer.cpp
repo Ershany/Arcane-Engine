@@ -9,7 +9,7 @@
 
 namespace Arcane
 {
-	MasterRenderer::MasterRenderer(Scene *scene) : m_ActiveScene(scene),
+	MasterRenderPass::MasterRenderPass(Scene *scene) : m_ActiveScene(scene),
 		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_WaterPass(scene), m_ForwardLightingPass(scene, true), m_EnvironmentProbePass(scene),
 		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene), m_PostGBufferForwardPass(scene),
 		m_RenderToSwapchain(true)
@@ -19,7 +19,7 @@ namespace Arcane
 		m_PassthroughShader = ShaderLoader::LoadShader("post_process/Copy.glsl");
 	}
 
-	void MasterRenderer::Init() {
+	void MasterRenderPass::Init() {
 		// State that should never change
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
@@ -27,7 +27,7 @@ namespace Arcane
 		m_EnvironmentProbePass.pregenerateProbes();
 	}
 
-	void MasterRenderer::Render() {
+	void MasterRenderPass::Render() {
 		/* Forward Rendering */
 #if FORWARD_RENDER
 #if DEBUG_PROFILING

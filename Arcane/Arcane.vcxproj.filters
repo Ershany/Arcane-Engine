@@ -99,7 +99,7 @@
     <ClCompile Include="src\Arcane\Graphics\Renderer\GLCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\MasterRenderer.cpp">
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Arcane\Graphics\Renderer\ModelRenderer.cpp">
@@ -338,7 +338,7 @@
     <ClInclude Include="src\Arcane\Graphics\Renderer\GLCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\MasterRenderer.h">
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Graphics\Renderer\ModelRenderer.h">

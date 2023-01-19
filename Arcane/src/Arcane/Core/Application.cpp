@@ -3,7 +3,7 @@
 
 #include <Arcane/Defs.h>
 #include <Arcane/Graphics/Window.h>
-#include <Arcane/Graphics/Renderer/MasterRenderer.h>
+#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderer.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
@@ -31,7 +31,7 @@ namespace Arcane
 		Arcane::TextureLoader::InitializeDefaultTextures();
 		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
 		m_ActiveScene = new Scene(m_Window);
-		m_Renderer = new MasterRenderer(m_ActiveScene);
+		m_MasterRenderPass = new MasterRenderPass(m_ActiveScene);
 		m_Manager = new InputManager();
 	}
 
@@ -48,7 +48,7 @@ namespace Arcane
 
 		delete m_Window;
 		delete m_ActiveScene;
-		delete m_Renderer;
+		delete m_MasterRenderPass;
 		delete m_Manager;
 	}
 
@@ -63,8 +63,8 @@ namespace Arcane
 			Arcane::AssetManager::GetInstance().Update(10000, 10000, 10000);
 		}
 
-		// Initialize the renderer
-		m_Renderer->Init();
+		// Initialize the master render pass
+		m_MasterRenderPass->Init();
 
 		if (m_Specification.EnableImGui)
 		{
@@ -104,7 +104,7 @@ namespace Arcane
 				for (Layer *layer : m_LayerStack)
 					layer->OnUpdate((float)deltaTime.GetDeltaTime());
 
-				m_Renderer->Render();
+				m_MasterRenderPass->Render();
 
 				if (m_Specification.EnableImGui)
 					RenderImGui();

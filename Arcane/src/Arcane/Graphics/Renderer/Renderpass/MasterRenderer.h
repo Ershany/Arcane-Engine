@@ -15,10 +15,10 @@ namespace Arcane
 	class Scene;
 	class Shader;
 
-	class MasterRenderer
+	class MasterRenderPass
 	{
 	public:
-		MasterRenderer(Scene *scene);
+		MasterRenderPass(Scene *scene);
 
 		void Init();
 		void Render();

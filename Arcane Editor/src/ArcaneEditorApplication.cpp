@@ -91,6 +91,6 @@ Arcane::Application* Arcane::CreateApplication(int argc, char **argv)
 
 	// Create the app and set the renderer to not present the final buffer to the window's swapchain since the editor is going to be in charge of displaying the viewport
 	ArcaneEditorApplication *app = new ArcaneEditorApplication(specification);
-	app->GetRenderer()->SetRenderToSwapchain(false);
+	app->GetMasterRenderPass()->SetRenderToSwapchain(false);
 	return app;
 }
