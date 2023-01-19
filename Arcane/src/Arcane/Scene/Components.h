@@ -52,7 +52,7 @@ namespace Arcane
 		{
 		}
 
-		bool IsTransparent; // Should be true if the model contains any translucent material
-		bool IsStatic;		// Should be true if the model will never have its transform modified
+		bool IsTransparent = false; // Should be true if the model contains any translucent material
+		bool IsStatic = false;		// Should be true if the model will never have its transform modified
 	};
 }

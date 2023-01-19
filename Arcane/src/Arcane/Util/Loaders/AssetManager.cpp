@@ -31,7 +31,7 @@ namespace Arcane
 		return manager;
 	}
 
-	Model* AssetManager::LoadModel(std::string &path)
+	Model* AssetManager::LoadModel(const std::string &path)
 	{
 		// Check the cache
 		auto iter = m_ModelCache.find(path);
@@ -50,7 +50,7 @@ namespace Arcane
 		return model;
 	}
 
-	Model* AssetManager::LoadModelAsync(std::string &path)
+	Model* AssetManager::LoadModelAsync(const std::string &path)
 	{
 		// Check the cache
 		auto iter = m_ModelCache.find(path);
@@ -73,7 +73,7 @@ namespace Arcane
 	}
 
 	// Function force loads a texture on the main thread and blocks until it is generated
-	Texture* AssetManager::Load2DTexture(std::string &path, TextureSettings *settings)
+	Texture* AssetManager::Load2DTexture(const std::string &path, TextureSettings *settings)
 	{
 		// Check the cache
 		auto iter = m_TextureCache.find(path);
@@ -110,7 +110,7 @@ namespace Arcane
 	}
 
 	// Function adds the texture to a queue to be loaded by the asset manager's workers threads
-	Texture* AssetManager::Load2DTextureAsync(std::string &path, TextureSettings *settings)
+	Texture* AssetManager::Load2DTextureAsync(const std::string &path, TextureSettings *settings)
 	{
 		// Check the cache
 		auto iter = m_TextureCache.find(path);
@@ -141,7 +141,7 @@ namespace Arcane
 		return texture;
 	}
 
-	Cubemap* AssetManager::LoadCubemapTexture(std::string &right, std::string &left, std::string &top, std::string &bottom, std::string &back, std::string &front, CubemapSettings *settings)
+	Cubemap* AssetManager::LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings)
 	{
 		Cubemap *cubemap = new Cubemap();
 		if (settings != nullptr)
@@ -166,7 +166,7 @@ namespace Arcane
 		return cubemap;
 	}
 
-	Cubemap* AssetManager::LoadCubemapTextureAsync(std::string &right, std::string &left, std::string &top, std::string &bottom, std::string &back, std::string &front, CubemapSettings *settings)
+	Cubemap* AssetManager::LoadCubemapTextureAsync(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings)
 	{
 		Cubemap *cubemap = new Cubemap();
 		if (settings != nullptr)

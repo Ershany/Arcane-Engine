@@ -35,15 +35,15 @@ namespace Arcane
 		static AssetManager& GetInstance();
 		inline bool AssetsInFlight() { return m_AssetsInFlight > 0; }
 
-		Model* LoadModel(std::string &path);
-		Model* LoadModelAsync(std::string &path);
+		Model* LoadModel(const std::string &path);
+		Model* LoadModelAsync(const std::string &path);
 
-		Texture* Load2DTexture(std::string &path, TextureSettings *settings = nullptr);
-		Texture* Load2DTextureAsync(std::string &path, TextureSettings *settings = nullptr);
+		Texture* Load2DTexture(const std::string &path, TextureSettings *settings = nullptr);
+		Texture* Load2DTextureAsync(const std::string &path, TextureSettings *settings = nullptr);
 
 		// TODO: HDR loading
-		Cubemap* LoadCubemapTexture(std::string &right, std::string &left, std::string &top, std::string &bottom, std::string &back, std::string &front, CubemapSettings *settings = nullptr);
-		Cubemap* LoadCubemapTextureAsync(std::string &right, std::string &left, std::string &top, std::string &bottom, std::string &back, std::string &front, CubemapSettings *settings = nullptr);
+		Cubemap* LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
+		Cubemap* LoadCubemapTextureAsync(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
 
 		void Update(int texturesPerFrame, int cubemapFacesPerFrame, int modelsPerFrame);
 

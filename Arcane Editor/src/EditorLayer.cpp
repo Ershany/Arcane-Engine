@@ -18,7 +18,19 @@ namespace Arcane
 
 	void EditorLayer::OnAttach()
 	{
-		auto gun = Arcane::Application::GetInstance().GetScene()->CreateEntity();
+		AssetManager &assetManager = AssetManager::GetInstance();
+
+		// Load some assets for the scene at startup
+		Model *pbrGun = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
+
+		// Initialize some entities and components at startup
+		auto gun =  m_EditorScene->CreateEntity("Cerberus Gun");
+		auto &transformComponent = gun.GetComponent<TransformComponent>();
+		transformComponent.Translation = { -32.60f, -9.28f, 48.48f };
+		transformComponent.Scale = { 0.05f, 0.05f, 0.05f };
+		auto &meshComponent = gun.AddComponent<MeshComponent>(pbrGun);
+		meshComponent.IsStatic = true;
+		meshComponent.IsTransparent = false;
 	}
 
 	void EditorLayer::OnDetach()

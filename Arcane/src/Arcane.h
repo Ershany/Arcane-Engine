@@ -28,6 +28,7 @@
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Scene/Components.h>
 
+#include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Logger.h>
 #include <Arcane/Util/FileUtils.h>
 #include <Arcane/Util/Time.h>

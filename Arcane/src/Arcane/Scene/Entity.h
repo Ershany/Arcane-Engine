@@ -36,7 +36,7 @@ namespace Arcane
 		T& GetComponent()
 		{
 			ARC_ASSERT(HasComponent<T>(), "Entity does not have this component");
-			m_Scene->m_Registry.get<T>(m_Handle);
+			return m_Scene->m_Registry.get<T>(m_Handle);
 		}
 
 		template<typename T>
