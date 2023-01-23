@@ -57,14 +57,14 @@ namespace Arcane
 		{
 			ARC_LOG_INFO("Ended renderdoc frame capture");
 			renderdoc->EndFrameCapture(NULL, NULL);
-			assert(!renderdoc->IsFrameCapturing());
+			//assert(!renderdoc->IsFrameCapturing());
 		}
 
 		if (InputManager::IsKeyPressedDown(GLFW_KEY_F11))
 		{
 			ARC_LOG_INFO("Getting a 1 time renderdoc frame capture");
 			renderdoc->TriggerCapture();
-			//renderdoc->StartFrameCapture(NULL, NULL);
+			//assert(renderdoc->IsFrameCapturing());
 		}
 
 		// Movement speed

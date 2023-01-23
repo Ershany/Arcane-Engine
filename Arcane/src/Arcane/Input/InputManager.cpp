@@ -5,6 +5,7 @@ namespace Arcane
 {
 	// Static declarations
 	u8 InputManager::s_Keys[MAX_KEYS];
+	std::vector<u16> InputManager::s_FirstPressed;
 	float InputManager::s_KeyPressure[MAX_KEYS];
 	bool InputManager::s_Buttons[MAX_BUTTONS];
 	double InputManager::s_MouseX, InputManager::s_MouseY, InputManager::s_MouseXDelta, InputManager::s_MouseYDelta;
@@ -13,6 +14,8 @@ namespace Arcane
 	InputManager::InputManager() {
 		s_ScrollXDelta = s_ScrollYDelta = 0;
 		s_MouseXDelta = s_MouseYDelta = 0;
+		
+		s_FirstPressed.reserve(MAX_KEYS);
 
 		memset(s_Keys, 0, sizeof(bool) * MAX_KEYS);
 		memset(s_KeyPressure, 0, sizeof(float) * MAX_KEYS);
@@ -25,18 +28,9 @@ namespace Arcane
 		s_MouseXDelta = s_MouseYDelta = 0;
 		s_ScrollXDelta = 0; s_ScrollYDelta = 0;
 
-		// WE ARE SETTING THE NEXT HIT TO BE A REPEAT TO PRESERVE DISTINCTION ON FIRST HIT
-		// NOT IDEAL MIGHT NEED TO BE CHANGED TO SMTHG NICER
-		for (int i = 0; i < MAX_KEYS; ++i)
-		{
-			if(s_Keys[i] != GLFW_PRESS)
-			{
-				continue;
-			}
+		// Clear all first presses
+		s_FirstPressed.clear();
 
-			s_Keys[i] = GLFW_REPEAT;
-		}
-		
 		m_JoystickManager.Update();
 	}
 
@@ -59,8 +53,14 @@ namespace Arcane
 			return false;
 		}
 #endif // ARC_DEV_BUILD
-		//ARC_LOG_INFO(s_Keys[keycode]);
-		return s_Keys[keycode] == GLFW_PRESS;
+
+		for (int i = 0; i < s_FirstPressed.size(); ++i)
+		{
+			if (s_FirstPressed[i] == keycode)
+				return true;
+		}
+
+		return false;
 	}
 
 	float InputManager::GetKeyPressure(unsigned int keycode) {
@@ -88,6 +88,11 @@ namespace Arcane
 	void InputManager::KeyCallback(int key, int scancode, int action, int mods) {
 		s_Keys[key] = action;
 		s_KeyPressure[key] = max(s_Keys[key], 1);
+
+		if (action == GLFW_PRESS)
+		{
+			s_FirstPressed.push_back(key);
+		}
 	}
 
 	void InputManager::MouseButtonCallback(int button, int action, int mods) {

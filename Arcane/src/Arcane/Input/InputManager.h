@@ -43,6 +43,7 @@ namespace Arcane
 		JoystickManager m_JoystickManager;
 
 		static u8 s_Keys[MAX_KEYS];
+		static std::vector<u16> s_FirstPressed;
 		static float s_KeyPressure[MAX_KEYS];
 		static bool s_Buttons[MAX_BUTTONS];
 		static double s_MouseX, s_MouseY, s_MouseXDelta, s_MouseYDelta;
