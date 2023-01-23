@@ -3,6 +3,7 @@
 #include <Arcane/Core/Application.h>
 
 int main() {
+
 	// Temp: Should be handled by whatever service that wants to run Arcane
 	Arcane::ApplicationSpecification specification;
 	specification.Name = "Arcane Engine";

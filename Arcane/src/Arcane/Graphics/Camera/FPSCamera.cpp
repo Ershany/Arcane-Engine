@@ -4,6 +4,8 @@
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/UI/DebugPane.h>
 
+#include "glfw/glfw3native.h"
+
 namespace Arcane
 {
 	FPSCamera::FPSCamera(glm::vec3 &position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 &up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f)
@@ -42,28 +44,29 @@ namespace Arcane
 		// either no windows at all or only one window, and it will capture from that device.
 		// See the documentation below for a longer explanation
 		// NOTE: MIGHT NOT BE A BAD IDEA TO ADD AN INDICATION THAT WE ARE CAPTURING
-		auto renderdoc = Application::GetInstance().GetRenderdocApi();
-		assert(renderdoc);
 
 		// TODO: wait for a release of a button
-		if (InputManager::IsKeyPressedDown(GLFW_KEY_F9) && !renderdoc->IsFrameCapturing())
+		if (InputManager::IsKeyPressedDown(GLFW_KEY_F9) && !Application::s_RenderdocApi->IsFrameCapturing())
 		{
 			ARC_LOG_INFO("Started renderdoc frame capture");
-			renderdoc->StartFrameCapture(NULL, NULL);
+			//auto window = glfwGetWin32Window(Application::GetInstance().GetWindow()->GetNativeWindow());
+			//auto device = glfwGetWGLContext(Application::GetInstance().GetWindow()->GetNativeWindow());
+			
+			Application::s_RenderdocApi->StartFrameCapture(NULL, NULL);
 			//assert(renderdoc->IsFrameCapturing());
 		}
 
-		if (InputManager::IsKeyPressedDown(GLFW_KEY_F10) && renderdoc->IsFrameCapturing())
+		if (InputManager::IsKeyPressedDown(GLFW_KEY_F10))
 		{
 			ARC_LOG_INFO("Ended renderdoc frame capture");
-			renderdoc->EndFrameCapture(NULL, NULL);
+			Application::s_RenderdocApi->EndFrameCapture(NULL, NULL);
 			//assert(!renderdoc->IsFrameCapturing());
 		}
 
 		if (InputManager::IsKeyPressedDown(GLFW_KEY_F11))
 		{
 			ARC_LOG_INFO("Getting a 1 time renderdoc frame capture");
-			renderdoc->TriggerCapture();
+			Application::s_RenderdocApi->TriggerCapture();
 			//assert(renderdoc->IsFrameCapturing());
 		}
 

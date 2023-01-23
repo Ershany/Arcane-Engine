@@ -3,6 +3,8 @@
 #include <Arcane/Core/Assert.h>
 
 #ifdef ARC_PLATFORM_WINDOWS
+	#define GLFW_EXPOSE_NATIVE_WIN32
+	#define GLFW_EXPOSE_NATIVE_WGL
 #else
 	#error Arcane only supports Windows
 #endif
@@ -23,7 +25,6 @@
 #define ARC_DEV_ONLY(...)
 #endif
 
-
+// Some basic typedefs
 typedef uint8_t u8;
 typedef uint16_t u16;
-

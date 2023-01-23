@@ -56,10 +56,11 @@ namespace Arcane
 
 		const ApplicationSpecification& GetSpecification() const { return m_Specification; }
 
-		const RENDERDOC_API_1_5_0* GetRenderdocApi() { return m_RenderdocApi; }
-
 		static const char* GetConfigName();
 		static const char* GetPlatformName();
+
+		static RENDERDOC_API_1_5_0* s_RenderdocApi;
+
 	private:
 		bool OnWindowClose(WindowCloseEvent &event);
 	private:
@@ -83,7 +84,6 @@ namespace Arcane
 		Arcane::DebugPane m_DebugPane;
 		Arcane::WaterPane m_WaterPane;
 
-		RENDERDOC_API_1_5_0* m_RenderdocApi;
 	};
 
 	// Implemented by the client

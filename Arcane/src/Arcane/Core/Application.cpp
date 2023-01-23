@@ -12,12 +12,15 @@
 #include <Arcane/Core/Layer.h>
 #include <Arcane/ImGui/ImGuiLayer.h>
 
+#include "glfw/glfw3native.h"
+
 extern bool g_ApplicationRunning;
 namespace Arcane
 {
 #define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
+	RENDERDOC_API_1_5_0* Application::s_RenderdocApi;
 
 	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification), m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
 	{
@@ -48,42 +51,6 @@ namespace Arcane
 			m_ImGuiLayer = ImGuiLayer::Create(ARC_DEV_ONLY("Engine ImGui Layer"));
 			PushOverlay(m_ImGuiLayer);
 		}
-
-		// Load renderdoc api
-		// NOTE: RENDERDOC DLL MUST BE COPIED TO EXE LOCATION
-	
-		// Check if there is a post build way of copying the renderdoc.dll to the exe location
-		// For android replace librenderdoc.so with libVkLayer_GLES_RenderDoc.so
-		std::filesystem::path& dir = std::filesystem::current_path();
-		pRENDERDOC_GetAPI RENDERDOC_GetAPI;
-		void* mod = nullptr;
-
-#ifdef _WIN32
-		mod = LoadLibrary("renderdoc.dll");
-#elif (__Linux__)	
-		void* mod = dlopen("librenderdoc.so", RTLD_NOW | RTLD_NOLOAD);
-#endif
-
-		assert(mod);
-
-#ifdef _WIN32
-		RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)GetProcAddress((HMODULE)mod, "RENDERDOC_GetAPI");
-#elif (__linux__)	
-		RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)dlsym(mod, "RENDERDOC_GetAPI");
-#endif
-
-		assert(RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_4_0, (void**)&m_RenderdocApi) == 1);
-
-		// THIS IS RELEVANT
-		//m_RenderdocApi->SetActiveWindow(glfwGetGLXContext(m_Window->GetNativeWindow()), m_Window->GetNativeWindow());
-
-		std::string logDir = dir.string() + "/logs/";
-		if (!std::filesystem::exists(logDir))
-		{
-			std::filesystem::create_directory(logDir);
-		}
-
-		m_RenderdocApi->SetLogFilePathTemplate(logDir.c_str());
 	}
 
 	Application::~Application()
