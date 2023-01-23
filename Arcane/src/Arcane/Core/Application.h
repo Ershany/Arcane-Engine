@@ -51,6 +51,8 @@ namespace Arcane
 
 		const ApplicationSpecification& GetSpecification() const { return m_Specification; }
 
+		const RENDERDOC_API_1_5_0* GetRenderdocApi() { return m_RenderdocApi; }
+
 		static const char* GetConfigName();
 		static const char* GetPlatformName();
 	private:
@@ -75,6 +77,8 @@ namespace Arcane
 		Arcane::RuntimePane m_RuntimePane;
 		Arcane::DebugPane m_DebugPane;
 		Arcane::WaterPane m_WaterPane;
+
+		RENDERDOC_API_1_5_0* m_RenderdocApi;
 	};
 
 	// Implemented by the client

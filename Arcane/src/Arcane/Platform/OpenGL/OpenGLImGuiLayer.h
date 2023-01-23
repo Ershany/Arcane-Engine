@@ -16,5 +16,7 @@ namespace Arcane
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
 		virtual void OnImGuiRender() override;
+
+		ARC_DEV_ONLY(std::string m_DebugName);
 	};
 }

@@ -41,6 +41,42 @@ namespace Arcane
 			m_ImGuiLayer = ImGuiLayer::Create(ARC_DEV_ONLY("Engine ImGui Layer"));
 			PushOverlay(m_ImGuiLayer);
 		}
+
+		// Load renderdoc api
+		// NOTE: RENDERDOC DLL MUST BE COPIED TO EXE LOCATION
+	
+		// Check if there is a post build way of copying the renderdoc.dll to the exe location
+		// For android replace librenderdoc.so with libVkLayer_GLES_RenderDoc.so
+		std::filesystem::path& dir = std::filesystem::current_path();
+		pRENDERDOC_GetAPI RENDERDOC_GetAPI;
+		void* mod = nullptr;
+
+#ifdef _WIN32
+		mod = LoadLibrary("renderdoc.dll");
+#elif (__Linux__)	
+		void* mod = dlopen("librenderdoc.so", RTLD_NOW | RTLD_NOLOAD);
+#endif
+
+		assert(mod);
+
+#ifdef _WIN32
+		RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)GetProcAddress((HMODULE)mod, "RENDERDOC_GetAPI");
+#elif (__linux__)	
+		RENDERDOC_GetAPI = (pRENDERDOC_GetAPI)dlsym(mod, "RENDERDOC_GetAPI");
+#endif
+
+		assert(RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_4_0, (void**)&m_RenderdocApi) == 1);
+
+		// THIS IS RELEVANT
+		//m_RenderdocApi->SetActiveWindow(glfwGetGLXContext(m_Window->GetNativeWindow()), m_Window->GetNativeWindow());
+
+		std::string logDir = dir.string() + "/logs/";
+		if (!std::filesystem::exists(logDir))
+		{
+			std::filesystem::create_directory(logDir);
+		}
+
+		m_RenderdocApi->SetLogFilePathTemplate(logDir.c_str());
 	}
 
 	Application::~Application()
@@ -50,6 +86,10 @@ namespace Arcane
 			layer->OnDetach();
 			delete layer;
 		}
+
+#if ARC_RENDERDOC_DEBUG
+		m_RenderdocApi->Shutdown();
+#endif
 
 		// Todo: insert render queue flush here
 		// And render shutdown

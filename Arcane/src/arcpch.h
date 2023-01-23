@@ -14,6 +14,7 @@
 #include <iterator>
 #include <fstream>
 #include <random>
+#include <filesystem> // TODO: might not be necessary
 
 // Dependencies
 #include <gl/glew.h>
@@ -35,3 +36,6 @@
 #include <Arcane/Util/Logger.h>
 #include <Arcane/Core/Base.h>
 #include <Arcane/Core/Events/Event.h>
+
+// Renderdoc debug
+#include <Arcane/vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>

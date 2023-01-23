@@ -38,6 +38,35 @@ namespace Arcane
 	}
 
 	void FPSCamera::ProcessInput(float deltaTime) {
+		// You can specify NULL, NULL for the device to capture on if you have only one device and
+		// either no windows at all or only one window, and it will capture from that device.
+		// See the documentation below for a longer explanation
+		// NOTE: MIGHT NOT BE A BAD IDEA TO ADD AN INDICATION THAT WE ARE CAPTURING
+		auto renderdoc = Application::GetInstance().GetRenderdocApi();
+		assert(renderdoc);
+
+		// TODO: wait for a release of a button
+		if (InputManager::GetButtonDown(GLFW_KEY_F9) && !renderdoc->IsFrameCapturing())
+		{
+			ARC_LOG_INFO("Started renderdoc frame capture");
+			renderdoc->StartFrameCapture(NULL, NULL);
+			//assert(renderdoc->IsFrameCapturing());
+		}
+
+		if (InputManager::GetButtonDown(GLFW_KEY_F10) && renderdoc->IsFrameCapturing())
+		{
+			ARC_LOG_INFO("Ended renderdoc frame capture");
+			renderdoc->EndFrameCapture(NULL, NULL);
+			assert(!renderdoc->IsFrameCapturing());
+		}
+
+		if (InputManager::GetButtonDown(GLFW_KEY_F11))
+		{
+			ARC_LOG_INFO("Getting a 1 time renderdoc frame capture");
+			renderdoc->TriggerCapture();
+			//renderdoc->StartFrameCapture(NULL, NULL);
+		}
+
 		// Movement speed
 		if (InputManager::IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
 			m_CurrentMovementSpeed = FPSCAMERA_MAX_SPEED * 4.0f;

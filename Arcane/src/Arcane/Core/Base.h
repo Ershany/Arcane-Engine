@@ -11,6 +11,8 @@
 
 #define ARC_BIND_EVENT_FN(fn) std::bind(&##fn, this, std::placeholders::_1)
 
+#define ARC_RENDERDOC_DEBUG defined(ARC_DEBUG) || defined(ARC_RELEASE)
+
 #if defined(ARC_DEBUG) || defined(ARC_RELEASE)
 #define ARC_DEV_BUILD
 #endif
@@ -20,3 +22,4 @@
 #else
 #define ARC_DEV_ONLY(...)
 #endif
+
