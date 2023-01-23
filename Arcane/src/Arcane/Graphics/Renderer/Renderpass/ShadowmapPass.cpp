@@ -39,9 +39,9 @@ namespace Arcane
 
 		// View setup
 		m_GLCache->SetShader(m_ShadowmapShader);
-		glm::vec3 dirLightShadowmapLookAtPos = camera->GetPosition() + (glm::normalize(camera->GetFront()) * 50.0f);
-		glm::vec3 dirLightShadowmapEyePos = dirLightShadowmapLookAtPos + (-lightManager->GetDirectionalLightDirection(0) * 100.0f);
-		glm::mat4 directionalLightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, SHADOWMAP_NEAR_PLANE, SHADOWMAP_FAR_PLANE);
+		glm::vec3 dirLightShadowmapLookAtPos = camera->GetPosition();
+		glm::vec3 dirLightShadowmapEyePos = dirLightShadowmapLookAtPos - (lightManager->GetDirectionalLightDirection(0) * 50.0f);
+		glm::mat4 directionalLightProjection = glm::ortho(-40.0f, 40.0f, -40.0f, 40.0f, SHADOWMAP_NEAR_PLANE, SHADOWMAP_FAR_PLANE);
 		glm::mat4 directionalLightView = glm::lookAt(dirLightShadowmapEyePos, dirLightShadowmapLookAtPos, glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 directionalLightViewProjMatrix = directionalLightProjection * directionalLightView;
 		m_ShadowmapShader->SetUniform("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);

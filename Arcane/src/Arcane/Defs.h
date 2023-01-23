@@ -13,6 +13,11 @@
 // Render Settings
 #define FORWARD_RENDER 0
 
+// Streaming Settings
+#define TEXTURE_LOADS_PER_FRAME 2
+#define CUBEMAP_FACES_PER_FRAME 2
+#define MODELS_PER_FRAME 1
+
 // AA Settings
 #define MSAA_SAMPLE_AMOUNT 4 // Only used in forward rendering & for water
 #define SUPERSAMPLING_FACTOR 1 // 1 means window resolution will be the render resolution
@@ -35,7 +40,7 @@
 #define SHADOWMAP_RESOLUTION_X 2048
 #define SHADOWMAP_RESOLUTION_Y 2048
 #define SHADOWMAP_NEAR_PLANE 1.0f
-#define SHADOWMAP_FAR_PLANE 400.0f
+#define SHADOWMAP_FAR_PLANE 200.0f
 
 // SSAO Options
 #define SSAO_KERNEL_SIZE 32 // Maximum amount is restricted by the shader. Only supports a maximum of 64

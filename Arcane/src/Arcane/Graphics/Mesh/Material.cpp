@@ -3,14 +3,15 @@
 
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/texture/Texture.h>
-#include <Arcane/Util/Loaders/TextureLoader.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/UI/DebugPane.h>
 
 namespace Arcane
 {
-	Material::Material(Texture *albedoMap, Texture *normalMap, Texture *metallicMap, Texture *roughnessMap, Texture *ambientOcclusionMap, Texture *displacementMap)
-		: m_AlbedoMap(albedoMap), m_NormalMap(normalMap), m_MetallicMap(metallicMap), m_RoughnessMap(roughnessMap), m_AmbientOcclusionMap(ambientOcclusionMap), m_DisplacementMap(displacementMap),
+	Material::Material()
+		: m_AlbedoMap(nullptr), m_NormalMap(nullptr), m_MetallicMap(nullptr), m_RoughnessMap(nullptr), m_AmbientOcclusionMap(nullptr), m_DisplacementMap(nullptr),
+			m_AlbedoColour(0.894f, 0.023f, 0.992f, 1.0f), m_MetallicValue(0.0f), m_RoughnessValue(0.0f),
 			m_ParallaxStrength(0.07f), m_ParallaxMinSteps(PARALLAX_MIN_STEPS), m_ParallelMaxSteps(PARALLAX_MAX_STEPS)
 	{
 	}
@@ -23,48 +24,54 @@ namespace Arcane
 		// Texture unit 3 is reserved for the brdfLUT
 		int currentTextureUnit = 4;
 
-		shader->SetUniform("material.texture_albedo", currentTextureUnit);
-		if (m_AlbedoMap) {
+		shader->SetUniform("material.albedoColour", m_AlbedoColour);
+		if (m_AlbedoMap && m_AlbedoMap->IsGenerated()) {
+			shader->SetUniform("material.texture_albedo", currentTextureUnit);
+			shader->SetUniform("material.hasAlbedoTexture", true);
 			m_AlbedoMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::GetDefaultAlbedo()->Bind(currentTextureUnit++);
+			shader->SetUniform("material.hasAlbedoTexture", false);
 		}
 
 		shader->SetUniform("material.texture_normal", currentTextureUnit);
-		if (m_NormalMap) {
+		if (m_NormalMap && m_NormalMap->IsGenerated()) {
 			m_NormalMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::GetDefaultNormal()->Bind(currentTextureUnit++);
+			AssetManager::GetInstance().GetDefaultNormalTexture()->Bind(currentTextureUnit++);
 		}
 
-		shader->SetUniform("material.texture_metallic", currentTextureUnit);
-		if (m_MetallicMap) {
+		if (m_MetallicMap && m_MetallicMap->IsGenerated()) {
+			shader->SetUniform("material.texture_metallic", currentTextureUnit);
+			shader->SetUniform("material.hasMetallicTexture", true);
 			m_MetallicMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::GetDefaultMetallic()->Bind(currentTextureUnit++);
+			shader->SetUniform("material.hasMetallicTexture", false);
+			shader->SetUniform("material.metallicValue", m_MetallicValue);
 		}
 
-		shader->SetUniform("material.texture_roughness", currentTextureUnit);
-		if (m_RoughnessMap) {
+		if (m_RoughnessMap && m_RoughnessMap->IsGenerated()) {
+			shader->SetUniform("material.texture_roughness", currentTextureUnit);
+			shader->SetUniform("material.hasRoughnessTexture", true);
 			m_RoughnessMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::GetDefaultRoughness()->Bind(currentTextureUnit++);
+			shader->SetUniform("material.hasRoughnessTexture", false);
+			shader->SetUniform("material.roughnessValue", m_RoughnessValue);
 		}
 
 		shader->SetUniform("material.texture_ao", currentTextureUnit);
-		if (m_AmbientOcclusionMap) {
+		if (m_AmbientOcclusionMap && m_AmbientOcclusionMap->IsGenerated()) {
 			m_AmbientOcclusionMap->Bind(currentTextureUnit++);
 		}
 		else {
-			TextureLoader::GetDefaultAO()->Bind(currentTextureUnit++);
+			AssetManager::GetInstance().GetDefaultAOTexture()->Bind(currentTextureUnit++);
 		}
 
 		shader->SetUniform("material.texture_displacement", currentTextureUnit);
-		if (m_DisplacementMap) {
+		if (m_DisplacementMap && m_DisplacementMap->IsGenerated()) {
 			shader->SetUniform("hasDisplacement", true);
 			shader->SetUniform("minMaxDisplacementSteps", glm::vec2(m_ParallaxMinSteps, m_ParallelMaxSteps));
 			shader->SetUniform("parallaxStrength", m_ParallaxStrength);

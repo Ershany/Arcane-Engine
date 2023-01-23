@@ -3,13 +3,11 @@
 
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Mesh/Mesh.h>
-#include <Arcane/Util/Loaders/TextureLoader.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 
 namespace Arcane
 {
-	Model::Model(const char *path) {
-		LoadModel(path);
-	}
+	Model::Model() {}
 
 	Model::Model(const Mesh &mesh) {
 		m_Meshes.push_back(mesh);
@@ -39,8 +37,17 @@ namespace Arcane
 		}
 
 		m_Directory = path.substr(0, path.find_last_of('/'));
+		m_Name = path.substr(path.find_last_of("/\\") + 1);
 
 		ProcessNode(scene->mRootNode, scene);
+	}
+
+	void Model::GenerateGpuData()
+	{
+		for (int i = 0; i < m_Meshes.size(); i++)
+		{
+			m_Meshes[i].GenerateGpuData();
+		}
 	}
 
 	void Model::ProcessNode(aiNode *node, const aiScene *scene) {
@@ -48,7 +55,7 @@ namespace Arcane
 		for (unsigned int i = 0; i < node->mNumMeshes; ++i) {
 			// Each node has an array of mesh indices, use these indices to get the meshes from the scene
 			aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-			m_Meshes.push_back(ProcessMesh(mesh, scene));
+			ProcessMesh(mesh, scene);
 		}
 		// Process all of the node's children
 		for (unsigned int i = 0; i < node->mNumChildren; ++i) {
@@ -56,7 +63,7 @@ namespace Arcane
 		}
 	}
 
-	Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
+	void Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
 		std::vector<glm::vec3> positions;
 		std::vector<glm::vec2> uvs;
 		std::vector<glm::vec3> normals;
@@ -116,7 +123,7 @@ namespace Arcane
 			newMesh.m_Material.SetDisplacementMap(LoadMaterialTexture(material, aiTextureType_DISPLACEMENT, true));
 		}
 
-		return newMesh;
+		m_Meshes.push_back(newMesh);
 	}
 
 	Texture* Model::LoadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB) {
@@ -134,7 +141,7 @@ namespace Arcane
 
 			TextureSettings textureSettings;
 			textureSettings.IsSRGB = isSRGB;
-			return TextureLoader::Load2DTexture(fileToSearch, &textureSettings);
+			return AssetManager::GetInstance().Load2DTextureAsync(fileToSearch, &textureSettings);
 		}
 
 		return nullptr;

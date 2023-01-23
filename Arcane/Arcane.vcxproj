@@ -20,6 +20,9 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -157,6 +160,11 @@
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
     <ClCompile Include="src\Arcane\Core\Layer.cpp" />
     <ClCompile Include="src\Arcane\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Arcane\Editor\ConsolePanel.cpp" />
+    <ClCompile Include="src\Arcane\Editor\EditorViewport.cpp" />
+    <ClCompile Include="src\Arcane\Editor\GraphicsSettings.cpp" />
+    <ClCompile Include="src\Arcane\Editor\InspectorPanel.cpp" />
+    <ClCompile Include="src\Arcane\Editor\ScenePanel.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.cpp" />
@@ -190,6 +198,7 @@
     <ClCompile Include="src\Arcane\Input\JoystickManager.cpp" />
     <ClCompile Include="src\Arcane\main.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.cpp" />
+    <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">NotUsing</PrecompiledHeader>
@@ -228,7 +237,6 @@
     <ClCompile Include="src\Arcane\UI\Pane.cpp" />
     <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
     <ClCompile Include="src\Arcane\Util\FileUtils.cpp" />
-    <ClCompile Include="src\Arcane\Util\Loaders\MeshLoader.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\ShaderLoader.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\TextureLoader.cpp" />
     <ClCompile Include="src\Arcane\Util\Logger.cpp" />
@@ -263,7 +271,13 @@
     <ClInclude Include="src\Arcane\Core\Events\MouseEvent.h" />
     <ClInclude Include="src\Arcane\Core\Layer.h" />
     <ClInclude Include="src\Arcane\Core\LayerStack.h" />
+    <ClInclude Include="src\Arcane\Core\Threads\ThreadSafeQueue.h" />
     <ClInclude Include="src\Arcane\Defs.h" />
+    <ClInclude Include="src\Arcane\Editor\ConsolePanel.h" />
+    <ClInclude Include="src\Arcane\Editor\EditorViewport.h" />
+    <ClInclude Include="src\Arcane\Editor\GraphicsSettings.h" />
+    <ClInclude Include="src\Arcane\Editor\InspectorPanel.h" />
+    <ClInclude Include="src\Arcane\Editor\ScenePanel.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.h" />
@@ -297,6 +311,7 @@
     <ClInclude Include="src\Arcane\Input\InputManager.h" />
     <ClInclude Include="src\Arcane\Input\JoystickManager.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h" />
+    <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_rectpack.h" />
@@ -322,7 +337,6 @@
     <ClInclude Include="src\Arcane\UI\Pane.h" />
     <ClInclude Include="src\Arcane\UI\RuntimePane.h" />
     <ClInclude Include="src\Arcane\Util\FileUtils.h" />
-    <ClInclude Include="src\Arcane\Util\Loaders\MeshLoader.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\ShaderLoader.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\TextureLoader.h" />
     <ClInclude Include="src\Arcane\Util\Logger.h" />

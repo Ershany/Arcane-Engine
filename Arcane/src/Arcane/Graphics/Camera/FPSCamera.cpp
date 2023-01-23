@@ -46,21 +46,21 @@ namespace Arcane
 		assert(renderdoc);
 
 		// TODO: wait for a release of a button
-		if (InputManager::GetButtonDown(GLFW_KEY_F9) && !renderdoc->IsFrameCapturing())
+		if (InputManager::IsKeyPressedDown(GLFW_KEY_F9) && !renderdoc->IsFrameCapturing())
 		{
 			ARC_LOG_INFO("Started renderdoc frame capture");
 			renderdoc->StartFrameCapture(NULL, NULL);
 			//assert(renderdoc->IsFrameCapturing());
 		}
 
-		if (InputManager::GetButtonDown(GLFW_KEY_F10) && renderdoc->IsFrameCapturing())
+		if (InputManager::IsKeyPressedDown(GLFW_KEY_F10) && renderdoc->IsFrameCapturing())
 		{
 			ARC_LOG_INFO("Ended renderdoc frame capture");
 			renderdoc->EndFrameCapture(NULL, NULL);
 			assert(!renderdoc->IsFrameCapturing());
 		}
 
-		if (InputManager::GetButtonDown(GLFW_KEY_F11))
+		if (InputManager::IsKeyPressedDown(GLFW_KEY_F11))
 		{
 			ARC_LOG_INFO("Getting a 1 time renderdoc frame capture");
 			renderdoc->TriggerCapture();

@@ -15,6 +15,7 @@ namespace Arcane
 		void Update();
 
 		static bool IsKeyPressed(unsigned int keycode);
+		static bool IsKeyPressedDown(unsigned int keycode);
 		static float GetKeyPressure(unsigned int keycode);
 		static bool IsMouseButtonPressed(unsigned int code);
 		static bool GetButton(int keyCode);
@@ -41,7 +42,7 @@ namespace Arcane
 	private:
 		JoystickManager m_JoystickManager;
 
-		static bool s_Keys[MAX_KEYS];
+		static u8 s_Keys[MAX_KEYS];
 		static float s_KeyPressure[MAX_KEYS];
 		static bool s_Buttons[MAX_BUTTONS];
 		static double s_MouseX, s_MouseY, s_MouseXDelta, s_MouseYDelta;

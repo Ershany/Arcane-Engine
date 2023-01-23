@@ -96,8 +96,9 @@ vec3 WorldPosFromDepth();
 
 void main() {
 	// Sample textures
-	vec3 albedo = texture(albedoTexture, TexCoords).rgb;
-	float albedoAlpha = texture(albedoTexture, TexCoords).w;
+	vec4 sampledAlbedo = texture(albedoTexture, TexCoords).rgba;
+	vec3 albedo = sampledAlbedo.rgb;
+	float albedoAlpha = sampledAlbedo.w;
 	vec3 normal = texture(normalTexture, TexCoords).rgb;
 	float metallic = texture(materialInfoTexture, TexCoords).r;
 	float unclampedRoughness = texture(materialInfoTexture, TexCoords).g; // Used for indirect specular (reflections)

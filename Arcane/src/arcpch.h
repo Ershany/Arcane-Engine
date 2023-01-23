@@ -1,18 +1,14 @@
 #pragma once
 
 // C/C++
+#include <filesystem>
 #include <cmath>
-#include <math.h>
-#include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
-#include <deque>
 #include <unordered_map>
 #include <array>
-#include <set>
 #include <iterator>
-#include <fstream>
 #include <random>
 #include <filesystem> // TODO: might not be necessary
 
@@ -30,6 +26,8 @@
 #include <glm/gtx/norm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <Arcane/Vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>
 
 // Arcane
 #include <Arcane/Defs.h>

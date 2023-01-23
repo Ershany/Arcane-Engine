@@ -6,7 +6,7 @@
 #include <Arcane/Graphics/Texture/Texture.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
-#include <Arcane/Util/Loaders/TextureLoader.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardLightingPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/ShadowmapPass.h>
@@ -16,7 +16,7 @@
 namespace Arcane
 {
 	WaterPass::WaterPass(Scene3D * scene) : RenderPass(scene), m_WaterEnabled(true), m_SceneRefractionFramebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false),
-		m_WaterPos(1095.0f, 83.0f, 730.0f), m_WaterScale(600.0f), m_EnableClearWater(false), m_EnableShine(true), m_WaterTiling(6.0), m_WaveMoveFactor(0.0f), m_WaveSpeed(0.05f), m_WaterAlbedo(0.1f, 0.9f, 0.9f),
+		m_WaterPos(25.0f, -14.0f, -50.0f), m_WaterScale(150.0f), m_EnableClearWater(false), m_EnableShine(true), m_WaterTiling(6.0), m_WaveMoveFactor(0.0f), m_WaveSpeed(0.05f), m_WaterAlbedo(0.1f, 0.9f, 0.9f),
 		m_AlbedoPower(0.1f), m_WaveStrength(0.02f), m_ShineDamper(25.0f), m_WaterNormalSmoothing(1.0f), m_DepthdampeningEffect(0.1f), m_ReflectionBias(2.0f), m_RefractionBias(2.0f)
 #ifdef WATER_REFLECTION_USE_MSAA
 		, m_SceneReflectionFramebuffer(WATER_REFLECTION_RESOLUTION_WIDTH, WATER_REFLECTION_RESOLUTION_HEIGHT, true)
@@ -33,8 +33,9 @@ namespace Arcane
 		m_ResolveFramebuffer.AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
 #endif
 
-		m_WaveTexture = TextureLoader::Load2DTexture(std::string("res/water/dudv.png"));
-		m_WaterNormalMap = TextureLoader::Load2DTexture(std::string("res/water/normals.png"));
+		AssetManager &assetManager = AssetManager::GetInstance();
+		m_WaveTexture = assetManager.Load2DTextureAsync(std::string("res/water/dudv.png"));
+		m_WaterNormalMap = assetManager.Load2DTextureAsync(std::string("res/water/normals.png"));
 
 		// Values that can be tweaked in the editor
 		WaterPane::BindClearWater(&m_EnableClearWater);

@@ -6,6 +6,8 @@
 #include <Arcane/Graphics/Mesh/Common/Cube.h>
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
 
+#include <deque>
+
 namespace Arcane
 {
 	class GLCache;

@@ -19,14 +19,19 @@ namespace Arcane
 
 
 		inline const glm::vec3& GetPosition() const { return m_Position; }
+		inline glm::vec3& GetPositionRef() { return m_Position; }
 		inline const glm::vec3& GetScale() const { return m_Scale; }
+		inline glm::vec3& GetScaleRef() { return m_Scale; }
 		inline const glm::quat& GetOrientation() const { return m_Orientation; }
 		inline const RenderableModel* GetParent() const { return m_Parent; }
 		inline bool GetTransparent() const { return m_IsTransparent; }
 		inline bool GetStatic() const { return m_IsStatic; }
+		inline const Model* GetModel() const { return m_Model; }
+		inline Model* GetModel() { return m_Model; }
 
 		inline void SetPosition(glm::vec3 &other) { m_Position = other; }
 		inline void SetScale(glm::vec3 &other) { m_Scale = other; }
+		inline void SetOrientation(glm::quat &quaternion) { m_Orientation = quaternion; }
 		inline void SetOrientation(float radianRotation, glm::vec3 rotationAxis) { m_Orientation = glm::angleAxis(radianRotation, rotationAxis); }
 		inline void SetTransparent(bool choice) { m_IsTransparent = choice; }
 		inline void SetParent(RenderableModel *parent) { m_Parent = parent; }

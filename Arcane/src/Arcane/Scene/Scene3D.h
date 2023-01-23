@@ -33,6 +33,9 @@ namespace Arcane
 		inline ProbeManager* GetProbeManager() { return &m_ProbeManager; }
 		inline FPSCamera* GetCamera() { return &m_SceneCamera; }
 		inline Skybox* GetSkybox() { return m_Skybox; }
+
+		std::vector<RenderableModel*>::iterator GetRenderableModelsBegin() { return m_RenderableModels.begin(); }
+		std::vector<RenderableModel*>::iterator GetRenderableModelsEnd() { return m_RenderableModels.end(); }
 	private:
 		void Init();
 	private:

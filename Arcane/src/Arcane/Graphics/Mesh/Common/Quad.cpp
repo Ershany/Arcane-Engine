@@ -13,5 +13,6 @@ namespace Arcane
 		m_Indices.push_back(3); m_Indices.push_back(1); m_Indices.push_back(2);
 
 		LoadData();
+		GenerateGpuData();
 	}
 }

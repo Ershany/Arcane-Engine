@@ -9,6 +9,9 @@
 #include <Arcane/UI/RuntimePane.h>
 #include <Arcane/UI/WaterPane.h>
 
+#include <Arcane/vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>
+
+
 namespace Arcane
 {
 	class Window;
@@ -35,6 +38,8 @@ namespace Arcane
 
 		static inline Application& GetInstance() { return *s_Instance; }
 		inline Window* GetWindow() { return m_Window; }
+		inline Scene3D* GetScene() { return m_Scene3D; }
+		inline MasterRenderer* GetRenderer() { return m_Renderer; }
 
 		void Run();
 		void Close();

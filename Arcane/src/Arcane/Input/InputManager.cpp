@@ -4,7 +4,7 @@
 namespace Arcane
 {
 	// Static declarations
-	bool InputManager::s_Keys[MAX_KEYS];
+	u8 InputManager::s_Keys[MAX_KEYS];
 	float InputManager::s_KeyPressure[MAX_KEYS];
 	bool InputManager::s_Buttons[MAX_BUTTONS];
 	double InputManager::s_MouseX, InputManager::s_MouseY, InputManager::s_MouseXDelta, InputManager::s_MouseYDelta;
@@ -25,6 +25,18 @@ namespace Arcane
 		s_MouseXDelta = s_MouseYDelta = 0;
 		s_ScrollXDelta = 0; s_ScrollYDelta = 0;
 
+		// WE ARE SETTING THE NEXT HIT TO BE A REPEAT TO PRESERVE DISTINCTION ON FIRST HIT
+		// NOT IDEAL MIGHT NEED TO BE CHANGED TO SMTHG NICER
+		for (int i = 0; i < MAX_KEYS; ++i)
+		{
+			if(s_Keys[i] != GLFW_PRESS)
+			{
+				continue;
+			}
+
+			s_Keys[i] = GLFW_REPEAT;
+		}
+		
 		m_JoystickManager.Update();
 	}
 
@@ -36,7 +48,19 @@ namespace Arcane
 			return false;
 		}
 #endif // ARC_DEV_BUILD
-		return s_Keys[keycode];
+		return s_Keys[keycode] != GLFW_RELEASE;
+	}
+
+	bool InputManager::IsKeyPressedDown(unsigned int keycode) {
+#ifdef ARC_DEV_BUILD
+		if (keycode < 0 || keycode >= MAX_KEYS)
+		{
+			ARC_LOG_WARN("Key press check is out of bounds (ie not supported) - Keycode: {0}", keycode);
+			return false;
+		}
+#endif // ARC_DEV_BUILD
+		//ARC_LOG_INFO(s_Keys[keycode]);
+		return s_Keys[keycode] == GLFW_PRESS;
 	}
 
 	float InputManager::GetKeyPressure(unsigned int keycode) {
@@ -62,8 +86,8 @@ namespace Arcane
 	}
 
 	void InputManager::KeyCallback(int key, int scancode, int action, int mods) {
-		s_Keys[key] = action != GLFW_RELEASE;
-		s_KeyPressure[key] = s_Keys[key];
+		s_Keys[key] = action;
+		s_KeyPressure[key] = max(s_Keys[key], 1);
 	}
 
 	void InputManager::MouseButtonCallback(int button, int action, int mods) {
@@ -105,6 +129,7 @@ namespace Arcane
 			return false;
 		}
 #endif // ARC_DEV_BUILD
-		return s_Keys[keyCode] == GLFW_PRESS;
+		ARC_LOG_INFO(s_Keys[keyCode]);
+		return s_Keys[keyCode] == GLFW_REPEAT;
 	}
 }

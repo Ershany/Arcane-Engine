@@ -35,5 +35,6 @@ namespace Arcane
 		}
 
 		LoadData();
+		GenerateGpuData();
 	}
 }

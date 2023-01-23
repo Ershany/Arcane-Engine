@@ -23,3 +23,6 @@
 #define ARC_DEV_ONLY(...)
 #endif
 
+
+typedef uint8_t u8;
+

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Arcane/Graphics/Texture/Texture.h>
+
 namespace Arcane
 {
 	class Texture;
@@ -7,30 +9,37 @@ namespace Arcane
 	class Cubemap;
 	struct CubemapSettings;
 
-	class TextureLoader {
-	public:
+	struct TextureGenerationData
+	{
+		int width, height;
+		GLenum dataFormat;
+		unsigned char *data;
+		Texture *texture;
+	};
+
+	struct CubemapGenerationData
+	{
+		int width, height;
+		GLenum dataFormat;
+		unsigned char *data;
+		Cubemap *cubemap;
+		GLenum face;
+	};
+
+	class TextureLoader
+	{
+		friend class AssetManager;
+		friend class Application;
+	private:
 		static void InitializeDefaultTextures();
 
-		// TODO: HDR loading
-		static Texture* Load2DTexture(std::string &path, TextureSettings *settings = nullptr);
-		static Cubemap* LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
+		static void Load2DTextureData(std::string &path, TextureGenerationData &inOutData);
+		static void Generate2DTexture(std::string &path, TextureGenerationData &inOutData);
 
-		inline static Texture* GetWhiteTexture() { return s_WhiteTexture; }
-		inline static Texture* GetBlackTexture() { return s_BlackTexture; }
-		inline static Texture* GetDefaultAlbedo() { return s_DefaultAlbedo; }
-		inline static Texture* GetDefaultNormal() { return s_DefaultNormal; }
-		inline static Texture* GetDefaultMetallic() { return s_BlackTexture; }
-		inline static Texture* GetDefaultRoughness() { return s_BlackTexture; }
-		inline static Texture* GetDefaultAO() { return s_WhiteTexture; }
-		inline static Texture* GetFullMetallic() { return s_WhiteTexture; }
-		inline static Texture* GetNoMetallic() { return s_BlackTexture; }
-		inline static Texture* GetFullRoughness() { return s_WhiteTexture; }
-		inline static Texture* GetNoRoughness() { return s_BlackTexture; }
+		static void LoadCubemapTextureData(std::string &path, CubemapGenerationData &inOutData);
+		static void GenerateCubemapTexture(std::string &path, CubemapGenerationData &inOutData);
 	private:
-		static std::unordered_map<std::string, Texture*> m_TextureCache;
-		
 		// Default Textures
-		static Texture *s_DefaultAlbedo;
 		static Texture *s_DefaultNormal;
 		static Texture *s_WhiteTexture, *s_BlackTexture;
 	};

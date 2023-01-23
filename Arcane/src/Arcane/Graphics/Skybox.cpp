@@ -9,17 +9,17 @@
 #include <Arcane/Platform/OpenGL/Buffer.h>
 #include <Arcane/Platform/OpenGL/IndexBuffer.h>
 #include <Arcane/Platform/OpenGL/VertexArray.h>
-#include <Arcane/Util/Loaders/TextureLoader.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
 namespace Arcane
 {
-	Skybox::Skybox(const std::vector<std::string> &filePaths) {
+	Skybox::Skybox(std::vector<std::string> &filePaths) {
 		m_SkyboxShader = ShaderLoader::LoadShader("Skybox.glsl");
 
 		CubemapSettings srgbCubemap;
 		srgbCubemap.IsSRGB = true;
-		m_SkyboxCubemap = TextureLoader::LoadCubemapTexture(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5], &srgbCubemap);
+		m_SkyboxCubemap = AssetManager::GetInstance().LoadCubemapTextureAsync(filePaths[0], filePaths[1], filePaths[2], filePaths[3], filePaths[4], filePaths[5], &srgbCubemap);
 
 		m_GLCache = GLCache::GetInstance();
 	}

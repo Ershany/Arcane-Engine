@@ -15,7 +15,7 @@ namespace Arcane
 
 	class FPSCamera : public ICamera {
 
-#define FPSCAMERA_MAX_SPEED 40.0f
+#define FPSCAMERA_MAX_SPEED 5.0f
 #define FPSCAMERA_ROTATION_SENSITIVITY 0.1f
 #define FPSCAMERA_MAX_FOV 90.0f
 

@@ -4,19 +4,18 @@
 
 namespace Arcane
 {
-	class Model;
-
 	class Mesh {
-		friend Model;
+		friend class Model;
+		friend class AssetManager;
 	public:
 		Mesh();
 		Mesh(std::vector<glm::vec3> &positions, std::vector<unsigned int> &indices);
 		Mesh(std::vector<glm::vec3> &positions, std::vector<glm::vec2> &uvs, std::vector<unsigned int> &indices);
 		Mesh(std::vector<glm::vec3> &positions, std::vector<glm::vec2> &uvs, std::vector<glm::vec3> &normals, std::vector<unsigned int> &indices);
 		Mesh(std::vector<glm::vec3> &positions, std::vector<glm::vec2> &uvs, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &tangents, std::vector<glm::vec3> &bitangents, std::vector<unsigned int> &indices);
-
-		// Commits all of the buffers their attributes to the GPU driver
+		
 		void LoadData(bool interleaved = true);
+		void GenerateGpuData(); // Commits all of the buffers and their attributes to the GPU driver
 
 		void Draw() const;
 
@@ -27,7 +26,7 @@ namespace Arcane
 		inline void SetBitangents(std::vector<glm::vec3> &bitangents) { m_Bitangents = bitangents; }
 		inline void SetIndices(std::vector<unsigned int> &indices) { m_Indices = indices; }
 
-		inline Material& SetMaterial() { return m_Material; }
+		inline Material& GetMaterial() { return m_Material; }
 	protected:
 		unsigned int m_VAO, m_VBO, m_IBO;
 		Material m_Material;
@@ -39,5 +38,9 @@ namespace Arcane
 		std::vector<glm::vec3> m_Bitangents;
 
 		std::vector<unsigned int> m_Indices;
+
+		std::vector<float> m_BufferData;
+		bool m_IsInterleaved;
+		unsigned int m_BufferComponentCount;
 	};
 }
