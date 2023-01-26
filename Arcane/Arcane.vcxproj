@@ -225,7 +225,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.cpp" />
-    <ClCompile Include="src\Arcane\Scene\RenderableModel.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Shader.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Skybox.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Texture\Cubemap.cpp" />
@@ -326,7 +325,6 @@
     <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_truetype.h" />
     <ClInclude Include="src\arcpch.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.h" />
-    <ClInclude Include="src\Arcane\Scene\RenderableModel.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\RenderPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Shader.h" />
     <ClInclude Include="src\Arcane\Graphics\Skybox.h" />

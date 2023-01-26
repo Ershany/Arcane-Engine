@@ -150,9 +150,6 @@
     <ClCompile Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Arcane\Scene\RenderableModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Arcane\Scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -390,9 +387,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Scene\RenderableModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Scene\Scene.h">
