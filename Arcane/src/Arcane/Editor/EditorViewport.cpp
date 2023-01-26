@@ -2,7 +2,7 @@
 #include "EditorViewport.h"
 
 #include <Arcane/Core/Application.h>
-#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderer.h>
+#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderPass.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
 
 namespace Arcane

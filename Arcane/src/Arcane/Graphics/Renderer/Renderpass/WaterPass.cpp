@@ -6,6 +6,7 @@
 #include <Arcane/Graphics/Texture/Texture.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardLightingPass.h>
@@ -73,7 +74,6 @@ namespace Arcane
 			return passOutput;
 		}
 
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
 		m_GLCache->SetUsesClipPlane(true);
 

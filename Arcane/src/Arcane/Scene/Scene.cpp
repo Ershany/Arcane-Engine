@@ -8,15 +8,15 @@
 #include <Arcane/Graphics/Mesh/Common/Sphere.h>
 #include <Arcane/Graphics/Mesh/Common/Quad.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Entity.h>
 #include <Arcane/Scene/Components.h>
-#include <Arcane/Scene/RenderableModel.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 
 namespace Arcane
 {
 	Scene::Scene(Window *window)
-		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_ModelRenderer(GetCamera()), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_ProbeManager(m_SceneProbeBlendSetting)
+		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_ProbeManager(m_SceneProbeBlendSetting)
 	{
 		m_GLCache = GLCache::GetInstance();
 
@@ -36,8 +36,8 @@ namespace Arcane
 		srgbTextureSettings.IsSRGB = true;
 
 		//Model *pbrGun = new Arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
-		Model *pbrGun = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
-		m_RenderableModels.push_back(new RenderableModel(glm::vec3(-32.60f, -9.28f, 48.48f), glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), pbrGun, nullptr, true, false));
+		//Model *pbrGun = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
+		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(-32.60f, -9.28f, 48.48f), glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), pbrGun, nullptr, true, false));
 		/*
 		pbrGun->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_A.tga"), &srgbTextureSettings));
 		pbrGun->GetMeshes()[0].GetMaterial().SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga")));
@@ -46,12 +46,12 @@ namespace Arcane
 		pbrGun->GetMeshes()[0].GetMaterial().SetAmbientOcclusionMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga")));
 		*/
 		
-		Model *sphere = assetManager.LoadModelAsync(std::string("res/3D_Models/Sphere/globe-sphere.obj"));
-		m_RenderableModels.push_back(new RenderableModel(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), sphere, nullptr, true, false));
+		//Model *sphere = assetManager.LoadModelAsync(std::string("res/3D_Models/Sphere/globe-sphere.obj"));
+		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(5.0f, 5.0f, 5.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::radians(-90.0f), sphere, nullptr, true, false));
 		//sphere->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Sphere/rustediron2_basecolor.png"), &srgbTextureSettings));
 
-		Model *hyruleShield = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"));
-		m_RenderableModels.push_back(new RenderableModel(glm::vec3(-7.4f, -7.6f, -31.4f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), hyruleShield, nullptr, false, false));
+		//Model *hyruleShield = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"));
+		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(-7.4f, -7.6f, -31.4f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), hyruleShield, nullptr, false, false));
 		/*
 		hyruleShield->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Albedo].tga"), &srgbTextureSettings));
 		hyruleShield->GetMeshes()[0].GetMaterial().SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Normal].tga")));
@@ -80,7 +80,7 @@ namespace Arcane
 	Entity Scene::CreateEntity(const std::string &name)
 	{
 		Entity entity = { this, m_Registry.create() };
-		auto tag = entity.AddComponent<TagComponent>();
+		auto &tag = entity.AddComponent<TagComponent>();
 		tag.Tag = name.empty() ? "Default Name" : name;
 		entity.AddComponent<TransformComponent>();
 		return entity;
@@ -95,83 +95,49 @@ namespace Arcane
 		m_DynamicLightManager.SetSpotLightPosition(0, m_SceneCamera.GetPosition());
 	}
 
-	void Scene::AddModelsToRenderer()
+	void Scene::AddModelsToRenderer(ModelFilterType filter)
 	{
-		auto iter = m_RenderableModels.begin();
-		while (iter != m_RenderableModels.end()) {
-			RenderableModel *curr = *iter;
-			if (curr->GetTransparent()) {
-				m_ModelRenderer.SubmitTransparent(curr); 
-			}
-			else {
-				m_ModelRenderer.SubmitOpaque(curr);
-			}
-			iter++;
-		}
-	}
+		auto group = m_Registry.group<TransformComponent, MeshComponent>();
+		for (auto entity : group)
+		{
+			auto&[transform, model] = group.get<TransformComponent, MeshComponent>(entity);
 
-	void Scene::AddStaticModelsToRenderer()
-	{
-		auto iter = m_RenderableModels.begin();
-		while (iter != m_RenderableModels.end()) {
-			RenderableModel *curr = *iter;
-			if (curr->GetStatic()) {
-				if (curr->GetTransparent()) {
-					m_ModelRenderer.SubmitTransparent(curr);
+			switch (filter)
+			{
+			case ModelFilterType::AllModels:
+				Renderer::QueueMesh(model.AssetModel, transform.GetTransform());
+				break;
+			case ModelFilterType::StaticModels:
+				if (model.IsStatic)
+				{
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform());
 				}
-				else {
-					m_ModelRenderer.SubmitOpaque(curr);
+				break;
+			case ModelFilterType::OpaqueModels:
+				if (model.IsTransparent == false)
+				{
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform());
 				}
+				break;
+			case ModelFilterType::OpaqueStaticModels:
+				if (model.IsTransparent == false && model.IsStatic)
+				{
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform());
+				}
+				break;
+			case ModelFilterType::TransparentModels:
+				if (model.IsTransparent)
+				{
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform());
+				}
+				break;
+			case ModelFilterType::TransparentStaticModels:
+				if (model.IsTransparent && model.IsStatic)
+				{
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform());
+				}
+				break;
 			}
-			iter++;
-		}
-	}
-
-	void Scene::AddTransparentModelsToRenderer()
-	{
-		auto iter = m_RenderableModels.begin();
-		while (iter != m_RenderableModels.end()) {
-			RenderableModel *curr = *iter;
-			if (curr->GetTransparent()) {
-				m_ModelRenderer.SubmitTransparent(curr);
-			}
-			iter++;
-		}
-	}
-
-	void Scene::AddTransparentStaticModelsToRenderer()
-	{
-		auto iter = m_RenderableModels.begin();
-		while (iter != m_RenderableModels.end()) {
-			RenderableModel *curr = *iter;
-			if (curr->GetStatic() && curr->GetTransparent()) {
-				m_ModelRenderer.SubmitTransparent(curr);
-			}
-			iter++;
-		}
-	}
-
-	void Scene::AddOpaqueModelsToRenderer()
-	{
-		auto iter = m_RenderableModels.begin();
-		while (iter != m_RenderableModels.end()) {
-			RenderableModel *curr = *iter;
-			if (!curr->GetTransparent()) {
-				m_ModelRenderer.SubmitOpaque(curr);
-			}
-			iter++;
-		}
-	}
-
-	void Scene::AddOpaqueStaticModelsToRenderer()
-	{
-		auto iter = m_RenderableModels.begin();
-		while (iter != m_RenderableModels.end()) {
-			RenderableModel *curr = *iter;
-			if (curr->GetStatic() && !curr->GetTransparent()) {
-				m_ModelRenderer.SubmitOpaque(curr);
-			}
-			iter++;
 		}
 	}
 }

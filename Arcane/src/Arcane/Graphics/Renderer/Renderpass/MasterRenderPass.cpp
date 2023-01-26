@@ -1,9 +1,10 @@
 #include "arcpch.h"
-#include "MasterRenderer.h"
+#include "MasterRenderPass.h"
 
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/UI/RuntimePane.h>
 
@@ -75,7 +76,7 @@ namespace Arcane
 			m_GLCache->SetShader(m_PassthroughShader);
 			m_PassthroughShader->SetUniform("input_texture", 0);
 			m_FinalOutputTexture->Bind(0);
-			m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+			Renderer::DrawNdcPlane();
 		}
 	}
 }

@@ -55,4 +55,10 @@ namespace Arcane
 		bool IsTransparent = false; // Should be true if the model contains any translucent material
 		bool IsStatic = false;		// Should be true if the model will never have its transform modified
 	};
+
+	// TODO: Eventually needs to be added and used for the runtime. The editor will always have a "camera" but will be needed for runtime eventually
+	struct CameraComponent
+	{
+		Arcane::ICamera *camera;
+	};
 }

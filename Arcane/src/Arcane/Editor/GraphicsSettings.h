@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderer.h>
+#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderPass.h>
 
 namespace Arcane
 {

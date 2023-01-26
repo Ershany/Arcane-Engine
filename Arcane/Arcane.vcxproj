@@ -165,6 +165,7 @@
     <ClCompile Include="src\Arcane\Editor\GraphicsSettings.cpp" />
     <ClCompile Include="src\Arcane\Editor\InspectorPanel.cpp" />
     <ClCompile Include="src\Arcane\Editor\ScenePanel.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.cpp" />
@@ -188,7 +189,7 @@
     <ClCompile Include="src\Arcane\Graphics\Mesh\Model.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Mesh\Mesh.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\GLCache.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderer.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardProbePass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardLightingPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.cpp" />
@@ -225,7 +226,6 @@
     </ClCompile>
     <ClCompile Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.cpp" />
     <ClCompile Include="src\Arcane\Scene\RenderableModel.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Renderer\ModelRenderer.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Shader.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Skybox.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Texture\Cubemap.cpp" />
@@ -278,6 +278,7 @@
     <ClInclude Include="src\Arcane\Editor\GraphicsSettings.h" />
     <ClInclude Include="src\Arcane\Editor\InspectorPanel.h" />
     <ClInclude Include="src\Arcane\Editor\ScenePanel.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderer.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.h" />
@@ -302,7 +303,7 @@
     <ClInclude Include="src\Arcane\Graphics\Mesh\Model.h" />
     <ClInclude Include="src\Arcane\Graphics\Mesh\Mesh.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\GLCache.h" />
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderer.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardProbePass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardLightingPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.h" />
@@ -326,7 +327,6 @@
     <ClInclude Include="src\arcpch.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.h" />
     <ClInclude Include="src\Arcane\Scene\RenderableModel.h" />
-    <ClInclude Include="src\Arcane\Graphics\Renderer\ModelRenderer.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\RenderPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Shader.h" />
     <ClInclude Include="src\Arcane\Graphics\Skybox.h" />

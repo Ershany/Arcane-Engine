@@ -11,6 +11,7 @@ namespace Arcane
 	// Shouldn't pass by reference, it should stay lightweight and be constructed and copied when needed
 	class Entity
 	{
+		friend class ScenePanel;
 	public:
 		Entity() = default;
 		Entity(Scene *scene, entt::entity handle) : m_Scene(scene), m_Handle(handle) {}

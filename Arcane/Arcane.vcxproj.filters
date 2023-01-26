@@ -99,10 +99,7 @@
     <ClCompile Include="src\Arcane\Graphics\Renderer\GLCache.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\ModelRenderer.cpp">
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderPass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.cpp">
@@ -234,6 +231,9 @@
     <ClCompile Include="src\Arcane\UI\WaterPane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\arcpch.h">
@@ -338,10 +338,7 @@
     <ClInclude Include="src\Arcane\Graphics\Renderer\GLCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\ModelRenderer.h">
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderPass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.h">
@@ -510,6 +507,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Arcane\Scene\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

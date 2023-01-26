@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Skybox.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
@@ -24,7 +25,6 @@ namespace Arcane
 		m_GLCache->SetDepthTest(true);
 
 		// Setup
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
 		Skybox *skybox = m_ActiveScene->GetSkybox();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
@@ -64,15 +64,14 @@ namespace Arcane
 
 		// Render only transparent materials since we already rendered opaque using deferred
 		if (renderOnlyStatic) {
-			m_ActiveScene->AddTransparentStaticModelsToRenderer();
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::TransparentStaticModels);
 		}
 		else {
-			m_ActiveScene->AddTransparentModelsToRenderer();
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::TransparentModels);
 		}
 
 		// Render transparent objects
-		modelRenderer->SetupTransparentRenderState();
-		modelRenderer->FlushTransparent(m_ModelShader, MaterialRequired);
+		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
 
 		// Render pass output
 		LightingPassOutput passOutput;

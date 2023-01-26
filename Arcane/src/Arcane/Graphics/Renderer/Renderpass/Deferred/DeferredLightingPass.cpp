@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Deferred/DeferredGeometryPass.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
@@ -81,15 +82,14 @@ namespace Arcane
 		bindShadowmap(m_LightingShader, shadowmapData);
 
 		// Finally perform the lighting using the GBuffer
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
-
+		// 
 		// IBL Binding
 		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_LightingShader);
 
 		// Perform lighting on the terrain (turn IBL off)
 		m_LightingShader->SetUniform("computeIBL", 0);
 		m_GLCache->SetStencilFunc(GL_EQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
-		modelRenderer->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 
 		// Perform lighting on the models in the scene (turn IBL on)
 		if (useIBL) {
@@ -99,7 +99,7 @@ namespace Arcane
 			m_LightingShader->SetUniform("computeIBL", 0);
 		}
 		m_GLCache->SetStencilFunc(GL_EQUAL, DeferredStencilValue::ModelStencilValue, 0xFF);
-		modelRenderer->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 
 
 		// Reset state

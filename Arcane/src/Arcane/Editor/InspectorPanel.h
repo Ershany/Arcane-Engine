@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arcane/Scene/Scene.h>
-#include <Arcane/Scene/RenderableModel.h>
+#include <Arcane/Scene/Entity.h>
 
 namespace Arcane
 {
@@ -12,11 +12,10 @@ namespace Arcane
 
 		void OnImGuiRender();
 
-		inline void SetFocusedEntity(RenderableModel *entity) { m_FocusedEntity = entity; }
+		inline void SetFocusedEntity(Entity entity) { m_FocusedEntity = entity; }
 	private:
 		bool DrawVec3Control(const std::string &label, glm::vec3 &values, float speed = 0.1f, float resetValue = 0.0f, float columnWidth = 100.0f);
 	private:
-		// TODO: This should be an entity
-		RenderableModel *m_FocusedEntity;
+		Entity m_FocusedEntity;
 	};
 }

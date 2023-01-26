@@ -1,6 +1,8 @@
 #include "arcpch.h"
 #include "Texture.h"
 
+#include <Arcane/Graphics/Renderer/Renderer.h>
+
 namespace Arcane
 {
 	Texture::Texture() : m_TextureId(0), m_TextureTarget(0), m_Width(0), m_Height(0), m_TextureSettings() {}
@@ -44,10 +46,8 @@ namespace Arcane
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, m_TextureSettings.MipBias);
 		}
 
-		// Anisotropic filtering (TODO: Move the anistropyAmount calculation to Defs.h to avoid querying the OpenGL driver everytime)
-		float maxAnisotropy;
-		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-		float anistropyAmount = glm::min<float>(maxAnisotropy, m_TextureSettings.TextureAnisotropyLevel);
+		// Anisotropic filtering (Check with renderer to see the max amount allowed
+		float anistropyAmount = glm::min<float>(m_TextureSettings.TextureAnisotropyLevel, Renderer::GetRendererData().MaxAnisotropy);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
 	}
 

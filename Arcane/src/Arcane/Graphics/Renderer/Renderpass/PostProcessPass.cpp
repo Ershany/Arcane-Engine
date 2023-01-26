@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/UI/RuntimePane.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
@@ -103,9 +104,6 @@ namespace Arcane
 		m_GLCache->SetFaceCull(true);
 		m_GLCache->SetCullFace(GL_BACK);
 
-		// Setup
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
-
 		// Bind the required data to perform SSAO
 		m_GLCache->SetShader(m_SsaoShader);
 
@@ -131,8 +129,7 @@ namespace Arcane
 		m_SsaoShader->SetUniform("texNoise", 2);
 
 		// Render our NDC quad to perform SSAO
-		modelRenderer->NDC_Plane.Draw();
-
+		Renderer::DrawNdcPlane();
 
 		// Blur the result
 		m_SsaoBlurRenderTarget.Bind();
@@ -143,7 +140,7 @@ namespace Arcane
 		m_SsaoRenderTarget.GetColourTexture()->Bind(0);
 
 		// Render our NDC quad to blur our SSAO texture
-		modelRenderer->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 		
 		// Reset unusual state
 		m_GLCache->SetDepthTest(true);
@@ -161,7 +158,6 @@ namespace Arcane
 	PostProcessPassOutput PostProcessPass::executePostProcessPass(Framebuffer *framebufferToProcess) {
 		PostProcessPassOutput output;
 
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		GLCache *glCache = GLCache::GetInstance();
 
 		// If the framebuffer is multi-sampled, resolve it
@@ -254,7 +250,7 @@ namespace Arcane
 		m_TonemapGammaCorrectShader->SetUniform("input_texture", 0);
 		hdrTexture->Bind(0);
 
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 	}
 
 	void PostProcessPass::fxaa(Framebuffer *target, Texture *texture) {
@@ -271,7 +267,7 @@ namespace Arcane
 		m_FxaaShader->SetUniform("input_texture", 0);
 		texture->Bind(0);
 
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 	}
 
 	void PostProcessPass::vignette(Framebuffer *target, Texture *texture, Texture *optionalVignetteMask) {
@@ -294,7 +290,7 @@ namespace Arcane
 			optionalVignetteMask->Bind(1);
 		}
 
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 	}
 
 	void PostProcessPass::chromaticAberration(Framebuffer *target, Texture *texture) {
@@ -312,7 +308,7 @@ namespace Arcane
 		m_ChromaticAberrationShader->SetUniform("input_texture", 0);
 		texture->Bind(0);
 
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 	}
 
 	void PostProcessPass::filmGrain(Framebuffer *target, Texture *texture) {
@@ -330,7 +326,7 @@ namespace Arcane
 		m_FilmGrainShader->SetUniform("input_texture", 0);
 		texture->Bind(0);
 
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 	}
 
 	Texture* PostProcessPass::bloom(Texture *hdrSceneTexture) {
@@ -348,7 +344,7 @@ namespace Arcane
 		m_BloomBrightPassShader->SetUniform("threshold", m_BloomThreshold);
 		m_BloomBrightPassShader->SetUniform("scene_capture", 0);
 		hdrSceneTexture->Bind(0);
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 
 		// Bloom Gaussian Blur Pass
 		// As the render target gets smaller, we can increase the separable (two-pass) Gaussian kernel size
@@ -360,7 +356,7 @@ namespace Arcane
 		m_BloomGaussianBlurShader->SetUniform("read_offset", glm::vec2(1.0f / (float)m_FullRenderTarget.GetWidth(), 1.0f / (float)m_FullRenderTarget.GetHeight()));
 		m_BloomGaussianBlurShader->SetUniform("bloom_texture", 0);
 		m_BrightPassRenderTarget.GetColourTexture()->Bind(0);
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 
 		m_BloomFullRenderTarget.Bind();
 		m_BloomFullRenderTarget.Clear();
@@ -368,7 +364,7 @@ namespace Arcane
 		m_BloomGaussianBlurShader->SetUniform("read_offset", glm::vec2(1.0f / (float)m_BloomFullRenderTarget.GetWidth(), 1.0f / (float)m_BloomFullRenderTarget.GetHeight()));
 		m_BloomGaussianBlurShader->SetUniform("bloom_texture", 0);
 		m_FullRenderTarget.GetColourTexture()->Bind(0);
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 
 		// Combine our bloom texture with the scene
 		m_GLCache->SetShader(m_BloomComposite);
@@ -379,7 +375,7 @@ namespace Arcane
 		m_BloomComposite->SetUniform("bloom_texture", 1);
 		hdrSceneTexture->Bind(0);
 		m_BloomFullRenderTarget.GetColourTexture()->Bind(1);
-		m_ActiveScene->GetModelRenderer()->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 
 		return m_FullRenderTarget.GetColourTexture();
 	}

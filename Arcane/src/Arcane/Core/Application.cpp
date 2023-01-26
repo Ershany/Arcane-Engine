@@ -3,7 +3,8 @@
 
 #include <Arcane/Defs.h>
 #include <Arcane/Graphics/Window.h>
-#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderer.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
+#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderPass.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
@@ -28,6 +29,7 @@ namespace Arcane
 		m_Window = new Window(this, specification);
 		m_Window->Init();
 		AssetManager &assetManager = Arcane::AssetManager::GetInstance(); // Need to initialize the asset manager early so we can load resources and have our worker threads instantiated
+		Renderer::Init(); // Must be loaded before textures get created since they query for the max anistropy from the renderer
 		Arcane::TextureLoader::InitializeDefaultTextures();
 		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
 		m_ActiveScene = new Scene(m_Window);
@@ -104,10 +106,15 @@ namespace Arcane
 				for (Layer *layer : m_LayerStack)
 					layer->OnUpdate((float)deltaTime.GetDeltaTime());
 
-				m_MasterRenderPass->Render();
+				// Render the frame
+				Renderer::BeginFrame();
+				{
+					m_MasterRenderPass->Render();
 
-				if (m_Specification.EnableImGui)
-					RenderImGui();
+					if (m_Specification.EnableImGui)
+						RenderImGui();
+				}
+				Renderer::EndFrame();
 
 				++frameCounter;
 			}

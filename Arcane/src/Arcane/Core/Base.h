@@ -9,7 +9,7 @@
 
 #define BIT(x) (1u << x)
 
-#define ARC_BIND_EVENT_FN(fn) std::bind(&##fn, this, std::placeholders::_1)
+#define ARC_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype>(args)>(args)...); }
 
 #if defined(ARC_DEBUG) || defined(ARC_RELEASE)
 #define ARC_DEV_BUILD

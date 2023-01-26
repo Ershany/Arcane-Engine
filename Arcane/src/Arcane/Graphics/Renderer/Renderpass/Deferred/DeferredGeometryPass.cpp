@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
@@ -41,7 +42,6 @@ namespace Arcane
 		m_GLCache->SetStencilTest(true);
 
 		// Setup
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		Terrain *terrain = m_ActiveScene->GetTerrain();
 
 		m_GLCache->SetShader(m_ModelShader);
@@ -51,17 +51,16 @@ namespace Arcane
 
 		// Setup model renderer for opaque objects only
 		if (renderOnlyStatic) {
-			m_ActiveScene->AddOpaqueStaticModelsToRenderer();
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueStaticModels);
 		}
 		else {
-			m_ActiveScene->AddOpaqueModelsToRenderer();
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueModels);
 		}
 
 		// Render opaque objects (use stencil to denote models for the deferred lighting pass)
 		m_GLCache->SetStencilWriteMask(0xFF);
 		m_GLCache->SetStencilFunc(GL_ALWAYS, DeferredStencilValue::ModelStencilValue, 0xFF);
-		modelRenderer->SetupOpaqueRenderState();
-		modelRenderer->FlushOpaque(m_ModelShader, MaterialRequired);
+		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
 		m_GLCache->SetStencilWriteMask(0x00);
 
 		// Setup terrain information
@@ -74,7 +73,6 @@ namespace Arcane
 		m_GLCache->SetStencilFunc(GL_ALWAYS, DeferredStencilValue::TerrainStencilValue, 0xFF);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
 		m_GLCache->SetStencilWriteMask(0x00);
-
 
 		// Reset state
 		m_GLCache->SetStencilTest(false);

@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
 namespace Arcane
@@ -33,7 +34,6 @@ namespace Arcane
 		m_ShadowmapFramebuffer->Clear();
 
 		// Setup
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		Terrain *terrain = m_ActiveScene->GetTerrain();
 		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
 
@@ -48,21 +48,20 @@ namespace Arcane
 
 		// Setup model renderer
 		if (renderOnlyStatic) {
-			m_ActiveScene->AddStaticModelsToRenderer();
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::StaticModels);
 		}
 		else {
-			m_ActiveScene->AddModelsToRenderer();
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::AllModels);
 		}
 
 		// Render models
 		m_GLCache->SetDepthTest(true);
 		m_GLCache->SetBlend(false);
 		m_GLCache->SetFaceCull(false);
-		modelRenderer->FlushOpaque(m_ShadowmapShader, NoMaterialRequired);
-		modelRenderer->FlushTransparent(m_ShadowmapShader, NoMaterialRequired);
+		Renderer::Flush(camera, m_ShadowmapShader, RenderPassType::NoMaterialRequired);
 
 		// Render terrain
-		terrain->Draw(m_ShadowmapShader, NoMaterialRequired);
+		terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
 
 		// Render pass output
 		ShadowmapPassOutput passOutput;
