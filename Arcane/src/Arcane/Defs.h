@@ -11,7 +11,7 @@
 #define FULLSCREEN_MODE 0 // If set, window resolution is maximized to your screen resolution
 
 // Render Settings
-#define FORWARD_RENDER 1
+#define FORWARD_RENDER 0
 
 // Streaming Settings
 #define TEXTURE_LOADS_PER_FRAME 2

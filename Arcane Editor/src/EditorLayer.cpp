@@ -61,6 +61,7 @@ namespace Arcane
 			auto window = m_EditorScene->CreateEntity("Window");
 			auto &transformComponent = window.GetComponent<TransformComponent>();
 			transformComponent.Translation = { -32.60f, 10.0f, 48.48f };
+			transformComponent.Rotation = { 0.0f, glm::radians(180.0f), 0.0f };
 			transformComponent.Scale = { 10.0f, 10.0f, 10.0f };
 			auto &meshComponent = window.AddComponent<MeshComponent>(quadModel);
 			meshComponent.IsStatic = true;
