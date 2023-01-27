@@ -45,8 +45,7 @@ namespace Arcane
 			delete layer;
 		}
 
-		// Todo: insert render queue flush here
-		// And render shutdown
+		Renderer::Shutdown();
 
 		delete m_Window;
 		delete m_ActiveScene;
