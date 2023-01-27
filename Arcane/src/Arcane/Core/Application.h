@@ -9,9 +9,6 @@
 #include <Arcane/UI/RuntimePane.h>
 #include <Arcane/UI/WaterPane.h>
 
-#include <Arcane/vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>
-
-
 namespace Arcane
 {
 	class Window;
@@ -59,8 +56,6 @@ namespace Arcane
 		static const char* GetConfigName();
 		static const char* GetPlatformName();
 
-		static RENDERDOC_API_1_5_0* s_RenderdocApi;
-
 	private:
 		bool OnWindowClose(WindowCloseEvent &event);
 	private:
@@ -83,7 +78,6 @@ namespace Arcane
 		Arcane::RuntimePane m_RuntimePane;
 		Arcane::DebugPane m_DebugPane;
 		Arcane::WaterPane m_WaterPane;
-
 	};
 
 	// Implemented by the client

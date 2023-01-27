@@ -20,8 +20,7 @@ namespace Arcane
 #define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
-	RENDERDOC_API_1_5_0* Application::s_RenderdocApi;
-
+	
 	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification), m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
 	{
 		s_Instance = this;
@@ -60,10 +59,6 @@ namespace Arcane
 			layer->OnDetach();
 			delete layer;
 		}
-
-#if ARC_RENDERDOC_DEBUG
-		m_RenderdocApi->Shutdown();
-#endif
 
 		// Todo: insert render queue flush here
 		// And render shutdown

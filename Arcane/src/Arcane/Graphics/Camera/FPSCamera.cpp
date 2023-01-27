@@ -4,7 +4,7 @@
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/UI/DebugPane.h>
 
-#include "glfw/glfw3native.h"
+#include <Arcane/Core/Base.h>
 
 namespace Arcane
 {
@@ -40,35 +40,34 @@ namespace Arcane
 	}
 
 	void FPSCamera::ProcessInput(float deltaTime) {
-		// You can specify NULL, NULL for the device to capture on if you have only one device and
-		// either no windows at all or only one window, and it will capture from that device.
-		// See the documentation below for a longer explanation
-		// NOTE: MIGHT NOT BE A BAD IDEA TO ADD AN INDICATION THAT WE ARE CAPTURING
-
-		// TODO: wait for a release of a button
-		if (InputManager::IsKeyPressedDown(GLFW_KEY_F9) && !Application::s_RenderdocApi->IsFrameCapturing())
+#if ARC_RENDERDOC_DEBUG
+		/**
+		 * You can specify NULL, NULL for the device to capture on if you have only one device and
+		 * either no windows at all or only one window, and it will capture from that device.
+		 * See the documentation below for a longer explanation
+		 * NOTE: MIGHT NOT BE A BAD IDEA TO ADD A UI INDICATION THAT WE ARE CAPTURING
+		 */
+		if (InputManager::IsKeyPressedDown(GLFW_KEY_F9) && !RENDERDOCAPI->IsFrameCapturing())
 		{
-			ARC_LOG_INFO("Started renderdoc frame capture");
-			//auto window = glfwGetWin32Window(Application::GetInstance().GetWindow()->GetNativeWindow());
-			//auto device = glfwGetWGLContext(Application::GetInstance().GetWindow()->GetNativeWindow());
-			
-			Application::s_RenderdocApi->StartFrameCapture(NULL, NULL);
-			//assert(renderdoc->IsFrameCapturing());
+			ARC_LOG_INFO("Started renderdoc frame capture");			
+			RENDERDOCAPI->StartFrameCapture(NULL, NULL);
+			ARC_ASSERT(RENDERDOCAPI->IsFrameCapturing());
 		}
 
-		if (InputManager::IsKeyPressedDown(GLFW_KEY_F10))
+		if (InputManager::IsKeyPressedDown(GLFW_KEY_F10) && RENDERDOCAPI->IsFrameCapturing())
 		{
 			ARC_LOG_INFO("Ended renderdoc frame capture");
-			Application::s_RenderdocApi->EndFrameCapture(NULL, NULL);
-			//assert(!renderdoc->IsFrameCapturing());
+			RENDERDOCAPI->EndFrameCapture(NULL, NULL);
+			ARC_ASSERT(!RENDERDOCAPI->IsFrameCapturing());
 		}
 
-		if (InputManager::IsKeyPressedDown(GLFW_KEY_F11))
+		if (InputManager::IsKeyPressedDown(GLFW_KEY_F11) && !RENDERDOCAPI->IsFrameCapturing())
 		{
-			ARC_LOG_INFO("Getting a 1 time renderdoc frame capture");
-			Application::s_RenderdocApi->TriggerCapture();
-			//assert(renderdoc->IsFrameCapturing());
+			ARC_LOG_INFO("Getting a 1 frame renderdoc capture");
+			RENDERDOCAPI->TriggerCapture();
+			ARC_ASSERT(RENDERDOCAPI->IsFrameCapturing());
 		}
+#endif 
 
 		// Movement speed
 		if (InputManager::IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
@@ -99,7 +98,6 @@ namespace Arcane
 		direction -= m_WorldUp * JoystickManager::GetTriggers(0).x;
 #endif
 		ProcessCameraMovement(direction, deltaTime);
-
 
 		// Camera FOV
 		float scrollDelta = glm::clamp((float)(InputManager::GetScrollYDelta() * 4.0 + (JoystickManager::GetButton(0, ARCANE_GAMEPAD_A) - JoystickManager::GetButton(0, ARCANE_GAMEPAD_B) * 2.0)), -4.0f, 4.0f);
