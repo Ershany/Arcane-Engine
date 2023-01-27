@@ -33,7 +33,7 @@ namespace Arcane
 		}
 	}
 
-	LightingPassOutput ForwardLightingPass::executeLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
+	LightingPassOutput ForwardLightingPass::executeOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		m_Framebuffer->Bind();
 		m_Framebuffer->Clear();
@@ -50,7 +50,7 @@ namespace Arcane
 		Skybox *skybox = m_ActiveScene->GetSkybox();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
-		// View setup + lighting setup
+		// Lighting setup
 		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
 		if (renderOnlyStatic)
 			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
@@ -109,11 +109,11 @@ namespace Arcane
 		// Add meshes to the renderer
 		if (renderOnlyStatic)
 		{
-			m_ActiveScene->AddModelsToRenderer(ModelFilterType::StaticModels);
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueStaticModels);
 		}
 		else
 		{
-			m_ActiveScene->AddModelsToRenderer(ModelFilterType::AllModels);
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueModels);
 		}
 
 		// Finally render the meshes
@@ -122,6 +122,77 @@ namespace Arcane
 		// Render pass output
 		LightingPassOutput passOutput;
 		passOutput.outputFramebuffer = m_Framebuffer;
+		return passOutput;
+	}
+
+	LightingPassOutput ForwardLightingPass::executeTransparentLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL)
+	{
+		glViewport(0, 0, inputFramebuffer->GetWidth(), inputFramebuffer->GetHeight());
+		inputFramebuffer->Bind();
+		if (inputFramebuffer->IsMultisampled())
+		{
+			m_GLCache->SetMultisample(true);
+		}
+		else
+		{
+			m_GLCache->SetMultisample(false);
+		}
+
+		// Setup
+		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
+
+		// Lighting setup
+		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
+		if (renderOnlyStatic)
+			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
+
+		// Render opaque and transparent objects (renderer will render the transparent bucket last)
+		m_GLCache->SetShader(m_ModelShader);
+		if (m_GLCache->GetUsesClipPlane())
+		{
+			m_ModelShader->SetUniform("usesClipPlane", true);
+			m_ModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
+		}
+		else
+		{
+			m_ModelShader->SetUniform("usesClipPlane", false);
+		}
+		(lightManager->*lightBindFunction) (m_ModelShader);
+		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
+		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
+		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
+
+		// Shadowmap code
+		bindShadowmap(m_ModelShader, inputShadowmapData);
+
+		// IBL Binding
+		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+		if (useIBL)
+		{
+			m_ModelShader->SetUniform("computeIBL", 1);
+		}
+		else
+		{
+			m_ModelShader->SetUniform("computeIBL", 0);
+		}
+
+		// Add meshes to the renderer
+		if (renderOnlyStatic)
+		{
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::TransparentStaticModels);
+		}
+		else
+		{
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::TransparentModels);
+		}
+
+		// Finally render the meshes
+		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
+
+		// Render pass output
+		LightingPassOutput passOutput;
+		passOutput.outputFramebuffer = inputFramebuffer;
 		return passOutput;
 	}
 

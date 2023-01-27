@@ -170,7 +170,7 @@ namespace Arcane
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.SetCenterPosition(probePosition);
 		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
-		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer);
+		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 
 		// Render the scene to the probe's cubemap
 		for (int i = 0; i < 6; i++) {
@@ -183,7 +183,8 @@ namespace Arcane
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.Bind();
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(m_SceneCaptureCubemap.GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			lightingPass.executeLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			LightingPassOutput output = lightingPass.executeOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			lightingPass.executeTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 
@@ -222,7 +223,7 @@ namespace Arcane
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.SetCenterPosition(probePosition);
 		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
-		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer);
+		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 
 		// Render the scene to the probe's cubemap
 		for (int i = 0; i < 6; i++) {
@@ -235,7 +236,8 @@ namespace Arcane
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.Bind();
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(m_SceneCaptureCubemap.GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			lightingPass.executeLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			LightingPassOutput output = lightingPass.executeOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			lightingPass.executeTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 

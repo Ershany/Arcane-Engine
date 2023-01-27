@@ -41,9 +41,10 @@ namespace Arcane
 		RuntimePane::SetShadowmapTimer((float)m_ProfilingTimer.Elapsed());
 #endif // DEBUG_PROFILING
 
-		LightingPassOutput lightingOutput = m_ForwardLightingPass.executeLightingPass(shadowmapOutput, m_ActiveScene->GetCamera(), false, true);
+		LightingPassOutput lightingOutput = m_ForwardLightingPass.executeOpaqueLightingPass(shadowmapOutput, m_ActiveScene->GetCamera(), false, true);
 		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, lightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
-		PostProcessPassOutput postProcessOutput = m_PostProcessPass.executePostProcessPass(waterOutput.outputFramebuffer);
+		LightingPassOutput postTransparencyOutput = m_ForwardLightingPass.executeTransparentLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
+		PostProcessPassOutput postProcessOutput = m_PostProcessPass.executePostProcessPass(postTransparencyOutput.outputFramebuffer);
 
 
 		/* Deferred Rendering */
