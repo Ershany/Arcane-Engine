@@ -42,7 +42,7 @@ namespace Arcane
 #endif // DEBUG_PROFILING
 
 		LightingPassOutput lightingOutput = m_ForwardLightingPass.executeLightingPass(shadowmapOutput, m_ActiveScene->GetCamera(), false, true);
-		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, lightingOutput, m_ActiveScene->GetCamera());
+		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, lightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
 		PostProcessPassOutput postProcessOutput = m_PostProcessPass.executePostProcessPass(waterOutput.outputFramebuffer);
 
 
@@ -59,11 +59,11 @@ namespace Arcane
 #endif // DEBUG_PROFILING
 
 		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.executeGeometryPass(m_ActiveScene->GetCamera(), false);
-		PreLightingPassOutput preLightingOutput = m_PostProcessPass.executePreLightingPass(geometryOutput, m_ActiveScene->GetCamera());
-		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executeLightingPass(shadowmapOutput, geometryOutput, preLightingOutput, m_ActiveScene->GetCamera(), true);
-		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.executeLightingPass(shadowmapOutput, deferredLightingOutput, m_ActiveScene->GetCamera(), false, true);
-		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, postGBufferForward, m_ActiveScene->GetCamera());
-		PostProcessPassOutput postProcessOutput = m_PostProcessPass.executePostProcessPass(waterOutput.outputFramebuffer);
+		PreLightingPassOutput preLightingOutput = m_PostProcessPass.executePreLightingPass(geometryOutput.outputGBuffer, m_ActiveScene->GetCamera());
+		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executeLightingPass(shadowmapOutput, geometryOutput.outputGBuffer, preLightingOutput, m_ActiveScene->GetCamera(), true);
+		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, deferredLightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
+		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.executeLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
+		PostProcessPassOutput postProcessOutput = m_PostProcessPass.executePostProcessPass(postGBufferForward.outputFramebuffer);
 
 #endif
 

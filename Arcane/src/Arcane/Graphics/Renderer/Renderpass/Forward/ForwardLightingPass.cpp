@@ -33,7 +33,7 @@ namespace Arcane
 		}
 	}
 
-	LightingPassOutput ForwardLightingPass::executeLightingPass(ShadowmapPassOutput &shadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
+	LightingPassOutput ForwardLightingPass::executeLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		m_Framebuffer->Bind();
 		m_Framebuffer->Clear();
@@ -70,7 +70,7 @@ namespace Arcane
 		m_TerrainShader->SetUniform("viewPos", camera->GetPosition());
 		m_TerrainShader->SetUniform("view", camera->GetViewMatrix());
 		m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
-		bindShadowmap(m_TerrainShader, shadowmapData);
+		bindShadowmap(m_TerrainShader, inputShadowmapData);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
 
 		// Render skybox
@@ -93,7 +93,7 @@ namespace Arcane
 		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Shadowmap code
-		bindShadowmap(m_ModelShader, shadowmapData);
+		bindShadowmap(m_ModelShader, inputShadowmapData);
 
 		// IBL Binding
 		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);

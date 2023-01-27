@@ -31,7 +31,7 @@ namespace Arcane
 		}
 	}
 
-	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL) {
+	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &inputShadowmapData, GBuffer *inputGbuffer, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL) {
 		// Framebuffer setup
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
@@ -42,9 +42,9 @@ namespace Arcane
 
 		// Move the depth + stencil of the GBuffer to our framebuffer
 		// NOTE: Framebuffers have to have identical depth + stencil formats for this to work
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, geometryData.outputGBuffer->GetFramebuffer());
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, inputGbuffer->GetFramebuffer());
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_Framebuffer->GetFramebuffer());
-		glBlitFramebuffer(0, 0, geometryData.outputGBuffer->GetWidth(), geometryData.outputGBuffer->GetHeight(), 0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight(), GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		glBlitFramebuffer(0, 0, inputGbuffer->GetWidth(), inputGbuffer->GetHeight(), 0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight(), GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 
 		// Setup initial stencil state
 		m_GLCache->SetStencilTest(true);
@@ -60,26 +60,26 @@ namespace Arcane
 		m_LightingShader->SetUniform("projectionInverse", glm::inverse(camera->GetProjectionMatrix()));
 
 		// Bind GBuffer data
-		geometryData.outputGBuffer->GetAlbedo()->Bind(4);
+		inputGbuffer->GetAlbedo()->Bind(4);
 		m_LightingShader->SetUniform("albedoTexture", 4);
 
-		geometryData.outputGBuffer->GetNormal()->Bind(5);
+		inputGbuffer->GetNormal()->Bind(5);
 		m_LightingShader->SetUniform("normalTexture", 5);
 
-		geometryData.outputGBuffer->GetMaterialInfo()->Bind(6);
+		inputGbuffer->GetMaterialInfo()->Bind(6);
 		m_LightingShader->SetUniform("materialInfoTexture", 6);
 
 		preLightingOutput.ssaoTexture->Bind(7);
 		m_LightingShader->SetUniform("ssaoTexture", 7);
 
-		geometryData.outputGBuffer->GetDepthStencilTexture()->Bind(8);
+		inputGbuffer->GetDepthStencilTexture()->Bind(8);
 		m_LightingShader->SetUniform("depthTexture", 8);
 
 		m_LightingShader->SetUniform("nearPlane", NEAR_PLANE);
 		m_LightingShader->SetUniform("farPlane", FAR_PLANE);
 
 		// Shadowmap code
-		bindShadowmap(m_LightingShader, shadowmapData);
+		bindShadowmap(m_LightingShader, inputShadowmapData);
 
 		// Finally perform the lighting using the GBuffer
 		// 

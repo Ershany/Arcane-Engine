@@ -14,7 +14,7 @@ namespace Arcane
 		DeferredLightingPass(Scene *scene, Framebuffer *framebuffer);
 		virtual ~DeferredLightingPass() override;
 
-		LightingPassOutput executeLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL);
+		LightingPassOutput executeLightingPass(ShadowmapPassOutput &inputShadowmapData, GBuffer *inputGbuffer, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL);
 	private:
 		void bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData);
 	private:

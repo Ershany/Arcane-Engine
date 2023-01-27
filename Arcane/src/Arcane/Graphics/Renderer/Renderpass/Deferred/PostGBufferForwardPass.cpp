@@ -18,9 +18,9 @@ namespace Arcane
 
 	PostGBufferForward::~PostGBufferForward() {}
 
-	LightingPassOutput PostGBufferForward::executeLightingPass(ShadowmapPassOutput &shadowmapData, LightingPassOutput &lightingPassData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
-		glViewport(0, 0, lightingPassData.outputFramebuffer->GetWidth(), lightingPassData.outputFramebuffer->GetHeight());
-		lightingPassData.outputFramebuffer->Bind();
+	LightingPassOutput PostGBufferForward::executeLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
+		glViewport(0, 0, inputFramebuffer->GetWidth(), inputFramebuffer->GetHeight());
+		inputFramebuffer->Bind();
 		m_GLCache->SetMultisample(false);
 		m_GLCache->SetDepthTest(true);
 
@@ -51,7 +51,7 @@ namespace Arcane
 		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Shadowmap code
-		bindShadowmap(m_ModelShader, shadowmapData);
+		bindShadowmap(m_ModelShader, inputShadowmapData);
 
 		// IBL code
 		if (useIBL) {
@@ -75,7 +75,7 @@ namespace Arcane
 
 		// Render pass output
 		LightingPassOutput passOutput;
-		passOutput.outputFramebuffer = lightingPassData.outputFramebuffer;
+		passOutput.outputFramebuffer = inputFramebuffer;
 		return passOutput;
 	}
 

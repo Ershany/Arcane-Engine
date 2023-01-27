@@ -86,7 +86,7 @@ namespace Arcane
 	PostProcessPass::~PostProcessPass() {}
 
 	// Generates the AO of the scene using SSAO and stores it in a single channel texture
-	PreLightingPassOutput PostProcessPass::executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera) {
+	PreLightingPassOutput PostProcessPass::executePreLightingPass(GBuffer *inputGbuffer, ICamera *camera) {
 #if DEBUG_PROFILING
 		glFinish();
 		m_ProfilingTimer.Reset();
@@ -121,9 +121,9 @@ namespace Arcane
 		m_SsaoShader->SetUniform("viewInverse", glm::inverse(camera->GetViewMatrix()));
 		m_SsaoShader->SetUniform("projectionInverse", glm::inverse(camera->GetProjectionMatrix()));
 
-		geometryData.outputGBuffer->GetNormal()->Bind(0);
+		inputGbuffer->GetNormal()->Bind(0);
 		m_SsaoShader->SetUniform("normalTexture", 0);
-		geometryData.outputGBuffer->GetDepthStencilTexture()->Bind(1);
+		inputGbuffer->GetDepthStencilTexture()->Bind(1);
 		m_SsaoShader->SetUniform("depthTexture", 1);
 		m_SsaoNoiseTexture.Bind(2);
 		m_SsaoShader->SetUniform("texNoise", 2);

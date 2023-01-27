@@ -60,7 +60,7 @@ namespace Arcane
 
 	}
 
-	WaterPassOutput WaterPass::executeWaterPass(ShadowmapPassOutput &shadowmapData, LightingPassOutput &postTransparency, ICamera *camera)
+	WaterPassOutput WaterPass::executeWaterPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera)
 	{
 #if DEBUG_PROFILING
 		glFinish();
@@ -70,7 +70,7 @@ namespace Arcane
 		WaterPassOutput passOutput;
 		if (!m_WaterEnabled)
 		{
-			passOutput.outputFramebuffer = postTransparency.outputFramebuffer;
+			passOutput.outputFramebuffer = inputFramebuffer;
 			return passOutput;
 		}
 
@@ -86,7 +86,7 @@ namespace Arcane
 			camera->InvertPitch();
 
 			ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneReflectionFramebuffer);
-			lightingPass.executeLightingPass(shadowmapData, camera, false, false);
+			lightingPass.executeLightingPass(inputShadowmapData, camera, false, false);
 
 #ifdef WATER_REFLECTION_USE_MSAA
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, m_SceneReflectionFramebuffer.GetFramebuffer());
@@ -103,16 +103,16 @@ namespace Arcane
 			m_GLCache->SetClipPlane(glm::vec4(0.0f, -1.0f, 0.0f, m_WaterPos.y + m_RefractionBias));
 
 			ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneRefractionFramebuffer);
-			lightingPass.executeLightingPass(shadowmapData, camera, false, false);
+			lightingPass.executeLightingPass(inputShadowmapData, camera, false, false);
 		}
 
 		m_GLCache->SetUsesClipPlane(false);
 
 		// Finally render the water geometry and shade it
 		m_GLCache->SetShader(m_WaterShader);
-		postTransparency.outputFramebuffer->Bind();
-		glViewport(0, 0, postTransparency.outputFramebuffer->GetWidth(), postTransparency.outputFramebuffer->GetHeight());
-		if (postTransparency.outputFramebuffer->IsMultisampled()) {
+		inputFramebuffer->Bind();
+		glViewport(0, 0, inputFramebuffer->GetWidth(), inputFramebuffer->GetHeight());
+		if (inputFramebuffer->IsMultisampled()) {
 			m_GLCache->SetMultisample(true);
 		}
 		else {
@@ -167,7 +167,7 @@ namespace Arcane
 		RuntimePane::SetWaterTimer((float)m_ProfilingTimer.Elapsed());
 #endif // DEBUG_PROFILING
 
-		passOutput.outputFramebuffer = postTransparency.outputFramebuffer;
+		passOutput.outputFramebuffer = inputFramebuffer;
 		return passOutput;
 	}
 }

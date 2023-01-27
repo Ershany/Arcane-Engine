@@ -13,7 +13,7 @@ namespace Arcane
 		PostGBufferForward(Scene *scene);
 		virtual ~PostGBufferForward() override;
 
-		LightingPassOutput executeLightingPass(ShadowmapPassOutput &shadowmapData, LightingPassOutput &lightingPassData, ICamera *camera, bool renderOnlyStatic, bool useIBL);
+		LightingPassOutput executeLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL);
 	private:
 		void bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData);
 	private:

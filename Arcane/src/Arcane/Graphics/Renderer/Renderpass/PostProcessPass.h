@@ -15,7 +15,7 @@ namespace Arcane
 		PostProcessPass(Scene *scene);
 		virtual ~PostProcessPass() override;
 
-		PreLightingPassOutput executePreLightingPass(GeometryPassOutput &geometryData, ICamera *camera);
+		PreLightingPassOutput executePreLightingPass(GBuffer *inputGbuffer, ICamera *camera);
 		PostProcessPassOutput executePostProcessPass(Framebuffer *framebufferToProcess);
 
 		// Post Processing Effects
