@@ -3,8 +3,7 @@
 
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/UI/DebugPane.h>
-
-#include <Arcane/Core/Base.h>
+#include "Arcane/RenderdocManager.h"
 
 namespace Arcane
 {
@@ -40,7 +39,7 @@ namespace Arcane
 	}
 
 	void FPSCamera::ProcessInput(float deltaTime) {
-#if ARC_RENDERDOC_DEBUG
+#ifdef ARC_RENDERDOC_DEBUG
 		/**
 		 * You can specify NULL, NULL for the device to capture on if you have only one device and
 		 * either no windows at all or only one window, and it will capture from that device.
@@ -51,21 +50,20 @@ namespace Arcane
 		{
 			ARC_LOG_INFO("Started renderdoc frame capture");			
 			RENDERDOCAPI->StartFrameCapture(NULL, NULL);
-			ARC_ASSERT(RENDERDOCAPI->IsFrameCapturing());
+			ARC_ASSERT(RENDERDOCAPI->IsFrameCapturing(), "Trying a renderdoc capture while capturing");
 		}
 
 		if (InputManager::IsKeyPressedDown(GLFW_KEY_F10) && RENDERDOCAPI->IsFrameCapturing())
 		{
 			ARC_LOG_INFO("Ended renderdoc frame capture");
 			RENDERDOCAPI->EndFrameCapture(NULL, NULL);
-			ARC_ASSERT(!RENDERDOCAPI->IsFrameCapturing());
+			ARC_ASSERT(!RENDERDOCAPI->IsFrameCapturing(), "Didn't stop capturing after ending capture");
 		}
 
 		if (InputManager::IsKeyPressedDown(GLFW_KEY_F11) && !RENDERDOCAPI->IsFrameCapturing())
 		{
 			ARC_LOG_INFO("Getting a 1 frame renderdoc capture");
 			RENDERDOCAPI->TriggerCapture();
-			ARC_ASSERT(RENDERDOCAPI->IsFrameCapturing());
 		}
 #endif 
 

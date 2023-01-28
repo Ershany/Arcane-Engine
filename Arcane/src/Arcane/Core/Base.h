@@ -13,7 +13,9 @@
 
 #define ARC_BIND_EVENT_FN(fn) std::bind(&##fn, this, std::placeholders::_1)
 
-#define ARC_RENDERDOC_DEBUG defined(ARC_DEBUG) || defined(ARC_RELEASE)
+#if defined(ARC_DEBUG) || defined(ARC_RELEASE)
+#define ARC_RENDERDOC_DEBUG 
+#endif 
 
 #if defined(ARC_DEBUG) || defined(ARC_RELEASE)
 #define ARC_DEV_BUILD
@@ -24,7 +26,6 @@
 #else
 #define ARC_DEV_ONLY(...)
 #endif
-
 
 typedef uint8_t u8;
 typedef uint16_t u16;

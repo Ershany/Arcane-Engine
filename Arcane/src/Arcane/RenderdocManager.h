@@ -1,32 +1,29 @@
-#if ARC_RENDERDOC_DEBUG
 #pragma once
 
+#ifdef ARC_RENDERDOC_DEBUG
 
-#include <Arcane/Core/Base.h>
-
-#define RENDERDOCAPI Arcane::RenderdocManager::GetRenderdocAPI();
-#define RENDERDOCMANAGER Arcane::RenderdocManager::GetInstance();
+#define RENDERDOCMANAGER Arcane::RenderdocManager::GetInstance()
+#define RENDERDOCAPI RENDERDOCMANAGER.GetRenderdocAPI()
 
 namespace Arcane
 {
 	class RenderdocManager
 	{
 	public:
-		RenderdocManager() = delete;
 		RenderdocManager(const RenderdocManager&) = delete;
-		operator=(const RenderdocManager&) = delete;
+		RenderdocManager& operator=(const RenderdocManager&) = delete;
 		RenderdocManager(RenderdocManager&&) = delete;
-		operator=(RenderdocManager&&) = delete;
+		RenderdocManager& operator=(RenderdocManager&&) = delete;
 
 		~RenderdocManager();
 
 		static RenderdocManager& GetInstance()
 		{
-			static RenderdocManager s_RenderdocManager;
-			return s_RenderdocManager;
+			static RenderdocManager instance;
+			return instance;
 		}
 
-		static RENDERDOC_API_1_5_0* GetRenderdocAPI() { return m_RenderdocAPI; }
+		RENDERDOC_API_1_5_0* GetRenderdocAPI() { return m_RenderdocAPI; }
 
 	private:
 		RenderdocManager();
@@ -34,4 +31,4 @@ namespace Arcane
 		RENDERDOC_API_1_5_0* m_RenderdocAPI;
 	};
 }
-#endif
+#endif // ARC_RENDERDOC_DEBUG

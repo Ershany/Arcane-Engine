@@ -12,7 +12,7 @@ bool g_ApplicationRunning = true;
 
 int main(int argc, char **argv)
 {
-#if ARC_RENDERDOC_DEBUG
+#ifdef ARC_RENDERDOC_DEBUG
 	// Load in renderdoc api
 	RENDERDOCMANAGER;
 #endif

@@ -27,13 +27,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <Arcane/Vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>
+// Renderdoc debug
+#include <Arcane/vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>
 
 // Arcane
 #include <Arcane/Defs.h>
 #include <Arcane/Util/Logger.h>
 #include <Arcane/Core/Base.h>
 #include <Arcane/Core/Events/Event.h>
-
-// Renderdoc debug
-#include <Arcane/vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>

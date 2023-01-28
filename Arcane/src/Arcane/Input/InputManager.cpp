@@ -130,11 +130,11 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		if (keyCode < 0 || keyCode >= MAX_KEYS)
 		{
-			//ARC_LOG_WARN("Button down get is out of bounds (ie not supported) - KeyCode: {0}", keyCode);
+			ARC_LOG_WARN("Button down get is out of bounds (ie not supported) - KeyCode: {0}", keyCode);
 			return false;
 		}
 #endif // ARC_DEV_BUILD
-		ARC_LOG_INFO(s_Keys[keyCode]);
+
 		return s_Keys[keyCode] == GLFW_REPEAT;
 	}
 }
