@@ -1,14 +1,12 @@
 #pragma once
 
-#include <Arcane/Input/InputManager.h>
 #include <Arcane/Core/Application.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
 
 namespace Arcane
 {
-	static InputManager g_InputManager;
-
-	class Window {
+	class Window
+	{
 	public:
 		Window(Application *application, const ApplicationSpecification &specification);
 		~Window();

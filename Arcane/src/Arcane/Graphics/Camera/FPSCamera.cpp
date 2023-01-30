@@ -3,6 +3,7 @@
 
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/UI/DebugPane.h>
+#include "Arcane/RenderdocManager.h"
 
 namespace Arcane
 {
@@ -37,7 +38,8 @@ namespace Arcane
 		return glm::perspective(glm::radians(m_CurrentFOV), (float)Window::GetRenderResolutionWidth() / (float)Window::GetRenderResolutionHeight(), NEAR_PLANE, FAR_PLANE);
 	}
 
-	void FPSCamera::ProcessInput(float deltaTime) {
+	void FPSCamera::ProcessInput(float deltaTime) 
+	{
 		// Movement speed
 		if (InputManager::IsKeyPressed(GLFW_KEY_LEFT_SHIFT))
 			m_CurrentMovementSpeed = FPSCAMERA_MAX_SPEED * 4.0f;
@@ -67,7 +69,6 @@ namespace Arcane
 		direction -= m_WorldUp * JoystickManager::GetTriggers(0).x;
 #endif
 		ProcessCameraMovement(direction, deltaTime);
-
 
 		// Camera FOV
 		float scrollDelta = glm::clamp((float)(InputManager::GetScrollYDelta() * 4.0 + (JoystickManager::GetButton(0, ARCANE_GAMEPAD_A) - JoystickManager::GetButton(0, ARCANE_GAMEPAD_B) * 2.0)), -4.0f, 4.0f);

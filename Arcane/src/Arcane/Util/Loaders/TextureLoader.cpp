@@ -35,7 +35,6 @@ namespace Arcane
 		inOutData.texture->Generate2DTexture(inOutData.width, inOutData.height, inOutData.dataFormat, GL_UNSIGNED_BYTE, inOutData.data);
 		stbi_image_free(inOutData.data);
 	}
-
 	void TextureLoader::LoadCubemapTextureData(const std::string &path, CubemapGenerationData &inOutData)
 	{
 		// Load the cubemap data from file

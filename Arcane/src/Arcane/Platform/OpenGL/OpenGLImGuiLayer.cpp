@@ -10,13 +10,11 @@ namespace Arcane
 {
 	OpenGLImGuiLayer::OpenGLImGuiLayer(ARC_DEV_ONLY(const std::string &name))
 	{
-		m_DebugName = name;
+		ARC_DEV_ONLY(m_DebugName = name);
 	}
 
 	OpenGLImGuiLayer::~OpenGLImGuiLayer()
-	{
-
-	}
+	{}
 
 	void OpenGLImGuiLayer::OnAttach()
 	{

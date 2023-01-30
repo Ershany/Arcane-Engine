@@ -157,6 +157,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
     <ClCompile Include="src\Arcane\Core\Layer.cpp" />
     <ClCompile Include="src\Arcane\Core\LayerStack.cpp" />
@@ -259,6 +260,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Arcane\RenderdocManager.h" />
     <ClInclude Include="src\Arcane.h" />
     <ClInclude Include="src\Arcane\ArcaneEntryPoint.h" />
     <ClInclude Include="src\Arcane\Core\Application.h" />

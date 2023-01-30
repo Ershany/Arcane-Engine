@@ -2,6 +2,7 @@
 #include "Window.h"
 
 #include <Arcane/Vendor/Imgui/examples/imgui_impl_glfw.h>
+#include <Arcane/Input/InputManager.h>
 
 namespace Arcane
 {
@@ -79,7 +80,7 @@ namespace Arcane
 
 		double currMouseX, currMouseY;
 		glfwGetCursorPos(m_Window, &currMouseX, &currMouseY);
-		g_InputManager.SetMousePos(currMouseX, currMouseY);
+		InputManager::GetInstance().SetMousePos(currMouseX, currMouseY);
 
 		// Set up contexts and callbacks
 		glfwMakeContextCurrent(m_Window);
@@ -142,9 +143,6 @@ namespace Arcane
 		if (error != GL_NO_ERROR) {
 			ARC_LOG_ERROR("OpenGL Error: {0}", error);
 		}
-
-		// Input handling
-		g_InputManager.Update();
 
 		// Handle Window updating
 		glfwSwapBuffers(m_Window);
@@ -221,39 +219,39 @@ namespace Arcane
 #endif // ARC_DEV_BUILD
 
 	static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-		g_InputManager.KeyCallback(key, scancode, action, mods);
+		InputManager::GetInstance().KeyCallback(key, scancode, action, mods);
 
 		ARC_DEV_ONLY(UpdateUIState(window, key, scancode, action, mods));
 	}
 
 	static void key_callback_imgui(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
-		g_InputManager.KeyCallback(key, scancode, action, mods);
+		InputManager::GetInstance().KeyCallback(key, scancode, action, mods);
 		ImGui_ImplGlfw_KeyCallback(window, key, scancode, action, mods);
 
 		ARC_DEV_ONLY(UpdateUIState(window, key, scancode, action, mods));
 	}
 
 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-		g_InputManager.MouseButtonCallback(button, action, mods);
+		InputManager::GetInstance().MouseButtonCallback(button, action, mods);
 	}
 
 	static void mouse_button_callback_imgui(GLFWwindow* window, int button, int action, int mods)
 	{
-		g_InputManager.MouseButtonCallback(button, action, mods);
+		InputManager::GetInstance().MouseButtonCallback(button, action, mods);
 		ImGui_ImplGlfw_MouseButtonCallback(window, button, action, mods);
 	}
 
 	static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
-		g_InputManager.CursorPositionCallback(xpos, ypos);
+		InputManager::GetInstance().CursorPositionCallback(xpos, ypos);
 	}
 	
 	static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-		g_InputManager.ScrollCallback(xoffset, yoffset);
+		InputManager::GetInstance().ScrollCallback(xoffset, yoffset);
 	}
 
 	static void scroll_callback_imgui(GLFWwindow* window, double xoffset, double yoffset) {
-		g_InputManager.ScrollCallback(xoffset, yoffset);
+		InputManager::GetInstance().ScrollCallback(xoffset, yoffset);
 		ImGui_ImplGlfw_ScrollCallback(window, xoffset, yoffset);
 	}
 
@@ -262,7 +260,7 @@ namespace Arcane
 	}
 
 	static void joystick_callback(int joystick, int event) {
-		g_InputManager.JoystickCallback(joystick, event);
+		InputManager::GetInstance().JoystickCallback(joystick, event);
 	}
 
 	static void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {

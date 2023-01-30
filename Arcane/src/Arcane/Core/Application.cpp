@@ -12,6 +12,9 @@
 #include <Arcane/Util/Time.h>
 #include <Arcane/Core/Layer.h>
 #include <Arcane/ImGui/ImGuiLayer.h>
+#include <Arcane/RenderdocManager.h>
+
+#include "glfw/glfw3native.h"
 
 extern bool g_ApplicationRunning;
 namespace Arcane
@@ -28,13 +31,13 @@ namespace Arcane
 		ARC_LOG_INFO("Initializing Arcane Engine...");
 		m_Window = new Window(this, specification);
 		m_Window->Init();
-		AssetManager &assetManager = Arcane::AssetManager::GetInstance(); // Need to initialize the asset manager early so we can load resources and have our worker threads instantiated
+		m_AssetManager = &Arcane::AssetManager::GetInstance(); // Need to initialize the asset manager early so we can load resources and have our worker threads instantiated
 		Renderer::Init(); // Must be loaded before textures get created since they query for the max anistropy from the renderer
 		Arcane::TextureLoader::InitializeDefaultTextures();
 		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
 		m_ActiveScene = new Scene(m_Window);
 		m_MasterRenderPass = new MasterRenderPass(m_ActiveScene);
-		m_Manager = new InputManager();
+		m_InputManager = &InputManager::GetInstance();
 	}
 
 	Application::~Application()
@@ -50,7 +53,6 @@ namespace Arcane
 		delete m_Window;
 		delete m_ActiveScene;
 		delete m_MasterRenderPass;
-		delete m_Manager;
 	}
 
 	void Application::InternalInit()
@@ -61,7 +63,7 @@ namespace Arcane
 		// Make sure all assets load before booting for first time
 		while (Arcane::AssetManager::GetInstance().AssetsInFlight())
 		{
-			Arcane::AssetManager::GetInstance().Update(10000, 10000, 10000);
+			m_AssetManager->Update(10000, 10000, 10000);
 		}
 
 		// Initialize the master render pass
@@ -83,9 +85,12 @@ namespace Arcane
 		while (m_Running && !m_Window->Closed())
 		{
 			deltaTime.Update();
-
+			m_InputManager->Update();
 			m_Window->Update();
 
+#ifdef ARC_RENDERDOC_DEBUG
+			RENDERDOCMANAGER.Update();
+#endif
 			// Render stuff
 			if (!m_Minimized)
 			{
@@ -100,8 +105,9 @@ namespace Arcane
 				m_Window->Bind();
 				m_Window->Clear();
 
-				AssetManager::GetInstance().Update(TEXTURE_LOADS_PER_FRAME, CUBEMAP_FACES_PER_FRAME, MODELS_PER_FRAME);
+				m_AssetManager->Update(TEXTURE_LOADS_PER_FRAME, CUBEMAP_FACES_PER_FRAME, MODELS_PER_FRAME);
 				m_ActiveScene->OnUpdate((float)deltaTime.GetDeltaTime());
+
 				for (Layer *layer : m_LayerStack)
 					layer->OnUpdate((float)deltaTime.GetDeltaTime());
 

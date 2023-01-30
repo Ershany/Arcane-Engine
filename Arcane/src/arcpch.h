@@ -10,6 +10,7 @@
 #include <array>
 #include <iterator>
 #include <random>
+#include <filesystem>
 
 // Dependencies
 #include <gl/glew.h>

@@ -31,6 +31,7 @@ namespace Arcane
 		return manager;
 	}
 
+
 	Model* AssetManager::LoadModel(const std::string &path)
 	{
 		// Check the cache
@@ -49,6 +50,7 @@ namespace Arcane
 
 		return model;
 	}
+
 
 	Model* AssetManager::LoadModelAsync(const std::string &path)
 	{
@@ -141,6 +143,7 @@ namespace Arcane
 		return texture;
 	}
 
+
 	Cubemap* AssetManager::LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings)
 	{
 		Cubemap *cubemap = new Cubemap();
@@ -165,6 +168,7 @@ namespace Arcane
 
 		return cubemap;
 	}
+
 
 	Cubemap* AssetManager::LoadCubemapTextureAsync(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings)
 	{

@@ -4,6 +4,7 @@
 #include <Arcane/Core/Events/Event.h>
 #include "Arcane/Core/Events/ApplicationEvent.h"
 #include <Arcane/Util/Singleton.h>
+#include <Arcane/Input/InputManager.h>
 
 #include <Arcane/UI/DebugPane.h>
 #include <Arcane/UI/RuntimePane.h>
@@ -16,6 +17,7 @@ namespace Arcane
 	class Scene;
 	class MasterRenderPass;
 	class InputManager;
+	class AssetManager;
 	class ImGuiLayer;
 
 	struct ApplicationSpecification
@@ -55,6 +57,7 @@ namespace Arcane
 
 		static const char* GetConfigName();
 		static const char* GetPlatformName();
+
 	private:
 		void InternalInit();
 
@@ -63,9 +66,10 @@ namespace Arcane
 		ApplicationSpecification m_Specification;
 
 		Window *m_Window;
+		AssetManager *m_AssetManager;
+		InputManager *m_InputManager;
 		Scene *m_ActiveScene;
 		MasterRenderPass *m_MasterRenderPass;
-		InputManager *m_Manager;
 		LayerStack m_LayerStack;
 
 		bool m_Running = true;
