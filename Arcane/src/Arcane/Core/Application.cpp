@@ -11,6 +11,7 @@
 #include <Arcane/Util/Time.h>
 #include <Arcane/Core/Layer.h>
 #include <Arcane/ImGui/ImGuiLayer.h>
+#include <Arcane/RenderdocManager.h>
 
 #include "glfw/glfw3native.h"
 
@@ -20,7 +21,7 @@ namespace Arcane
 #define BIND_EVENT_FN(fn) std::bind(&Application::##fn, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
-	
+
 	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification), m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
 	{
 		s_Instance = this;
@@ -34,7 +35,6 @@ namespace Arcane
 		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
 		m_Scene3D = new Scene3D(m_Window);
 		m_Renderer = new MasterRenderer(m_Scene3D);
-		m_Manager = new InputManager();
 
 		// Make sure all assets load before booting for first time
 		while (assetManager.AssetsInFlight())
@@ -66,7 +66,6 @@ namespace Arcane
 		delete m_Window;
 		delete m_Scene3D;
 		delete m_Renderer;
-		delete m_Manager;
 	}
 
 	void Application::Run()
@@ -81,6 +80,11 @@ namespace Arcane
 
 			m_Window->Update();
 
+			g_InputManager.Update();
+
+#ifdef ARC_RENDERDOC_DEBUG
+			RENDERDOCMANAGER.Update();
+#endif
 			// Render stuff
 			if (!m_Minimized)
 			{

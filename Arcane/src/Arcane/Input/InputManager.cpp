@@ -117,24 +117,24 @@ namespace Arcane
 
 	bool InputManager::GetButton(int keyCode) {
 #ifdef ARC_DEV_BUILD
-		if (keyCode < 0 || keyCode >= MAX_KEYS)
+		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
 		{
-			//ARC_LOG_WARN("Button get is out of bounds (ie not supported) - KeyCode: {0}", keyCode);
+			ARC_LOG_WARN("Button get is out of bounds (ie not supported) - KeyCode: {0}", keyCode);
 			return false;
 		}
 #endif // ARC_DEV_BUILD
-		return s_Keys[keyCode] != GLFW_RELEASE;
+		return s_Buttons[keyCode] != GLFW_RELEASE;
 	}
 
 	bool InputManager::GetButtonDown(int keyCode) {
 #ifdef ARC_DEV_BUILD
-		if (keyCode < 0 || keyCode >= MAX_KEYS)
+		if (keyCode < 0 || keyCode >= MAX_BUTTONS)
 		{
 			ARC_LOG_WARN("Button down get is out of bounds (ie not supported) - KeyCode: {0}", keyCode);
 			return false;
 		}
 #endif // ARC_DEV_BUILD
 
-		return s_Keys[keyCode] == GLFW_REPEAT;
+		return s_Buttons[keyCode] == GLFW_REPEAT;
 	}
 }

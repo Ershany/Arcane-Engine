@@ -4,6 +4,7 @@
 #include <Arcane/Core/Events/Event.h>
 #include "Arcane/Core/Events/ApplicationEvent.h"
 #include <Arcane/Util/Singleton.h>
+#include <Arcane/Input/InputManager.h>
 
 #include <Arcane/UI/DebugPane.h>
 #include <Arcane/UI/RuntimePane.h>
@@ -17,6 +18,8 @@ namespace Arcane
 	class MasterRenderer;
 	class InputManager;
 	class ImGuiLayer;
+
+	static InputManager g_InputManager;
 
 	struct ApplicationSpecification
 	{
@@ -64,7 +67,6 @@ namespace Arcane
 		Window *m_Window;
 		Scene3D *m_Scene3D;
 		MasterRenderer *m_Renderer;
-		InputManager *m_Manager;
 		LayerStack m_LayerStack;
 
 		bool m_Running = true;

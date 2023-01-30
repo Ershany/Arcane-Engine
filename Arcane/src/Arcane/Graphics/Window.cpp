@@ -2,6 +2,7 @@
 #include "Window.h"
 
 #include <Arcane/Vendor/Imgui/examples/imgui_impl_glfw.h>
+#include <Arcane/Input/InputManager.h>
 
 namespace Arcane
 {
@@ -142,9 +143,6 @@ namespace Arcane
 		if (error != GL_NO_ERROR) {
 			ARC_LOG_ERROR("OpenGL Error: {0}", error);
 		}
-
-		// Input handling
-		g_InputManager.Update();
 
 		// Handle Window updating
 		glfwSwapBuffers(m_Window);

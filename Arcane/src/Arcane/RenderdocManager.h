@@ -24,6 +24,8 @@ namespace Arcane
 		}
 
 		RENDERDOC_API_1_5_0* GetRenderdocAPI() { return m_RenderdocAPI; }
+		
+		void Update();
 
 	private:
 		RenderdocManager();
