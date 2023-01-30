@@ -30,14 +30,15 @@ namespace Arcane
 		ARC_LOG_INFO("Initializing Arcane Engine...");
 		m_Window = new Window(this, specification);
 		m_Window->Init();
-		AssetManager &assetManager = Arcane::AssetManager::GetInstance(); // Need to initialize the asset manager early so we can load resources and have our worker threads instantiated
+		m_AssetManager = &AssetManager::GetInstance(); // Need to initialize the asset manager early so we can load resources and have our worker threads instantiated
 		Arcane::TextureLoader::InitializeDefaultTextures();
 		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
 		m_Scene3D = new Scene3D(m_Window);
+		m_InputManager = &InputManager::GetInstance();
 		m_Renderer = new MasterRenderer(m_Scene3D);
 
 		// Make sure all assets load before booting for first time
-		while (assetManager.AssetsInFlight())
+		while (m_AssetManager->AssetsInFlight())
 		{
 			Arcane::AssetManager::GetInstance().Update(10000, 10000, 10000);
 		}
@@ -78,9 +79,8 @@ namespace Arcane
 		{
 			deltaTime.Update();
 
+			m_InputManager->Update();
 			m_Window->Update();
-
-			g_InputManager.Update();
 
 #ifdef ARC_RENDERDOC_DEBUG
 			RENDERDOCMANAGER.Update();
@@ -99,7 +99,7 @@ namespace Arcane
 				m_Window->Bind();
 				m_Window->Clear();
 
-				AssetManager::GetInstance().Update(TEXTURE_LOADS_PER_FRAME, CUBEMAP_FACES_PER_FRAME, MODELS_PER_FRAME);
+				m_AssetManager->Update(TEXTURE_LOADS_PER_FRAME, CUBEMAP_FACES_PER_FRAME, MODELS_PER_FRAME);
 				m_Scene3D->OnUpdate((float)deltaTime.GetDeltaTime());
 				for (Layer *layer : m_LayerStack)
 					layer->OnUpdate((float)deltaTime.GetDeltaTime());

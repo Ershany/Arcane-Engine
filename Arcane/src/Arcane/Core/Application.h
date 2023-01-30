@@ -17,9 +17,8 @@ namespace Arcane
 	class Scene3D;
 	class MasterRenderer;
 	class InputManager;
+	class AssetManager;
 	class ImGuiLayer;
-
-	static InputManager g_InputManager;
 
 	struct ApplicationSpecification
 	{
@@ -65,7 +64,9 @@ namespace Arcane
 		ApplicationSpecification m_Specification;
 
 		Window *m_Window;
+		AssetManager *m_AssetManager;
 		Scene3D *m_Scene3D;
+		InputManager *m_InputManager;
 		MasterRenderer *m_Renderer;
 		LayerStack m_LayerStack;
 

@@ -24,6 +24,12 @@ namespace Arcane
 
 	InputManager::~InputManager() {}
 
+	InputManager& InputManager::GetInstance()
+	{
+		static InputManager manager;
+		return manager;
+	}
+
 	void InputManager::Update() {
 		s_MouseXDelta = s_MouseYDelta = 0;
 		s_ScrollXDelta = 0; s_ScrollYDelta = 0;
