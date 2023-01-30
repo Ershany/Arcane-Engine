@@ -83,7 +83,7 @@
       <PreprocessorDefinitions>ARC_RELEASE;ARC_PLATFORM_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
@@ -94,7 +94,8 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;SOIL.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc141-mt.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc141-mt.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Final|x64'">
@@ -106,7 +107,7 @@
       <PreprocessorDefinitions>ARC_FINAL;ARC_PLATFORM_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
@@ -127,7 +128,7 @@
       <PreprocessorDefinitions>ARC_DEBUG;ARC_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

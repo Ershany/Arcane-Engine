@@ -9,7 +9,8 @@
 #include <Arcane/Core/Events/Event.h>
 #include <Arcane/Core/Layer.h>
 
-#include <Arcane/Graphics/Renderer/MasterRenderer.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
+#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderPass.h>
 #include <Arcane/Graphics/Camera/FPSCamera.h>
 #include <Arcane/Graphics/Camera/CubemapCamera.h>
 #include <Arcane/Graphics/IBL/ProbeManager.h>
@@ -24,8 +25,11 @@
 #include <Arcane/Input/InputManager.h>
 #include <Arcane/Input/JoystickManager.h>
 
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Entity.h>
+#include <Arcane/Scene/Scene.h>
+#include <Arcane/Scene/Components.h>
 
+#include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Logger.h>
 #include <Arcane/Util/FileUtils.h>
 #include <Arcane/Util/Time.h>

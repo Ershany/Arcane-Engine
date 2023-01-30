@@ -1,614 +1,226 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
+    <ClCompile Include="src\Arcane\Core\Application.cpp" />
+    <ClCompile Include="src\Arcane\Core\Layer.cpp" />
+    <ClCompile Include="src\Arcane\Core\LayerStack.cpp" />
+    <ClCompile Include="src\Arcane\Editor\ConsolePanel.cpp" />
+    <ClCompile Include="src\Arcane\Editor\EditorViewport.cpp" />
+    <ClCompile Include="src\Arcane\Editor\GraphicsSettings.cpp" />
+    <ClCompile Include="src\Arcane\Editor\InspectorPanel.cpp" />
+    <ClCompile Include="src\Arcane\Editor\ScenePanel.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.cpp" />
+    <ClCompile Include="src\Arcane\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Arcane\Input\JoystickInputData.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Camera\FPSCamera.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Camera\CubemapCamera.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Lights\DirectionalLight.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Lights\Light.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Lights\DynamicLightManager.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Lights\PointLight.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Lights\SpotLight.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\IBL\ProbeManager.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\IBL\LightProbe.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\IBL\ReflectionProbe.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Mesh\Common\Cube.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Mesh\Common\Quad.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Mesh\Common\Sphere.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Mesh\Material.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Mesh\Model.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Mesh\Mesh.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\GLCache.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardProbePass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardLightingPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\RenderPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\ShadowmapPass.cpp" />
+    <ClCompile Include="src\Arcane\Input\InputManager.cpp" />
+    <ClCompile Include="src\Arcane\Input\JoystickManager.cpp" />
+    <ClCompile Include="src\Arcane\main.cpp" />
+    <ClCompile Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.cpp" />
+    <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp" />
+    <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\arcpch.cpp" />
+    <ClCompile Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Skybox.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Texture\Cubemap.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Texture\Texture.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Window.cpp" />
+    <ClCompile Include="src\Arcane\Platform\OpenGL\Buffer.cpp" />
+    <ClCompile Include="src\Arcane\Platform\OpenGL\Framebuffer\Framebuffer.cpp" />
+    <ClCompile Include="src\Arcane\Platform\OpenGL\IndexBuffer.cpp" />
+    <ClCompile Include="src\Arcane\Platform\OpenGL\VertexArray.cpp" />
+    <ClCompile Include="src\Arcane\Scene\Scene.cpp" />
+    <ClCompile Include="src\Arcane\Terrain\Terrain.cpp" />
+    <ClCompile Include="src\Arcane\Util\FileUtils.cpp" />
+    <ClCompile Include="src\Arcane\Util\Loaders\ShaderLoader.cpp" />
+    <ClCompile Include="src\Arcane\Util\Loaders\TextureLoader.cpp" />
+    <ClCompile Include="src\Arcane\Util\Logger.cpp" />
+    <ClCompile Include="src\Arcane\Util\Time.cpp" />
+    <ClCompile Include="src\Arcane\Util\Timer.cpp" />
+    <ClCompile Include="src\Arcane\Vendor\Imgui\imgui.cpp" />
+    <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\Arcane\UI\DebugPane.cpp" />
+    <ClCompile Include="src\Arcane\UI\Pane.cpp" />
+    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
+    <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\arcpch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Core\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Core\Layer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Core\LayerStack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Input\InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Input\JoystickInputData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Input\JoystickManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Camera\CubemapCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Camera\FPSCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\IBL\LightProbe.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\IBL\ProbeManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\IBL\ReflectionProbe.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Lights\DirectionalLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Lights\DynamicLightManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Lights\Light.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Lights\PointLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Lights\SpotLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Mesh\Material.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Mesh\Mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Mesh\Model.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Mesh\Common\Cube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Mesh\Common\Quad.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Mesh\Common\Sphere.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\GLCache.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\MasterRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\ModelRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\RenderPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\ShadowmapPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardLightingPass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardProbePass.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Texture\Cubemap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Graphics\Texture\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Platform\OpenGL\Buffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Platform\OpenGL\IndexBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Platform\OpenGL\VertexArray.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Platform\OpenGL\Framebuffer\Framebuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Scene\RenderableModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Scene\Scene3D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Terrain\Terrain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\UI\DebugPane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\UI\Pane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\UI\WaterPane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Util\FileUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Util\Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Util\Time.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Util\Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Vendor\Imgui\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Util\Loaders\ShaderLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Util\Loaders\TextureLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\ImGui\ImGuiLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Editor\ScenePanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Editor\EditorViewport.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Editor\ConsolePanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Editor\InspectorPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Editor\GraphicsSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Arcane\RenderdocManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="src\Arcane\RenderdocManager.h" />
+    <ClInclude Include="src\Arcane.h" />
+    <ClInclude Include="src\Arcane\ArcaneEntryPoint.h" />
+    <ClInclude Include="src\Arcane\Core\Application.h" />
+    <ClInclude Include="src\Arcane\Core\Assert.h" />
+    <ClInclude Include="src\Arcane\Core\Base.h" />
+    <ClInclude Include="src\Arcane\Core\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\Arcane\Core\Events\Event.h" />
+    <ClInclude Include="src\Arcane\Core\Events\KeyEvent.h" />
+    <ClInclude Include="src\Arcane\Core\Events\MouseEvent.h" />
+    <ClInclude Include="src\Arcane\Core\Layer.h" />
+    <ClInclude Include="src\Arcane\Core\LayerStack.h" />
+    <ClInclude Include="src\Arcane\Core\Threads\ThreadSafeQueue.h" />
+    <ClInclude Include="src\Arcane\Defs.h" />
+    <ClInclude Include="src\Arcane\Editor\ConsolePanel.h" />
+    <ClInclude Include="src\Arcane\Editor\EditorViewport.h" />
+    <ClInclude Include="src\Arcane\Editor\GraphicsSettings.h" />
+    <ClInclude Include="src\Arcane\Editor\InspectorPanel.h" />
+    <ClInclude Include="src\Arcane\Editor\ScenePanel.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderer.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.h" />
+    <ClInclude Include="src\Arcane\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Arcane\Input\JoystickInputData.h" />
+    <ClInclude Include="src\Arcane\Graphics\Camera\FPSCamera.h" />
+    <ClInclude Include="src\Arcane\Graphics\Camera\CubemapCamera.h" />
+    <ClInclude Include="src\Arcane\Graphics\Camera\ICamera.h" />
+    <ClInclude Include="src\Arcane\Graphics\Lights\DirectionalLight.h" />
+    <ClInclude Include="src\Arcane\Graphics\Lights\Light.h" />
+    <ClInclude Include="src\Arcane\Graphics\Lights\DynamicLightManager.h" />
+    <ClInclude Include="src\Arcane\Graphics\Lights\PointLight.h" />
+    <ClInclude Include="src\Arcane\Graphics\Lights\SpotLight.h" />
+    <ClInclude Include="src\Arcane\Graphics\IBL\ProbeManager.h" />
+    <ClInclude Include="src\Arcane\Graphics\IBL\LightProbe.h" />
+    <ClInclude Include="src\Arcane\Graphics\IBL\ReflectionProbe.h" />
+    <ClInclude Include="src\Arcane\Graphics\Mesh\Common\Cube.h" />
+    <ClInclude Include="src\Arcane\Graphics\Mesh\Common\Quad.h" />
+    <ClInclude Include="src\Arcane\Graphics\Mesh\Common\Sphere.h" />
+    <ClInclude Include="src\Arcane\Graphics\Mesh\Material.h" />
+    <ClInclude Include="src\Arcane\Graphics\Mesh\Model.h" />
+    <ClInclude Include="src\Arcane\Graphics\Mesh\Mesh.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\GLCache.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\MasterRenderPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardProbePass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardLightingPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\RenderPassType.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\ShadowmapPass.h" />
+    <ClInclude Include="src\Arcane\Input\InputManager.h" />
+    <ClInclude Include="src\Arcane\Input\JoystickManager.h" />
+    <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h" />
+    <ClInclude Include="src\Arcane\Scene\Components.h" />
+    <ClInclude Include="src\Arcane\Scene\Entity.h" />
+    <ClInclude Include="src\Arcane\UI\DebugPane.h" />
+    <ClInclude Include="src\Arcane\UI\Pane.h" />
+    <ClInclude Include="src\Arcane\UI\RuntimePane.h" />
+    <ClInclude Include="src\Arcane\UI\WaterPane.h" />
+    <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_textedit.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_truetype.h" />
+    <ClInclude Include="src\arcpch.h" />
+    <ClInclude Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\RenderPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Shader.h" />
+    <ClInclude Include="src\Arcane\Graphics\Skybox.h" />
+    <ClInclude Include="src\Arcane\Graphics\Texture\Cubemap.h" />
+    <ClInclude Include="src\Arcane\Graphics\Texture\Texture.h" />
+    <ClInclude Include="src\Arcane\Graphics\Window.h" />
+    <ClInclude Include="src\Arcane\Platform\OpenGL\Buffer.h" />
+    <ClInclude Include="src\Arcane\Platform\OpenGL\Framebuffer\Framebuffer.h" />
+    <ClInclude Include="src\Arcane\Platform\OpenGL\IndexBuffer.h" />
+    <ClInclude Include="src\Arcane\Platform\OpenGL\VertexArray.h" />
+    <ClInclude Include="src\Arcane\Scene\Scene.h" />
+    <ClInclude Include="src\Arcane\Terrain\Terrain.h" />
+    <ClInclude Include="src\Arcane\Util\FileUtils.h" />
+    <ClInclude Include="src\Arcane\Util\Loaders\ShaderLoader.h" />
+    <ClInclude Include="src\Arcane\Util\Loaders\TextureLoader.h" />
+    <ClInclude Include="src\Arcane\Util\Logger.h" />
+    <ClInclude Include="src\Arcane\Util\Singleton.h" />
+    <ClInclude Include="src\Arcane\Util\Time.h" />
+    <ClInclude Include="src\Arcane\Util\Timer.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\imconfig.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\imgui.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\imgui_internal.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\stb_rect_pack.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\stb_textedit.h" />
+    <ClInclude Include="src\Arcane\Vendor\Imgui\stb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\arcpch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\ArcaneEntryPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Defs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\Assert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\Base.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\Layer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\LayerStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\Events\Event.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Skybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Input\InputManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Input\JoystickInputData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Input\JoystickManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Camera\CubemapCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Camera\FPSCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Camera\ICamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\IBL\LightProbe.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\IBL\ProbeManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\IBL\ReflectionProbe.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Lights\DirectionalLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Lights\DynamicLightManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Lights\Light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Lights\PointLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Lights\SpotLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Mesh\Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Mesh\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Mesh\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Mesh\Common\Cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Mesh\Common\Quad.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Mesh\Common\Sphere.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\GLCache.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\MasterRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\ModelRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\PostProcessPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\RenderPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\RenderPassType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\ShadowmapPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardLightingPass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Forward\ForwardProbePass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Texture\Cubemap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Graphics\Texture\Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Platform\OpenGL\Buffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Platform\OpenGL\IndexBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Platform\OpenGL\VertexArray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Platform\OpenGL\Framebuffer\Framebuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Scene\RenderableModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Scene\Scene3D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Terrain\Terrain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\UI\DebugPane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\UI\Pane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\UI\RuntimePane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\UI\WaterPane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Util\FileUtils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Util\Logger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Util\Singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Util\Time.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Util\Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\imconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\stb_rect_pack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\stb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\stb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Util\Loaders\ShaderLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Util\Loaders\TextureLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\Events\ApplicationEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\Events\KeyEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\Events\MouseEvent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\ImGui\ImGuiLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_truetype.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Editor\ScenePanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Editor\EditorViewport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Editor\ConsolePanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Editor\InspectorPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Editor\GraphicsSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\Core\Threads\ThreadSafeQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Arcane\RenderdocManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Image Include="res\awesomeface.png" />
+    <Image Include="res\container.jpg" />
+    <Image Include="res\container2.png" />
+    <Image Include="res\container2_emission.png" />
+    <Image Include="res\container2_specular.png" />
+    <Image Include="res\matrix.jpg" />
+    <Image Include="res\skybox\back.png" />
+    <Image Include="res\skybox\bottom.png" />
+    <Image Include="res\skybox\front.png" />
+    <Image Include="res\skybox\left.png" />
+    <Image Include="res\skybox\right.png" />
+    <Image Include="res\skybox\top.png" />
+    <Image Include="res\terrain\blendMap.png" />
+    <Image Include="res\terrain\dirt.png" />
+    <Image Include="res\terrain\grass.png" />
+    <Image Include="res\terrain\heightMap.png" />
+    <Image Include="res\terrain\sand.png" />
+    <Image Include="res\terrain\stone.png" />
+    <Image Include="res\textures\fullSpec.png" />
+    <Image Include="res\textures\grass.png" />
+    <Image Include="res\textures\noSpec.png" />
+    <Image Include="res\textures\window.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shaders\spotlight.frag" />
-    <None Include="src\shaders\pointlight.frag" />
-    <None Include="src\shaders\directionalLight.frag" />
-    <None Include="src\shaders\compute\frame_luminance.comp" />
+    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomBrightPass.glsl" />
+    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomGaussianBlur.glsl" />
     <None Include="src\Arcane\Shaders\BRDF_Integration.glsl" />
-    <None Include="src\Arcane\Shaders\LightProbe_Convolution.glsl" />
-    <None Include="src\Arcane\Shaders\ReflectionProbe_ImportanceSampling.glsl" />
-    <None Include="src\Arcane\Shaders\Shadowmap_Generation.glsl" />
-    <None Include="src\Arcane\Shaders\Skybox.glsl" />
-    <None Include="src\Arcane\Shaders\TonemapGammaCorrect.glsl" />
-    <None Include="src\Arcane\Shaders\Water.glsl" />
+    <None Include="src\shaders\compute\frame_luminance.comp" />
     <None Include="src\Arcane\Shaders\Compute\Scene_Luminance.glsl" />
     <None Include="src\Arcane\Shaders\Deferred\PBR_LightingPass.glsl" />
     <None Include="src\Arcane\Shaders\Deferred\PBR_Model_GeometryPass.glsl" />
     <None Include="src\Arcane\Shaders\Deferred\PBR_Terrain_GeometryPass.glsl" />
+    <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\Arcane\Shaders\Forward\PBR_Model.glsl" />
     <None Include="src\Arcane\Shaders\Forward\PBR_Terrain.glsl" />
-    <None Include="src\Arcane\Shaders\Post_Process\Copy.glsl" />
-    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomBrightPass.glsl" />
-    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomGaussianBlur.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\Composite.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Chromatic_Aberration\ChromaticAberration.glsl" />
+    <None Include="src\Arcane\Shaders\Post_Process\Copy.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Film_Grain\FilmGrain.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\FXAA\FXAA.glsl" />
+    <None Include="src\Arcane\Shaders\LightProbe_Convolution.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\SMAA\SMAA.glsl" />
+    <None Include="src\Arcane\Shaders\Post_Process\Vignette\Vignette.glsl" />
+    <None Include="src\Arcane\Shaders\TonemapGammaCorrect.glsl" />
+    <None Include="src\shaders\pointlight.frag" />
+    <None Include="src\Arcane\Shaders\ReflectionProbe_ImportanceSampling.glsl" />
+    <None Include="src\Arcane\Shaders\Shadowmap_Generation.glsl" />
+    <None Include="src\Arcane\Shaders\Skybox.glsl" />
+    <None Include="src\shaders\spotlight.frag" />
     <None Include="src\Arcane\Shaders\Post_Process\SSAO\SSAO.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\SSAO\SSAO_Blur.glsl" />
-    <None Include="src\Arcane\Shaders\Post_Process\Vignette\Vignette.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\container.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\awesomeface.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\container2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\container2_specular.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\matrix.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\container2_emission.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\terrain\blendMap.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\terrain\dirt.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\terrain\grass.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\terrain\sand.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\terrain\stone.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\terrain\heightMap.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\skybox\back.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\skybox\bottom.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\skybox\left.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\skybox\front.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\skybox\right.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\skybox\top.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\fullSpec.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\grass.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\noSpec.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\textures\window.png">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <None Include="src\Arcane\Shaders\Water.glsl" />
   </ItemGroup>
 </Project>

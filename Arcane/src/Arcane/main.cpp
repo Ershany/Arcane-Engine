@@ -2,6 +2,8 @@
 
 #include <Arcane/Core/Application.h>
 
+#include <Arcane/vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>
+
 int main() {
 
 	// Temp: Should be handled by whatever service that wants to run Arcane

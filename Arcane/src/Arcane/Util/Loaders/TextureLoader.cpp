@@ -10,7 +10,7 @@ namespace Arcane
 	Texture *TextureLoader::s_DefaultNormal;
 	Texture *TextureLoader::s_WhiteTexture; Texture *TextureLoader::s_BlackTexture;
 
-	void TextureLoader::Load2DTextureData(std::string &path, TextureGenerationData &inOutData)
+	void TextureLoader::Load2DTextureData(const std::string &path, TextureGenerationData &inOutData)
 	{
 		// Load the texture data from file
 		int numComponents;
@@ -30,13 +30,12 @@ namespace Arcane
 		}
 	}
 
-	void TextureLoader::Generate2DTexture(std::string &path, TextureGenerationData &inOutData)
+	void TextureLoader::Generate2DTexture(const std::string &path, TextureGenerationData &inOutData)
 	{
 		inOutData.texture->Generate2DTexture(inOutData.width, inOutData.height, inOutData.dataFormat, GL_UNSIGNED_BYTE, inOutData.data);
 		stbi_image_free(inOutData.data);
 	}
-
-	void TextureLoader::LoadCubemapTextureData(std::string &path, CubemapGenerationData &inOutData)
+	void TextureLoader::LoadCubemapTextureData(const std::string &path, CubemapGenerationData &inOutData)
 	{
 		// Load the cubemap data from file
 		int numComponents;
@@ -56,7 +55,7 @@ namespace Arcane
 		}
 	}
 
-	void TextureLoader::GenerateCubemapTexture(std::string &path, CubemapGenerationData &inOutData)
+	void TextureLoader::GenerateCubemapTexture(const std::string &path, CubemapGenerationData &inOutData)
 	{
 		inOutData.cubemap->GenerateCubemapFace(inOutData.face, inOutData.width, inOutData.height, inOutData.dataFormat, inOutData.data);
 		stbi_image_free(inOutData.data);

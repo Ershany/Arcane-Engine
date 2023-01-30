@@ -27,8 +27,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// Renderdoc debug
-#include <Arcane/vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>
+#include <Arcane/Vendor/renderdoc-1.x/renderdoc/api/app/renderdoc_app.h>
 
 // Arcane
 #include <Arcane/Defs.h>

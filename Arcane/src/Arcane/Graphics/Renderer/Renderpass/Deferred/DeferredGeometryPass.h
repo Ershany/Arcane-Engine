@@ -5,7 +5,7 @@
 namespace Arcane
 {
 	class Shader;
-	class Scene3D;
+	class Scene;
 	class ICamera;
 
 	enum DeferredStencilValue : int {
@@ -15,8 +15,8 @@ namespace Arcane
 
 	class DeferredGeometryPass : public RenderPass {
 	public:
-		DeferredGeometryPass(Scene3D *scene);
-		DeferredGeometryPass(Scene3D *scene, GBuffer *customGBuffer);
+		DeferredGeometryPass(Scene *scene);
+		DeferredGeometryPass(Scene *scene, GBuffer *customGBuffer);
 		virtual ~DeferredGeometryPass() override;
 
 		GeometryPassOutput executeGeometryPass(ICamera *camera, bool renderOnlyStatic);

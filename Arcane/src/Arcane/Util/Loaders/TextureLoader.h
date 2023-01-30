@@ -33,11 +33,11 @@ namespace Arcane
 	private:
 		static void InitializeDefaultTextures();
 
-		static void Load2DTextureData(std::string &path, TextureGenerationData &inOutData);
-		static void Generate2DTexture(std::string &path, TextureGenerationData &inOutData);
+		static void Load2DTextureData(const std::string &path, TextureGenerationData &inOutData);
+		static void Generate2DTexture(const std::string &path, TextureGenerationData &inOutData);
 
-		static void LoadCubemapTextureData(std::string &path, CubemapGenerationData &inOutData);
-		static void GenerateCubemapTexture(std::string &path, CubemapGenerationData &inOutData);
+		static void LoadCubemapTextureData(const std::string &path, CubemapGenerationData &inOutData);
+		static void GenerateCubemapTexture(const std::string &path, CubemapGenerationData &inOutData);
 	private:
 		// Default Textures
 		static Texture *s_DefaultNormal;

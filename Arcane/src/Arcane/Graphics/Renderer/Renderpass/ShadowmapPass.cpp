@@ -1,15 +1,16 @@
 #include "arcpch.h"
 #include "ShadowmapPass.h"
 
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
 namespace Arcane
 {
-	ShadowmapPass::ShadowmapPass(Scene3D *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
+	ShadowmapPass::ShadowmapPass(Scene *scene) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
 
@@ -17,7 +18,7 @@ namespace Arcane
 		m_ShadowmapFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 	}
 
-	ShadowmapPass::ShadowmapPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_ShadowmapFramebuffer(customFramebuffer)
+	ShadowmapPass::ShadowmapPass(Scene *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_ShadowmapFramebuffer(customFramebuffer)
 	{
 		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
 	}
@@ -33,7 +34,6 @@ namespace Arcane
 		m_ShadowmapFramebuffer->Clear();
 
 		// Setup
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		Terrain *terrain = m_ActiveScene->GetTerrain();
 		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
 
@@ -48,21 +48,20 @@ namespace Arcane
 
 		// Setup model renderer
 		if (renderOnlyStatic) {
-			m_ActiveScene->AddStaticModelsToRenderer();
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::StaticModels);
 		}
 		else {
-			m_ActiveScene->AddModelsToRenderer();
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::AllModels);
 		}
 
 		// Render models
 		m_GLCache->SetDepthTest(true);
 		m_GLCache->SetBlend(false);
 		m_GLCache->SetFaceCull(false);
-		modelRenderer->FlushOpaque(m_ShadowmapShader, NoMaterialRequired);
-		modelRenderer->FlushTransparent(m_ShadowmapShader, NoMaterialRequired);
+		Renderer::Flush(camera, m_ShadowmapShader, RenderPassType::NoMaterialRequired);
 
 		// Render terrain
-		terrain->Draw(m_ShadowmapShader, NoMaterialRequired);
+		terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
 
 		// Render pass output
 		ShadowmapPassOutput passOutput;

@@ -6,12 +6,13 @@
 #include <Arcane/Graphics/Skybox.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
 namespace Arcane
 {
-	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, bool shouldMultisample) : RenderPass(scene), m_AllocatedFramebuffer(true)
+	ForwardLightingPass::ForwardLightingPass(Scene *scene, bool shouldMultisample) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
 		m_ModelShader = ShaderLoader::LoadShader("forward/PBR_Model.glsl");
 		m_TerrainShader = ShaderLoader::LoadShader("forward/PBR_Terrain.glsl");
@@ -20,7 +21,7 @@ namespace Arcane
 		m_Framebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthStencil).CreateFramebuffer();
 	}
 
-	ForwardLightingPass::ForwardLightingPass(Scene3D *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
+	ForwardLightingPass::ForwardLightingPass(Scene *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
 		m_ModelShader = ShaderLoader::LoadShader("forward/PBR_Model.glsl");
 		m_TerrainShader = ShaderLoader::LoadShader("forward/PBR_Terrain.glsl");
@@ -32,7 +33,7 @@ namespace Arcane
 		}
 	}
 
-	LightingPassOutput ForwardLightingPass::executeLightingPass(ShadowmapPassOutput &shadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
+	LightingPassOutput ForwardLightingPass::executeOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		m_Framebuffer->Bind();
 		m_Framebuffer->Clear();
@@ -44,53 +45,15 @@ namespace Arcane
 		}
 
 		// Setup
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		Terrain *terrain = m_ActiveScene->GetTerrain();
 		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
 		Skybox *skybox = m_ActiveScene->GetSkybox();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
-		// View setup + lighting setup
+		// Lighting setup
 		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
 		if (renderOnlyStatic)
 			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
-
-		m_GLCache->SetShader(m_ModelShader);
-		if (m_GLCache->GetUsesClipPlane()) {
-			m_ModelShader->SetUniform("usesClipPlane", true);
-			m_ModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
-		}
-		else {
-			m_ModelShader->SetUniform("usesClipPlane", false);
-		}
-		(lightManager->*lightBindFunction) (m_ModelShader);
-		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
-		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
-		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
-
-		// Shadowmap code
-		bindShadowmap(m_ModelShader, shadowmapData);
-
-		// IBL Binding
-		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
-
-		// Setup model renderer
-		if (renderOnlyStatic) {
-			m_ActiveScene->AddStaticModelsToRenderer();
-		}
-		else {
-			m_ActiveScene->AddModelsToRenderer();
-		}
-
-		// Render opaque objects
-		if (useIBL) {
-			m_ModelShader->SetUniform("computeIBL", 1);
-		}
-		else {
-			m_ModelShader->SetUniform("computeIBL", 0);
-		}
-		modelRenderer->SetupOpaqueRenderState();
-		modelRenderer->FlushOpaque(m_ModelShader, MaterialRequired);
 
 		// Render terrain
 		m_GLCache->SetShader(m_TerrainShader);
@@ -107,13 +70,13 @@ namespace Arcane
 		m_TerrainShader->SetUniform("viewPos", camera->GetPosition());
 		m_TerrainShader->SetUniform("view", camera->GetViewMatrix());
 		m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
-		bindShadowmap(m_TerrainShader, shadowmapData);
+		bindShadowmap(m_TerrainShader, inputShadowmapData);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
 
 		// Render skybox
 		skybox->Draw(camera);
 
-		// Render transparent objects
+		// Render opaque and transparent objects (renderer will render the transparent bucket last)
 		m_GLCache->SetShader(m_ModelShader);
 		if (m_GLCache->GetUsesClipPlane())
 		{
@@ -124,15 +87,112 @@ namespace Arcane
 		{
 			m_ModelShader->SetUniform("usesClipPlane", false);
 		}
-		if (useIBL) {
-			probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+		(lightManager->*lightBindFunction) (m_ModelShader);
+		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
+		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
+		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
+
+		// Shadowmap code
+		bindShadowmap(m_ModelShader, inputShadowmapData);
+
+		// IBL Binding
+		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+		if (useIBL)
+		{
+			m_ModelShader->SetUniform("computeIBL", 1);
 		}
-		modelRenderer->SetupTransparentRenderState();
-		modelRenderer->FlushTransparent(m_ModelShader, MaterialRequired);
+		else
+		{
+			m_ModelShader->SetUniform("computeIBL", 0);
+		}
+
+		// Add meshes to the renderer
+		if (renderOnlyStatic)
+		{
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueStaticModels);
+		}
+		else
+		{
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueModels);
+		}
+
+		// Finally render the meshes
+		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
 
 		// Render pass output
 		LightingPassOutput passOutput;
 		passOutput.outputFramebuffer = m_Framebuffer;
+		return passOutput;
+	}
+
+	LightingPassOutput ForwardLightingPass::executeTransparentLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL)
+	{
+		glViewport(0, 0, inputFramebuffer->GetWidth(), inputFramebuffer->GetHeight());
+		inputFramebuffer->Bind();
+		if (inputFramebuffer->IsMultisampled())
+		{
+			m_GLCache->SetMultisample(true);
+		}
+		else
+		{
+			m_GLCache->SetMultisample(false);
+		}
+
+		// Setup
+		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
+
+		// Lighting setup
+		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
+		if (renderOnlyStatic)
+			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
+
+		// Render opaque and transparent objects (renderer will render the transparent bucket last)
+		m_GLCache->SetShader(m_ModelShader);
+		if (m_GLCache->GetUsesClipPlane())
+		{
+			m_ModelShader->SetUniform("usesClipPlane", true);
+			m_ModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
+		}
+		else
+		{
+			m_ModelShader->SetUniform("usesClipPlane", false);
+		}
+		(lightManager->*lightBindFunction) (m_ModelShader);
+		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
+		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
+		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
+
+		// Shadowmap code
+		bindShadowmap(m_ModelShader, inputShadowmapData);
+
+		// IBL Binding
+		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+		if (useIBL)
+		{
+			m_ModelShader->SetUniform("computeIBL", 1);
+		}
+		else
+		{
+			m_ModelShader->SetUniform("computeIBL", 0);
+		}
+
+		// Add meshes to the renderer
+		if (renderOnlyStatic)
+		{
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::TransparentStaticModels);
+		}
+		else
+		{
+			m_ActiveScene->AddModelsToRenderer(ModelFilterType::TransparentModels);
+		}
+
+		// Finally render the meshes
+		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
+
+		// Render pass output
+		LightingPassOutput passOutput;
+		passOutput.outputFramebuffer = inputFramebuffer;
 		return passOutput;
 	}
 
