@@ -78,7 +78,6 @@ namespace Arcane
 		while (m_Running && !m_Window->Closed())
 		{
 			deltaTime.Update();
-
 			m_InputManager->Update();
 			m_Window->Update();
 
