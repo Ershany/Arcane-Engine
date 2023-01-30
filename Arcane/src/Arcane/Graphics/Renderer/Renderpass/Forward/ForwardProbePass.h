@@ -8,11 +8,11 @@
 namespace Arcane
 {
 	class Shader;
-	class Scene3D;
+	class Scene;
 
 	class ForwardProbePass : public RenderPass {
 	public:
-		ForwardProbePass(Scene3D *scene);
+		ForwardProbePass(Scene *scene);
 		virtual ~ForwardProbePass() override;
 
 		void pregenerateIBL();

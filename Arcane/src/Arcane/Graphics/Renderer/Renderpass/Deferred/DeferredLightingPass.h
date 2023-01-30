@@ -5,16 +5,16 @@
 namespace Arcane
 {
 	class Shader;
-	class Scene3D;
+	class Scene;
 	class ICamera;
 
 	class DeferredLightingPass : public RenderPass {
 	public:
-		DeferredLightingPass(Scene3D *scene);
-		DeferredLightingPass(Scene3D *scene, Framebuffer *framebuffer);
+		DeferredLightingPass(Scene *scene);
+		DeferredLightingPass(Scene *scene, Framebuffer *framebuffer);
 		virtual ~DeferredLightingPass() override;
 
-		LightingPassOutput executeLightingPass(ShadowmapPassOutput &shadowmapData, GeometryPassOutput &geometryData, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL);
+		LightingPassOutput executeLightingPass(ShadowmapPassOutput &inputShadowmapData, GBuffer *inputGbuffer, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL);
 	private:
 		void bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData);
 	private:

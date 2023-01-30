@@ -6,7 +6,7 @@
 
 namespace Arcane
 {
-	GraphicsSettings::GraphicsSettings(MasterRenderer *renderer) : m_Renderer(renderer)
+	GraphicsSettings::GraphicsSettings(MasterRenderPass *renderer) : m_MasterRenderPass(renderer)
 	{
 
 	}
@@ -20,7 +20,7 @@ namespace Arcane
 			return;
 		}
 
-		PostProcessPass* postProcessPass = m_Renderer->GetPostProcessPass();
+		PostProcessPass* postProcessPass = m_MasterRenderPass->GetPostProcessPass();
 
 		ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_None;
 		if (ImGui::BeginTabBar("Render Tabs", tabBarFlags))

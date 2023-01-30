@@ -1,7 +1,7 @@
 ﻿#include "arcpch.h"
 #include "ForwardProbePass.h"
 
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Graphics/Mesh/Common/Cube.h>
 #include <Arcane/Graphics/IBL/ProbeManager.h>
 #include <Arcane/Graphics/IBL/LightProbe.h>
@@ -11,11 +11,12 @@
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardLightingPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/ShadowmapPass.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 
 namespace Arcane
 {
-	ForwardProbePass::ForwardProbePass(Scene3D *scene) : RenderPass(scene),
+	ForwardProbePass::ForwardProbePass(Scene *scene) : RenderPass(scene),
 		m_SceneCaptureShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false),
 		m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION, false), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION, false)
 	{
@@ -50,7 +51,6 @@ namespace Arcane
 
 	void ForwardProbePass::generateBRDFLUT() {
 		Shader *brdfIntegrationShader = ShaderLoader::LoadShader("BRDF_Integration.glsl");
-		ModelRenderer *modelRenderer = m_ActiveScene->GetModelRenderer();
 		
 		// Texture settings for the BRDF LUT
 		TextureSettings textureSettings;
@@ -78,7 +78,7 @@ namespace Arcane
 		// Render an NDC quad to the screen so we can generate the BRDF LUT
 		glViewport(0, 0, BRDF_LUT_RESOLUTION, BRDF_LUT_RESOLUTION);
 		brdfFramebuffer.SetColorAttachment(brdfLUT->GetTextureId(), GL_TEXTURE_2D);
-		modelRenderer->NDC_Plane.Draw();
+		Renderer::DrawNdcPlane();
 		brdfFramebuffer.SetColorAttachment(0, GL_TEXTURE_2D);
 
 		m_GLCache->SetDepthTest(true);
@@ -114,7 +114,7 @@ namespace Arcane
 
 			// Convolute the scene's capture and store it in the Light Probe's cubemap
 			m_LightProbeConvolutionFramebuffer.SetColorAttachment(fallbackLightProbe->GetIrradianceMap()->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			m_ActiveScene->GetModelRenderer()->NDC_Cube.Draw(); // Since we are sampling a cubemap, just use a cube
+			Renderer::DrawNdcCube(); // Since we are sampling a cubemap, just use a cube
 			m_LightProbeConvolutionFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 		m_GLCache->SetFaceCull(true);
@@ -151,7 +151,7 @@ namespace Arcane
 
 				// Importance sample the scene's capture and store it in the Reflection Probe's cubemap
 				m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(fallbackReflectionProbe->GetPrefilterMap()->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mip);
-				m_ActiveScene->GetModelRenderer()->NDC_Cube.Draw(); // Since we are sampling a cubemap, just use a cube
+				Renderer::DrawNdcCube(); // Since we are sampling a cubemap, just use a cube
 				m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			}
 		}
@@ -170,7 +170,7 @@ namespace Arcane
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.SetCenterPosition(probePosition);
 		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
-		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer);
+		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 
 		// Render the scene to the probe's cubemap
 		for (int i = 0; i < 6; i++) {
@@ -183,7 +183,8 @@ namespace Arcane
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.Bind();
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(m_SceneCaptureCubemap.GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			lightingPass.executeLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			LightingPassOutput output = lightingPass.executeOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			lightingPass.executeTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 
@@ -205,7 +206,7 @@ namespace Arcane
 
 			// Convolute the scene's capture and store it in the Light Probe's cubemap
 			m_LightProbeConvolutionFramebuffer.SetColorAttachment(lightProbe->GetIrradianceMap()->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			m_ActiveScene->GetModelRenderer()->NDC_Cube.Draw(); // Since we are sampling a cubemap, just use a cube
+			Renderer::DrawNdcCube(); // Since we are sampling a cubemap, just use a cube
 			m_LightProbeConvolutionFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 		m_GLCache->SetFaceCull(true);
@@ -222,7 +223,7 @@ namespace Arcane
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.SetCenterPosition(probePosition);
 		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
-		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer);
+		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 
 		// Render the scene to the probe's cubemap
 		for (int i = 0; i < 6; i++) {
@@ -235,7 +236,8 @@ namespace Arcane
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.Bind();
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(m_SceneCaptureCubemap.GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			lightingPass.executeLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			LightingPassOutput output = lightingPass.executeOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			lightingPass.executeTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 
@@ -265,7 +267,7 @@ namespace Arcane
 
 				// Importance sample the scene's capture and store it in the Reflection Probe's cubemap
 				m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(reflectionProbe->GetPrefilterMap()->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mip);
-				m_ActiveScene->GetModelRenderer()->NDC_Cube.Draw(); // Since we are sampling a cubemap, just use a cube
+				Renderer::DrawNdcCube(); // Since we are sampling a cubemap, just use a cube
 				m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			}
 		}

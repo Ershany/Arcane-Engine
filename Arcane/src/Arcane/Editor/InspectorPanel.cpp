@@ -6,7 +6,7 @@
 
 namespace Arcane
 {
-	InspectorPanel::InspectorPanel() : m_FocusedEntity(nullptr)
+	InspectorPanel::InspectorPanel() : m_FocusedEntity()
 	{
 
 	}
@@ -17,88 +17,97 @@ namespace Arcane
 		{
 			if (m_FocusedEntity)
 			{
-				// TODO: Display each component info for the selected entity
-				if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+				// Display each component info for the selected entity
+				if (m_FocusedEntity.HasComponent<TransformComponent>())
 				{
-					DrawVec3Control("Translation", m_FocusedEntity->GetPositionRef());
-					glm::vec3 rotation = glm::degrees(glm::eulerAngles(m_FocusedEntity->GetOrientation()));
-					DrawVec3Control("Rotation", rotation, 5.0f);
-					m_FocusedEntity->SetOrientation(glm::quat(glm::radians(rotation)));
-					DrawVec3Control("Scale", m_FocusedEntity->GetScaleRef());
+					auto &transform = m_FocusedEntity.GetComponent<TransformComponent>();
+					if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						DrawVec3Control("Translation", transform.Translation);
+						glm::vec3 rotation = glm::degrees(transform.Rotation);
+						DrawVec3Control("Rotation", rotation, 1.0f);
+						transform.Rotation = glm::radians(rotation);
+						DrawVec3Control("Scale", transform.Scale);
+					}
 				}
-				if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
+				
+				if (m_FocusedEntity.HasComponent<MeshComponent>())
 				{
-					Material &meshMaterial = m_FocusedEntity->GetModel()->GetMeshes()[0].GetMaterial();
-					const char *items[] = { "Opaque", "Transparent" };
-					int choice = -1;
-					ImGui::Combo("Rendering Mode", &choice, items, IM_ARRAYSIZE(items));
-					ImGui::Text("Texture Maps");
-					ImGui::Separator();
+					auto &meshComponent = m_FocusedEntity.GetComponent<MeshComponent>();
+					if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						Material &meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+						const char *items[] = { "Opaque", "Transparent" };
+						int choice = -1;
+						ImGui::Combo("Rendering Mode", &choice, items, IM_ARRAYSIZE(items));
+						ImGui::Text("Texture Maps");
+						ImGui::Separator();
 
-					ImGui::Image(meshMaterial.GetAlbedoMap() ? (ImTextureID)meshMaterial.GetAlbedoMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
-					if (ImGui::IsItemHovered() && meshMaterial.GetAlbedoMap())
-					{
-						ImGui::BeginTooltip();
-						ImGui::Image((ImTextureID)meshMaterial.GetAlbedoMap()->GetTextureId(), ImVec2(400, 400));
-						ImGui::EndTooltip();
-					}
-					ImGui::Text("Albedo"); ImGui::SameLine();
-					ImGui::ColorEdit4("##Albedo Colour", (float*)&meshMaterial.GetAlbedoColourRef(), ImGuiColorEditFlags_DisplayRGB);
+						ImGui::Image(meshMaterial.GetAlbedoMap() ? (ImTextureID)meshMaterial.GetAlbedoMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && meshMaterial.GetAlbedoMap())
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)meshMaterial.GetAlbedoMap()->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Albedo"); ImGui::SameLine();
+						ImGui::ColorEdit4("##Albedo Colour", (float*)&meshMaterial.GetAlbedoColourRef(), ImGuiColorEditFlags_DisplayRGB);
 
-					ImGui::Image(meshMaterial.GetRoughnessMap() ? (ImTextureID)meshMaterial.GetRoughnessMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
-					if (ImGui::IsItemHovered() && meshMaterial.GetRoughnessMap())
-					{
-						ImGui::BeginTooltip();
-						ImGui::Image((ImTextureID)meshMaterial.GetRoughnessMap()->GetTextureId(), ImVec2(400, 400));
-						ImGui::EndTooltip();
-					}
-					ImGui::Text("Roughness");
-					if (!meshMaterial.GetRoughnessMap())
-					{
-						ImGui::SameLine();
-						ImGui::SliderFloat("##Roughness Slider", &meshMaterial.GetRoughnessValueRef(), 0.0f, 1.0f, "%.2f");
-					}
+						ImGui::Image(meshMaterial.GetRoughnessMap() ? (ImTextureID)meshMaterial.GetRoughnessMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && meshMaterial.GetRoughnessMap())
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)meshMaterial.GetRoughnessMap()->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Roughness");
+						if (!meshMaterial.GetRoughnessMap())
+						{
+							ImGui::SameLine();
+							ImGui::SliderFloat("##Roughness Slider", &meshMaterial.GetRoughnessValueRef(), 0.0f, 1.0f, "%.2f");
+						}
 
-					ImGui::Image(meshMaterial.GetMetallicMap() ? (ImTextureID)meshMaterial.GetMetallicMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
-					if (ImGui::IsItemHovered() && meshMaterial.GetMetallicMap())
-					{
-						ImGui::BeginTooltip();
-						ImGui::Image((ImTextureID)meshMaterial.GetMetallicMap()->GetTextureId(), ImVec2(400, 400));
-						ImGui::EndTooltip();
-					}
-					ImGui::Text("Metallic");
-					if (!meshMaterial.GetMetallicMap())
-					{
-						ImGui::SameLine();
-						ImGui::SliderFloat("##Metallic Slider", &meshMaterial.GetMetallicValueRef(), 0.0f, 1.0f, "%.2f");
-					}
+						ImGui::Image(meshMaterial.GetMetallicMap() ? (ImTextureID)meshMaterial.GetMetallicMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && meshMaterial.GetMetallicMap())
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)meshMaterial.GetMetallicMap()->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Metallic");
+						if (!meshMaterial.GetMetallicMap())
+						{
+							ImGui::SameLine();
+							ImGui::SliderFloat("##Metallic Slider", &meshMaterial.GetMetallicValueRef(), 0.0f, 1.0f, "%.2f");
+						}
 
-					ImGui::Image(meshMaterial.GetNormalMap() ? (ImTextureID)meshMaterial.GetNormalMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
-					if (ImGui::IsItemHovered() && meshMaterial.GetNormalMap())
-					{
-						ImGui::BeginTooltip();
-						ImGui::Image((ImTextureID)meshMaterial.GetNormalMap()->GetTextureId(), ImVec2(400, 400));
-						ImGui::EndTooltip();
-					}
-					ImGui::Text("Normals");
+						ImGui::Image(meshMaterial.GetNormalMap() ? (ImTextureID)meshMaterial.GetNormalMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && meshMaterial.GetNormalMap())
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)meshMaterial.GetNormalMap()->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Normals");
 
-					ImGui::Image(meshMaterial.GetAmbientOcclusionMap() ? (ImTextureID)meshMaterial.GetAmbientOcclusionMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
-					if (ImGui::IsItemHovered() && meshMaterial.GetAmbientOcclusionMap())
-					{
-						ImGui::BeginTooltip();
-						ImGui::Image((ImTextureID)meshMaterial.GetAmbientOcclusionMap()->GetTextureId(), ImVec2(400, 400));
-						ImGui::EndTooltip();
-					}
-					ImGui::Text("Ambient Occlusion");
+						ImGui::Image(meshMaterial.GetAmbientOcclusionMap() ? (ImTextureID)meshMaterial.GetAmbientOcclusionMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && meshMaterial.GetAmbientOcclusionMap())
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)meshMaterial.GetAmbientOcclusionMap()->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Ambient Occlusion");
 
-					ImGui::Image(meshMaterial.GetDisplacementMap() ? (ImTextureID)meshMaterial.GetDisplacementMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
-					if (ImGui::IsItemHovered() && meshMaterial.GetDisplacementMap())
-					{
-						ImGui::BeginTooltip();
-						ImGui::Image((ImTextureID)meshMaterial.GetDisplacementMap()->GetTextureId(), ImVec2(400, 400));
-						ImGui::EndTooltip();
+						ImGui::Image(meshMaterial.GetDisplacementMap() ? (ImTextureID)meshMaterial.GetDisplacementMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && meshMaterial.GetDisplacementMap())
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)meshMaterial.GetDisplacementMap()->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Displacement");
 					}
-					ImGui::Text("Displacement");
 				}
 			}
 		}

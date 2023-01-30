@@ -3,8 +3,9 @@
 
 #include <Arcane/Defs.h>
 #include <Arcane/Graphics/Window.h>
-#include <Arcane/Graphics/Renderer/MasterRenderer.h>
-#include <Arcane/Scene/Scene3D.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
+#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderPass.h>
+#include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Util/Loaders/TextureLoader.h>
@@ -28,26 +29,12 @@ namespace Arcane
 		m_Window = new Window(this, specification);
 		m_Window->Init();
 		AssetManager &assetManager = Arcane::AssetManager::GetInstance(); // Need to initialize the asset manager early so we can load resources and have our worker threads instantiated
+		Renderer::Init(); // Must be loaded before textures get created since they query for the max anistropy from the renderer
 		Arcane::TextureLoader::InitializeDefaultTextures();
 		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
-		m_Scene3D = new Scene3D(m_Window);
-		m_Renderer = new MasterRenderer(m_Scene3D);
+		m_ActiveScene = new Scene(m_Window);
+		m_MasterRenderPass = new MasterRenderPass(m_ActiveScene);
 		m_Manager = new InputManager();
-
-		// Make sure all assets load before booting for first time
-		while (assetManager.AssetsInFlight())
-		{
-			Arcane::AssetManager::GetInstance().Update(10000, 10000, 10000);
-		}
-
-		// Initialize the renderer
-		m_Renderer->Init();
-
-		if (m_Specification.EnableImGui)
-		{
-			m_ImGuiLayer = ImGuiLayer::Create(ARC_DEV_ONLY("Engine ImGui Layer"));
-			PushOverlay(m_ImGuiLayer);
-		}
 	}
 
 	Application::~Application()
@@ -58,18 +45,38 @@ namespace Arcane
 			delete layer;
 		}
 
-		// Todo: insert render queue flush here
-		// And render shutdown
+		Renderer::Shutdown();
 
 		delete m_Window;
-		delete m_Scene3D;
-		delete m_Renderer;
+		delete m_ActiveScene;
+		delete m_MasterRenderPass;
 		delete m_Manager;
+	}
+
+	void Application::InternalInit()
+	{
+		// This will call OnAttach for any layers in the layer stack. This is where the editor layer can load up assets before runtime
+		OnInit();
+
+		// Make sure all assets load before booting for first time
+		while (Arcane::AssetManager::GetInstance().AssetsInFlight())
+		{
+			Arcane::AssetManager::GetInstance().Update(10000, 10000, 10000);
+		}
+
+		// Initialize the master render pass
+		m_MasterRenderPass->Init();
+
+		if (m_Specification.EnableImGui)
+		{
+			m_ImGuiLayer = ImGuiLayer::Create(ARC_DEV_ONLY("Engine ImGui Layer"));
+			PushOverlay(m_ImGuiLayer);
+		}
 	}
 
 	void Application::Run()
 	{
-		OnInit();
+		InternalInit();
 
 		uint64_t frameCounter = 0;
 		Time deltaTime;
@@ -94,14 +101,19 @@ namespace Arcane
 				m_Window->Clear();
 
 				AssetManager::GetInstance().Update(TEXTURE_LOADS_PER_FRAME, CUBEMAP_FACES_PER_FRAME, MODELS_PER_FRAME);
-				m_Scene3D->OnUpdate((float)deltaTime.GetDeltaTime());
+				m_ActiveScene->OnUpdate((float)deltaTime.GetDeltaTime());
 				for (Layer *layer : m_LayerStack)
 					layer->OnUpdate((float)deltaTime.GetDeltaTime());
 
-				m_Renderer->Render();
+				// Render the frame
+				Renderer::BeginFrame();
+				{
+					m_MasterRenderPass->Render();
 
-				if (m_Specification.EnableImGui)
-					RenderImGui();
+					if (m_Specification.EnableImGui)
+						RenderImGui();
+				}
+				Renderer::EndFrame();
 
 				++frameCounter;
 			}

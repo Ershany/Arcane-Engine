@@ -12,13 +12,13 @@
 
 namespace Arcane
 {
-	class Scene3D;
+	class Scene;
 	class Shader;
 
-	class MasterRenderer
+	class MasterRenderPass
 	{
 	public:
-		MasterRenderer(Scene3D *scene);
+		MasterRenderPass(Scene *scene);
 
 		void Init();
 		void Render();
@@ -29,7 +29,7 @@ namespace Arcane
 		inline PostProcessPass* GetPostProcessPass() { return &m_PostProcessPass; }
 	private:
 		GLCache *m_GLCache;
-		Scene3D *m_ActiveScene;
+		Scene *m_ActiveScene;
 
 		Texture *m_FinalOutputTexture;
 		Shader *m_PassthroughShader;

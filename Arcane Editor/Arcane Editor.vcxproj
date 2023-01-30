@@ -83,7 +83,7 @@
       <PreprocessorDefinitions>ARC_RELEASE;ARC_PLATFORM_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>ARC_FINAL;ARC_PLATFORM_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
@@ -127,7 +127,7 @@
       <PreprocessorDefinitions>ARC_DEBUG;ARC_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\SOIL\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
