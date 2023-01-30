@@ -7,7 +7,10 @@
 
 namespace Arcane
 {
-	Model::Model() {}
+	Model::Model()
+	{
+		m_Meshes.resize(0);
+	}
 
 	Model::Model(const Mesh &mesh) {
 		m_Meshes.push_back(mesh);
@@ -19,7 +22,7 @@ namespace Arcane
 
 	void Model::Draw(Shader *shader, RenderPassType pass) const {
 		for (unsigned int i = 0; i < m_Meshes.size(); ++i) {
-			// Avoid binding material inforomation when it isn't needed
+			// Avoid binding material information when it isn't needed
 			if (pass == MaterialRequired) {
 				m_Meshes[i].m_Material.BindMaterialInformation(shader);
 			}
