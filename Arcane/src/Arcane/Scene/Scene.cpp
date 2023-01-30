@@ -30,11 +30,6 @@ namespace Arcane
 
 	void Scene::Init()
 	{
-		AssetManager &assetManager = AssetManager::GetInstance();
-
-		TextureSettings srgbTextureSettings;
-		srgbTextureSettings.IsSRGB = true;
-
 		// Skybox
 		std::vector<std::string> skyboxFilePaths;
 		skyboxFilePaths.push_back("res/skybox/right.png");
