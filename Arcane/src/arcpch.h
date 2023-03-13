@@ -17,9 +17,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include <stb_image_aug.h>
-
-#include <SOIL.h>
+#include <Arcane/Vendor/stb/stb_image.h>
 
 #include <glm/glm.hpp>
 #include <glm/common.hpp>

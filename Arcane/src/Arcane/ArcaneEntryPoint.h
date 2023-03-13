@@ -2,6 +2,9 @@
 
 #ifdef ARC_PLATFORM_WINDOWS
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <Arcane/Vendor/stb/stb_image.h>
+
 #include <arcpch.h>
 #include <Arcane/Core/Application.h>
 #include <Arcane/Core/Base.h>

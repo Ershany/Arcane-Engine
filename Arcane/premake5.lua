@@ -32,7 +32,6 @@ project "Arcane"
 	{
 		"GLFW",
 		"GLEW",
-		"SOIL",
 		"Assimp",
 		"FreeType",
 		"FreeType-GL"
