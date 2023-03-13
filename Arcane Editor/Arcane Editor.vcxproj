@@ -60,19 +60,19 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
-    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\Physx\release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib\release;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\Physx\release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Final|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
-    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\Physx\release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib\release;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\Physx\release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)bin\$(ProjectName)-$(Platform)-$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(ProjectName)-$(Platform)-$(Configuration)\</IntDir>
-    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\Physx\debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Dependencies\GLFW\lib\debug;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\FreeType-GL\lib;$(SolutionDir)Dependencies\GLEW\lib;$(SolutionDir)Dependencies\Physx\debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -80,22 +80,28 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;ARC_RELEASE;ARC_PLATFORM_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;ARC_RELEASE;ARC_PLATFORM_WINDOWS;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;..\Arcane\src\Arcane\Vendor\physx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;PhysX_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;PhysX_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXFoundation_64.lib;PhysXExtensions_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc141-mt.dll" "$(OutDir)"
-xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"</Command>
+xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PhysX_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PhysXCommon_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PhysXCooking_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PhysXFoundation_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PVDRuntime_64.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Final|x64'">
@@ -109,16 +115,22 @@ xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"</Co
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;..\Arcane\src\Arcane\Vendor\physx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;PhysX_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;PhysX_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXFoundation_64.lib;PhysXTask_static_64.lib;PhysXExtensions_static_64.lib;PhysXCharacterKinematic_static_64.lib;PhysXPvdSDK_static_64.lib;PhysXVehicle_static_64.lib;PhysXVehicle2_static_64.lib;SceneQuery_static_64.lib;SimulationController_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc141-mt.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc141-mt.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PhysX_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PhysXCommon_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PhysXCooking_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PhysXFoundation_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\release\PVDRuntime_64.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -129,15 +141,21 @@ xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"</Co
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;..\Arcane\src\Arcane\Vendor\physx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;PhysX_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;assimp-vc141-mt.lib;legacy_stdio_definitions.lib;PhysX_64.lib;PhysXCommon_64.lib;PhysXCooking_64.lib;PhysXFoundation_64.lib;PhysXExtensions_static_64.lib;PVDRuntime_64.lib;PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)Dependencies\Assimp\lib\assimp-vc141-mt.dll" "$(OutDir)"
-xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"</Command>
+xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\debug\PhysX_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\debug\PhysXCommon_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\debug\PhysXCooking_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\debug\PhysXFoundation_64.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)Dependencies\Physx\debug\PVDRuntime_64.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

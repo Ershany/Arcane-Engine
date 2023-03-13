@@ -38,6 +38,7 @@ namespace Arcane
 		m_ActiveScene = new Scene(m_Window);
 		m_MasterRenderPass = new MasterRenderPass(m_ActiveScene);
 		m_InputManager = &InputManager::GetInstance();
+		m_PhysicsScene = new PhysicsScene();
 	}
 
 	Application::~Application()
@@ -166,7 +167,7 @@ namespace Arcane
 		//m_DebugPane.Render();
 		//m_WaterPane.Render();
 
-		for (Layer *layer : m_LayerStack)
+		for (Layer* layer : m_LayerStack)
 			layer->OnImGuiRender();
 
 		m_ImGuiLayer->End();

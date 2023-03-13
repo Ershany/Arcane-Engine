@@ -5,6 +5,7 @@
 #include "Arcane/Core/Events/ApplicationEvent.h"
 #include <Arcane/Util/Singleton.h>
 #include <Arcane/Input/InputManager.h>
+#include <Arcane/Physics/3D/PhysicsScene.h>
 
 #include <Arcane/UI/DebugPane.h>
 #include <Arcane/UI/RuntimePane.h>
@@ -71,6 +72,7 @@ namespace Arcane
 		Scene *m_ActiveScene;
 		MasterRenderPass *m_MasterRenderPass;
 		LayerStack m_LayerStack;
+		PhysicsScene* m_PhysicsScene;
 
 		bool m_Running = true;
 		bool m_Minimized = false;

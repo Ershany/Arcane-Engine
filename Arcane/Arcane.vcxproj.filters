@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="src\Arcane\Physics\3D\PhysicsScene.cpp" />
     <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
     <ClCompile Include="src\Arcane\Core\Layer.cpp" />
@@ -44,6 +45,10 @@
     <ClCompile Include="src\Arcane\Input\JoystickManager.cpp" />
     <ClCompile Include="src\Arcane\main.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.cpp" />
+    <ClCompile Include="src\Arcane\UI\DebugPane.cpp" />
+    <ClCompile Include="src\Arcane\UI\Pane.cpp" />
+    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
+    <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.cpp" />
@@ -70,13 +75,9 @@
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_demo.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\Arcane\UI\DebugPane.cpp" />
-    <ClCompile Include="src\Arcane\UI\Pane.cpp" />
-    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
-    <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
-    <ClCompile Include="src\Arcane\Physics\3D\PhysicsScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Arcane\Physics\3D\PhysicsScene.h" />
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
     <ClInclude Include="src\Arcane.h" />
     <ClInclude Include="src\Arcane\ArcaneEntryPoint.h" />
@@ -142,6 +143,7 @@
     <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_rectpack.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_textedit.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\imstb_truetype.h" />
+    <ClInclude Include="src\Arcane\Vendor\stb\stb_image.h" />
     <ClInclude Include="src\arcpch.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\Framebuffer\GBuffer.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\RenderPass.h" />
@@ -169,11 +171,6 @@
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_rect_pack.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_textedit.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_truetype.h" />
-<<<<<<< HEAD
-    <ClInclude Include="src\Arcane\Physics\3D\PhysicsScene.h" />
-=======
-    <ClInclude Include="src\Arcane\Vendor\stb\stb_image.h" />
->>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

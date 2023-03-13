@@ -8,7 +8,7 @@ namespace Arcane
 		m_Foundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_Allocator, m_ErrorCallback);
 		ARC_ASSERT(m_Foundation, "PxCreateFoundation() failed");
 
-		// This is for debug profiling
+		// This is for debug profiling (Might need to run this for debug only)
 		m_Pvd = PxCreatePvd(*m_Foundation);
 		physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
 		m_Pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
