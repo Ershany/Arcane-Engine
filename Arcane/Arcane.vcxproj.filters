@@ -169,7 +169,11 @@
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_rect_pack.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_textedit.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_truetype.h" />
+<<<<<<< HEAD
     <ClInclude Include="src\Arcane\Physics\3D\PhysicsScene.h" />
+=======
+    <ClInclude Include="src\Arcane\Vendor\stb\stb_image.h" />
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

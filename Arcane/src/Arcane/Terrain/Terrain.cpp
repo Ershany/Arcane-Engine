@@ -17,7 +17,7 @@ namespace Arcane
 
 		// Height map
 		int mapWidth, mapHeight;
-		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, SOIL_LOAD_L);
+		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, 1);
 		if (mapWidth != mapHeight) {
 			ARC_LOG_FATAL("Can't use a heightmap with a different width and height for the terrain");
 			return;

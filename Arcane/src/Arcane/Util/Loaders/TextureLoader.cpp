@@ -42,7 +42,7 @@ namespace Arcane
 		inOutData.data = stbi_load(path.c_str(), &inOutData.width, &inOutData.height, &numComponents, 0);
 		if (!inOutData.data)
 		{
-			ARC_LOG_ERROR("Failed to load cubemap face: {0}, at path: {1}", inOutData.face, path);
+			ARC_LOG_ERROR("Failed to load cubemap face: {0}, at path: {1} - Reason: {2}", inOutData.face, path, stbi_failure_reason());
 			stbi_image_free(inOutData.data);
 			return;
 		}

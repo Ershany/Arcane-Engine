@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef ARC_RENDERDOC_DEBUG
+#ifdef USE_RENDERDOC
 
 #define RENDERDOCMANAGER Arcane::RenderdocManager::GetInstance()
 #define RENDERDOCAPI RENDERDOCMANAGER.GetRenderdocAPI()
