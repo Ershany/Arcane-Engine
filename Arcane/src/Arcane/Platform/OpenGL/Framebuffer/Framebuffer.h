@@ -21,8 +21,7 @@ namespace Arcane
 	enum StencilValue : int
 	{
 		ModelStencilValue = 0x01,
-		TerrainStencilValue = 0x02,
-		OutlineStencilValue = 0x03
+		TerrainStencilValue = 0x02
 	};
 
 	class Framebuffer {

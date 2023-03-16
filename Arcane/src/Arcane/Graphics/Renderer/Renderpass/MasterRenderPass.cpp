@@ -66,12 +66,12 @@ namespace Arcane
 		WaterPassOutput waterOutput = m_WaterPass.ExecuteWaterPass(shadowmapOutput, deferredLightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
 		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.ExecuteLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
 		PostProcessPassOutput postProcessOutput = m_PostProcessPass.ExecutePostProcessPass(postGBufferForward.outputFramebuffer);
-		EditorPassOutput editorOutput = m_EditorPass.ExecuteEditorPass(postProcessOutput.outFramebuffer, m_PostProcessPass.GetFullRenderTarget(), m_ActiveScene->GetCamera());
+		//EditorPassOutput editorOutput = m_EditorPass.ExecuteEditorPass(postProcessOutput.outFramebuffer, m_PostProcessPass.GetScreenRenderTarget(), m_ActiveScene->GetCamera());
 
 #endif
 
 		// Finally render the scene to the window's swapchain
-		m_FinalOutputTexture = editorOutput.outFramebuffer->GetColourTexture();
+		m_FinalOutputTexture = postProcessOutput.outFramebuffer->GetColourTexture();
 		if (m_RenderToSwapchain)
 		{
 			Window::Bind();

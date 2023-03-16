@@ -57,6 +57,7 @@ namespace Arcane
 		inline Framebuffer* GetHalfRenderTarget() { return &m_HalfRenderTarget; }
 		inline Framebuffer* GetQuarterRenderTarget() { return &m_QuarterRenderTarget; }
 		inline Framebuffer* GetEighthRenderTarget() { return &m_EighthRenderTarget; }
+		inline Framebuffer* GetResolveRenderTarget() { return &m_ResolveRenderTarget; }
 	private:
 		inline float Lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:
@@ -71,7 +72,6 @@ namespace Arcane
 		Framebuffer m_SsaoRenderTarget;
 		Framebuffer m_SsaoBlurRenderTarget;
 		Framebuffer m_TonemappedNonLinearTarget;
-		Framebuffer m_ScreenRenderTarget; // Only used if the render resolution differs from the window resolution
 		Framebuffer m_ResolveRenderTarget; // Only used if multi-sampling is enabled so it can be resolved
 
 		Framebuffer m_BrightPassRenderTarget;

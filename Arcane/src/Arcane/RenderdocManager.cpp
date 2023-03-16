@@ -1,6 +1,6 @@
 #include "arcpch.h"
 
-#ifdef USE_RENDERDOC
+#if USE_RENDERDOC
 
 #include <Arcane/RenderdocManager.h>
 #include <Arcane/Input/InputManager.h>

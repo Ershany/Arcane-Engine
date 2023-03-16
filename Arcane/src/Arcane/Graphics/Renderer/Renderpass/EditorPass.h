@@ -17,7 +17,7 @@ namespace Arcane
 
 		EditorPassOutput ExecuteEditorPass(Framebuffer *sceneFramebuffer, Framebuffer *extraFramebuffer, ICamera *camera);
 	private:
-		Shader *m_StencilWriteShader;
+		Shader *m_ColourWriteShader;
 		Shader *m_OutlineShader;
 
 		// Shader tweaks

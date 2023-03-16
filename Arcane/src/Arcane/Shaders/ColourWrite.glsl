@@ -15,8 +15,12 @@ void main() {
 
 
 #shader-type fragment
-#version 430 core
+#version 430 core 
+
+out vec4 FragColour;
+
+uniform vec3 colour;
 
 void main() {
-
+	FragColour = glm::vec4(colour, 1.0f);
 }

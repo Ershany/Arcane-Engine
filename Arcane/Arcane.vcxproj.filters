@@ -225,7 +225,7 @@
     <None Include="src\Arcane\Shaders\Post_Process\SSAO\SSAO.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\SSAO\SSAO_Blur.glsl" />
     <None Include="src\Arcane\Shaders\Water.glsl" />
-    <None Include="src\Arcane\Shaders\StencilWrite.glsl" />
+    <None Include="src\Arcane\Shaders\ColourWrite.glsl" />
     <None Include="src\Arcane\Shaders\Outline.glsl" />
   </ItemGroup>
 </Project>

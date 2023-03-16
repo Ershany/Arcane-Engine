@@ -361,7 +361,7 @@
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomBrightPass.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomGaussianBlur.glsl" />
     <None Include="src\Arcane\Shaders\BRDF_Integration.glsl" />
-    <None Include="src\Arcane\Shaders\StencilWrite.glsl" />
+    <None Include="src\Arcane\Shaders\ColourWrite.glsl" />
     <None Include="src\shaders\compute\frame_luminance.comp" />
     <None Include="src\Arcane\Shaders\Compute\Scene_Luminance.glsl" />
     <None Include="src\Arcane\Shaders\Deferred\PBR_LightingPass.glsl" />

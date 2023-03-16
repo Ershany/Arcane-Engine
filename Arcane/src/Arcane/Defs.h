@@ -2,7 +2,7 @@
 
 // Debug Options
 #define DEBUG_PROFILING 0
-#define USE_RENDERDOC 1
+#define USE_RENDERDOC 0
 
 
 // Window Settings

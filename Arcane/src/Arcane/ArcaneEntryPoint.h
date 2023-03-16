@@ -15,7 +15,7 @@ bool g_ApplicationRunning = true;
 
 int main(int argc, char **argv)
 {
-#ifdef USE_RENDERDOC
+#if USE_RENDERDOC
 	// Load in renderdoc api
 	RENDERDOCMANAGER;
 #endif
