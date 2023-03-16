@@ -21,9 +21,10 @@ namespace Arcane
 		void SetUsesClipPlane(bool choice);
 
 		void SetDepthFunc(GLenum depthFunc);
-		void SetStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask);
+		void SetStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask = 0xFF);
 		void SetStencilOp(GLenum stencilFailOperation, GLenum depthFailOperation, GLenum depthPassOperation);
 		void SetStencilWriteMask(unsigned int bitmask);
+		void SetColourMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha);
 		void SetBlendFunc(GLenum src, GLenum dst);
 		void SetCullFace(GLenum faceToCull);
 		void SetClipPlane(glm::vec4 clipPlane);
@@ -52,6 +53,9 @@ namespace Arcane
 
 		GLenum m_StencilFailOperation, m_DepthFailOperation, m_DepthPassOperation;
 		unsigned int m_StencilWriteBitmask;
+
+		// Colour State
+		GLboolean m_RedMask, m_BlueMask, m_GreenMask, m_AlphaMask;
 
 		// Blend State
 		GLenum m_BlendSrc, m_BlendDst;

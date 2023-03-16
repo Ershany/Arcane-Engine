@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Renderer/Renderpass/Deferred/PostGBufferForwardPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardProbePass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardLightingPass.h>
+#include <Arcane/Graphics/Renderer/Renderpass/EditorPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/WaterPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/PostProcessPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/ShadowmapPass.h>
@@ -38,6 +39,7 @@ namespace Arcane
 		ShadowmapPass m_ShadowmapPass;
 		PostProcessPass m_PostProcessPass;
 		WaterPass m_WaterPass;
+		EditorPass m_EditorPass;
 
 		// Forward passes
 		ForwardLightingPass m_ForwardLightingPass;

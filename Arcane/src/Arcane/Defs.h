@@ -1,8 +1,8 @@
 #pragma once
 
 // Debug Options
-#define DEBUG_PROFILING 1
-#define USE_RENDERDOC 0
+#define DEBUG_PROFILING 0
+#define USE_RENDERDOC 1
 
 
 // Window Settings
@@ -24,7 +24,7 @@
 #define SUPERSAMPLING_FACTOR 1 // 1 means window resolution will be the render resolution
 
 // Texture Filtering Settings
-#define ANISOTROPIC_FILTERING_LEVEL 8.0f
+#define ANISOTROPIC_FILTERING_LEVEL 16.0f
 
 // IBL Settings
 #define LIGHT_PROBE_RESOLUTION 32

@@ -29,7 +29,7 @@ namespace Arcane
 		}
 	}
 
-	GeometryPassOutput DeferredGeometryPass::executeGeometryPass(ICamera *camera, bool renderOnlyStatic) {
+	GeometryPassOutput DeferredGeometryPass::ExecuteGeometryPass(ICamera *camera, bool renderOnlyStatic) {
 		glViewport(0, 0, m_GBuffer->GetWidth(), m_GBuffer->GetHeight());
 		m_GBuffer->Bind();
 		m_GBuffer->Clear();
@@ -59,7 +59,7 @@ namespace Arcane
 
 		// Render opaque objects (use stencil to denote models for the deferred lighting pass)
 		m_GLCache->SetStencilWriteMask(0xFF);
-		m_GLCache->SetStencilFunc(GL_ALWAYS, DeferredStencilValue::ModelStencilValue, 0xFF);
+		m_GLCache->SetStencilFunc(GL_ALWAYS, StencilValue::ModelStencilValue, 0xFF);
 		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
 		m_GLCache->SetStencilWriteMask(0x00);
 
@@ -70,7 +70,7 @@ namespace Arcane
 
 		// Render the terrain (use stencil to denote the terrain for the deferred lighting pass)
 		m_GLCache->SetStencilWriteMask(0xFF);
-		m_GLCache->SetStencilFunc(GL_ALWAYS, DeferredStencilValue::TerrainStencilValue, 0xFF);
+		m_GLCache->SetStencilFunc(GL_ALWAYS, StencilValue::TerrainStencilValue, 0xFF);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
 		m_GLCache->SetStencilWriteMask(0x00);
 

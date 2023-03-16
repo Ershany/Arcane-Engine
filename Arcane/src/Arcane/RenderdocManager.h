@@ -33,4 +33,4 @@ namespace Arcane
 		RENDERDOC_API_1_5_0* m_RenderdocAPI;
 	};
 }
-#endif // ARC_RENDERDOC_DEBUG
+#endif // USE_RENDERDOC

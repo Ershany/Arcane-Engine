@@ -12,6 +12,8 @@ namespace Arcane
 		ScenePanel(Scene *scene, InspectorPanel *inspectorPanel);
 
 		void OnImGuiRender();
+
+		inline Entity GetSelectedEntity() { return m_SelectedEntity; }
 	private:
 		void DrawEntityNode(Entity entity);
 	private:

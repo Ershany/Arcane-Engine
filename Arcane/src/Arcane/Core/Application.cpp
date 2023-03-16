@@ -88,7 +88,7 @@ namespace Arcane
 			m_InputManager->Update();
 			m_Window->Update();
 
-#ifdef ARC_RENDERDOC_DEBUG
+#ifdef USE_RENDERDOC
 			RENDERDOCMANAGER.Update();
 #endif
 			// Render stuff

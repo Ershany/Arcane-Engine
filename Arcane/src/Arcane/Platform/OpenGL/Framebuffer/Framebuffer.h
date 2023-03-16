@@ -18,6 +18,13 @@ namespace Arcane
 		FloatingPointDepthStencil = GL_DEPTH32F_STENCIL8
 	};
 
+	enum StencilValue : int
+	{
+		ModelStencilValue = 0x01,
+		TerrainStencilValue = 0x02,
+		OutlineStencilValue = 0x03
+	};
+
 	class Framebuffer {
 	public:
 		Framebuffer(unsigned int width, unsigned int height, bool isMultisampled);

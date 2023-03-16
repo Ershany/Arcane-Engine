@@ -31,7 +31,7 @@ namespace Arcane
 		}
 	}
 
-	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &inputShadowmapData, GBuffer *inputGbuffer, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL) {
+	LightingPassOutput DeferredLightingPass::ExecuteLightingPass(ShadowmapPassOutput &inputShadowmapData, GBuffer *inputGbuffer, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL) {
 		// Framebuffer setup
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
@@ -79,7 +79,7 @@ namespace Arcane
 		m_LightingShader->SetUniform("farPlane", FAR_PLANE);
 
 		// Shadowmap code
-		bindShadowmap(m_LightingShader, inputShadowmapData);
+		BindShadowmap(m_LightingShader, inputShadowmapData);
 
 		// Finally perform the lighting using the GBuffer
 		// 
@@ -88,7 +88,7 @@ namespace Arcane
 
 		// Perform lighting on the terrain (turn IBL off)
 		m_LightingShader->SetUniform("computeIBL", 0);
-		m_GLCache->SetStencilFunc(GL_EQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
+		m_GLCache->SetStencilFunc(GL_EQUAL, StencilValue::TerrainStencilValue, 0xFF);
 		Renderer::DrawNdcPlane();
 
 		// Perform lighting on the models in the scene (turn IBL on)
@@ -98,7 +98,7 @@ namespace Arcane
 		else {
 			m_LightingShader->SetUniform("computeIBL", 0);
 		}
-		m_GLCache->SetStencilFunc(GL_EQUAL, DeferredStencilValue::ModelStencilValue, 0xFF);
+		m_GLCache->SetStencilFunc(GL_EQUAL, StencilValue::ModelStencilValue, 0xFF);
 		Renderer::DrawNdcPlane();
 
 
@@ -112,7 +112,7 @@ namespace Arcane
 		return passOutput;
 	}
 
-	void DeferredLightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
+	void DeferredLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
 		shadowmapData.shadowmapFramebuffer->GetDepthStencilTexture()->Bind();
 		shader->SetUniform("shadowmap", 0);
 		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);

@@ -13,7 +13,8 @@ namespace Arcane
 	MasterRenderPass::MasterRenderPass(Scene *scene) : m_ActiveScene(scene),
 		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_WaterPass(scene), m_ForwardLightingPass(scene, true), m_EnvironmentProbePass(scene),
 		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene), m_PostGBufferForwardPass(scene),
-		m_RenderToSwapchain(true)
+		m_RenderToSwapchain(true),
+		m_EditorPass(scene)
 	{
 		m_GLCache = GLCache::GetInstance();
 
@@ -41,10 +42,10 @@ namespace Arcane
 		RuntimePane::SetShadowmapTimer((float)m_ProfilingTimer.Elapsed());
 #endif // DEBUG_PROFILING
 
-		LightingPassOutput lightingOutput = m_ForwardLightingPass.executeOpaqueLightingPass(shadowmapOutput, m_ActiveScene->GetCamera(), false, true);
-		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, lightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
-		LightingPassOutput postTransparencyOutput = m_ForwardLightingPass.executeTransparentLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
-		PostProcessPassOutput postProcessOutput = m_PostProcessPass.executePostProcessPass(postTransparencyOutput.outputFramebuffer);
+		LightingPassOutput lightingOutput = m_ForwardLightingPass.ExecuteOpaqueLightingPass(shadowmapOutput, m_ActiveScene->GetCamera(), false, true);
+		WaterPassOutput waterOutput = m_WaterPass.ExecuteWaterPass(shadowmapOutput, lightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
+		LightingPassOutput postTransparencyOutput = m_ForwardLightingPass.ExecuteTransparentLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
+		PostProcessPassOutput postProcessOutput = m_PostProcessPass.ExecutePostProcessPass(postTransparencyOutput.outputFramebuffer);
 
 
 		/* Deferred Rendering */
@@ -59,17 +60,18 @@ namespace Arcane
 		RuntimePane::SetShadowmapTimer((float)m_ProfilingTimer.Elapsed());
 #endif // DEBUG_PROFILING
 
-		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.executeGeometryPass(m_ActiveScene->GetCamera(), false);
-		PreLightingPassOutput preLightingOutput = m_PostProcessPass.executePreLightingPass(geometryOutput.outputGBuffer, m_ActiveScene->GetCamera());
-		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.executeLightingPass(shadowmapOutput, geometryOutput.outputGBuffer, preLightingOutput, m_ActiveScene->GetCamera(), true);
-		WaterPassOutput waterOutput = m_WaterPass.executeWaterPass(shadowmapOutput, deferredLightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
-		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.executeLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
-		PostProcessPassOutput postProcessOutput = m_PostProcessPass.executePostProcessPass(postGBufferForward.outputFramebuffer);
+		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.ExecuteGeometryPass(m_ActiveScene->GetCamera(), false);
+		PreLightingPassOutput preLightingOutput = m_PostProcessPass.ExecutePreLightingPass(geometryOutput.outputGBuffer, m_ActiveScene->GetCamera());
+		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.ExecuteLightingPass(shadowmapOutput, geometryOutput.outputGBuffer, preLightingOutput, m_ActiveScene->GetCamera(), true);
+		WaterPassOutput waterOutput = m_WaterPass.ExecuteWaterPass(shadowmapOutput, deferredLightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
+		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.ExecuteLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
+		PostProcessPassOutput postProcessOutput = m_PostProcessPass.ExecutePostProcessPass(postGBufferForward.outputFramebuffer);
+		EditorPassOutput editorOutput = m_EditorPass.ExecuteEditorPass(postProcessOutput.outFramebuffer, m_PostProcessPass.GetFullRenderTarget(), m_ActiveScene->GetCamera());
 
 #endif
 
 		// Finally render the scene to the window's swapchain
-		m_FinalOutputTexture = postProcessOutput.outFramebuffer->GetColourTexture();
+		m_FinalOutputTexture = editorOutput.outFramebuffer->GetColourTexture();
 		if (m_RenderToSwapchain)
 		{
 			Window::Bind();

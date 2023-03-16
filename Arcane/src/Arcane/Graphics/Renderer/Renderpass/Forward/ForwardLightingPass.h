@@ -14,10 +14,10 @@ namespace Arcane
 		ForwardLightingPass(Scene *scene, Framebuffer *customFramebuffer);
 		virtual ~ForwardLightingPass() override;
 
-		LightingPassOutput executeOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL);
-		LightingPassOutput executeTransparentLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL);
+		LightingPassOutput ExecuteOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL);
+		LightingPassOutput ExecuteTransparentLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL);
 	private:
-		void bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData);
+		void BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData);
 	private:
 		bool m_AllocatedFramebuffer;
 		Framebuffer *m_Framebuffer;

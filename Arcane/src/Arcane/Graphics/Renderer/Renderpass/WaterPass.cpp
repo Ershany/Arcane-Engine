@@ -60,7 +60,7 @@ namespace Arcane
 
 	}
 
-	WaterPassOutput WaterPass::executeWaterPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera)
+	WaterPassOutput WaterPass::ExecuteWaterPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera)
 	{
 #if DEBUG_PROFILING
 		glFinish();
@@ -86,8 +86,8 @@ namespace Arcane
 			camera->InvertPitch();
 
 			ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneReflectionFramebuffer);
-			LightingPassOutput output = lightingPass.executeOpaqueLightingPass(inputShadowmapData, camera, false, false);
-			lightingPass.executeTransparentLightingPass(inputShadowmapData, output.outputFramebuffer, camera, false, false);
+			LightingPassOutput output = lightingPass.ExecuteOpaqueLightingPass(inputShadowmapData, camera, false, false);
+			lightingPass.ExecuteTransparentLightingPass(inputShadowmapData, output.outputFramebuffer, camera, false, false);
 
 #ifdef WATER_REFLECTION_USE_MSAA
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, m_SceneReflectionFramebuffer.GetFramebuffer());
@@ -104,8 +104,8 @@ namespace Arcane
 			m_GLCache->SetClipPlane(glm::vec4(0.0f, -1.0f, 0.0f, m_WaterPos.y + m_RefractionBias));
 
 			ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneRefractionFramebuffer);
-			LightingPassOutput output = lightingPass.executeOpaqueLightingPass(inputShadowmapData, camera, false, false);
-			lightingPass.executeTransparentLightingPass(inputShadowmapData, output.outputFramebuffer, camera, false, false);
+			LightingPassOutput output = lightingPass.ExecuteOpaqueLightingPass(inputShadowmapData, camera, false, false);
+			lightingPass.ExecuteTransparentLightingPass(inputShadowmapData, output.outputFramebuffer, camera, false, false);
 		}
 
 		m_GLCache->SetUsesClipPlane(false);

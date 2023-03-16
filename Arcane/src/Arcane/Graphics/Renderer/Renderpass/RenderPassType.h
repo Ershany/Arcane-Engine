@@ -41,4 +41,9 @@ namespace Arcane
 	{
 		Texture *ssaoTexture;
 	};
+
+	struct EditorPassOutput
+	{
+		Framebuffer *outFramebuffer;
+	};
 }

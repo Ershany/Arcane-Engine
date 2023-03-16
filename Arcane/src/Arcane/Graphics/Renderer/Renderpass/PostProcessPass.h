@@ -15,16 +15,16 @@ namespace Arcane
 		PostProcessPass(Scene *scene);
 		virtual ~PostProcessPass() override;
 
-		PreLightingPassOutput executePreLightingPass(GBuffer *inputGbuffer, ICamera *camera);
-		PostProcessPassOutput executePostProcessPass(Framebuffer *framebufferToProcess);
+		PreLightingPassOutput ExecutePreLightingPass(GBuffer *inputGbuffer, ICamera *camera);
+		PostProcessPassOutput ExecutePostProcessPass(Framebuffer *framebufferToProcess);
 
 		// Post Processing Effects
-		void tonemapGammaCorrect(Framebuffer *target, Texture *hdrTexture);
-		void fxaa(Framebuffer *target, Texture *texture);
-		void vignette(Framebuffer *target, Texture *texture, Texture *optionalVignetteMask = nullptr);
-		void chromaticAberration(Framebuffer *target, Texture *texture);
-		void filmGrain(Framebuffer *target, Texture *texture);
-		Texture* bloom(Texture *hdrSceneTexture);
+		void TonemapGammaCorrect(Framebuffer *target, Texture *hdrTexture);
+		void Fxaa(Framebuffer *target, Texture *texture);
+		void Vignette(Framebuffer *target, Texture *texture, Texture *optionalVignetteMask = nullptr);
+		void ChromaticAberration(Framebuffer *target, Texture *texture);
+		void FilmGrain(Framebuffer *target, Texture *texture);
+		Texture* Bloom(Texture *hdrSceneTexture);
 
 		// Tonemap bindings
 		inline float& GetGammaCorrectionRef() { return m_GammaCorrection; }
@@ -51,8 +51,14 @@ namespace Arcane
 		// Film Grain bindings
 		inline bool& GetFilmGrainEnabledRef() { return m_FilmGrainEnabled; }
 		inline float& GetFilmGrainIntensityRef() { return m_FilmGrainIntensity; }
+
+		// Render Target Access (TODO: Should use render target aliasing and have a system for sharing render targets for different render passes. But this will suffice for now)
+		inline Framebuffer* GetFullRenderTarget() { return &m_FullRenderTarget; }
+		inline Framebuffer* GetHalfRenderTarget() { return &m_HalfRenderTarget; }
+		inline Framebuffer* GetQuarterRenderTarget() { return &m_QuarterRenderTarget; }
+		inline Framebuffer* GetEighthRenderTarget() { return &m_EighthRenderTarget; }
 	private:
-		inline float lerp(float a, float b, float amount) { return a + amount * (b - a); }
+		inline float Lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:
 		Shader *m_TonemapGammaCorrectShader;
 		Shader *m_FxaaShader;
@@ -78,7 +84,7 @@ namespace Arcane
 		Framebuffer m_FullRenderTarget;
 		Framebuffer m_HalfRenderTarget;
 		Framebuffer m_QuarterRenderTarget;
-		Framebuffer m_EightRenderTarget;
+		Framebuffer m_EighthRenderTarget;
 
 		// Post Processing Tweaks
 		float m_GammaCorrection = 2.2f;
