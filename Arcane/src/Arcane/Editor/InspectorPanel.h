@@ -13,6 +13,7 @@ namespace Arcane
 		void OnImGuiRender();
 
 		inline void SetFocusedEntity(Entity entity) { m_FocusedEntity = entity; }
+		inline Entity GetFocusedEntity() { return m_FocusedEntity; }
 	private:
 		bool DrawVec3Control(const std::string &label, glm::vec3 &values, float speed = 0.1f, float resetValue = 0.0f, float columnWidth = 100.0f);
 	private:

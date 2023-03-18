@@ -28,6 +28,7 @@ namespace Arcane
 
 		inline Texture* GetFinalOutputTexture() { return m_FinalOutputTexture; }
 		inline PostProcessPass* GetPostProcessPass() { return &m_PostProcessPass; }
+		inline EditorPass* GetEditorPass() { return &m_EditorPass; }
 	private:
 		GLCache *m_GLCache;
 		Scene *m_ActiveScene;

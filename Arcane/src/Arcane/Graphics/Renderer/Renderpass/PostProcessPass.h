@@ -53,11 +53,13 @@ namespace Arcane
 		inline float& GetFilmGrainIntensityRef() { return m_FilmGrainIntensity; }
 
 		// Render Target Access (TODO: Should use render target aliasing and have a system for sharing render targets for different render passes. But this will suffice for now)
+		// Silly to manage all of these like this
 		inline Framebuffer* GetFullRenderTarget() { return &m_FullRenderTarget; }
 		inline Framebuffer* GetHalfRenderTarget() { return &m_HalfRenderTarget; }
 		inline Framebuffer* GetQuarterRenderTarget() { return &m_QuarterRenderTarget; }
 		inline Framebuffer* GetEighthRenderTarget() { return &m_EighthRenderTarget; }
 		inline Framebuffer* GetResolveRenderTarget() { return &m_ResolveRenderTarget; }
+		inline Framebuffer* GetTonemappedNonLinearTarget() { return &m_TonemappedNonLinearTarget; }
 	private:
 		inline float Lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:

@@ -2,7 +2,9 @@
 
 #include <Arcane/Core/Application.h>
 
+#include <Arcane/Graphics/Renderer/Renderpass/EditorPass.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
+
 
 extern bool g_ApplicationRunning;
 namespace Arcane
@@ -109,7 +111,7 @@ namespace Arcane
 
 	void EditorLayer::OnUpdate(float deltaTime)
 	{
-
+		Arcane::Application::GetInstance().GetMasterRenderPass()->GetEditorPass()->SetFocusedEntity(m_InspectorPanel.GetFocusedEntity());
 	}
 
 	void EditorLayer::OnImGuiRender()
