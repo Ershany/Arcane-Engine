@@ -27,6 +27,6 @@ namespace Arcane
 
 		// Shader tweaks
 		float m_OutlineSize = 6.0f;
-		glm::vec3 m_OutlineColour = glm::vec3(0.34117f, 0.0f, 0.49804f);
+		glm::vec3 m_OutlineColour = glm::vec3(0.68507f, 0.0f, 1.0f);
 	};
 }
