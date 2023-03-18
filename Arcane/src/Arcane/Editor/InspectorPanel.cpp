@@ -38,8 +38,9 @@ namespace Arcane
 					{
 						Material &meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
 						const char *items[] = { "Opaque", "Transparent" };
-						int choice = -1;
+						int choice = meshComponent.IsTransparent;
 						ImGui::Combo("Rendering Mode", &choice, items, IM_ARRAYSIZE(items));
+						meshComponent.IsTransparent = choice;
 						ImGui::Text("Texture Maps");
 						ImGui::Separator();
 
