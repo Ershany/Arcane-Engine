@@ -32,7 +32,7 @@ namespace Arcane
 	GeometryPassOutput DeferredGeometryPass::ExecuteGeometryPass(ICamera *camera, bool renderOnlyStatic) {
 		glViewport(0, 0, m_GBuffer->GetWidth(), m_GBuffer->GetHeight());
 		m_GBuffer->Bind();
-		m_GBuffer->Clear();
+		m_GBuffer->ClearAll();
 		m_GLCache->SetBlend(false);
 		m_GLCache->SetMultisample(false);
 

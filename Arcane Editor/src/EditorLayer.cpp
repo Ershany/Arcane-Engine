@@ -70,6 +70,49 @@ namespace Arcane
 			meshComponent.IsTransparent = true;
 		}
 
+		{
+			auto directionalLight = m_EditorScene->CreateEntity("Directional Light");
+			auto &transformComponent = directionalLight.GetComponent<TransformComponent>();
+			auto &lightComponent = directionalLight.AddComponent<LightComponent>();
+			lightComponent.Type = LightType::LightType_Directional;
+			lightComponent.Intensity = 1.0f;
+			lightComponent.LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
+			lightComponent.IsStatic = true;
+		}
+
+		{
+			auto pointLight = m_EditorScene->CreateEntity("Point Light1");
+			auto &transformComponent = pointLight.GetComponent<TransformComponent>();
+			transformComponent.Translation = glm::vec3(24.1f, 2.2f, 47.5f);
+			auto &lightComponent = pointLight.AddComponent<LightComponent>();
+			lightComponent.Type = LightType::LightType_Point;
+			lightComponent.Intensity = 10.0f;
+			lightComponent.LightColour = glm::vec3(0.0f, 1.0f, 0.0f);
+			lightComponent.AttenuationRange = 30.0f;
+			lightComponent.IsStatic = false;
+		}
+		
+		{
+			auto pointLight = m_EditorScene->CreateEntity("Point Light2");
+			auto &transformComponent = pointLight.GetComponent<TransformComponent>();
+			transformComponent.Translation = glm::vec3(-27.2f, -9.0f, 52.0f);
+			auto &lightComponent = pointLight.AddComponent<LightComponent>();
+			lightComponent.Type = LightType::LightType_Point;
+			lightComponent.Intensity = 30.0f;
+			lightComponent.LightColour = glm::vec3(1.0f, 0.0f, 1.0f);
+			lightComponent.AttenuationRange = 30.0f;
+			lightComponent.IsStatic = true;
+	}
+
+#if 0
+		void DynamicLightManager::Init()
+		{
+			SpotLight spotlight1(100.0f, glm::vec3(1.0f, 1.0f, 1.0f), 50.0f, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(15.0f)));
+			spotlight1.m_IsStatic = false;
+			AddSpotLight(spotlight1);
+		}
+#endif
+
 #ifdef OLD_LOADING_METHOD
 		//Model *pbrGun = new Arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
 		//Model *pbrGun = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));

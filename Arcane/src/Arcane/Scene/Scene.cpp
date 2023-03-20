@@ -25,11 +25,15 @@ namespace Arcane
 
 	Scene::~Scene()
 	{
-		
+
 	}
 
 	void Scene::Init()
 	{
+		// Setup our ECS groupings to avoid performance costs at runtime if they get created
+		auto fullOwningGroup1 = m_Registry.group<TransformComponent, MeshComponent>();
+		auto partialOwningGroup1 = m_Registry.group<LightComponent>(entt::get<TransformComponent>);
+
 		// Skybox
 		std::vector<std::string> skyboxFilePaths;
 		skyboxFilePaths.push_back("res/skybox/right.png");

@@ -357,6 +357,7 @@
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Arcane\Shaders\2D\UnlitSprite.glsl" />
     <None Include="src\Arcane\Shaders\Outline.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomBrightPass.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomGaussianBlur.glsl" />

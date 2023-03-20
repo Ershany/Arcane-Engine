@@ -40,7 +40,10 @@ namespace Arcane
 
 		// Assumes framebuffer is bound
 		void SetColorAttachment(unsigned int target, unsigned int targetType, int mipToWriteTo = 0);
-		void Clear();
+		void ClearAll();
+		void ClearColour();
+		void ClearDepth();
+		void ClearStencil();
 
 		// Getters
 		inline unsigned int GetFramebuffer() { return m_FBO; }

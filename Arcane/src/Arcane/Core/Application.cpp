@@ -103,7 +103,7 @@ namespace Arcane
 				#endif // ARC_DEV_BUILD
 
 				m_Window->Bind();
-				m_Window->Clear();
+				m_Window->ClearAll();
 
 				m_AssetManager->Update(TEXTURE_LOADS_PER_FRAME, CUBEMAP_FACES_PER_FRAME, MODELS_PER_FRAME);
 				m_ActiveScene->OnUpdate((float)deltaTime.GetDeltaTime());

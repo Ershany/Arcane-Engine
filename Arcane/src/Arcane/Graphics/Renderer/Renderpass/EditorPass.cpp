@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
+#include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Scene/Scene.h>
 
 namespace Arcane
@@ -13,6 +14,10 @@ namespace Arcane
 	{
 		m_ColourWriteShader = ShaderLoader::LoadShader("ColourWrite.glsl");
 		m_OutlineShader = ShaderLoader::LoadShader("Outline.glsl");
+		m_UnlitSpriteShader = ShaderLoader::LoadShader("2D/UnlitSprite.glsl");
+		m_DirectionalLightTexture = AssetManager::GetInstance().Load2DTextureAsync("res/editor/directional_light.png");
+		m_PointLightTexture = AssetManager::GetInstance().Load2DTextureAsync("res/editor/point_light.png");
+		m_SpotLightTexture = AssetManager::GetInstance().Load2DTextureAsync("res/editor/spot_light.png");
 	}
 
 	EditorPass::~EditorPass()
@@ -33,7 +38,7 @@ namespace Arcane
 
 			glViewport(0, 0, extraFramebuffer1->GetWidth(), extraFramebuffer1->GetHeight());
 			extraFramebuffer1->Bind();
-			extraFramebuffer1->Clear();
+			extraFramebuffer1->ClearAll();
 
 			// Setup initial state
 			m_GLCache->SetDepthTest(false);
@@ -52,7 +57,7 @@ namespace Arcane
 			// Combine the objects that need to be highlighted with the scene to get the final output
 			glViewport(0, 0, extraFramebuffer2->GetWidth(), extraFramebuffer2->GetHeight());
 			extraFramebuffer2->Bind();
-			extraFramebuffer2->Clear();
+			extraFramebuffer2->ClearAll();
 
 			m_GLCache->SetShader(m_OutlineShader);
 			m_OutlineShader->SetUniform("outlineSize", m_OutlineSize);
@@ -68,6 +73,51 @@ namespace Arcane
 
 			output.outFramebuffer = extraFramebuffer2; // Update the output framebuffer
 		}
+
+		// Debug Light Drawing
+		{
+			glViewport(0, 0, output.outFramebuffer->GetWidth(), output.outFramebuffer->GetHeight());
+			output.outFramebuffer->Bind();
+			output.outFramebuffer->ClearDepth(); // Clear depth, not needed and might cause our quad not to render
+
+			// Setup state
+			m_GLCache->SetDepthTest(false);
+			m_GLCache->SetStencilTest(false);
+			m_GLCache->SetBlend(false);
+			m_GLCache->SetMultisample(false);
+			
+			m_GLCache->SetShader(m_UnlitSpriteShader);
+			m_UnlitSpriteShader->SetUniform("view", camera->GetViewMatrix());
+			m_UnlitSpriteShader->SetUniform("projection", camera->GetProjectionMatrix());
+
+			bool shouldRenderQuads = false;
+			auto group = m_ActiveScene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
+			for (auto entity : group)
+			{
+				auto&[transformComponent, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
+
+				Texture *lightSprite = nullptr;
+				switch (lightComponent.Type)
+				{
+				case LightType::LightType_Directional:
+					lightSprite = m_DirectionalLightTexture;
+					break;
+				case LightType::LightType_Point:
+					lightSprite = m_PointLightTexture;
+					break;
+				case LightType::LightType_Spot:
+					lightSprite = m_SpotLightTexture;
+					break;
+				}
+
+				Renderer::QueueQuad(transformComponent.GetTransform(), lightSprite);
+			}
+			Renderer::Flush(camera, m_UnlitSpriteShader, NoMaterialRequired);
+
+			// Reset State
+			m_GLCache->SetDepthTest(true);
+		}
+
 
 		return output;
 	}

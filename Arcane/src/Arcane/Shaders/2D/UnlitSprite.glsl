@@ -2,6 +2,9 @@
 #version 430 core
 
 layout (location = 0) in vec3 position;
+layout (location = 2) in vec2 texCoord;
+
+out vec2 TexCoords;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -9,6 +12,7 @@ uniform mat4 projection;
 
 void main() {
 	gl_Position = projection * view * model * vec4(position, 1.0);
+	TexCoords = texCoord;
 }
 
 
@@ -17,10 +21,16 @@ void main() {
 #shader-type fragment
 #version 430 core 
 
+in vec2 TexCoords;
+
 out vec4 FragColour;
 
-uniform vec3 colour;
+uniform sampler2D sprite;
 
 void main() {
-	FragColour = glm::vec4(colour, 1.0f);
+	vec4 spriteColour = texture(sprite, TexCoords);
+	if (spriteColour.a == 0)
+		discard;
+
+	FragColour = spriteColour;
 }

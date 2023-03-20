@@ -11,7 +11,7 @@ namespace Arcane
 
 	void DynamicLightManager::Init() {
 		// Setup some lights for the scene
-		DirectionalLight directionalLight1(2.0f, glm::vec3(3.25f, 3.25f, 3.25f), glm::vec3(-0.1f, -1.0f, -0.1f));
+		DirectionalLight directionalLight1(1.0f, glm::vec3(3.25f, 3.25f, 3.25f), glm::vec3(-0.1f, -1.0f, -0.1f));
 		directionalLight1.m_IsStatic = true;
 		AddDirectionalLight(directionalLight1);
 
@@ -19,11 +19,11 @@ namespace Arcane
 		spotlight1.m_IsStatic = false;
 		AddSpotLight(spotlight1);
 
-		PointLight pointLight1(10.0f, glm::vec3(1.0f, 0.0f, 1.0f), 30.0f, glm::vec3(120.0f, 84.0f, 122.0f));
+		PointLight pointLight1(10.0f, glm::vec3(0.0f, 1.0f, 0.0f), 30.0f, glm::vec3(24.1f, 2.2f, 47.5f));
 		pointLight1.m_IsStatic = false;
 		AddPointLight(pointLight1);
 
-		PointLight pointLight2(10.0f, glm::vec3(1.0f, 0.25f, 0.0f), 30.0f, glm::vec3(120.0f, 77.0f, 100.0f));
+		PointLight pointLight2(30.0f, glm::vec3(1.0f, 0.0f, 1.0f), 30.0f, glm::vec3(-27.2f, -9.0f, 52.0f));
 		pointLight2.m_IsStatic = true;
 		AddPointLight(pointLight2);
 	}

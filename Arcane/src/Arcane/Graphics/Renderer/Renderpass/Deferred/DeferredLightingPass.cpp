@@ -36,7 +36,7 @@ namespace Arcane
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		m_Framebuffer->Bind();
-		m_Framebuffer->Clear();
+		m_Framebuffer->ClearAll();
 		m_GLCache->SetDepthTest(false);
 		m_GLCache->SetMultisample(false);
 

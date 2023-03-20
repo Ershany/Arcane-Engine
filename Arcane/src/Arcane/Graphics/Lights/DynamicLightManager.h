@@ -8,6 +8,24 @@ namespace Arcane
 {
 	class Shader;
 
+	enum class LightType : int
+	{
+		LightType_Directional,
+		LightType_Point,
+		LightType_Spot,
+		LightTypeSize
+	};
+
+	enum class ShadowQuality : int
+	{
+		ShadowQuality_Low,			// 128 x 128
+		ShadowQuality_Medium,		// 256 x 256
+		ShadowQuality_High,			// 512 x 512
+		ShadowQuality_Ultra,		// 1024 x 1024
+		ShadowQuality_Nightmare,	// 2048 x 2048
+		ShadowQualitySize
+	};
+
 	class DynamicLightManager {
 	public:
 		DynamicLightManager();

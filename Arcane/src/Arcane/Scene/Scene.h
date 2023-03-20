@@ -28,6 +28,7 @@ namespace Arcane
 	{
 		friend class Entity;
 		friend class ScenePanel;
+		friend class EditorPass;
 	public:
 		Scene(Window *window);
 		~Scene();

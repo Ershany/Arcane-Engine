@@ -329,7 +329,7 @@ namespace Arcane
 		// Bloom Bright Pass
 		glViewport(0, 0, m_BrightPassRenderTarget.GetWidth(), m_BrightPassRenderTarget.GetHeight());
 		m_BrightPassRenderTarget.Bind();
-		m_BrightPassRenderTarget.Clear();
+		m_BrightPassRenderTarget.ClearAll();
 		m_GLCache->SetShader(m_BloomBrightPassShader);
 		m_BloomBrightPassShader->SetUniform("threshold", m_BloomThreshold);
 		m_BloomBrightPassShader->SetUniform("scene_capture", 0);
@@ -341,7 +341,7 @@ namespace Arcane
 		m_GLCache->SetShader(m_BloomGaussianBlurShader);
 		glViewport(0, 0, m_FullRenderTarget.GetWidth(), m_FullRenderTarget.GetHeight());
 		m_FullRenderTarget.Bind();
-		m_FullRenderTarget.Clear();
+		m_FullRenderTarget.ClearAll();
 		m_BloomGaussianBlurShader->SetUniform("isVerticalBlur", true);
 		m_BloomGaussianBlurShader->SetUniform("read_offset", glm::vec2(1.0f / (float)m_FullRenderTarget.GetWidth(), 1.0f / (float)m_FullRenderTarget.GetHeight()));
 		m_BloomGaussianBlurShader->SetUniform("bloom_texture", 0);
@@ -349,7 +349,7 @@ namespace Arcane
 		Renderer::DrawNdcPlane();
 
 		m_BloomFullRenderTarget.Bind();
-		m_BloomFullRenderTarget.Clear();
+		m_BloomFullRenderTarget.ClearAll();
 		m_BloomGaussianBlurShader->SetUniform("isVerticalBlur", false);
 		m_BloomGaussianBlurShader->SetUniform("read_offset", glm::vec2(1.0f / (float)m_BloomFullRenderTarget.GetWidth(), 1.0f / (float)m_BloomFullRenderTarget.GetHeight()));
 		m_BloomGaussianBlurShader->SetUniform("bloom_texture", 0);

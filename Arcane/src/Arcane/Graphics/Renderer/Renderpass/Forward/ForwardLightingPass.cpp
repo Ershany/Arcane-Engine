@@ -36,7 +36,7 @@ namespace Arcane
 	LightingPassOutput ForwardLightingPass::ExecuteOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		m_Framebuffer->Bind();
-		m_Framebuffer->Clear();
+		m_Framebuffer->ClearAll();
 		if (m_Framebuffer->IsMultisampled()) {
 			m_GLCache->SetMultisample(true);
 		}

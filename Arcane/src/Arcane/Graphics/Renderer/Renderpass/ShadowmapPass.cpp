@@ -31,7 +31,7 @@ namespace Arcane
 	ShadowmapPassOutput ShadowmapPass::generateShadowmaps(ICamera *camera, bool renderOnlyStatic) {
 		glViewport(0, 0, m_ShadowmapFramebuffer->GetWidth(), m_ShadowmapFramebuffer->GetHeight());
 		m_ShadowmapFramebuffer->Bind();
-		m_ShadowmapFramebuffer->Clear();
+		m_ShadowmapFramebuffer->ClearAll();
 
 		// Setup
 		Terrain *terrain = m_ActiveScene->GetTerrain();

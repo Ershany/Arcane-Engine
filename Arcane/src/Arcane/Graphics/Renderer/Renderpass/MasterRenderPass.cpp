@@ -80,7 +80,7 @@ namespace Arcane
 		if (m_RenderToSwapchain)
 		{
 			Window::Bind();
-			Window::Clear();
+			Window::ClearAll();
 			m_GLCache->SetShader(m_PassthroughShader);
 			m_PassthroughShader->SetUniform("input_texture", 0);
 			m_FinalOutputTexture->Bind(0);

@@ -20,10 +20,13 @@ namespace Arcane
 
 		inline void SetFocusedEntity(Entity entity) { m_FocusedEntity = entity; }
 	private:
-		Shader *m_ColourWriteShader;
-		Shader *m_OutlineShader;
+		Shader *m_ColourWriteShader,*m_OutlineShader;
+		Shader *m_UnlitSpriteShader;
 
 		Entity m_FocusedEntity;
+
+		// Editor textures
+		Texture *m_DirectionalLightTexture, *m_PointLightTexture, *m_SpotLightTexture;
 
 		// Shader tweaks
 		float m_OutlineSize = 6.0f;

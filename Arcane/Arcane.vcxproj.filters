@@ -227,5 +227,6 @@
     <None Include="src\Arcane\Shaders\Water.glsl" />
     <None Include="src\Arcane\Shaders\ColourWrite.glsl" />
     <None Include="src\Arcane\Shaders\Outline.glsl" />
+    <None Include="src\Arcane\Shaders\2D\UnlitSprite.glsl" />
   </ItemGroup>
 </Project>
