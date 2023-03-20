@@ -78,6 +78,8 @@ namespace Arcane
 			lightComponent.Intensity = 1.0f;
 			lightComponent.LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
 			lightComponent.IsStatic = true;
+			lightComponent.CastShadows = true;
+			lightComponent.ShadowResolution = ShadowQuality::ShadowQuality_Ultra;
 		}
 
 		{
@@ -102,16 +104,19 @@ namespace Arcane
 			lightComponent.LightColour = glm::vec3(1.0f, 0.0f, 1.0f);
 			lightComponent.AttenuationRange = 30.0f;
 			lightComponent.IsStatic = true;
-	}
-
-#if 0
-		void DynamicLightManager::Init()
-		{
-			SpotLight spotlight1(100.0f, glm::vec3(1.0f, 1.0f, 1.0f), 50.0f, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(15.0f)));
-			spotlight1.m_IsStatic = false;
-			AddSpotLight(spotlight1);
 		}
-#endif
+
+		{
+			auto spotLight = m_EditorScene->CreateEntity("Spot Light1");
+			auto &transformComponent = spotLight.GetComponent<TransformComponent>();
+			transformComponent.Translation = glm::vec3(-86.9f, -5.0f, -28.2f);
+			auto &lightComponent = spotLight.AddComponent<LightComponent>();
+			lightComponent.Type = LightType::LightType_Spot;
+			lightComponent.Intensity = 150.0f;
+			lightComponent.AttenuationRange = 50.0f;
+			lightComponent.LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
+			lightComponent.IsStatic = true;
+		}
 
 #ifdef OLD_LOADING_METHOD
 		//Model *pbrGun = new Arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");

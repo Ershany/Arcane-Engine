@@ -124,15 +124,32 @@ namespace Arcane
 
 						ImGui::Text("Colour"); ImGui::SameLine();
 						ImGui::ColorEdit3("##Colour", (float*)&lightComponent.LightColour, ImGuiColorEditFlags_DisplayRGB);
-						DrawFloatControl("Intensity", lightComponent.Intensity);
+						DrawFloatControl("Intensity", lightComponent.Intensity, 0.1f, 0.0f, 1000000.0f);
 						if (lightComponent.Type != LightType::LightType_Directional)
 						{
-							DrawFloatControl("Range", lightComponent.AttenuationRange);
+							DrawFloatControl("Range", lightComponent.AttenuationRange, 0.1f, 0.0f, 1000000.0f);
 						}
 						if (lightComponent.Type == LightType::LightType_Spot)
 						{
-							DrawFloatControl("Inner Cutoff Angle", lightComponent.InnerCutOff);
-							DrawFloatControl("Outer Cutoff Angle", lightComponent.OuterCutOff);
+							float innerDegrees = glm::degrees(glm::acos(lightComponent.InnerCutOff));
+							float outerDegrees = glm::degrees(glm::acos(lightComponent.OuterCutOff));
+
+							bool innerModified = DrawFloatControl("Inner Cutoff Angle", innerDegrees, 0.1f, 0.0f, 180.0f, "%.1f");
+							bool outerModified = DrawFloatControl("Outer Cutoff Angle", outerDegrees, 0.1f, 0.0f, 180.0f, "%.1f");
+
+							if (innerModified)
+							{
+								if (innerDegrees > outerDegrees)
+									outerDegrees = innerDegrees;
+							}
+							else if (outerModified)
+							{
+								if (outerDegrees < innerDegrees)
+									innerDegrees = outerDegrees;
+							}
+
+							lightComponent.InnerCutOff = glm::cos(glm::radians(innerDegrees));
+							lightComponent.OuterCutOff = glm::cos(glm::radians(outerDegrees));
 						}
 						ImGui::Checkbox("Static", &lightComponent.IsStatic);
 						ImGui::Separator();
@@ -144,9 +161,21 @@ namespace Arcane
 							int shadowChoice = static_cast<int>(lightComponent.ShadowResolution);
 							ImGui::Combo("Shadow Quality", &shadowChoice, shadowItems, IM_ARRAYSIZE(shadowItems));
 							lightComponent.ShadowResolution = static_cast<ShadowQuality>(shadowChoice);
-							DrawFloatControl("Shadow Bias", lightComponent.ShadowBias, 0.001f);
-							DrawFloatControl("Near Plane", lightComponent.ShadowNearPlane, 0.01f);
-							DrawFloatControl("Far Plane", lightComponent.ShadowFarPlane);
+							DrawFloatControl("Shadow Bias", lightComponent.ShadowBias, 0.0001f, 0.0f, 1.0f, "%.4f");
+							
+							bool nearModified = DrawFloatControl("Near Plane", lightComponent.ShadowNearPlane, 0.01f, 0.0f, 100.0f);
+							bool farModified = DrawFloatControl("Far Plane", lightComponent.ShadowFarPlane, 1.0f, 0.0f, 1000000.0f);
+
+							if (nearModified)
+							{
+								if (lightComponent.ShadowNearPlane > lightComponent.ShadowFarPlane)
+									lightComponent.ShadowFarPlane = lightComponent.ShadowNearPlane;
+							}
+							else if (farModified)
+							{
+								if (lightComponent.ShadowFarPlane < lightComponent.ShadowNearPlane)
+									lightComponent.ShadowNearPlane = lightComponent.ShadowFarPlane;
+							}
 						}
 					}
 				}
@@ -155,7 +184,7 @@ namespace Arcane
 		ImGui::End();
 	}
 
-	bool InspectorPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float speed /*= 0.1f*/, float resetValue /*= 0.0f*/, float columnWidth /*= 100.0f*/)
+	bool InspectorPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float speed /*= 0.1f*/, float min /*= 0.0f*/, float max /*= 0.0f*/, const char *displayDigits /*= "%.2f"*/, float columnWidth /*= 100.0f*/)
 	{
 		bool modified = false;
 
@@ -163,9 +192,9 @@ namespace Arcane
 		ImGui::PushID(label.c_str());
 		ImGui::PushItemWidth(80);
 		ImGui::Text(label.c_str()); ImGui::SameLine(); ImGui::NextColumn();
-		ImGui::Text("X"); ImGui::SameLine(); modified |= ImGui::DragFloat("##X", &values.x, speed, 0.0f, 0.0f, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
-		ImGui::Text("Y"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Y", &values.y, speed, 0.0f, 0.0f, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
-		ImGui::Text("Z"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Z", &values.z, speed, 0.0f, 0.0f, "%.2f");
+		ImGui::Text("X"); ImGui::SameLine(); modified |= ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
+		ImGui::Text("Y"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
+		ImGui::Text("Z"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Z", &values.z, speed, min, max, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::Columns(1);
 		ImGui::PopID();
@@ -173,7 +202,7 @@ namespace Arcane
 		return modified;
 	}
 
-	bool InspectorPanel::DrawFloatControl(const std::string &label, float &value, float speed /*= 0.1f*/, float resetValue /*= 0.0f*/, float columnWidth /*= 200.0f*/)
+	bool InspectorPanel::DrawFloatControl(const std::string &label, float &value, float speed /*= 0.1f*/, float min /*= 0.0f*/, float max /*= 0.0f*/, const char *displayDigits /*= "%.2f"*/, float columnWidth /*= 200.0f*/)
 	{
 		bool modified = false;
 
@@ -181,7 +210,7 @@ namespace Arcane
 		ImGui::PushID(label.c_str());
 		ImGui::PushItemWidth(80);
 		ImGui::Text(label.c_str()); ImGui::SameLine(); ImGui::NextColumn();
-		modified |= ImGui::DragFloat("##Value", &value, speed, 0.0f, 0.0f, "%.2f");
+		modified |= ImGui::DragFloat("##Value", &value, speed, min, max, displayDigits);
 		ImGui::PopItemWidth();
 		ImGui::Columns(1);
 		ImGui::PopID();

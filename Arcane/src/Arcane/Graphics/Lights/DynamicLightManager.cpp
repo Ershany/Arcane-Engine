@@ -15,7 +15,7 @@ namespace Arcane
 		directionalLight1.m_IsStatic = true;
 		AddDirectionalLight(directionalLight1);
 
-		SpotLight spotlight1(100.0f, glm::vec3(1.0f, 1.0f, 1.0f), 50.0f, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::cos(glm::radians(12.5f)), glm::cos(glm::radians(15.0f)));
+		SpotLight spotlight1(150.0f, glm::vec3(1.0f, 1.0f, 1.0f), 50.0f, glm::vec3(-86.9f, -5.0f, -28.2f), glm::vec3(0.0f, -1.0f, 0.0f), glm::cos(glm::radians(25.0f)), glm::cos(glm::radians(27.5f)));
 		spotlight1.m_IsStatic = false;
 		AddSpotLight(spotlight1);
 

@@ -23,7 +23,10 @@ namespace Arcane
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification), m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
+	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification) 
+#if DEBUG_PROFILING
+		,m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
+#endif
 	{
 		s_Instance = this;
 
@@ -95,12 +98,12 @@ namespace Arcane
 			if (!m_Minimized)
 			{
 				// Wireframe stuff
-				#ifdef ARC_DEV_BUILD
+				#if DEBUG_PROFILING
 					if (m_DebugPane.GetWireframeMode())
 						glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 					else
 						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				#endif // ARC_DEV_BUILD
+				#endif // DEBUG_PROFILING
 
 				m_Window->Bind();
 				m_Window->ClearAll();

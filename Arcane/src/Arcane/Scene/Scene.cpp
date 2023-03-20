@@ -58,9 +58,6 @@ namespace Arcane
 	{
 		// Camera Update
 		m_SceneCamera.ProcessInput(deltaTime);
-
-		m_DynamicLightManager.SetSpotLightDirection(0, m_SceneCamera.GetFront());
-		m_DynamicLightManager.SetSpotLightPosition(0, m_SceneCamera.GetPosition());
 	}
 
 	void Scene::AddModelsToRenderer(ModelFilterType filter)

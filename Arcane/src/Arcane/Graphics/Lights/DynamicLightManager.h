@@ -18,11 +18,11 @@ namespace Arcane
 
 	enum class ShadowQuality : int
 	{
-		ShadowQuality_Low,			// 128 x 128
-		ShadowQuality_Medium,		// 256 x 256
-		ShadowQuality_High,			// 512 x 512
-		ShadowQuality_Ultra,		// 1024 x 1024
-		ShadowQuality_Nightmare,	// 2048 x 2048
+		ShadowQuality_Low,			// 256 x 256
+		ShadowQuality_Medium,		// 512 x 512
+		ShadowQuality_High,			// 1024 x 1024
+		ShadowQuality_Ultra,		// 2048 x 2048
+		ShadowQuality_Nightmare,	// 4096 x 4096
 		ShadowQualitySize
 	};
 

@@ -59,18 +59,22 @@ namespace Arcane
 
 	struct LightComponent
 	{
-		LightType Type;
+		LightType Type = LightType::LightType_Point;
 
-		float Intensity;
-		glm::vec3 LightColour;
-		float AttenuationRange; // Used for spot and point lights only
-		float InnerCutOff, OuterCutOff; // Used for spot lights and stored as [0, 1] with cos(angle) (inner must be less angle than outer)
-		bool IsStatic; // Should be true if the light will never have any of it's properties changed (then we can use it for global illumination since it is static)
+		float Intensity = 1.0f;
+		glm::vec3 LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
+		float AttenuationRange = 10.0f; // Used for spot and point lights only
 
-		bool CastShadows;
-		float ShadowBias;
-		ShadowQuality ShadowResolution;
-		float ShadowNearPlane, ShadowFarPlane;
+		// Used for spot lights and stored as [0, 1] with cos(angle) (inner must be less angle than outer)
+		float InnerCutOff = glm::cos(glm::radians(25.0f));
+		float OuterCutOff = glm::cos(glm::radians(27.5f));
+
+		bool IsStatic = false; // Should be true if the light will never have any of it's properties changed (then we can use it for global illumination since it is static)
+
+		bool CastShadows = false;
+		float ShadowBias = 0.003f;
+		ShadowQuality ShadowResolution = ShadowQuality::ShadowQuality_Medium;
+		float ShadowNearPlane = SHADOWMAP_NEAR_PLANE, ShadowFarPlane = SHADOWMAP_FAR_PLANE;
 	};
 
 	// TODO: Eventually needs to be added and used for the runtime. The editor will always have a "camera" but will be needed for runtime eventually
