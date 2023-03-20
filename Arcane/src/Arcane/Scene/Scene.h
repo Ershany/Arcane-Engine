@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Arcane/Graphics/Camera/FPSCamera.h>
-#include <Arcane/Graphics/Lights/DynamicLightManager.h>
+#include <Arcane/Graphics/Lights/LightManager.h>
 #include <Arcane/Graphics/IBL/ProbeManager.h>
 #include <Arcane/Terrain/Terrain.h>
 
@@ -40,7 +40,7 @@ namespace Arcane
 		void AddModelsToRenderer(ModelFilterType filter);
 
 		inline Terrain* GetTerrain() { return &m_Terrain; }
-		inline DynamicLightManager* GetDynamicLightManager() { return &m_DynamicLightManager; }
+		inline LightManager* GetLightManager() { return &m_LightManager; }
 		inline ProbeManager* GetProbeManager() { return &m_ProbeManager; }
 		inline FPSCamera* GetCamera() { return &m_SceneCamera; }
 		inline Skybox* GetSkybox() { return m_Skybox; }
@@ -60,7 +60,7 @@ namespace Arcane
 		FPSCamera m_SceneCamera;
 		Skybox *m_Skybox;
 		Terrain m_Terrain;
-		DynamicLightManager m_DynamicLightManager;
+		LightManager m_LightManager;
 		ProbeManager m_ProbeManager;
 	};
 }

@@ -3,7 +3,7 @@
 #include "arcpch.h"
 
 #include <Arcane/Graphics/Mesh/Model.h>
-#include <Arcane/Graphics/Lights/DynamicLightManager.h>
+#include <Arcane/Graphics/Lights/LightManager.h>
 
 namespace Arcane
 {

@@ -25,7 +25,7 @@ namespace Arcane
 		m_GLCache->SetDepthTest(true);
 
 		// Setup
-		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 		Skybox *skybox = m_ActiveScene->GetSkybox();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
@@ -33,9 +33,9 @@ namespace Arcane
 		skybox->Draw(camera);
 
 		// View setup + lighting setup
-		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
+		auto lightBindFunction = &LightManager::BindLightingUniforms;
 		if (renderOnlyStatic)
-			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
+			lightBindFunction = &LightManager::BindStaticLightingUniforms;
 
 		m_GLCache->SetShader(m_ModelShader);
 		if (m_GLCache->GetUsesClipPlane()) {

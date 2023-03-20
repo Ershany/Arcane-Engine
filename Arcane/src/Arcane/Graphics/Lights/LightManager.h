@@ -26,9 +26,9 @@ namespace Arcane
 		ShadowQualitySize
 	};
 
-	class DynamicLightManager {
+	class LightManager {
 	public:
-		DynamicLightManager();
+		LightManager();
 
 		void BindLightingUniforms(Shader *shader);
 		void BindStaticLightingUniforms(Shader *shader);

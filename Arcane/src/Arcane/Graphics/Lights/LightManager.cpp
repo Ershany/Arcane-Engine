@@ -1,15 +1,15 @@
 #include "arcpch.h"
-#include "DynamicLightManager.h"
+#include "LightManager.h"
 
 #include <Arcane/Graphics/Shader.h>
 
 namespace Arcane
 {
-	DynamicLightManager::DynamicLightManager() {
+	LightManager::LightManager() {
 		Init();
 	}
 
-	void DynamicLightManager::Init() {
+	void LightManager::Init() {
 		// Setup some lights for the scene
 		DirectionalLight directionalLight1(1.0f, glm::vec3(3.25f, 3.25f, 3.25f), glm::vec3(-0.1f, -1.0f, -0.1f));
 		directionalLight1.m_IsStatic = true;
@@ -28,7 +28,7 @@ namespace Arcane
 		AddPointLight(pointLight2);
 	}
 
-	void DynamicLightManager::BindLightingUniforms(Shader *shader) {
+	void LightManager::BindLightingUniforms(Shader *shader) {
 		shader->SetUniform("numDirPointSpotLights", glm::ivec4(m_DirectionalLights.size(), m_PointLights.size(), m_SpotLights.size(), 0));
 
 		int i = 0;
@@ -47,7 +47,7 @@ namespace Arcane
 		}
 	}
 
-	void DynamicLightManager::BindStaticLightingUniforms(Shader *shader) {
+	void LightManager::BindStaticLightingUniforms(Shader *shader) {
 		int numStaticDirLights = 0;
 		for (auto iter = m_DirectionalLights.begin(); iter != m_DirectionalLights.end(); iter++) {
 			if (iter->m_IsStatic) 
@@ -70,21 +70,21 @@ namespace Arcane
 	}
 
 
-	void DynamicLightManager::AddDirectionalLight(DirectionalLight &directionalLight) {
+	void LightManager::AddDirectionalLight(DirectionalLight &directionalLight) {
 		m_DirectionalLights.push_back(directionalLight);
 	}
 
-	void DynamicLightManager::AddPointLight(PointLight &pointLight) {
+	void LightManager::AddPointLight(PointLight &pointLight) {
 		m_PointLights.push_back(pointLight);
 	}
 
-	void DynamicLightManager::AddSpotLight(SpotLight &spotLight) {
+	void LightManager::AddSpotLight(SpotLight &spotLight) {
 		m_SpotLights.push_back(spotLight);
 	}
 
 
 	// Setters
-	void DynamicLightManager::SetDirectionalLightDirection(unsigned int index, const glm::vec3 &dir) {
+	void LightManager::SetDirectionalLightDirection(unsigned int index, const glm::vec3 &dir) {
 #ifdef ARC_DEV_BUILD
 		if (m_DirectionalLights[index].m_IsStatic)
 			ARC_LOG_WARN("Attempting to modify directional light at index {0}, even though it is set as a static light", index);
@@ -92,7 +92,7 @@ namespace Arcane
 		m_DirectionalLights[index].m_Direction = dir;
 	}
 
-	void DynamicLightManager::SetPointLightPosition(unsigned int index, const glm::vec3 &pos) {
+	void LightManager::SetPointLightPosition(unsigned int index, const glm::vec3 &pos) {
 #ifdef ARC_DEV_BUILD
 		if (m_PointLights[index].m_IsStatic)
 			ARC_LOG_WARN("Attempting to modify point light position at index {0}, even though it is set as a static light", index);
@@ -100,14 +100,14 @@ namespace Arcane
 		m_PointLights[index].m_Position = pos;
 	}
 
-	void DynamicLightManager::SetSpotLightPosition(unsigned int index, const glm::vec3 &pos) {
+	void LightManager::SetSpotLightPosition(unsigned int index, const glm::vec3 &pos) {
 #ifdef ARC_DEV_BUILD
 		if (m_PointLights[index].m_IsStatic)
 			ARC_LOG_WARN("Attempting to modify spot light position at index {0}, even though it is set as a static light", index);
 #endif // ARC_DEV_BUILD
 		m_SpotLights[index].m_Position = pos;
 	}
-	void DynamicLightManager::SetSpotLightDirection(unsigned int index, const glm::vec3 &dir) {
+	void LightManager::SetSpotLightDirection(unsigned int index, const glm::vec3 &dir) {
 #ifdef ARC_DEV_BUILD
 		if (m_PointLights[index].m_IsStatic)
 			ARC_LOG_WARN("Attempting to modify spot light direction at index {0}, even though it is set as a static light", index);
@@ -117,7 +117,7 @@ namespace Arcane
 
 
 	// Getters
-	const glm::vec3& DynamicLightManager::GetDirectionalLightDirection(unsigned int index) {
+	const glm::vec3& LightManager::GetDirectionalLightDirection(unsigned int index) {
 		return m_DirectionalLights[index].m_Direction;
 	}
 }

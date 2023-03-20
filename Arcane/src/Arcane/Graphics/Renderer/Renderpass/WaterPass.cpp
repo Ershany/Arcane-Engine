@@ -74,7 +74,7 @@ namespace Arcane
 			return passOutput;
 		}
 
-		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 		m_GLCache->SetUsesClipPlane(true);
 
 		// Generate Reflection framebuffer and render to it

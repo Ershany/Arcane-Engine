@@ -4,10 +4,10 @@
 
 namespace Arcane
 {
-	class DynamicLightManager;
+	class LightManager;
 
 	class SpotLight : public Light {
-		friend DynamicLightManager;
+		friend LightManager;
 	public:
 		SpotLight(float lightIntensity, glm::vec3 &lightColour, float attenuationRadius, glm::vec3 &pos, glm::vec3 &dir, float innerCutOffAngle, float outerCutOffAngle);
 	

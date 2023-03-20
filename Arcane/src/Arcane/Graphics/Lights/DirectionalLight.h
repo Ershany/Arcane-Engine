@@ -5,10 +5,10 @@
 namespace Arcane
 {
 	
-	class DynamicLightManager;
+	class LightManager;
 
 	class DirectionalLight : public Light {
-		friend DynamicLightManager;
+		friend LightManager;
 	public:
 		DirectionalLight(float lightIntensity, glm::vec3 &lightColour, glm::vec3 &dir);
 

@@ -35,7 +35,7 @@ namespace Arcane
 
 		// Setup
 		Terrain *terrain = m_ActiveScene->GetTerrain();
-		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 
 		// View setup
 		m_GLCache->SetShader(m_ShadowmapShader);

@@ -46,14 +46,14 @@ namespace Arcane
 
 		// Setup
 		Terrain *terrain = m_ActiveScene->GetTerrain();
-		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 		Skybox *skybox = m_ActiveScene->GetSkybox();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
 		// Lighting setup
-		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
+		auto lightBindFunction = &LightManager::BindLightingUniforms;
 		if (renderOnlyStatic)
-			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
+			lightBindFunction = &LightManager::BindStaticLightingUniforms;
 
 		// Render terrain
 		m_GLCache->SetShader(m_TerrainShader);
@@ -139,13 +139,13 @@ namespace Arcane
 		}
 
 		// Setup
-		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
 		// Lighting setup
-		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
+		auto lightBindFunction = &LightManager::BindLightingUniforms;
 		if (renderOnlyStatic)
-			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
+			lightBindFunction = &LightManager::BindStaticLightingUniforms;
 
 		// Render opaque and transparent objects (renderer will render the transparent bucket last)
 		m_GLCache->SetShader(m_ModelShader);

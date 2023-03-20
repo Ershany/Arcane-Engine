@@ -50,7 +50,7 @@ namespace Arcane
 		m_GLCache->SetStencilTest(true);
 		m_GLCache->SetStencilWriteMask(0x00); // Do not update stencil values
 
-		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
 		m_GLCache->SetShader(m_LightingShader);
