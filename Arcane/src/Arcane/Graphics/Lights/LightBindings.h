@@ -3,8 +3,8 @@
 namespace Arcane
 {
 	class Shader;
-	class TransformComponent;
-	class LightComponent;
+	struct TransformComponent;
+	struct LightComponent;
 
 	class LightBindings
 	{

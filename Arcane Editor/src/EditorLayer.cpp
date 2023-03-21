@@ -75,7 +75,7 @@ namespace Arcane
 			auto &transformComponent = directionalLight.GetComponent<TransformComponent>();
 			auto &lightComponent = directionalLight.AddComponent<LightComponent>();
 			lightComponent.Type = LightType::LightType_Directional;
-			lightComponent.Intensity = 1.0f;
+			lightComponent.Intensity = 3.0f;
 			lightComponent.LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
 			lightComponent.IsStatic = true;
 			lightComponent.CastShadows = true;

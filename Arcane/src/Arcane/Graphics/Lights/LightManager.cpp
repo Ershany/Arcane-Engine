@@ -58,7 +58,7 @@ namespace Arcane
 	}
 
 	// Getters
-	const glm::vec3& LightManager::GetDirectionalLightDirection(unsigned int index)
+	glm::vec3 LightManager::GetDirectionalLightDirection(unsigned int index)
 	{
 		unsigned int currDirLight = 0;
 		auto group = m_Scene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
@@ -74,5 +74,8 @@ namespace Arcane
 				return glm::vec3(-0.1f, -1.0f, -0.1f); // TODO: Change this to the direction using the transform's rotation
 			}
 		}
+
+		ARC_ASSERT(false, "Failed to find directional light at index %u - Returning default value", index);
+		return glm::vec3(-0.1f, -1.0f, -0.1f);
 	}
 }

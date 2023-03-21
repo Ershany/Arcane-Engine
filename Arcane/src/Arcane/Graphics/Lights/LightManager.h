@@ -31,7 +31,7 @@ namespace Arcane
 		void BindStaticLightingUniforms(Shader *shader);
 
 		// Getters
-		const glm::vec3& GetDirectionalLightDirection(unsigned int index);
+		glm::vec3 GetDirectionalLightDirection(unsigned int index);
 	private:
 		void Init();
 
