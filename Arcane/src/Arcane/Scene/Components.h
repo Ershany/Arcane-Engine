@@ -7,6 +7,8 @@
 
 namespace Arcane
 {
+	class ICamera;
+
 	struct TagComponent
 	{
 		std::string Tag;
@@ -65,7 +67,7 @@ namespace Arcane
 		glm::vec3 LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
 		float AttenuationRange = 10.0f; // Used for spot and point lights only
 
-		// Used for spot lights and stored as [0, 1] with cos(angle) (inner must be less angle than outer)
+		// Used for spot lights and stored as [0, 1] as cos(angle)
 		float InnerCutOff = glm::cos(glm::radians(25.0f));
 		float OuterCutOff = glm::cos(glm::radians(27.5f));
 

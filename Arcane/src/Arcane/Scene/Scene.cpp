@@ -16,7 +16,7 @@
 namespace Arcane
 {
 	Scene::Scene(Window *window)
-		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_ProbeManager(m_SceneProbeBlendSetting)
+		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_LightManager(this), m_ProbeManager(m_SceneProbeBlendSetting)
 	{
 		m_GLCache = GLCache::GetInstance();
 

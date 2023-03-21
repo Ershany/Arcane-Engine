@@ -176,11 +176,8 @@
     <ClCompile Include="src\Arcane\Input\JoystickInputData.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Camera\FPSCamera.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Camera\CubemapCamera.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Lights\DirectionalLight.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Lights\Light.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Lights\LightBindings.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Lights\LightManager.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Lights\PointLight.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Lights\SpotLight.cpp" />
     <ClCompile Include="src\Arcane\Graphics\IBL\ProbeManager.cpp" />
     <ClCompile Include="src\Arcane\Graphics\IBL\LightProbe.cpp" />
     <ClCompile Include="src\Arcane\Graphics\IBL\ReflectionProbe.cpp" />
@@ -291,11 +288,8 @@
     <ClInclude Include="src\Arcane\Graphics\Camera\FPSCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\CubemapCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\ICamera.h" />
-    <ClInclude Include="src\Arcane\Graphics\Lights\DirectionalLight.h" />
-    <ClInclude Include="src\Arcane\Graphics\Lights\Light.h" />
+    <ClInclude Include="src\Arcane\Graphics\Lights\LightBindings.h" />
     <ClInclude Include="src\Arcane\Graphics\Lights\LightManager.h" />
-    <ClInclude Include="src\Arcane\Graphics\Lights\PointLight.h" />
-    <ClInclude Include="src\Arcane\Graphics\Lights\SpotLight.h" />
     <ClInclude Include="src\Arcane\Graphics\IBL\ProbeManager.h" />
     <ClInclude Include="src\Arcane\Graphics\IBL\LightProbe.h" />
     <ClInclude Include="src\Arcane\Graphics\IBL\ReflectionProbe.h" />
