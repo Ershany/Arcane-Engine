@@ -29,6 +29,7 @@ namespace Arcane
 
 		void BindLightingUniforms(Shader *shader);
 		void BindStaticLightingUniforms(Shader *shader);
+		glm::vec2 GetShadowQualityResolution(ShadowQuality quality);
 
 		// Getters
 		glm::vec3 GetDirectionalLightDirection(unsigned int index);

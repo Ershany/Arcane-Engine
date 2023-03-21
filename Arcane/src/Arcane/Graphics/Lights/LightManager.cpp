@@ -65,6 +65,31 @@ namespace Arcane
 		shader->SetUniform("numDirPointSpotLights", glm::ivec4(numDirLights, numPointLights, numSpotLights, 0));
 	}
 
+	glm::vec2 LightManager::GetShadowQualityResolution(ShadowQuality quality)
+	{
+		switch (quality)
+		{
+		case ShadowQuality::ShadowQuality_Low:
+			return glm::vec2(256, 256);
+			break;
+		case ShadowQuality::ShadowQuality_Medium:
+			return glm::vec2(512, 512);
+			break;
+		case ShadowQuality::ShadowQuality_High:
+			return glm::vec2(1024, 1024);
+			break;
+		case ShadowQuality::ShadowQuality_Ultra:
+			return glm::vec2(2048, 2048);
+			break;
+		case ShadowQuality::ShadowQuality_Nightmare:
+			return glm::vec2(4096, 4096);
+			break;
+		default:
+			ARC_ASSERT(false, "Failed to find a shadow quality resolution given the quality setting");
+			return glm::vec2(0, 0);
+		}
+	}
+
 	// Getters
 	glm::vec3 LightManager::GetDirectionalLightDirection(unsigned int index)
 	{
