@@ -200,5 +200,6 @@ namespace Arcane
 		shadowmapData.shadowmapFramebuffer->GetDepthStencilTexture()->Bind();
 		shader->SetUniform("shadowmap", 0);
 		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+		shader->SetUniform("shadowBias", 0.003f);
 	}
 }

@@ -115,6 +115,7 @@ uniform sampler2D brdfLUT;
 
 // Lighting
 uniform sampler2D shadowmap;
+uniform float shadowBias;
 uniform ivec4 numDirPointSpotLights;
 uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
@@ -372,15 +373,12 @@ float CalculateShadow(vec3 normal, vec3 fragToLight) {
 	float shadow = 0.0;
 	float currentDepth = depthmapCoords.z;
 
-	// Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
-	float shadowBias = 0.003;
-
 	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows
 	vec2 texelSize = 1.0 / textureSize(shadowmap, 0);
 	for (int y = -1; y <= 1; ++y) {
 		for (int x = -1; x <= 1; ++x) {
 			float sampledDepthPCF = texture(shadowmap, depthmapCoords.xy + (texelSize * vec2(x, y))).r;
-			shadow += currentDepth > sampledDepthPCF + shadowBias ? 1.0 : 0.0;
+			shadow += currentDepth > sampledDepthPCF + shadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
 		}
 	}
 	shadow /= 9.0;
