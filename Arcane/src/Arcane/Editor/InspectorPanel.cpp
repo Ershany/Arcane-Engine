@@ -21,14 +21,14 @@ namespace Arcane
 				if (m_FocusedEntity.HasComponent<TransformComponent>())
 				{
 					auto &transform = m_FocusedEntity.GetComponent<TransformComponent>();
-					if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
-					{
-						DrawVec3Control("Translation", transform.Translation);
-						glm::vec3 rotation = glm::degrees(transform.Rotation);
-						DrawVec3Control("Rotation", rotation, 1.0f);
-						transform.Rotation = glm::radians(rotation);
-						DrawVec3Control("Scale", transform.Scale);
-					}
+					//if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+					//{
+					//	DrawVec3Control("Translation", transform.Translation);
+					//	glm::vec3 rotation = glm::degrees(transform.Rotation);
+					//	DrawVec3Control("Rotation", rotation, 1.0f);
+					//	transform.Rotation = glm::radians(rotation);
+					//	DrawVec3Control("Scale", transform.Scale);
+					//}
 				}
 				
 				if (m_FocusedEntity.HasComponent<MeshComponent>())

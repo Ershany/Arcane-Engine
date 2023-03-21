@@ -3,6 +3,7 @@
 #include "arcpch.h"
 
 #include <Arcane/Graphics/Mesh/Model.h>
+#include <Arcane/Graphics/Camera/ICamera.h>
 
 namespace Arcane
 {
@@ -21,7 +22,7 @@ namespace Arcane
 	struct TransformComponent
 	{
 		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		glm::quat Rotation = {};
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 
 		glm::vec3 Up = { 0.0f, 1.0f, 0.0f };
@@ -37,7 +38,7 @@ namespace Arcane
 		glm::mat4 GetTransform()
 		{
 			return glm::translate(glm::mat4(1.0f), Translation)
-				* glm::toMat4(glm::quat(Rotation))
+				* glm::toMat4(Rotation)
 				* glm::scale(glm::mat4(1.0f), Scale);
 		}
 	};
@@ -59,6 +60,6 @@ namespace Arcane
 	// TODO: Eventually needs to be added and used for the runtime. The editor will always have a "camera" but will be needed for runtime eventually
 	struct CameraComponent
 	{
-		Arcane::ICamera *camera;
+		ICamera *camera;
 	};
 }

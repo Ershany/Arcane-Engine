@@ -38,7 +38,7 @@ namespace Arcane
 		m_ActiveScene = new Scene(m_Window);
 		m_MasterRenderPass = new MasterRenderPass(m_ActiveScene);
 		m_InputManager = &InputManager::GetInstance();
-		m_PhysicsScene = new PhysicsScene();
+		m_PhysicsSim = new PhysicsScene();
 	}
 
 	Application::~Application()
@@ -121,6 +121,10 @@ namespace Arcane
 						RenderImGui();
 				}
 				Renderer::EndFrame();
+
+
+				// Only update physics when maximized??
+				m_PhysicsSim->UpdateSim(deltaTime.GetDeltaTime());
 
 				++frameCounter;
 			}

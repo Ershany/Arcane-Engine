@@ -23,6 +23,11 @@
 #define ARC_DEV_ONLY(...)
 #endif
 
+#if defined(ARC_DEV_BUILD)
+#define USE_PHYSX_DEBUGGER
+#define USE_RENDERDOC
+#endif
+
 typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
@@ -32,3 +37,6 @@ typedef int8_t s8;
 typedef int16_t s16;
 typedef int32_t s32;
 typedef int64_t s64;
+
+typedef float f32;
+typedef long double d64;

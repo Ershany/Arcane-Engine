@@ -1,6 +1,6 @@
 #include "arcpch.h"
 
-#ifdef ARC_RENDERDOC_DEBUG
+#ifdef USE_RENDERDOC
 
 #include <Arcane/RenderdocManager.h>
 #include <Arcane/Input/InputManager.h>
@@ -36,7 +36,7 @@ namespace Arcane
 		ARC_ASSERT(RENDERDOC_GetAPI(eRENDERDOC_API_Version_1_4_0, (void**)&m_RenderdocAPI) == 1, "Either the renderdoc dll failed to load or something really bad happened here");
 
 		// Make sure the renderdoc log file is there, create it otherwise
-		std::string logDir = dir.string() + "/logs/";
+		std::string logDir = dir.string() + "\\logs\\";
 		if (!std::filesystem::exists(logDir))
 		{
 			std::filesystem::create_directory(logDir);

@@ -160,6 +160,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Arcane\Physics\3D\PhysicsFactory.cpp" />
+    <ClCompile Include="src\Arcane\Physics\3D\RigidbodyComponent.cpp" />
+    <ClCompile Include="src\Arcane\Physics\3D\RigidbodyManager.cpp" />
     <ClCompile Include="src\Arcane\Physics\3D\PhysicsScene.cpp" />
     <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
@@ -264,6 +267,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Arcane\Physics\3D\PhysicsDefs.h" />
+    <ClInclude Include="src\Arcane\Physics\3D\PhysicsFactory.h" />
+    <ClInclude Include="src\Arcane\Physics\3D\RigidbodyComponent.h" />
+    <ClInclude Include="src\Arcane\Physics\3D\RigidbodyManager.h" />
     <ClInclude Include="src\Arcane\Physics\3D\PhysicsScene.h" />
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
     <ClInclude Include="src\Arcane.h" />

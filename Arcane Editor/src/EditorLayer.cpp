@@ -3,8 +3,15 @@
 #include <Arcane/Core/Application.h>
 
 #include <Arcane/Vendor/Imgui/imgui.h>
+#include "Arcane/Physics/3D/PhysicsDefs.h"
+#include "Arcane/Physics/3d/PhysicsFactory.h"
+#include "Arcane/Physics/3D/RigidbodyComponent.h"
+#include "Arcane/Physics/3D/PhysicsScene.h"
 
 extern bool g_ApplicationRunning;
+Arcane::RigidbodyComponent* component;
+Arcane::Entity box;
+
 namespace Arcane
 {
 	EditorLayer::EditorLayer() : m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_EditorViewport(), m_ConsolePanel(), m_GraphicsSettings(Arcane::Application::GetInstance().GetMasterRenderPass()), 
@@ -18,52 +25,52 @@ namespace Arcane
 
 	void EditorLayer::OnAttach()
 	{
-		AssetManager &assetManager = AssetManager::GetInstance();
+		AssetManager& assetManager = AssetManager::GetInstance();
 
 		// Load some assets for the scene at startup
-		Model *gunModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
-		Model *shieldModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"));
-		Model *sphereModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Sphere/globe-sphere.obj"));
-		Quad *quad = new Quad();
-		Model *quadModel = new Model(*quad);
+		Model* gunModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
+		Model* shieldModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"));
+		//Model *sphereModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Sphere/globe-sphere.obj"));
+		Quad* quad = new Quad();
+		Model* quadModel = new Model(*quad);
 		quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png")));
 
 		// Initialize some entities and components at startup
 		{
 			auto gun = m_EditorScene->CreateEntity("Cerberus Gun");
-			auto &transformComponent = gun.GetComponent<TransformComponent>();
+			auto& transformComponent = gun.GetComponent<TransformComponent>();
 			transformComponent.Translation = { -32.60f, -9.28f, 48.48f };
 			transformComponent.Scale = { 0.05f, 0.05f, 0.05f };
-			auto &meshComponent = gun.AddComponent<MeshComponent>(gunModel);
+			auto& meshComponent = gun.AddComponent<MeshComponent>(gunModel);
 			meshComponent.IsStatic = true;
 			meshComponent.IsTransparent = false;
 		}
 
 		{
 			auto shield = m_EditorScene->CreateEntity("Hyrule Shield");
-			auto &transformComponent = shield.GetComponent<TransformComponent>();
+			auto& transformComponent = shield.GetComponent<TransformComponent>();
 			transformComponent.Translation = { -7.4f, -7.6f, -31.4f };
-			auto &meshComponent = shield.AddComponent<MeshComponent>(shieldModel);
+			auto& meshComponent = shield.AddComponent<MeshComponent>(shieldModel);
 			meshComponent.IsStatic = true;
 			meshComponent.IsTransparent = false;
 		}
 
-		{
-			auto sphere = m_EditorScene->CreateEntity("Sphere");
-			auto &transformComponent = sphere.GetComponent<TransformComponent>();
-			transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
-			auto &meshComponent = sphere.AddComponent<MeshComponent>(sphereModel);
-			meshComponent.IsStatic = true;
-			meshComponent.IsTransparent = false;
-		}
+		//{
+		//	auto sphere = m_EditorScene->CreateEntity("Sphere");
+		//	auto &transformComponent = sphere.GetComponent<TransformComponent>();
+		//	transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
+		//	auto &meshComponent = sphere.AddComponent<MeshComponent>(sphereModel);
+		//	meshComponent.IsStatic = true;
+		//	meshComponent.IsTransparent = false;
+		//}
 
 		{
 			auto window = m_EditorScene->CreateEntity("Window");
-			auto &transformComponent = window.GetComponent<TransformComponent>();
+			auto& transformComponent = window.GetComponent<TransformComponent>();
 			transformComponent.Translation = { -32.60f, 10.0f, 48.48f };
-			transformComponent.Rotation = { 0.0f, glm::radians(180.0f), 0.0f };
+			//transformComponent.Rotation = { 0.0f, glm::radians(180.0f), 0.0f };
 			transformComponent.Scale = { 10.0f, 10.0f, 10.0f };
-			auto &meshComponent = window.AddComponent<MeshComponent>(quadModel);
+			auto& meshComponent = window.AddComponent<MeshComponent>(quadModel);
 			meshComponent.IsStatic = true;
 			meshComponent.IsTransparent = true;
 		}
@@ -100,6 +107,26 @@ namespace Arcane
 		//Model *sponza = new Arcane::Model("res/3D_Models/Sponza/sponza.obj");
 		//m_RenderableModels.push_back(new RenderableModel(glm::vec3(67.0f, 110.0f, 133.0f), glm::vec3(0.05f, 0.05f, 0.05f), glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(180.0f), sponza, nullptr, true, false));
 #endif
+
+
+		{
+			Cube* cube = new Cube();
+			Model* boxModel = new Model(*cube);
+			box = m_EditorScene->CreateEntity("box");
+			auto& transformComponent = box.GetComponent<TransformComponent>();
+			transformComponent.Translation = { 10.f, 10.f, 10.f };
+			//transformComponent.Rotation = { 0.0f, glm::radians(180.0f), 0.0f };
+			//transformComponent.Scale = { 10.0f, 10.0f, 10.0f };
+
+			// Create a test object and move it around 
+			phGeometry* box1 = PhysicsFactory::CreateBoxGeometry(0.5f, 0.5f, 0.5f);
+			component = new RigidbodyComponent(transformComponent, box1, true);
+			PhysicsScene::GetScene()->addActor(*component->GetRigidbody());
+
+			auto& meshComponent = box.AddComponent<MeshComponent>(boxModel);
+			meshComponent.IsStatic = false;
+			meshComponent.IsTransparent = false;
+		}
 	}
 
 	void EditorLayer::OnDetach()
@@ -109,7 +136,14 @@ namespace Arcane
 
 	void EditorLayer::OnUpdate(float deltaTime)
 	{
-
+		const phActorRigid* rb = component->GetRigidbody();
+		static_cast<phDynamicRb*>(component->GetRigidbody())->addForce({ 1.f, 0.f, 0.f });
+		// transform sync
+		auto t = rb->getGlobalPose().p;
+		auto& t1 = box.GetComponent<TransformComponent>().Translation;
+		t1.x = t.x;
+		t1.y = t.y;
+		t1.z = t.z;
 	}
 
 	void EditorLayer::OnImGuiRender()

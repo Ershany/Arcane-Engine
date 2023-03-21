@@ -75,6 +75,9 @@
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_demo.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\Arcane\Physics\3D\RigidbodyManager.cpp" />
+    <ClCompile Include="src\Arcane\Physics\3D\RigidbodyComponent.cpp" />
+    <ClCompile Include="src\Arcane\Physics\3D\PhysicsFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Arcane\Physics\3D\PhysicsScene.h" />
@@ -171,6 +174,10 @@
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_rect_pack.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_textedit.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_truetype.h" />
+    <ClInclude Include="src\Arcane\Physics\3D\RigidbodyManager.h" />
+    <ClInclude Include="src\Arcane\Physics\3D\RigidbodyComponent.h" />
+    <ClInclude Include="src\Arcane\Physics\3D\PhysicsFactory.h" />
+    <ClInclude Include="src\Arcane\Physics\3D\PhysicsDefs.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

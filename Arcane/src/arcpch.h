@@ -35,4 +35,4 @@
 
 // Physx
 
-#include <PxPhysicsAPI.h> // includes the entire api
+#include <Arcane/Physics/3D/PhysicsDefs.h> // includes the entire api

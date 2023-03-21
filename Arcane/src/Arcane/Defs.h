@@ -1,9 +1,10 @@
 #pragma once
 
+// Do we want to do that here?
+#include "Physics/3D/PhysicsDefs.h"
+
 // Debug Options
 #define DEBUG_PROFILING 1
-#define USE_RENDERDOC 0
-
 
 // Window Settings
 #define WINDOW_X_RESOLUTION 1920
