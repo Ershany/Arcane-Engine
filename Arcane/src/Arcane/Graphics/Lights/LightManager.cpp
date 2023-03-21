@@ -43,17 +43,25 @@ namespace Arcane
 			switch (lightComponent.Type)
 			{
 			case LightType::LightType_Directional:
+				ARC_ASSERT(numDirLights < LightBindings::MaxDirLights, "Directional light limit hit");
 				LightBindings::BindDirectionalLight(transformComponent, lightComponent, shader, numDirLights++);
 				break;
 			case LightType::LightType_Point:
+				ARC_ASSERT(numPointLights < LightBindings::MaxPointLights, "Point light limit hit");
 				LightBindings::BindPointLight(transformComponent, lightComponent, shader, numPointLights++);
 				break;
 			case LightType::LightType_Spot:
+				ARC_ASSERT(numSpotLights < LightBindings::MaxSpotLights, "Spot light limit hit");
 				LightBindings::BindSpotLight(transformComponent, lightComponent, shader, numSpotLights++);
 				break;
 			}
 		}
 
+#ifdef ARC_DEV_BUILD
+		numDirLights = std::min<int>(numDirLights, LightBindings::MaxDirLights);
+		numPointLights = std::min<int>(numPointLights, LightBindings::MaxPointLights);
+		numSpotLights = std::min<int>(numSpotLights, LightBindings::MaxSpotLights);
+#endif
 		shader->SetUniform("numDirPointSpotLights", glm::ivec4(numDirLights, numPointLights, numSpotLights, 0));
 	}
 
