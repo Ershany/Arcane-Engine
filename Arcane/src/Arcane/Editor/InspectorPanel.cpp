@@ -25,7 +25,10 @@ namespace Arcane
 					{
 						DrawVec3Control("Translation", transform.Translation);
 						glm::vec3 rotation = glm::degrees(transform.Rotation);
-						DrawVec3Control("Rotation", rotation, 1.0f);
+						DrawVec3Control("Rotation", rotation, 0.1f);
+						rotation.x = fmod(rotation.x, 360.0f);
+						rotation.y = fmod(rotation.y, 360.0f);
+						rotation.z = fmod(rotation.z, 360.0f);
 						transform.Rotation = glm::radians(rotation);
 						DrawVec3Control("Scale", transform.Scale);
 					}
@@ -158,8 +161,10 @@ namespace Arcane
 						if (lightComponent.CastShadows)
 						{
 							const char *shadowItems[] = { "Low", "Medium", "High", "Ultra", "Nightmare" };
+							glm::vec2 resolution = LightManager::GetShadowQualityResolution(lightComponent.ShadowResolution);
 							int shadowChoice = static_cast<int>(lightComponent.ShadowResolution);
-							ImGui::Combo("Shadow Quality", &shadowChoice, shadowItems, IM_ARRAYSIZE(shadowItems));
+							ImGui::Combo("Shadow Quality", &shadowChoice, shadowItems, IM_ARRAYSIZE(shadowItems)); ImGui::SameLine();
+							ImGui::Text("- %.0f x %.0f", resolution.x, resolution.y);
 							lightComponent.ShadowResolution = static_cast<ShadowQuality>(shadowChoice);
 							DrawFloatControl("Shadow Bias", lightComponent.ShadowBias, 0.0001f, 0.0f, 1.0f, "%.4f");
 							

@@ -25,7 +25,9 @@ namespace Arcane
 		ShadowQualitySize
 	};
 
-	class LightManager {
+	// TODO: Should be a singleton??
+	class LightManager
+	{
 	public:
 		LightManager(Scene *scene);
 
@@ -33,7 +35,8 @@ namespace Arcane
 
 		void BindLightingUniforms(Shader *shader);
 		void BindStaticLightingUniforms(Shader *shader);
-		glm::vec2 GetShadowQualityResolution(ShadowQuality quality);
+
+		static glm::vec2 GetShadowQualityResolution(ShadowQuality quality);
 
 		// Getters
 		glm::vec3 GetDirectionalLightDirection(unsigned int index);
