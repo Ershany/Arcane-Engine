@@ -25,7 +25,6 @@ namespace Arcane
 		ShadowQualitySize
 	};
 
-	// TODO: Should be a singleton??
 	class LightManager
 	{
 	public:
