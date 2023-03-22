@@ -9,9 +9,9 @@ namespace Arcane
 	class LightBindings
 	{
 	public:
-		static void BindDirectionalLight(const TransformComponent &tranformComponent, const LightComponent &lightComponent, Shader *shader, int currentLightIndex);
-		static void BindPointLight(const TransformComponent &tranformComponent, const LightComponent &lightComponent, Shader *shader, int currentLightIndex);
-		static void BindSpotLight(const TransformComponent &tranformComponent, const LightComponent &lightComponent, Shader *shader, int currentLightIndex);
+		static void BindDirectionalLight(const TransformComponent &transformComponent, const LightComponent &lightComponent, Shader *shader, int currentLightIndex);
+		static void BindPointLight(const TransformComponent &transformComponent, const LightComponent &lightComponent, Shader *shader, int currentLightIndex);
+		static void BindSpotLight(const TransformComponent &transformComponent, const LightComponent &lightComponent, Shader *shader, int currentLightIndex);
 
 		const static int MaxDirLights = 3;
 		const static int MaxPointLights = 6;

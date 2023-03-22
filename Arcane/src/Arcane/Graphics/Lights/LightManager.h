@@ -2,6 +2,8 @@
 
 namespace Arcane
 {
+	class Framebuffer;
+	struct LightComponent;
 	class Scene;
 	class Shader;
 
@@ -27,6 +29,8 @@ namespace Arcane
 	public:
 		LightManager(Scene *scene);
 
+		void Update();
+
 		void BindLightingUniforms(Shader *shader);
 		void BindStaticLightingUniforms(Shader *shader);
 		glm::vec2 GetShadowQualityResolution(ShadowQuality quality);
@@ -39,5 +43,8 @@ namespace Arcane
 		void BindLights(Shader *shader, bool bindOnlyStatic);
 	private:
 		Scene *m_Scene;
+
+		LightComponent *m_ClosestDirectionalShadowCaster;
+		Framebuffer *m_DirectionalShadowFramebuffer;
 	};
 }

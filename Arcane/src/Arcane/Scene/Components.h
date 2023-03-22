@@ -37,11 +37,26 @@ namespace Arcane
 		{
 		}
 
-		glm::mat4 GetTransform()
+		glm::mat4 GetTransform() const
 		{
 			return glm::translate(glm::mat4(1.0f), Translation)
 				* glm::toMat4(glm::quat(Rotation))
 				* glm::scale(glm::mat4(1.0f), Scale);
+		}
+
+		glm::vec3 GetForward() const
+		{
+			return (GetTransform() * glm::vec4(Forward, 1.0f)).xyz();
+		}
+
+		glm::vec3 GetRight() const
+		{
+			return (GetTransform() * glm::vec4(Right, 1.0f)).xyz();
+		}
+
+		glm::vec3 GetUp() const
+		{
+			return (GetTransform() * glm::vec4(Up, 1.0f)).xyz();
 		}
 	};
 

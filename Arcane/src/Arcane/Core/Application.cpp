@@ -66,7 +66,7 @@ namespace Arcane
 		// Make sure all assets load before booting for first time
 		while (Arcane::AssetManager::GetInstance().AssetsInFlight())
 		{
-			m_AssetManager->Update(10000, 10000, 10000);
+			m_AssetManager->Update(100000, 100000, 100000);
 		}
 
 		// Initialize the master render pass

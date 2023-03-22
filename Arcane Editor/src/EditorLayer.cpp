@@ -73,6 +73,7 @@ namespace Arcane
 		{
 			auto directionalLight = m_EditorScene->CreateEntity("Directional Light");
 			auto &transformComponent = directionalLight.GetComponent<TransformComponent>();
+			transformComponent.Rotation.x = glm::radians(-120.0f);
 			auto &lightComponent = directionalLight.AddComponent<LightComponent>();
 			lightComponent.Type = LightType::LightType_Directional;
 			lightComponent.Intensity = 3.0f;

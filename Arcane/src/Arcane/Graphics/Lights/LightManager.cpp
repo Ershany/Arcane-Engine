@@ -1,6 +1,8 @@
 #include "arcpch.h"
 #include "LightManager.h"
 
+#include <limits>
+
 #include <Arcane/Graphics/Lights/LightBindings.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Scene/Components.h>
@@ -16,6 +18,28 @@ namespace Arcane
 	void LightManager::Init()
 	{
 		
+	}
+
+	void LightManager::Update()
+	{
+		// Prioritize the closest light to the camera as our directional shadow caster (reset our pointers since it is possible no shadow caster exists anymore)
+		m_ClosestDirectionalShadowCaster = nullptr;
+		float closestDistance2 = 1000000.0f; // numeric max was whining about double definition so this will suffice
+
+		auto group = m_Scene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
+		for (auto entity : group)
+		{
+			auto&[transformComponent, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
+
+			if (lightComponent.Type != LightType::LightType_Directional || !lightComponent.CastShadows)
+				continue;
+
+			float currentDistance2 = glm::distance2(m_Scene->GetCamera()->GetPosition(), transformComponent.Translation);
+			if (currentDistance2 < closestDistance2)
+			{
+				m_ClosestDirectionalShadowCaster = &lightComponent;
+			}
+		}
 	}
 
 	void LightManager::BindLightingUniforms(Shader *shader)
@@ -104,7 +128,7 @@ namespace Arcane
 
 			if (currDirLight++ == index)
 			{
-				return glm::vec3(-0.1f, -1.0f, -0.1f); // TODO: Change this to the direction using the transform's rotation
+				return transformComponent.GetForward();
 			}
 		}
 
