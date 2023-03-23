@@ -17,6 +17,10 @@ namespace Arcane
 		SetDepthTest(true);
 		SetFaceCull(true);
 		SetClipPlane(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		m_RedMask = GL_TRUE;
+		m_GreenMask = GL_TRUE;
+		m_BlueMask = GL_TRUE;
+		m_AlphaMask = GL_TRUE;
 	}
 
 	GLCache::~GLCache() {
@@ -97,7 +101,7 @@ namespace Arcane
 		}
 	}
 
-	void GLCache::SetStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask) {
+	void GLCache::SetStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask /*=0xFF*/) {
 		if (m_StencilTestFunc != testFunc || m_StencilFragValue != stencilFragValue || m_StencilFuncBitmask != stencilBitmask) {
 			m_StencilTestFunc = testFunc; 
 			m_StencilFragValue = stencilFragValue; 
@@ -121,6 +125,18 @@ namespace Arcane
 		if (m_StencilWriteBitmask != bitmask) {
 			m_StencilWriteBitmask = bitmask;
 			glStencilMaskSeparate(GL_FRONT_AND_BACK, m_StencilWriteBitmask);
+		}
+	}
+
+	void GLCache::SetColourMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
+	{
+		if (m_RedMask != red || m_GreenMask != green || m_BlueMask != blue || m_AlphaMask != alpha)
+		{
+			m_RedMask = red;
+			m_GreenMask = green;
+			m_BlueMask = blue;
+			m_AlphaMask = alpha;
+			glColorMask(m_RedMask, m_GreenMask, m_BlueMask, m_AlphaMask);
 		}
 	}
 

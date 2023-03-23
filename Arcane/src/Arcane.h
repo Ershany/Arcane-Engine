@@ -14,7 +14,7 @@
 #include <Arcane/Graphics/Camera/FPSCamera.h>
 #include <Arcane/Graphics/Camera/CubemapCamera.h>
 #include <Arcane/Graphics/IBL/ProbeManager.h>
-#include <Arcane/Graphics/Lights/DynamicLightManager.h>
+#include <Arcane/Graphics/Lights/LightManager.h>
 #include <Arcane/Graphics/Mesh/Material.h>
 #include <Arcane/Graphics/Mesh/Model.h>
 #include <Arcane/Graphics/Mesh/Mesh.h>

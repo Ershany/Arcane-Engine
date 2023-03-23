@@ -97,12 +97,14 @@ namespace Arcane
 		}
 	}
 
-	void Texture::Bind(int unit) {
+	void Texture::Bind(int unit) const
+	{
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(m_TextureTarget, m_TextureId);
 	}
 
-	void Texture::Unbind() {
+	void Texture::Unbind() const
+	{
 		glBindTexture(m_TextureTarget, 0);
 	}
 

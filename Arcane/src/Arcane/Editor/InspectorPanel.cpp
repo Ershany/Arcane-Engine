@@ -25,7 +25,10 @@ namespace Arcane
 					{
 						DrawVec3Control("Translation", transform.Translation);
 						glm::vec3 rotation = glm::degrees(transform.Rotation);
-						DrawVec3Control("Rotation", rotation, 1.0f);
+						DrawVec3Control("Rotation", rotation, 0.1f);
+						rotation.x = fmod(rotation.x, 360.0f);
+						rotation.y = fmod(rotation.y, 360.0f);
+						rotation.z = fmod(rotation.z, 360.0f);
 						transform.Rotation = glm::radians(rotation);
 						DrawVec3Control("Scale", transform.Scale);
 					}
@@ -38,8 +41,9 @@ namespace Arcane
 					{
 						Material &meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
 						const char *items[] = { "Opaque", "Transparent" };
-						int choice = -1;
+						int choice = meshComponent.IsTransparent;
 						ImGui::Combo("Rendering Mode", &choice, items, IM_ARRAYSIZE(items));
+						meshComponent.IsTransparent = choice;
 						ImGui::Text("Texture Maps");
 						ImGui::Separator();
 
@@ -109,12 +113,83 @@ namespace Arcane
 						ImGui::Text("Displacement");
 					}
 				}
+
+				if (m_FocusedEntity.HasComponent<LightComponent>())
+				{
+					if (ImGui::CollapsingHeader("Light", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						auto &lightComponent = m_FocusedEntity.GetComponent<LightComponent>();
+
+						const char *typeItems[] = { "Directional Light", "Point Light", "Spot Light" };
+						int typeChoice = static_cast<int>(lightComponent.Type);
+						ImGui::Combo("Type", &typeChoice, typeItems, IM_ARRAYSIZE(typeItems));
+						lightComponent.Type = static_cast<LightType>(typeChoice);
+
+						ImGui::Text("Colour"); ImGui::SameLine();
+						ImGui::ColorEdit3("##Colour", (float*)&lightComponent.LightColour, ImGuiColorEditFlags_DisplayRGB);
+						DrawFloatControl("Intensity", lightComponent.Intensity, 0.1f, 0.0f, 1000000.0f);
+						if (lightComponent.Type != LightType::LightType_Directional)
+						{
+							DrawFloatControl("Range", lightComponent.AttenuationRange, 0.1f, 0.0f, 1000000.0f);
+						}
+						if (lightComponent.Type == LightType::LightType_Spot)
+						{
+							float innerDegrees = glm::degrees(glm::acos(lightComponent.InnerCutOff));
+							float outerDegrees = glm::degrees(glm::acos(lightComponent.OuterCutOff));
+
+							bool innerModified = DrawFloatControl("Inner Cutoff Angle", innerDegrees, 0.1f, 0.0f, 180.0f, "%.1f");
+							bool outerModified = DrawFloatControl("Outer Cutoff Angle", outerDegrees, 0.1f, 0.0f, 180.0f, "%.1f");
+
+							if (innerModified)
+							{
+								if (innerDegrees > outerDegrees)
+									outerDegrees = innerDegrees;
+							}
+							else if (outerModified)
+							{
+								if (outerDegrees < innerDegrees)
+									innerDegrees = outerDegrees;
+							}
+
+							lightComponent.InnerCutOff = glm::cos(glm::radians(innerDegrees));
+							lightComponent.OuterCutOff = glm::cos(glm::radians(outerDegrees));
+						}
+						ImGui::Checkbox("Static", &lightComponent.IsStatic);
+						ImGui::Separator();
+
+						ImGui::Checkbox("Cast Shadows", &lightComponent.CastShadows);
+						if (lightComponent.CastShadows)
+						{
+							const char *shadowItems[] = { "Low", "Medium", "High", "Ultra", "Nightmare" };
+							glm::uvec2 resolution = LightManager::GetShadowQualityResolution(lightComponent.ShadowResolution);
+							int shadowChoice = static_cast<int>(lightComponent.ShadowResolution);
+							ImGui::Combo("Shadow Quality", &shadowChoice, shadowItems, IM_ARRAYSIZE(shadowItems)); ImGui::SameLine();
+							ImGui::Text("- %u x %u", resolution.x, resolution.y);
+							lightComponent.ShadowResolution = static_cast<ShadowQuality>(shadowChoice);
+							DrawFloatControl("Shadow Bias", lightComponent.ShadowBias, 0.0001f, 0.0f, 1.0f, "%.4f");
+							
+							bool nearModified = DrawFloatControl("Near Plane", lightComponent.ShadowNearPlane, 0.01f, 0.0f, 100.0f);
+							bool farModified = DrawFloatControl("Far Plane", lightComponent.ShadowFarPlane, 1.0f, 0.0f, 1000000.0f);
+
+							if (nearModified)
+							{
+								if (lightComponent.ShadowNearPlane > lightComponent.ShadowFarPlane)
+									lightComponent.ShadowFarPlane = lightComponent.ShadowNearPlane;
+							}
+							else if (farModified)
+							{
+								if (lightComponent.ShadowFarPlane < lightComponent.ShadowNearPlane)
+									lightComponent.ShadowNearPlane = lightComponent.ShadowFarPlane;
+							}
+						}
+					}
+				}
 			}
 		}
 		ImGui::End();
 	}
 
-	bool InspectorPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float speed, float resetValue, float columnWidth)
+	bool InspectorPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float speed /*= 0.1f*/, float min /*= 0.0f*/, float max /*= 0.0f*/, const char *displayDigits /*= "%.2f"*/, float columnWidth /*= 100.0f*/)
 	{
 		bool modified = false;
 
@@ -122,9 +197,25 @@ namespace Arcane
 		ImGui::PushID(label.c_str());
 		ImGui::PushItemWidth(80);
 		ImGui::Text(label.c_str()); ImGui::SameLine(); ImGui::NextColumn();
-		ImGui::Text("X"); ImGui::SameLine(); modified |= ImGui::DragFloat("##X", &values.x, speed, 0.0f, 0.0f, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
-		ImGui::Text("Y"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Y", &values.y, speed, 0.0f, 0.0f, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
-		ImGui::Text("Z"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Z", &values.z, speed, 0.0f, 0.0f, "%.2f");
+		ImGui::Text("X"); ImGui::SameLine(); modified |= ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
+		ImGui::Text("Y"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
+		ImGui::Text("Z"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Z", &values.z, speed, min, max, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		return modified;
+	}
+
+	bool InspectorPanel::DrawFloatControl(const std::string &label, float &value, float speed /*= 0.1f*/, float min /*= 0.0f*/, float max /*= 0.0f*/, const char *displayDigits /*= "%.2f"*/, float columnWidth /*= 200.0f*/)
+	{
+		bool modified = false;
+
+		ImGui::Columns(2);
+		ImGui::PushID(label.c_str());
+		ImGui::PushItemWidth(80);
+		ImGui::Text(label.c_str()); ImGui::SameLine(); ImGui::NextColumn();
+		modified |= ImGui::DragFloat("##Value", &value, speed, min, max, displayDigits);
 		ImGui::PopItemWidth();
 		ImGui::Columns(1);
 		ImGui::PopID();

@@ -39,8 +39,8 @@ namespace Arcane
 		void Generate2DMultisampleTexture(unsigned int width, unsigned int height);
 		void GenerateMips(); // Will attempt to generate mipmaps, only works if the texture has already been generated
 
-		void Bind(int unit = 0);
-		void Unbind();
+		void Bind(int unit = 0) const;
+		void Unbind() const;
 
 		// Texture Tuning Functions (Works for pre-generation and post-generation). For post generation you need to bind the texture before calling
 		void SetTextureWrapS(GLenum textureWrapMode);

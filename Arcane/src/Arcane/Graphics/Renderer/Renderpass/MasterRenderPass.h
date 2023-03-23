@@ -2,9 +2,9 @@
 
 #include <Arcane/Graphics/Renderer/Renderpass/Deferred/DeferredGeometryPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Deferred/DeferredLightingPass.h>
-#include <Arcane/Graphics/Renderer/Renderpass/Deferred/PostGBufferForwardPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardProbePass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardLightingPass.h>
+#include <Arcane/Graphics/Renderer/Renderpass/EditorPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/WaterPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/PostProcessPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/ShadowmapPass.h>
@@ -27,6 +27,7 @@ namespace Arcane
 
 		inline Texture* GetFinalOutputTexture() { return m_FinalOutputTexture; }
 		inline PostProcessPass* GetPostProcessPass() { return &m_PostProcessPass; }
+		inline EditorPass* GetEditorPass() { return &m_EditorPass; }
 	private:
 		GLCache *m_GLCache;
 		Scene *m_ActiveScene;
@@ -38,6 +39,7 @@ namespace Arcane
 		ShadowmapPass m_ShadowmapPass;
 		PostProcessPass m_PostProcessPass;
 		WaterPass m_WaterPass;
+		EditorPass m_EditorPass;
 
 		// Forward passes
 		ForwardLightingPass m_ForwardLightingPass;
@@ -46,7 +48,6 @@ namespace Arcane
 		// Deferred passes
 		DeferredGeometryPass m_DeferredGeometryPass;
 		DeferredLightingPass m_DeferredLightingPass;
-		PostGBufferForward m_PostGBufferForwardPass;
 
 		// Controls
 		bool m_RenderToSwapchain;

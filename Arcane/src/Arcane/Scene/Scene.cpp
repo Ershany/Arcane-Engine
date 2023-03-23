@@ -16,21 +16,25 @@
 namespace Arcane
 {
 	Scene::Scene(Window *window)
-		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_ProbeManager(m_SceneProbeBlendSetting)
+		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_LightManager(this), m_ProbeManager(m_SceneProbeBlendSetting)
 	{
 		m_GLCache = GLCache::GetInstance();
 
-		Init();
+		PreInit();
 	}
 
 	Scene::~Scene()
 	{
-		
+
 	}
 
-	void Scene::Init()
+	void Scene::PreInit()
 	{
-		// Skybox
+		// Setup our ECS groupings to avoid performance costs at runtime if they get created
+		auto fullOwningGroup1 = m_Registry.group<TransformComponent, MeshComponent>();
+		auto partialOwningGroup1 = m_Registry.group<LightComponent>(entt::get<TransformComponent>);
+
+		// Skybox init needs to happen before probes are generated
 		std::vector<std::string> skyboxFilePaths;
 		skyboxFilePaths.push_back("res/skybox/right.png");
 		skyboxFilePaths.push_back("res/skybox/left.png");
@@ -39,6 +43,11 @@ namespace Arcane
 		skyboxFilePaths.push_back("res/skybox/back.png");
 		skyboxFilePaths.push_back("res/skybox/front.png");
 		m_Skybox = new Skybox(skyboxFilePaths);
+	}
+
+	void Scene::Init()
+	{
+		m_LightManager.Init();
 	}
 
 	Entity Scene::CreateEntity(const std::string &name)
@@ -54,9 +63,7 @@ namespace Arcane
 	{
 		// Camera Update
 		m_SceneCamera.ProcessInput(deltaTime);
-
-		m_DynamicLightManager.SetSpotLightDirection(0, m_SceneCamera.GetFront());
-		m_DynamicLightManager.SetSpotLightPosition(0, m_SceneCamera.GetPosition());
+		m_LightManager.Update();
 	}
 
 	void Scene::AddModelsToRenderer(ModelFilterType filter)

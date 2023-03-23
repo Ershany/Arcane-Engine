@@ -17,7 +17,7 @@ namespace Arcane
 		WaterPass(Scene *scene);
 		virtual ~WaterPass() override;
 
-		WaterPassOutput executeWaterPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera);
+		WaterPassOutput ExecuteWaterPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera);
 	private:
 		bool m_WaterEnabled;
 

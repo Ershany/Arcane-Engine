@@ -19,6 +19,11 @@ namespace Arcane
 		TransformComponent& Transform() { return m_Scene->m_Registry.get<TransformComponent>(m_Handle); }
 		const glm::mat4& Transform() const { return m_Scene->m_Registry.get<TransformComponent>(m_Handle).GetTransform(); }
 
+		bool IsValid()
+		{
+			return m_Handle != entt::null;
+		}
+
 		template<typename T, typename... Args>
 		T& AddComponent(Args&&... args)
 		{

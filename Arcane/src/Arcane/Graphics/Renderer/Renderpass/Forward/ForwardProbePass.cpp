@@ -44,7 +44,8 @@ namespace Arcane
 	}
 
 	void ForwardProbePass::pregenerateProbes() {
-		glm::vec3 probePosition = glm::vec3(0.0f, 0.0f, 0.0f);
+		// Temp for now, just generate a probe so we have something
+		glm::vec3 probePosition = glm::vec3(-32.60f, 10.0f, 48.48f);
 		generateLightProbe(probePosition);
 		generateReflectionProbe(probePosition);
 	}
@@ -183,8 +184,8 @@ namespace Arcane
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.Bind();
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(m_SceneCaptureCubemap.GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			LightingPassOutput output = lightingPass.executeOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
-			lightingPass.executeTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
+			LightingPassOutput output = lightingPass.ExecuteOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			lightingPass.ExecuteTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 
@@ -236,8 +237,8 @@ namespace Arcane
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.Bind();
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(m_SceneCaptureCubemap.GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-			LightingPassOutput output = lightingPass.executeOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
-			lightingPass.executeTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
+			LightingPassOutput output = lightingPass.ExecuteOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
+			lightingPass.ExecuteTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 

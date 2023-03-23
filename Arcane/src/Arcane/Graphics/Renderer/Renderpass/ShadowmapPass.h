@@ -16,8 +16,7 @@ namespace Arcane
 
 		ShadowmapPassOutput generateShadowmaps(ICamera *camera, bool renderOnlyStatic);
 	private:
-		bool m_AllocatedFramebuffer;
-		Framebuffer *m_ShadowmapFramebuffer;
+		Framebuffer *m_CustomShadowFramebuffer; // Only used by some passes. Most will go through the light manager and request the proper framebuffers
 		Shader *m_ShadowmapShader;
 	};
 }

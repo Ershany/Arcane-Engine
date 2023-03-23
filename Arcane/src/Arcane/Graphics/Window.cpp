@@ -149,8 +149,23 @@ namespace Arcane
 		glfwPollEvents();
 	}
 
-	void Window::Clear() {
+	void Window::ClearAll() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	}
+
+	void Window::ClearColour()
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	void Window::ClearDepth()
+	{
+		glClear(GL_DEPTH_BUFFER_BIT);
+	}
+
+	void Window::ClearStencil()
+	{
+		glClear(GL_STENCIL_BUFFER_BIT);
 	}
 
 	void Window::Bind() {

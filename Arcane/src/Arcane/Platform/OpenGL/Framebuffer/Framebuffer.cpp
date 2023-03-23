@@ -153,7 +153,22 @@ namespace Arcane
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void Framebuffer::Clear() {
+	void Framebuffer::ClearAll() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	}
+
+	void Framebuffer::ClearColour()
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	void Framebuffer::ClearDepth()
+	{
+		glClear(GL_DEPTH_BUFFER_BIT);
+	}
+
+	void Framebuffer::ClearStencil()
+	{
+		glClear(GL_STENCIL_BUFFER_BIT);
 	}
 }

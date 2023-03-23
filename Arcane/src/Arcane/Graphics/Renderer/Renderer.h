@@ -29,6 +29,11 @@ namespace Arcane
 		Model *model;
 		glm::mat4 transform;
 	};
+	struct QuadDrawCallInfo
+	{
+		const Texture *texture;
+		glm::mat4 transform;
+	};
 
 	class Renderer
 	{
@@ -39,7 +44,9 @@ namespace Arcane
 		static void BeginFrame();
 		static void EndFrame();
 
-		static void QueueMesh(Model *model, glm::mat4 &transform, bool isTransparent=false);
+		static void QueueMesh(Model *model, const glm::mat4 &transform, bool isTransparent=false);
+		static void QueueQuad(const glm::vec3 &position, const glm::vec2 &size, const Texture *texture); // TODO: Should use batch rendering to efficiently render quads together
+		static void QueueQuad(const glm::mat4 &transform, const Texture *texture); // TODO: Should use batch rendering to efficiently render quads together
 
 		static void Flush(ICamera *camera, Shader *shader, RenderPassType renderPassType);
 
@@ -49,8 +56,10 @@ namespace Arcane
 		static RendererData& GetRendererData();
 	private:
 		static void SetupModelMatrix(Shader *shader, MeshDrawCallInfo &drawCallInfo, RenderPassType pass);
+		static void SetupModelMatrix(Shader *shader, QuadDrawCallInfo &drawCallInfo);
 		static void SetupOpaqueRenderState();
 		static void SetupTransparentRenderState();
+		static void SetupQuadRenderState();
 	private:
 		static Quad *s_NdcPlane;
 		static Cube *s_NdcCube;
@@ -60,5 +69,6 @@ namespace Arcane
 
 		static std::deque<MeshDrawCallInfo> s_OpaqueMeshDrawCallQueue;
 		static std::deque<MeshDrawCallInfo> s_TransparentMeshDrawCallQueue;
+		static std::deque<QuadDrawCallInfo> s_QuadDrawCallQueue;
 	};
 }

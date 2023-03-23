@@ -2,7 +2,9 @@
 
 #include <Arcane/Core/Application.h>
 
+#include <Arcane/Graphics/Renderer/Renderpass/EditorPass.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
+
 
 extern bool g_ApplicationRunning;
 namespace Arcane
@@ -68,6 +70,56 @@ namespace Arcane
 			meshComponent.IsTransparent = true;
 		}
 
+		{
+			auto directionalLight = m_EditorScene->CreateEntity("Directional Light");
+			auto &transformComponent = directionalLight.GetComponent<TransformComponent>();
+			transformComponent.Rotation.x = glm::radians(-120.0f);
+			auto &lightComponent = directionalLight.AddComponent<LightComponent>();
+			lightComponent.Type = LightType::LightType_Directional;
+			lightComponent.Intensity = 3.0f;
+			lightComponent.LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
+			lightComponent.IsStatic = true;
+			lightComponent.CastShadows = true;
+			lightComponent.ShadowResolution = ShadowQuality::ShadowQuality_Ultra;
+		}
+
+		{
+			auto pointLight = m_EditorScene->CreateEntity("Point Light1");
+			auto &transformComponent = pointLight.GetComponent<TransformComponent>();
+			transformComponent.Translation = glm::vec3(24.1f, 2.2f, 47.5f);
+			auto &lightComponent = pointLight.AddComponent<LightComponent>();
+			lightComponent.Type = LightType::LightType_Point;
+			lightComponent.Intensity = 10.0f;
+			lightComponent.LightColour = glm::vec3(0.0f, 1.0f, 0.0f);
+			lightComponent.AttenuationRange = 30.0f;
+			lightComponent.IsStatic = false;
+		}
+		
+		{
+			auto pointLight = m_EditorScene->CreateEntity("Point Light2");
+			auto &transformComponent = pointLight.GetComponent<TransformComponent>();
+			transformComponent.Translation = glm::vec3(-27.2f, -9.0f, 52.0f);
+			auto &lightComponent = pointLight.AddComponent<LightComponent>();
+			lightComponent.Type = LightType::LightType_Point;
+			lightComponent.Intensity = 30.0f;
+			lightComponent.LightColour = glm::vec3(1.0f, 0.0f, 1.0f);
+			lightComponent.AttenuationRange = 30.0f;
+			lightComponent.IsStatic = true;
+		}
+
+		{
+			auto spotLight = m_EditorScene->CreateEntity("Spot Light1");
+			auto &transformComponent = spotLight.GetComponent<TransformComponent>();
+			transformComponent.Translation = glm::vec3(-86.9f, -5.0f, -28.2f);
+			transformComponent.Rotation.x = glm::radians(-50.0f);
+			auto &lightComponent = spotLight.AddComponent<LightComponent>();
+			lightComponent.Type = LightType::LightType_Spot;
+			lightComponent.Intensity = 150.0f;
+			lightComponent.AttenuationRange = 50.0f;
+			lightComponent.LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
+			lightComponent.IsStatic = true;
+		}
+
 #ifdef OLD_LOADING_METHOD
 		//Model *pbrGun = new Arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
 		//Model *pbrGun = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
@@ -109,7 +161,7 @@ namespace Arcane
 
 	void EditorLayer::OnUpdate(float deltaTime)
 	{
-
+		Arcane::Application::GetInstance().GetMasterRenderPass()->GetEditorPass()->SetFocusedEntity(m_InspectorPanel.GetFocusedEntity());
 	}
 
 	void EditorLayer::OnImGuiRender()

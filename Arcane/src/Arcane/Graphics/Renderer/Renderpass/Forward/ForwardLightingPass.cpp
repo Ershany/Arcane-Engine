@@ -27,16 +27,18 @@ namespace Arcane
 		m_TerrainShader = ShaderLoader::LoadShader("forward/PBR_Terrain.glsl");
 	}
 
-	ForwardLightingPass::~ForwardLightingPass() {
+	ForwardLightingPass::~ForwardLightingPass()
+	{
 		if (m_AllocatedFramebuffer) {
 			delete m_Framebuffer;
 		}
 	}
 
-	LightingPassOutput ForwardLightingPass::executeOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
+	LightingPassOutput ForwardLightingPass::ExecuteOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL)
+	{
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		m_Framebuffer->Bind();
-		m_Framebuffer->Clear();
+		m_Framebuffer->ClearAll();
 		if (m_Framebuffer->IsMultisampled()) {
 			m_GLCache->SetMultisample(true);
 		}
@@ -46,14 +48,13 @@ namespace Arcane
 
 		// Setup
 		Terrain *terrain = m_ActiveScene->GetTerrain();
-		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
-		Skybox *skybox = m_ActiveScene->GetSkybox();
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
 		// Lighting setup
-		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
+		auto lightBindFunction = &LightManager::BindLightingUniforms;
 		if (renderOnlyStatic)
-			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
+			lightBindFunction = &LightManager::BindStaticLightingUniforms;
 
 		// Render terrain
 		m_GLCache->SetShader(m_TerrainShader);
@@ -70,11 +71,8 @@ namespace Arcane
 		m_TerrainShader->SetUniform("viewPos", camera->GetPosition());
 		m_TerrainShader->SetUniform("view", camera->GetViewMatrix());
 		m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
-		bindShadowmap(m_TerrainShader, inputShadowmapData);
+		BindShadowmap(m_TerrainShader, inputShadowmapData);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
-
-		// Render skybox
-		skybox->Draw(camera);
 
 		// Render opaque and transparent objects (renderer will render the transparent bucket last)
 		m_GLCache->SetShader(m_ModelShader);
@@ -93,10 +91,11 @@ namespace Arcane
 		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Shadowmap code
-		bindShadowmap(m_ModelShader, inputShadowmapData);
+		BindShadowmap(m_ModelShader, inputShadowmapData);
 
 		// IBL Binding
-		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+		glm::vec3 cameraPosition = camera->GetPosition();
+		probeManager->BindProbes(cameraPosition, m_ModelShader); // TODO: Should use camera component
 		if (useIBL)
 		{
 			m_ModelShader->SetUniform("computeIBL", 1);
@@ -125,7 +124,7 @@ namespace Arcane
 		return passOutput;
 	}
 
-	LightingPassOutput ForwardLightingPass::executeTransparentLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL)
+	LightingPassOutput ForwardLightingPass::ExecuteTransparentLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL)
 	{
 		glViewport(0, 0, inputFramebuffer->GetWidth(), inputFramebuffer->GetHeight());
 		inputFramebuffer->Bind();
@@ -137,17 +136,22 @@ namespace Arcane
 		{
 			m_GLCache->SetMultisample(false);
 		}
+		m_GLCache->SetDepthTest(true);
 
 		// Setup
-		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
+		Skybox *skybox = m_ActiveScene->GetSkybox();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
-		// Lighting setup
-		auto lightBindFunction = &DynamicLightManager::BindLightingUniforms;
-		if (renderOnlyStatic)
-			lightBindFunction = &DynamicLightManager::BindStaticLightingUniforms;
+		// Render skybox
+		skybox->Draw(camera);
 
-		// Render opaque and transparent objects (renderer will render the transparent bucket last)
+		// Lighting setup
+		auto lightBindFunction = &LightManager::BindLightingUniforms;
+		if (renderOnlyStatic)
+			lightBindFunction = &LightManager::BindStaticLightingUniforms;
+
+		// Setup for transparent objects
 		m_GLCache->SetShader(m_ModelShader);
 		if (m_GLCache->GetUsesClipPlane())
 		{
@@ -164,10 +168,11 @@ namespace Arcane
 		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Shadowmap code
-		bindShadowmap(m_ModelShader, inputShadowmapData);
+		BindShadowmap(m_ModelShader, inputShadowmapData);
 
 		// IBL Binding
-		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+		glm::vec3 cameraPosition = camera->GetPosition();
+		probeManager->BindProbes(cameraPosition, m_ModelShader); // TODO: Should use camera component
 		if (useIBL)
 		{
 			m_ModelShader->SetUniform("computeIBL", 1);
@@ -187,7 +192,7 @@ namespace Arcane
 			m_ActiveScene->AddModelsToRenderer(ModelFilterType::TransparentModels);
 		}
 
-		// Finally render the meshes
+		// Render the transparent meshes
 		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
 
 		// Render pass output
@@ -196,9 +201,16 @@ namespace Arcane
 		return passOutput;
 	}
 
-	void ForwardLightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
-		shadowmapData.shadowmapFramebuffer->GetDepthStencilTexture()->Bind();
+	void ForwardLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
+	{
+		bool hasShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
+		shader->SetUniform("hasDirectionalShadow", hasShadowMap);
+		if (!hasShadowMap)
+			return;
+
+		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
 		shader->SetUniform("shadowmap", 0);
 		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+		shader->SetUniform("shadowBias", shadowmapData.directionalShadowmapBias);
 	}
 }
