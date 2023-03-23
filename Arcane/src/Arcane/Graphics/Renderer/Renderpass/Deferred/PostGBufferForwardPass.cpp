@@ -18,7 +18,8 @@ namespace Arcane
 
 	PostGBufferForward::~PostGBufferForward() {}
 
-	LightingPassOutput PostGBufferForward::ExecuteLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
+	LightingPassOutput PostGBufferForward::ExecuteLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL)
+	{
 		glViewport(0, 0, inputFramebuffer->GetWidth(), inputFramebuffer->GetHeight());
 		inputFramebuffer->Bind();
 		m_GLCache->SetMultisample(false);
@@ -79,7 +80,13 @@ namespace Arcane
 		return passOutput;
 	}
 
-	void PostGBufferForward::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
+	void PostGBufferForward::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
+	{
+		bool hasShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
+		shader->SetUniform("hasDirectionalShadow", hasShadowMap);
+		if (!hasShadowMap)
+			return;
+
 		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
 		shader->SetUniform("shadowmap", 0);
 		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);

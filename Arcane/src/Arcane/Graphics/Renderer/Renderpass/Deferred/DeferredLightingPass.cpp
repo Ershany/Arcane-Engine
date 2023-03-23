@@ -25,13 +25,15 @@ namespace Arcane
 		m_LightingShader = ShaderLoader::LoadShader("deferred/PBR_LightingPass.glsl");
 	}
 
-	DeferredLightingPass::~DeferredLightingPass() {
+	DeferredLightingPass::~DeferredLightingPass()
+	{
 		if (m_AllocatedFramebuffer) {
 			delete m_Framebuffer;
 		}
 	}
 
-	LightingPassOutput DeferredLightingPass::ExecuteLightingPass(ShadowmapPassOutput &inputShadowmapData, GBuffer *inputGbuffer, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL) {
+	LightingPassOutput DeferredLightingPass::ExecuteLightingPass(ShadowmapPassOutput &inputShadowmapData, GBuffer *inputGbuffer, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL)
+	{
 		// Framebuffer setup
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
@@ -112,7 +114,13 @@ namespace Arcane
 		return passOutput;
 	}
 
-	void DeferredLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
+	void DeferredLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
+	{
+		bool hasShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
+		shader->SetUniform("hasDirectionalShadow", hasShadowMap);
+		if (!hasShadowMap)
+			return;
+
 		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
 		shader->SetUniform("shadowmap", 0);
 		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);

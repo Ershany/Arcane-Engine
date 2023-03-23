@@ -27,13 +27,15 @@ namespace Arcane
 		m_TerrainShader = ShaderLoader::LoadShader("forward/PBR_Terrain.glsl");
 	}
 
-	ForwardLightingPass::~ForwardLightingPass() {
+	ForwardLightingPass::~ForwardLightingPass()
+	{
 		if (m_AllocatedFramebuffer) {
 			delete m_Framebuffer;
 		}
 	}
 
-	LightingPassOutput ForwardLightingPass::ExecuteOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL) {
+	LightingPassOutput ForwardLightingPass::ExecuteOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL)
+	{
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		m_Framebuffer->Bind();
 		m_Framebuffer->ClearAll();
@@ -167,10 +169,10 @@ namespace Arcane
 		BindShadowmap(m_ModelShader, inputShadowmapData);
 
 		// IBL Binding
-		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 		if (useIBL)
 		{
 			m_ModelShader->SetUniform("computeIBL", 1);
+			probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 		}
 		else
 		{
@@ -196,7 +198,13 @@ namespace Arcane
 		return passOutput;
 	}
 
-	void ForwardLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
+	void ForwardLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
+	{
+		bool hasShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
+		shader->SetUniform("hasDirectionalShadow", hasShadowMap);
+		if (!hasShadowMap)
+			return;
+
 		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
 		shader->SetUniform("shadowmap", 0);
 		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);

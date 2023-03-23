@@ -84,8 +84,8 @@ namespace Arcane
 			// Update output
 			passOutput.directionalLightViewProjMatrix = directionalLightViewProjMatrix;
 			passOutput.directionalShadowmapBias = lightManager->GetDirectionalShadowCasterBias();
+			passOutput.directionalShadowmapFramebuffer = shadowFramebuffer;
 		}
-		passOutput.directionalShadowmapFramebuffer = shadowFramebuffer;
 
 		return passOutput;
 	}

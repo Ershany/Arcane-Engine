@@ -13,38 +13,38 @@ namespace Arcane
 
 	struct PostProcessPassOutput
 	{
-		Framebuffer *outFramebuffer;
+		Framebuffer *outFramebuffer = nullptr;
 	};
 
 	struct ShadowmapPassOutput
 	{
 		glm::mat4 directionalLightViewProjMatrix;
-		Framebuffer *directionalShadowmapFramebuffer;
+		Framebuffer *directionalShadowmapFramebuffer = nullptr;
 		float directionalShadowmapBias;
 	};
 
 	struct LightingPassOutput
 	{
-		Framebuffer *outputFramebuffer;
+		Framebuffer *outputFramebuffer = nullptr;
 	};
 
 	struct WaterPassOutput
 	{
-		Framebuffer *outputFramebuffer;
+		Framebuffer *outputFramebuffer = nullptr;
 	};
 
 	struct GeometryPassOutput
 	{
-		GBuffer *outputGBuffer;
+		GBuffer *outputGBuffer = nullptr;
 	};
 
 	struct PreLightingPassOutput
 	{
-		Texture *ssaoTexture;
+		Texture *ssaoTexture = nullptr;
 	};
 
 	struct EditorPassOutput
 	{
-		Framebuffer *outFramebuffer;
+		Framebuffer *outFramebuffer = nullptr;
 	};
 }

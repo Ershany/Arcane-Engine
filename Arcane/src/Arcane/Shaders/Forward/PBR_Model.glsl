@@ -116,6 +116,7 @@ uniform sampler2D brdfLUT;
 // Lighting
 uniform sampler2D shadowmap;
 uniform float shadowBias;
+uniform bool hasDirectionalShadow;
 uniform ivec4 numDirPointSpotLights;
 uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
@@ -366,6 +367,9 @@ vec3 UnpackNormal(vec3 textureNormal) {
 
 
 float CalculateShadow(vec3 normal, vec3 fragToLight) {
+	if (!hasDirectionalShadow)
+		return 0.0;
+
 	vec4 fragPosLightClipSpace = lightSpaceViewProjectionMatrix * vec4(FragPos, 1.0);
 	vec3 ndcCoords = fragPosLightClipSpace.xyz / fragPosLightClipSpace.w;
 	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
