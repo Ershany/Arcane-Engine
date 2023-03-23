@@ -46,17 +46,17 @@ namespace Arcane
 
 		glm::vec3 GetForward() const
 		{
-			return (GetTransform() * glm::vec4(Forward, 1.0f)).xyz();
+			return (GetTransform() * glm::vec4(Forward, 0.0f)).xyz();
 		}
 
 		glm::vec3 GetRight() const
 		{
-			return (GetTransform() * glm::vec4(Right, 1.0f)).xyz();
+			return (GetTransform() * glm::vec4(Right, 0.0f)).xyz();
 		}
 
 		glm::vec3 GetUp() const
 		{
-			return (GetTransform() * glm::vec4(Up, 1.0f)).xyz();
+			return (GetTransform() * glm::vec4(Up, 0.0f)).xyz();
 		}
 	};
 
