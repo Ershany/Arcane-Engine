@@ -30,6 +30,7 @@ namespace Arcane
 	{
 	public:
 		LightManager(Scene *scene);
+		~LightManager();
 
 		void Init();
 		void Update();

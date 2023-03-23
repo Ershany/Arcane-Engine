@@ -15,6 +15,11 @@ namespace Arcane
 
 	}
 
+	LightManager::~LightManager()
+	{
+		delete m_DirectionalShadowFramebuffer;
+	}
+
 	void LightManager::Init()
 	{
 		FindClosestDirectionalLightShadowCaster();
