@@ -2,7 +2,6 @@
 
 #include <Arcane/Graphics/Renderer/Renderpass/Deferred/DeferredGeometryPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Deferred/DeferredLightingPass.h>
-#include <Arcane/Graphics/Renderer/Renderpass/Deferred/PostGBufferForwardPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardProbePass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardLightingPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/EditorPass.h>
@@ -49,7 +48,6 @@ namespace Arcane
 		// Deferred passes
 		DeferredGeometryPass m_DeferredGeometryPass;
 		DeferredLightingPass m_DeferredLightingPass;
-		PostGBufferForward m_PostGBufferForwardPass;
 
 		// Controls
 		bool m_RenderToSwapchain;

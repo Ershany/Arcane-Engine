@@ -49,7 +49,6 @@ namespace Arcane
 		// Setup
 		Terrain *terrain = m_ActiveScene->GetTerrain();
 		LightManager *lightManager = m_ActiveScene->GetLightManager();
-		Skybox *skybox = m_ActiveScene->GetSkybox();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
 		// Lighting setup
@@ -75,9 +74,6 @@ namespace Arcane
 		BindShadowmap(m_TerrainShader, inputShadowmapData);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
 
-		// Render skybox
-		skybox->Draw(camera);
-
 		// Render opaque and transparent objects (renderer will render the transparent bucket last)
 		m_GLCache->SetShader(m_ModelShader);
 		if (m_GLCache->GetUsesClipPlane())
@@ -98,7 +94,8 @@ namespace Arcane
 		BindShadowmap(m_ModelShader, inputShadowmapData);
 
 		// IBL Binding
-		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
+		glm::vec3 cameraPosition = camera->GetPosition();
+		probeManager->BindProbes(cameraPosition, m_ModelShader); // TODO: Should use camera component
 		if (useIBL)
 		{
 			m_ModelShader->SetUniform("computeIBL", 1);
@@ -139,17 +136,22 @@ namespace Arcane
 		{
 			m_GLCache->SetMultisample(false);
 		}
+		m_GLCache->SetDepthTest(true);
 
 		// Setup
 		LightManager *lightManager = m_ActiveScene->GetLightManager();
+		Skybox *skybox = m_ActiveScene->GetSkybox();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
+
+		// Render skybox
+		skybox->Draw(camera);
 
 		// Lighting setup
 		auto lightBindFunction = &LightManager::BindLightingUniforms;
 		if (renderOnlyStatic)
 			lightBindFunction = &LightManager::BindStaticLightingUniforms;
 
-		// Render opaque and transparent objects (renderer will render the transparent bucket last)
+		// Setup for transparent objects
 		m_GLCache->SetShader(m_ModelShader);
 		if (m_GLCache->GetUsesClipPlane())
 		{
@@ -169,10 +171,11 @@ namespace Arcane
 		BindShadowmap(m_ModelShader, inputShadowmapData);
 
 		// IBL Binding
+		glm::vec3 cameraPosition = camera->GetPosition();
+		probeManager->BindProbes(cameraPosition, m_ModelShader); // TODO: Should use camera component
 		if (useIBL)
 		{
 			m_ModelShader->SetUniform("computeIBL", 1);
-			probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_ModelShader);
 		}
 		else
 		{
@@ -189,7 +192,7 @@ namespace Arcane
 			m_ActiveScene->AddModelsToRenderer(ModelFilterType::TransparentModels);
 		}
 
-		// Finally render the meshes
+		// Render the transparent meshes
 		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
 
 		// Render pass output

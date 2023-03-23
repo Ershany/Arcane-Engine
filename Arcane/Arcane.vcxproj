@@ -170,7 +170,6 @@
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.cpp" />
     <ClCompile Include="src\Arcane\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Arcane\Input\JoystickInputData.cpp" />
@@ -281,7 +280,6 @@
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderer.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredGeometryPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\DeferredLightingPass.h" />
-    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\Deferred\PostGBufferForwardPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.h" />
     <ClInclude Include="src\Arcane\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Arcane\Input\JoystickInputData.h" />

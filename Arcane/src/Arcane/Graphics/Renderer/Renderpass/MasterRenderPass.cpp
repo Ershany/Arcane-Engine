@@ -11,8 +11,13 @@
 namespace Arcane
 {
 	MasterRenderPass::MasterRenderPass(Scene *scene) : m_ActiveScene(scene),
-		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_WaterPass(scene), m_ForwardLightingPass(scene, true), m_EnvironmentProbePass(scene),
-		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene), m_PostGBufferForwardPass(scene),
+		m_ShadowmapPass(scene), m_PostProcessPass(scene), m_WaterPass(scene), m_EnvironmentProbePass(scene),
+		m_DeferredGeometryPass(scene), m_DeferredLightingPass(scene),
+#if FORWARD_RENDER
+		m_ForwardLightingPass(scene, true),
+#else
+		m_ForwardLightingPass(scene, false),
+#endif
 		m_RenderToSwapchain(true),
 		m_EditorPass(scene)
 	{
@@ -67,7 +72,7 @@ namespace Arcane
 		PreLightingPassOutput preLightingOutput = m_PostProcessPass.ExecutePreLightingPass(geometryOutput.outputGBuffer, m_ActiveScene->GetCamera());
 		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.ExecuteLightingPass(shadowmapOutput, geometryOutput.outputGBuffer, preLightingOutput, m_ActiveScene->GetCamera(), true);
 		WaterPassOutput waterOutput = m_WaterPass.ExecuteWaterPass(shadowmapOutput, deferredLightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
-		LightingPassOutput postGBufferForward = m_PostGBufferForwardPass.ExecuteLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
+		LightingPassOutput postGBufferForward = m_ForwardLightingPass.ExecuteTransparentLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
 		PostProcessPassOutput postProcessOutput = m_PostProcessPass.ExecutePostProcessPass(postGBufferForward.outputFramebuffer);
 
 		Framebuffer *extraFramebuffer = postProcessOutput.outFramebuffer == m_PostProcessPass.GetFullRenderTarget() ? m_PostProcessPass.GetTonemappedNonLinearTarget() : m_PostProcessPass.GetFullRenderTarget();

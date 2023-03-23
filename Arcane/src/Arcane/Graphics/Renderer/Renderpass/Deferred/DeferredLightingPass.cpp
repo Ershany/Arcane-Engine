@@ -84,20 +84,23 @@ namespace Arcane
 		BindShadowmap(m_LightingShader, inputShadowmapData);
 
 		// Finally perform the lighting using the GBuffer
-		// 
-		// IBL Binding
-		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_LightingShader);
+
+		// IBL Bindings
+		glm::vec3 cameraPosition = camera->GetPosition();
+		probeManager->BindProbes(cameraPosition, m_LightingShader); // TODO: Should use camera component
 
 		// Perform lighting on the terrain (turn IBL off)
 		m_LightingShader->SetUniform("computeIBL", 0);
 		m_GLCache->SetStencilFunc(GL_EQUAL, StencilValue::TerrainStencilValue, 0xFF);
 		Renderer::DrawNdcPlane();
 
-		// Perform lighting on the models in the scene (turn IBL on)
-		if (useIBL) {
+		// Perform lighting on the models in the scene
+		if (useIBL)
+		{
 			m_LightingShader->SetUniform("computeIBL", 1);
 		}
-		else {
+		else
+		{
 			m_LightingShader->SetUniform("computeIBL", 0);
 		}
 		m_GLCache->SetStencilFunc(GL_EQUAL, StencilValue::ModelStencilValue, 0xFF);
