@@ -4,6 +4,7 @@ namespace Arcane
 {
 	class Framebuffer;
 	struct LightComponent;
+	struct TransformComponent;
 	class Scene;
 	class Shader;
 
@@ -30,23 +31,26 @@ namespace Arcane
 	public:
 		LightManager(Scene *scene);
 
+		void Init();
 		void Update();
 
 		void BindLightingUniforms(Shader *shader);
 		void BindStaticLightingUniforms(Shader *shader);
 
-		static glm::vec2 GetShadowQualityResolution(ShadowQuality quality);
+		static glm::uvec2 GetShadowQualityResolution(ShadowQuality quality);
 
 		// Getters
-		glm::vec3 GetDirectionalLightDirection(unsigned int index);
+		inline bool HasDirectionalShadowCaster() const { return m_ClosestDirectionalShadowCaster != nullptr; }
+		Framebuffer *GetDirectionalShadowCasterFramebuffer() { return m_DirectionalShadowFramebuffer; }
+		glm::vec3 GetDirectionalShadowCasterLightDir();
 	private:
-		void Init();
-
 		void BindLights(Shader *shader, bool bindOnlyStatic);
+		void ReallocateTargets();
 	private:
 		Scene *m_Scene;
 
 		LightComponent *m_ClosestDirectionalShadowCaster;
+		TransformComponent *m_ClosestDirectionalShadowCasterTransform;
 		Framebuffer *m_DirectionalShadowFramebuffer;
 	};
 }

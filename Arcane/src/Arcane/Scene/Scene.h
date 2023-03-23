@@ -36,6 +36,7 @@ namespace Arcane
 
 		Entity CreateEntity(const std::string &name = std::string());
 
+		void Init();
 		void OnUpdate(float deltaTime);
 
 		void AddModelsToRenderer(ModelFilterType filter);
@@ -46,7 +47,7 @@ namespace Arcane
 		inline FPSCamera* GetCamera() { return &m_SceneCamera; }
 		inline Skybox* GetSkybox() { return m_Skybox; }
 	private:
-		void Init();
+		void PreInit();
 	private:
 		// Global Data
 		GLCache *m_GLCache;

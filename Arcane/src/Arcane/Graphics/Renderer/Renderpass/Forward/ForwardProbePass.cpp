@@ -44,7 +44,8 @@ namespace Arcane
 	}
 
 	void ForwardProbePass::pregenerateProbes() {
-		glm::vec3 probePosition = glm::vec3(0.0f, 0.0f, 0.0f);
+		// Temp for now, just generate a probe so we have something
+		glm::vec3 probePosition = glm::vec3(-32.60f, 10.0f, 48.48f);
 		generateLightProbe(probePosition);
 		generateReflectionProbe(probePosition);
 	}

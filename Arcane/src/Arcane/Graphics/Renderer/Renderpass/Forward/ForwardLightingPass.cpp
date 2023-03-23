@@ -197,7 +197,7 @@ namespace Arcane
 	}
 
 	void ForwardLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
-		shadowmapData.shadowmapFramebuffer->GetDepthStencilTexture()->Bind();
+		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
 		shader->SetUniform("shadowmap", 0);
 		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 		shader->SetUniform("shadowBias", 0.003f);

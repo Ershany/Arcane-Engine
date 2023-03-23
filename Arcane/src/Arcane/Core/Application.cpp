@@ -69,6 +69,8 @@ namespace Arcane
 			m_AssetManager->Update(100000, 100000, 100000);
 		}
 
+		m_ActiveScene->Init();
+
 		// Initialize the master render pass
 		m_MasterRenderPass->Init();
 

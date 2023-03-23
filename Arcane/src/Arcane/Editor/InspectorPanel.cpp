@@ -161,10 +161,10 @@ namespace Arcane
 						if (lightComponent.CastShadows)
 						{
 							const char *shadowItems[] = { "Low", "Medium", "High", "Ultra", "Nightmare" };
-							glm::vec2 resolution = LightManager::GetShadowQualityResolution(lightComponent.ShadowResolution);
+							glm::uvec2 resolution = LightManager::GetShadowQualityResolution(lightComponent.ShadowResolution);
 							int shadowChoice = static_cast<int>(lightComponent.ShadowResolution);
 							ImGui::Combo("Shadow Quality", &shadowChoice, shadowItems, IM_ARRAYSIZE(shadowItems)); ImGui::SameLine();
-							ImGui::Text("- %.0f x %.0f", resolution.x, resolution.y);
+							ImGui::Text("- %u x %u", resolution.x, resolution.y);
 							lightComponent.ShadowResolution = static_cast<ShadowQuality>(shadowChoice);
 							DrawFloatControl("Shadow Bias", lightComponent.ShadowBias, 0.0001f, 0.0f, 1.0f, "%.4f");
 							

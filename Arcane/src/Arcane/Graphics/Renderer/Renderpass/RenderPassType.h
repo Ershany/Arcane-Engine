@@ -19,7 +19,7 @@ namespace Arcane
 	struct ShadowmapPassOutput
 	{
 		glm::mat4 directionalLightViewProjMatrix;
-		Framebuffer *shadowmapFramebuffer;
+		Framebuffer *directionalShadowmapFramebuffer;
 	};
 
 	struct LightingPassOutput

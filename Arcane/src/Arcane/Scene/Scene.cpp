@@ -20,7 +20,7 @@ namespace Arcane
 	{
 		m_GLCache = GLCache::GetInstance();
 
-		Init();
+		PreInit();
 	}
 
 	Scene::~Scene()
@@ -28,13 +28,18 @@ namespace Arcane
 
 	}
 
-	void Scene::Init()
+	void Scene::PreInit()
 	{
 		// Setup our ECS groupings to avoid performance costs at runtime if they get created
 		auto fullOwningGroup1 = m_Registry.group<TransformComponent, MeshComponent>();
 		auto partialOwningGroup1 = m_Registry.group<LightComponent>(entt::get<TransformComponent>);
+	}
 
-		// Skybox
+	void Scene::Init()
+	{
+		m_LightManager.Init();
+
+		// Skybox init
 		std::vector<std::string> skyboxFilePaths;
 		skyboxFilePaths.push_back("res/skybox/right.png");
 		skyboxFilePaths.push_back("res/skybox/left.png");
@@ -58,6 +63,7 @@ namespace Arcane
 	{
 		// Camera Update
 		m_SceneCamera.ProcessInput(deltaTime);
+		m_LightManager.Update();
 	}
 
 	void Scene::AddModelsToRenderer(ModelFilterType filter)

@@ -10,16 +10,29 @@
 
 namespace Arcane
 {
-	LightManager::LightManager(Scene *scene) : m_Scene(scene)
+	LightManager::LightManager(Scene *scene) : m_Scene(scene), m_DirectionalShadowFramebuffer(nullptr)
 	{
-		Init();
+
 	}
 
 	void LightManager::Init()
 	{
-		
+		// Needs to call update once in order to get the info about the shadow casters so we can generate framebuffers with proper resolution (otherwise we will need to re-allocate a framebuffer)
+		Update();
+
+		if (m_ClosestDirectionalShadowCaster)
+		{
+			glm::uvec2 shadowResolution = GetShadowQualityResolution(m_ClosestDirectionalShadowCaster->ShadowResolution);
+			m_DirectionalShadowFramebuffer = new Framebuffer(shadowResolution.x, shadowResolution.y, false);
+		}
+		else
+		{
+			m_DirectionalShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y, false);
+		}
+		m_DirectionalShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 	}
 
+	// TODO: Should use camera component's position
 	void LightManager::Update()
 	{
 		// Prioritize the closest light to the camera as our directional shadow caster (reset our pointers since it is possible no shadow caster exists anymore)
@@ -38,8 +51,15 @@ namespace Arcane
 			if (currentDistance2 < closestDistance2)
 			{
 				m_ClosestDirectionalShadowCaster = &lightComponent;
+				m_ClosestDirectionalShadowCasterTransform = &transformComponent;
 			}
 		}
+	}
+
+	// TODO: Need to use pooling for this, doing a new and delete for this is just stupid
+	void LightManager::ReallocateTargets()
+	{
+		//if (!m_DirectionalShadowFramebuffer)
 	}
 
 	void LightManager::BindLightingUniforms(Shader *shader)
@@ -89,50 +109,40 @@ namespace Arcane
 		shader->SetUniform("numDirPointSpotLights", glm::ivec4(numDirLights, numPointLights, numSpotLights, 0));
 	}
 
-	glm::vec2 LightManager::GetShadowQualityResolution(ShadowQuality quality)
+	glm::uvec2 LightManager::GetShadowQualityResolution(ShadowQuality quality)
 	{
 		switch (quality)
 		{
 		case ShadowQuality::ShadowQuality_Low:
-			return glm::vec2(256, 256);
+			return glm::uvec2(256, 256);
 			break;
 		case ShadowQuality::ShadowQuality_Medium:
-			return glm::vec2(512, 512);
+			return glm::uvec2(512, 512);
 			break;
 		case ShadowQuality::ShadowQuality_High:
-			return glm::vec2(1024, 1024);
+			return glm::uvec2(1024, 1024);
 			break;
 		case ShadowQuality::ShadowQuality_Ultra:
-			return glm::vec2(2048, 2048);
+			return glm::uvec2(2048, 2048);
 			break;
 		case ShadowQuality::ShadowQuality_Nightmare:
-			return glm::vec2(4096, 4096);
+			return glm::uvec2(4096, 4096);
 			break;
 		default:
 			ARC_ASSERT(false, "Failed to find a shadow quality resolution given the quality setting");
-			return glm::vec2(0, 0);
+			return glm::uvec2(0, 0);
 		}
 	}
 
 	// Getters
-	glm::vec3 LightManager::GetDirectionalLightDirection(unsigned int index)
+	glm::vec3 LightManager::GetDirectionalShadowCasterLightDir()
 	{
-		unsigned int currDirLight = 0;
-		auto group = m_Scene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
-		for (auto entity : group)
+		if (!m_ClosestDirectionalShadowCaster)
 		{
-			auto&[transformComponent, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
-
-			if (lightComponent.Type != LightType::LightType_Directional)
-				continue;
-
-			if (currDirLight++ == index)
-			{
-				return transformComponent.GetForward();
-			}
+			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene");
+			return glm::vec3(0.0f, -1.0f, 0.0f);
 		}
 
-		ARC_ASSERT(false, "Failed to find directional light at index %u - Returning default value", index);
-		return glm::vec3(-0.1f, -1.0f, -0.1f);
+		return m_ClosestDirectionalShadowCasterTransform->GetForward();
 	}
 }
