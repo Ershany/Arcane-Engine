@@ -52,6 +52,7 @@ namespace Arcane
 			float currentDistance2 = glm::distance2(m_Scene->GetCamera()->GetPosition(), transformComponent.Translation);
 			if (currentDistance2 < closestDistance2)
 			{
+				closestDistance2 = currentDistance2;
 				m_ClosestDirectionalShadowCaster = &lightComponent;
 				m_ClosestDirectionalShadowCasterTransform = &transformComponent;
 

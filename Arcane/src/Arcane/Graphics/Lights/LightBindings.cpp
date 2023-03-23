@@ -36,7 +36,7 @@ namespace Arcane
 			return;
 #endif
 		shader->SetUniform(("spotLights[" + std::to_string(currentLightIndex) + "].position").c_str(), transformComponent.Translation);
-		shader->SetUniform(("spotLights[" + std::to_string(currentLightIndex) + "].direction").c_str(), glm::vec3(0.0f, -1.0f, 0.0f));
+		shader->SetUniform(("spotLights[" + std::to_string(currentLightIndex) + "].direction").c_str(), transformComponent.GetForward());
 		shader->SetUniform(("spotLights[" + std::to_string(currentLightIndex) + "].intensity").c_str(), lightComponent.Intensity);
 		shader->SetUniform(("spotLights[" + std::to_string(currentLightIndex) + "].lightColour").c_str(), lightComponent.LightColour);
 		shader->SetUniform(("spotLights[" + std::to_string(currentLightIndex) + "].attenuationRadius").c_str(), lightComponent.AttenuationRange);
