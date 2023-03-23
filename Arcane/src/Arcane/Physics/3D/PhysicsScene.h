@@ -26,5 +26,6 @@ namespace Arcane
 		static phScene* s_Scene;
 
 		physx::PxPvd* m_Pvd;
+		float m_Accumulator = 0.0f;
 	};
 }

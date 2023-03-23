@@ -7,8 +7,9 @@ namespace Arcane
 	class RigidbodyComponent
 	{
 	public:
-		RigidbodyComponent();
+		RigidbodyComponent() : m_Rigidbody(nullptr) {}
 		RigidbodyComponent(const TransformComponent& trans, phGeometry* geom, bool isDynamic);
+
 		//RigidbodyComponent(const TransformComponent& trans, phGeometryType::Enum geomType, bool isDynamic);
 		~RigidbodyComponent();
 

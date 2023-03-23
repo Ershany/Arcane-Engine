@@ -4,12 +4,11 @@
 
 namespace Arcane
 {
-	RigidbodyComponent::RigidbodyComponent() : m_Rigidbody(nullptr)
-	{}
 
 	RigidbodyComponent::RigidbodyComponent(const TransformComponent& trans, phGeometry* geom, bool isDynamic)
 	{
 		m_Rigidbody = PhysicsFactory::CreateRigidbody(trans, geom, isDynamic);
+		PhysicsScene::GetScene()->addActor(*m_Rigidbody);
 	}
 
 	//RigidbodyComponent::RigidbodyComponent(const TransformComponent& trans, phGeometryType::Enum geomType, bool isDynamic)

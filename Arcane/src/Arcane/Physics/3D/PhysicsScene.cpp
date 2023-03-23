@@ -68,8 +68,14 @@ namespace Arcane
 
 	void PhysicsScene::UpdateSim(f32 dt)
 	{
-		// TODO: fixed timestep
+		float m_StepSize = 1.0f / 60.0f;
+		m_Accumulator += dt;
+		if (m_Accumulator < m_StepSize)
+			return;
+
+		m_Accumulator -= m_StepSize;
+
 		s_Scene->simulate(dt);
-		s_Scene->fetchResults(false);
+		s_Scene->fetchResults(true);
 	}
 }

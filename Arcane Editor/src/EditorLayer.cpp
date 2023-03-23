@@ -7,8 +7,10 @@
 #include "Arcane/Physics/3d/PhysicsFactory.h"
 #include "Arcane/Physics/3D/RigidbodyComponent.h"
 #include "Arcane/Physics/3D/PhysicsScene.h"
+#include "Arcane/Physics/3D/RigidbodyManager.h"
 
 extern bool g_ApplicationRunning;
+Arcane::RigidbodyManager* manager = new Arcane::RigidbodyManager();
 Arcane::RigidbodyComponent* component;
 Arcane::Entity box;
 
@@ -113,15 +115,14 @@ namespace Arcane
 			Cube* cube = new Cube();
 			Model* boxModel = new Model(*cube);
 			box = m_EditorScene->CreateEntity("box");
-			auto& transformComponent = box.GetComponent<TransformComponent>();
-			transformComponent.Translation = { 10.f, 10.f, 10.f };
+			Arcane::TransformComponent& transformComponent = box.GetComponent<TransformComponent>();
+			transformComponent.Translation = { 0.f, 10.f, -10.f };
 			//transformComponent.Rotation = { 0.0f, glm::radians(180.0f), 0.0f };
 			//transformComponent.Scale = { 10.0f, 10.0f, 10.0f };
 
 			// Create a test object and move it around 
 			phGeometry* box1 = PhysicsFactory::CreateBoxGeometry(0.5f, 0.5f, 0.5f);
-			component = new RigidbodyComponent(transformComponent, box1, true);
-			PhysicsScene::GetScene()->addActor(*component->GetRigidbody());
+			manager->AddRigidbodyComponent(transformComponent, box1, true);
 
 			auto& meshComponent = box.AddComponent<MeshComponent>(boxModel);
 			meshComponent.IsStatic = false;
@@ -131,13 +132,14 @@ namespace Arcane
 
 	void EditorLayer::OnDetach()
 	{
-
+		delete manager;
 	}
 
 	void EditorLayer::OnUpdate(float deltaTime)
 	{
-		const phActorRigid* rb = component->GetRigidbody();
-		static_cast<phDynamicRb*>(component->GetRigidbody())->addForce({ 1.f, 0.f, 0.f });
+		phActorRigid* rb = manager->GetRigidbodyComponent(0)->GetRigidbody();
+		static_cast<phDynamicRb*>(rb)->addForce({ 1.f, 0.f, 0.f });
+
 		// transform sync
 		auto t = rb->getGlobalPose().p;
 		auto& t1 = box.GetComponent<TransformComponent>().Translation;

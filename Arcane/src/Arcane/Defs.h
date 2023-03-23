@@ -1,8 +1,5 @@
 #pragma once
 
-// Do we want to do that here?
-#include "Physics/3D/PhysicsDefs.h"
-
 // Debug Options
 #define DEBUG_PROFILING 1
 
