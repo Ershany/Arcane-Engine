@@ -43,7 +43,7 @@
 #define SHADOWMAP_RESOLUTION_Y_DEFAULT 2048
 #define SHADOWMAP_NEAR_PLANE_DEFAULT 1.0f
 #define SHADOWMAP_FAR_PLANE_DEFAULT 200.0f
-#define SHADOWMAP_BIAS_DEFAULT 0.003f
+#define SHADOWMAP_BIAS_DEFAULT 0.007f
 
 // SSAO Options
 #define SSAO_KERNEL_SIZE 32 // Maximum amount is restricted by the shader. Only supports a maximum of 64
