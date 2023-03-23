@@ -18,6 +18,12 @@ namespace Arcane
 	void LightManager::Init()
 	{
 		FindClosestDirectionalLightShadowCaster();
+
+		if (!m_DirectionalShadowFramebuffer)
+		{
+			m_DirectionalShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
+			m_DirectionalShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+		}
 	}
 
 	
@@ -149,10 +155,32 @@ namespace Arcane
 	{
 		if (!m_ClosestDirectionalShadowCaster)
 		{
-			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene");
+			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene - could not get light direction");
 			return glm::vec3(0.0f, -1.0f, 0.0f);
 		}
 
 		return m_ClosestDirectionalShadowCasterTransform->GetForward();
+	}
+
+	glm::vec2 LightManager::GetDirectionalShadowCasterNearFarPlane()
+	{
+		if (!m_ClosestDirectionalShadowCaster)
+		{
+			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene - could not get near/far plane");
+			return glm::vec2(SHADOWMAP_NEAR_PLANE_DEFAULT, SHADOWMAP_FAR_PLANE_DEFAULT);
+		}
+
+		return glm::vec2(m_ClosestDirectionalShadowCaster->ShadowNearPlane, m_ClosestDirectionalShadowCaster->ShadowFarPlane);
+	}
+
+	float LightManager::GetDirectionalShadowCasterBias()
+	{
+		if (!m_ClosestDirectionalShadowCaster)
+		{
+			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene - could not get bias");
+			return SHADOWMAP_BIAS_DEFAULT;
+		}
+
+		return m_ClosestDirectionalShadowCaster->ShadowBias;
 	}
 }

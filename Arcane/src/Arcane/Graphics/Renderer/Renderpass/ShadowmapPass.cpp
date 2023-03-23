@@ -51,12 +51,13 @@ namespace Arcane
 		{
 			// Setup
 			Terrain *terrain = m_ActiveScene->GetTerrain();
+			glm::vec2 nearFarPlane = lightManager->GetDirectionalShadowCasterNearFarPlane();
 
 			// View setup
 			m_GLCache->SetShader(m_ShadowmapShader);
 			glm::vec3 dirLightShadowmapLookAtPos = camera->GetPosition();
 			glm::vec3 dirLightShadowmapEyePos = dirLightShadowmapLookAtPos - (lightManager->GetDirectionalShadowCasterLightDir() * 50.0f);
-			glm::mat4 directionalLightProjection = glm::ortho(-40.0f, 40.0f, -40.0f, 40.0f, SHADOWMAP_NEAR_PLANE, SHADOWMAP_FAR_PLANE);
+			glm::mat4 directionalLightProjection = glm::ortho(-40.0f, 40.0f, -40.0f, 40.0f, nearFarPlane.x, nearFarPlane.y);
 			glm::mat4 directionalLightView = glm::lookAt(dirLightShadowmapEyePos, dirLightShadowmapLookAtPos, glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::mat4 directionalLightViewProjMatrix = directionalLightProjection * directionalLightView;
 			m_ShadowmapShader->SetUniform("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);
@@ -82,6 +83,7 @@ namespace Arcane
 
 			// Update output
 			passOutput.directionalLightViewProjMatrix = directionalLightViewProjMatrix;
+			passOutput.directionalShadowmapBias = lightManager->GetDirectionalShadowCasterBias();
 		}
 		passOutput.directionalShadowmapFramebuffer = shadowFramebuffer;
 

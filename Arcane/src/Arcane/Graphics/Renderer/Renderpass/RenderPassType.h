@@ -20,6 +20,7 @@ namespace Arcane
 	{
 		glm::mat4 directionalLightViewProjMatrix;
 		Framebuffer *directionalShadowmapFramebuffer;
+		float directionalShadowmapBias;
 	};
 
 	struct LightingPassOutput

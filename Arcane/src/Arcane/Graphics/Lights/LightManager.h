@@ -43,6 +43,8 @@ namespace Arcane
 		inline bool HasDirectionalShadowCaster() const { return m_ClosestDirectionalShadowCaster != nullptr; }
 		Framebuffer *GetDirectionalShadowCasterFramebuffer() { return m_DirectionalShadowFramebuffer; }
 		glm::vec3 GetDirectionalShadowCasterLightDir();
+		glm::vec2 GetDirectionalShadowCasterNearFarPlane();
+		float GetDirectionalShadowCasterBias();
 	private:
 		void FindClosestDirectionalLightShadowCaster();
 		void BindLights(Shader *shader, bool bindOnlyStatic);

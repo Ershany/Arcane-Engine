@@ -89,9 +89,9 @@ namespace Arcane
 		bool IsStatic = false; // Should be true if the light will never have any of it's properties changed (then we can use it for global illumination since it is static)
 
 		bool CastShadows = false;
-		float ShadowBias = 0.003f;
+		float ShadowBias = SHADOWMAP_BIAS_DEFAULT;
 		ShadowQuality ShadowResolution = ShadowQuality::ShadowQuality_Medium;
-		float ShadowNearPlane = SHADOWMAP_NEAR_PLANE, ShadowFarPlane = SHADOWMAP_FAR_PLANE;
+		float ShadowNearPlane = SHADOWMAP_NEAR_PLANE_DEFAULT, ShadowFarPlane = SHADOWMAP_FAR_PLANE_DEFAULT;
 	};
 
 	// TODO: Eventually needs to be added and used for the runtime. The editor will always have a "camera" but will be needed for runtime eventually

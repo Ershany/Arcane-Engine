@@ -37,11 +37,13 @@
 #define NEAR_PLANE 0.3f
 #define FAR_PLANE 5000.0f
 
-// Shadowmap Options
-#define SHADOWMAP_RESOLUTION_X 2048
-#define SHADOWMAP_RESOLUTION_Y 2048
-#define SHADOWMAP_NEAR_PLANE 1.0f
-#define SHADOWMAP_FAR_PLANE 200.0f
+// Shadowmap Default Options (Resolution controlled by the LightComponent, this will only be used if no light casters are found and a pass needs a fallback)
+// Probes do have their own shadow buffers so this should only be used as defaults for LightComponent
+#define SHADOWMAP_RESOLUTION_X_DEFAULT 2048
+#define SHADOWMAP_RESOLUTION_Y_DEFAULT 2048
+#define SHADOWMAP_NEAR_PLANE_DEFAULT 1.0f
+#define SHADOWMAP_FAR_PLANE_DEFAULT 200.0f
+#define SHADOWMAP_BIAS_DEFAULT 0.003f
 
 // SSAO Options
 #define SSAO_KERNEL_SIZE 32 // Maximum amount is restricted by the shader. Only supports a maximum of 64
