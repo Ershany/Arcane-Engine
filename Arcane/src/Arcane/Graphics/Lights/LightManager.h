@@ -44,8 +44,9 @@ namespace Arcane
 		Framebuffer *GetDirectionalShadowCasterFramebuffer() { return m_DirectionalShadowFramebuffer; }
 		glm::vec3 GetDirectionalShadowCasterLightDir();
 	private:
+		void FindClosestDirectionalLightShadowCaster();
 		void BindLights(Shader *shader, bool bindOnlyStatic);
-		void ReallocateTargets();
+		void ReallocateTargets(glm::uvec2 newResolution);
 	private:
 		Scene *m_Scene;
 

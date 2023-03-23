@@ -17,28 +17,24 @@ namespace Arcane
 
 	void LightManager::Init()
 	{
-		// Needs to call update once in order to get the info about the shadow casters so we can generate framebuffers with proper resolution (otherwise we will need to re-allocate a framebuffer)
-		Update();
+		FindClosestDirectionalLightShadowCaster();
+	}
 
-		if (m_ClosestDirectionalShadowCaster)
-		{
-			glm::uvec2 shadowResolution = GetShadowQualityResolution(m_ClosestDirectionalShadowCaster->ShadowResolution);
-			m_DirectionalShadowFramebuffer = new Framebuffer(shadowResolution.x, shadowResolution.y, false);
-		}
-		else
-		{
-			m_DirectionalShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X, SHADOWMAP_RESOLUTION_Y, false);
-		}
-		m_DirectionalShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+	
+	void LightManager::Update()
+	{
+		// Reset out pointers since it is possible no shadow caster exists anymore
+		m_ClosestDirectionalShadowCaster = nullptr;
+		
+		FindClosestDirectionalLightShadowCaster();
 	}
 
 	// TODO: Should use camera component's position
-	void LightManager::Update()
+	void LightManager::FindClosestDirectionalLightShadowCaster()
 	{
-		// Prioritize the closest light to the camera as our directional shadow caster (reset our pointers since it is possible no shadow caster exists anymore)
-		m_ClosestDirectionalShadowCaster = nullptr;
-		float closestDistance2 = 1000000.0f; // numeric max was whining about double definition so this will suffice
+		float closestDistance2 = std::numeric_limits<float>::max();
 
+		// Prioritize the closest light to the camera as our directional shadow caster
 		auto group = m_Scene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
 		for (auto entity : group)
 		{
@@ -52,14 +48,28 @@ namespace Arcane
 			{
 				m_ClosestDirectionalShadowCaster = &lightComponent;
 				m_ClosestDirectionalShadowCasterTransform = &transformComponent;
+
+				// TODO:
+				// Ideally we won't be re-allocating everytime we encounter a different sized shadow map. This NEEDS to be solved if we ever allow multiple directional light shadow casters
+				// Just allocate the biggest and only render to a portion with glViewPort, and make sure when we sample the shadowmap we account for the smaller size as well
+				glm::uvec2 requiredShadowResolution = GetShadowQualityResolution(m_ClosestDirectionalShadowCaster->ShadowResolution);
+				if (!m_DirectionalShadowFramebuffer || m_DirectionalShadowFramebuffer->GetWidth() != requiredShadowResolution.x || m_DirectionalShadowFramebuffer->GetHeight() != requiredShadowResolution.y)
+				{
+					ReallocateTargets(requiredShadowResolution);
+				}
 			}
 		}
 	}
 
-	// TODO: Need to use pooling for this, doing a new and delete for this is just stupid
-	void LightManager::ReallocateTargets()
+	void LightManager::ReallocateTargets(glm::uvec2 newResolution)
 	{
-		//if (!m_DirectionalShadowFramebuffer)
+		if (m_DirectionalShadowFramebuffer)
+		{
+			delete m_DirectionalShadowFramebuffer;
+		}
+
+		m_DirectionalShadowFramebuffer = new Framebuffer(newResolution.x, newResolution.y, false);
+		m_DirectionalShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 	}
 
 	void LightManager::BindLightingUniforms(Shader *shader)

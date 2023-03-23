@@ -100,7 +100,7 @@ namespace Arcane
 	void InputManager::KeyCallback(int key, int scancode, int action, int mods) 
 	{
 		s_Keys[key] = action;
-		s_KeyPressure[key] = max(s_Keys[key], 1);
+		s_KeyPressure[key] = std::max<int>(s_Keys[key], 1);
 
 		if (action == GLFW_PRESS)
 		{

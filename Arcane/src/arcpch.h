@@ -1,6 +1,7 @@
 #pragma once
 
 // C/C++
+#define NOMINMAX
 #include <filesystem>
 #include <cmath>
 #include <fstream>
