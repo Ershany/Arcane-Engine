@@ -33,13 +33,8 @@ namespace Arcane
 		// Setup our ECS groupings to avoid performance costs at runtime if they get created
 		auto fullOwningGroup1 = m_Registry.group<TransformComponent, MeshComponent>();
 		auto partialOwningGroup1 = m_Registry.group<LightComponent>(entt::get<TransformComponent>);
-	}
 
-	void Scene::Init()
-	{
-		m_LightManager.Init();
-
-		// Skybox init
+		// Skybox init needs to happen before probes are generated
 		std::vector<std::string> skyboxFilePaths;
 		skyboxFilePaths.push_back("res/skybox/right.png");
 		skyboxFilePaths.push_back("res/skybox/left.png");
@@ -48,6 +43,11 @@ namespace Arcane
 		skyboxFilePaths.push_back("res/skybox/back.png");
 		skyboxFilePaths.push_back("res/skybox/front.png");
 		m_Skybox = new Skybox(skyboxFilePaths);
+	}
+
+	void Scene::Init()
+	{
+		m_LightManager.Init();
 	}
 
 	Entity Scene::CreateEntity(const std::string &name)
