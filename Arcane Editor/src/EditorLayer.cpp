@@ -111,6 +111,7 @@ namespace Arcane
 			auto spotLight = m_EditorScene->CreateEntity("Spot Light1");
 			auto &transformComponent = spotLight.GetComponent<TransformComponent>();
 			transformComponent.Translation = glm::vec3(-86.9f, -5.0f, -28.2f);
+			transformComponent.Rotation.x = glm::radians(-50.0f);
 			auto &lightComponent = spotLight.AddComponent<LightComponent>();
 			lightComponent.Type = LightType::LightType_Spot;
 			lightComponent.Intensity = 150.0f;
