@@ -18,7 +18,10 @@ namespace Arcane
 		*/
 		void Update();
 		bool Closed() const;
-		static void Clear();
+		static void ClearAll();
+		static void ClearColour();
+		static void ClearDepth();
+		static void ClearStencil();
 		static void Bind();
 
 		inline GLFWwindow* GetNativeWindow() { return m_Window; }

@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef USE_RENDERDOC
+#if USE_RENDERDOC
 
 #define RENDERDOCMANAGER Arcane::RenderdocManager::GetInstance()
 #define RENDERDOCAPI RENDERDOCMANAGER.GetRenderdocAPI()
@@ -33,4 +33,4 @@ namespace Arcane
 		RENDERDOC_API_1_5_0* m_RenderdocAPI;
 	};
 }
-#endif // ARC_RENDERDOC_DEBUG
+#endif // USE_RENDERDOC

@@ -1,6 +1,7 @@
 #pragma once
 
 // C/C++
+#define NOMINMAX
 #include <filesystem>
 #include <cmath>
 #include <fstream>
@@ -19,6 +20,7 @@
 
 #include <Arcane/Vendor/stb/stb_image.h>
 
+#define GLM_SWIZZLE
 #include <glm/glm.hpp>
 #include <glm/common.hpp>
 #include <glm/gtx/norm.hpp>

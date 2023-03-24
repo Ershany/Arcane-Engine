@@ -238,6 +238,7 @@ namespace Arcane
 			{
 				if (!loadJob.generationData.data)
 				{
+					m_TextureCache.erase(loadJob.texturePath);
 					delete loadJob.generationData.texture;
 					--m_AssetsInFlight;
 					break;
@@ -276,6 +277,7 @@ namespace Arcane
 			{
 				if (loadJob.model->m_Meshes.size() == 0)
 				{
+					m_ModelCache.erase(loadJob.path);
 					delete loadJob.model;
 					--m_AssetsInFlight;
 					break;

@@ -25,7 +25,6 @@
 
 #if defined(ARC_DEV_BUILD)
 #define USE_PHYSX_DEBUGGER
-#define USE_RENDERDOC
 #endif
 
 typedef uint8_t u8;

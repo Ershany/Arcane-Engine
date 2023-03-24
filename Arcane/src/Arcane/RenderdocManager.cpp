@@ -1,6 +1,6 @@
 #include "arcpch.h"
 
-#ifdef USE_RENDERDOC
+#if USE_RENDERDOC
 
 #include <Arcane/RenderdocManager.h>
 #include <Arcane/Input/InputManager.h>
@@ -52,7 +52,6 @@ namespace Arcane
 
 	void RenderdocManager::Update()
 	{
-#ifdef ARC_RENDERDOC_DEBUG
 		/**
 		 * You can specify NULL, NULL for the device to capture on if you have only one device and
 		 * either no windows at all or only one window, and it will capture from that device.
@@ -78,7 +77,6 @@ namespace Arcane
 			ARC_LOG_INFO("Getting a 1 frame renderdoc capture");
 			RENDERDOCAPI->TriggerCapture();
 		}
-#endif 
 	}
 }
-#endif // ARC_RENDERCOC_DEBUG
+#endif // USE_RENDERDOC

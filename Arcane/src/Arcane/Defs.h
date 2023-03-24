@@ -1,7 +1,9 @@
 #pragma once
 
 // Debug Options
-#define DEBUG_PROFILING 1
+#define DEBUG_PROFILING 0
+#define USE_RENDERDOC 0
+
 
 // Window Settings
 #define WINDOW_X_RESOLUTION 1920
@@ -22,7 +24,7 @@
 #define SUPERSAMPLING_FACTOR 1 // 1 means window resolution will be the render resolution
 
 // Texture Filtering Settings
-#define ANISOTROPIC_FILTERING_LEVEL 8.0f
+#define ANISOTROPIC_FILTERING_LEVEL 16.0f
 
 // IBL Settings
 #define LIGHT_PROBE_RESOLUTION 32
@@ -35,11 +37,13 @@
 #define NEAR_PLANE 0.3f
 #define FAR_PLANE 5000.0f
 
-// Shadowmap Options
-#define SHADOWMAP_RESOLUTION_X 2048
-#define SHADOWMAP_RESOLUTION_Y 2048
-#define SHADOWMAP_NEAR_PLANE 1.0f
-#define SHADOWMAP_FAR_PLANE 200.0f
+// Shadowmap Default Options (Resolution controlled by the LightComponent, this will only be used if no light casters are found and a pass needs a fallback)
+// Probes do have their own shadow buffers so this should only be used as defaults for LightComponent
+#define SHADOWMAP_RESOLUTION_X_DEFAULT 2048
+#define SHADOWMAP_RESOLUTION_Y_DEFAULT 2048
+#define SHADOWMAP_NEAR_PLANE_DEFAULT 1.0f
+#define SHADOWMAP_FAR_PLANE_DEFAULT 200.0f
+#define SHADOWMAP_BIAS_DEFAULT 0.007f
 
 // SSAO Options
 #define SSAO_KERNEL_SIZE 32 // Maximum amount is restricted by the shader. Only supports a maximum of 64

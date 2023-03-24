@@ -30,9 +30,9 @@ void main() {
 #shader-type fragment
 #version 430 core
 
-#define MAX_DIR_LIGHTS 5
-#define MAX_POINT_LIGHTS 5
-#define MAX_SPOT_LIGHTS 5
+#define MAX_DIR_LIGHTS 3
+#define MAX_POINT_LIGHTS 6
+#define MAX_SPOT_LIGHTS 6
 
 struct DirLight {
 	vec3 direction;

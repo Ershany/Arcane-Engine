@@ -13,6 +13,7 @@ namespace Arcane
 	GLCache* Renderer::s_GLCache = nullptr;
 	std::deque<MeshDrawCallInfo> Renderer::s_OpaqueMeshDrawCallQueue;
 	std::deque<MeshDrawCallInfo> Renderer::s_TransparentMeshDrawCallQueue;
+	std::deque<QuadDrawCallInfo> Renderer::s_QuadDrawCallQueue;
 
 	void Renderer::Init()
 	{
@@ -43,7 +44,18 @@ namespace Arcane
 
 	}
 
-	void Renderer::QueueMesh(Model *model, glm::mat4 &transform, bool isTransparent)
+	void Renderer::QueueQuad(const glm::vec3 &position, const glm::vec2 &size, const Texture *texture)
+	{
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+		QueueQuad(transform, texture);
+	}
+
+	void Renderer::QueueQuad(const glm::mat4 &transform, const Texture *texture) // TODO: Should use batch rendering to efficiently render quads together
+	{
+		s_QuadDrawCallQueue.emplace_back(QuadDrawCallInfo{ texture, transform });
+	}
+
+	void Renderer::QueueMesh(Model *model, const glm::mat4 &transform, bool isTransparent)
 	{
 		if (isTransparent)
 		{
@@ -60,34 +72,62 @@ namespace Arcane
 		s_GLCache->SetShader(shader);
 
 		// Render opaque objects
-		SetupOpaqueRenderState();
-		while (!s_OpaqueMeshDrawCallQueue.empty())
+		if (!s_OpaqueMeshDrawCallQueue.empty())
 		{
-			MeshDrawCallInfo &current = s_OpaqueMeshDrawCallQueue.front();
+			SetupOpaqueRenderState();
 
-			SetupModelMatrix(shader, current, renderPassType);
-			current.model->Draw(shader, renderPassType);
-			s_RendererData.DrawCallCount++;
+			while (!s_OpaqueMeshDrawCallQueue.empty())
+			{
+				MeshDrawCallInfo &current = s_OpaqueMeshDrawCallQueue.front();
 
-			s_OpaqueMeshDrawCallQueue.pop_front();
+				SetupModelMatrix(shader, current, renderPassType);
+				current.model->Draw(shader, renderPassType);
+				s_RendererData.DrawCallCount++;
+
+				s_OpaqueMeshDrawCallQueue.pop_front();
+			}
+		}
+
+		// Render Quads
+		if (!s_QuadDrawCallQueue.empty())
+		{
+			static Quad localQuad(false);
+			SetupQuadRenderState();
+
+			while (!s_QuadDrawCallQueue.empty())
+			{
+				QuadDrawCallInfo &current = s_QuadDrawCallQueue.front();
+
+				current.texture->Bind(4);
+				shader->SetUniform("sprite", 4);
+				SetupModelMatrix(shader, current);
+				localQuad.Draw();
+				s_RendererData.DrawCallCount++;
+
+				s_QuadDrawCallQueue.pop_front();
+			}
 		}
 
 		// Render transparent objects (sort from back to front, does not account for rotations or scaling)
-		SetupTransparentRenderState();
-		std::sort(s_TransparentMeshDrawCallQueue.begin(), s_TransparentMeshDrawCallQueue.end(),
-			[camera](MeshDrawCallInfo &a, MeshDrawCallInfo &b) -> bool
-			{
-				return glm::length2(camera->GetPosition() - glm::vec3(a.transform[3])) > glm::length2(camera->GetPosition() - glm::vec3(b.transform[3])); // transform[3] - Gets the translation part of the matrix
-			});
-		while (!s_TransparentMeshDrawCallQueue.empty())
+		if (!s_TransparentMeshDrawCallQueue.empty())
 		{
-			MeshDrawCallInfo &current = s_TransparentMeshDrawCallQueue.front();
+			SetupTransparentRenderState();
 
-			SetupModelMatrix(shader, current, renderPassType);
-			current.model->Draw(shader, renderPassType);
-			s_RendererData.DrawCallCount++;
+			std::sort(s_TransparentMeshDrawCallQueue.begin(), s_TransparentMeshDrawCallQueue.end(),
+				[camera](MeshDrawCallInfo &a, MeshDrawCallInfo &b) -> bool
+				{
+					return glm::length2(camera->GetPosition() - glm::vec3(a.transform[3])) > glm::length2(camera->GetPosition() - glm::vec3(b.transform[3])); // transform[3] - Gets the translation part of the matrix
+				});
+			while (!s_TransparentMeshDrawCallQueue.empty())
+			{
+				MeshDrawCallInfo &current = s_TransparentMeshDrawCallQueue.front();
 
-			s_TransparentMeshDrawCallQueue.pop_front();
+				SetupModelMatrix(shader, current, renderPassType);
+				current.model->Draw(shader, renderPassType);
+				s_RendererData.DrawCallCount++;
+
+				s_TransparentMeshDrawCallQueue.pop_front();
+			}
 		}
 	}
 
@@ -126,6 +166,18 @@ namespace Arcane
 		}
 	}
 
+	void Renderer::SetupModelMatrix(Shader *shader, QuadDrawCallInfo &drawCallInfo)
+	{
+#ifdef RENDERER_PARENT_TRANSFORMATIONS
+		if (HasParent())
+		{
+			// Only apply scale locally
+			model = glm::translate(glm::mat4(1.0f), entity->GetParent()->GetPosition()) * glm::toMat4(entity->GetParent()->GetOrientation()) * translate * rotate * scale; // translate, rotate, scale, are for the local object
+		}
+#endif
+		shader->SetUniform("model", drawCallInfo.transform);
+	}
+
 	void Renderer::SetupOpaqueRenderState()
 	{
 		s_GLCache->SetDepthTest(true);
@@ -140,5 +192,12 @@ namespace Arcane
 		s_GLCache->SetBlend(true);
 		s_GLCache->SetFaceCull(false);
 		s_GLCache->SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	void Renderer::SetupQuadRenderState()
+	{
+		s_GLCache->SetDepthTest(true);
+		s_GLCache->SetBlend(false);
+		s_GLCache->SetFaceCull(false);
 	}
 }

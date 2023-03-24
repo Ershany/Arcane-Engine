@@ -23,7 +23,10 @@ namespace Arcane
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification), m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
+	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification) 
+#if DEBUG_PROFILING
+		,m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
+#endif
 	{
 		s_Instance = this;
 
@@ -64,8 +67,10 @@ namespace Arcane
 		// Make sure all assets load before booting for first time
 		while (Arcane::AssetManager::GetInstance().AssetsInFlight())
 		{
-			m_AssetManager->Update(10000, 10000, 10000);
+			m_AssetManager->Update(100000, 100000, 100000);
 		}
+
+		m_ActiveScene->Init();
 
 		// Initialize the master render pass
 		m_MasterRenderPass->Init();
@@ -89,22 +94,22 @@ namespace Arcane
 			m_InputManager->Update();
 			m_Window->Update();
 
-#ifdef ARC_RENDERDOC_DEBUG
+#if USE_RENDERDOC
 			RENDERDOCMANAGER.Update();
 #endif
 			// Render stuff
 			if (!m_Minimized)
 			{
 				// Wireframe stuff
-				#ifdef ARC_DEV_BUILD
+				#if DEBUG_PROFILING
 					if (m_DebugPane.GetWireframeMode())
 						glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 					else
 						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				#endif // ARC_DEV_BUILD
+				#endif // DEBUG_PROFILING
 
 				m_Window->Bind();
-				m_Window->Clear();
+				m_Window->ClearAll();
 
 				m_AssetManager->Update(TEXTURE_LOADS_PER_FRAME, CUBEMAP_FACES_PER_FRAME, MODELS_PER_FRAME);
 				m_ActiveScene->OnUpdate((float)deltaTime.GetDeltaTime());

@@ -6,6 +6,6 @@ namespace Arcane
 {
 	class Quad : public Mesh {
 	public:
-		Quad();
+		Quad(bool ndcQuad = true);
 	};
 }

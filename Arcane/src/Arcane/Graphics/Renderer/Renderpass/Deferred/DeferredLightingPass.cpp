@@ -25,18 +25,20 @@ namespace Arcane
 		m_LightingShader = ShaderLoader::LoadShader("deferred/PBR_LightingPass.glsl");
 	}
 
-	DeferredLightingPass::~DeferredLightingPass() {
+	DeferredLightingPass::~DeferredLightingPass()
+	{
 		if (m_AllocatedFramebuffer) {
 			delete m_Framebuffer;
 		}
 	}
 
-	LightingPassOutput DeferredLightingPass::executeLightingPass(ShadowmapPassOutput &inputShadowmapData, GBuffer *inputGbuffer, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL) {
+	LightingPassOutput DeferredLightingPass::ExecuteLightingPass(ShadowmapPassOutput &inputShadowmapData, GBuffer *inputGbuffer, PreLightingPassOutput &preLightingOutput, ICamera *camera, bool useIBL)
+	{
 		// Framebuffer setup
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		glViewport(0, 0, m_Framebuffer->GetWidth(), m_Framebuffer->GetHeight());
 		m_Framebuffer->Bind();
-		m_Framebuffer->Clear();
+		m_Framebuffer->ClearAll();
 		m_GLCache->SetDepthTest(false);
 		m_GLCache->SetMultisample(false);
 
@@ -50,7 +52,7 @@ namespace Arcane
 		m_GLCache->SetStencilTest(true);
 		m_GLCache->SetStencilWriteMask(0x00); // Do not update stencil values
 
-		DynamicLightManager *lightManager = m_ActiveScene->GetDynamicLightManager();
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
 		m_GLCache->SetShader(m_LightingShader);
@@ -79,26 +81,29 @@ namespace Arcane
 		m_LightingShader->SetUniform("farPlane", FAR_PLANE);
 
 		// Shadowmap code
-		bindShadowmap(m_LightingShader, inputShadowmapData);
+		BindShadowmap(m_LightingShader, inputShadowmapData);
 
 		// Finally perform the lighting using the GBuffer
-		// 
-		// IBL Binding
-		probeManager->BindProbes(glm::vec3(0.0f, 0.0f, 0.0f), m_LightingShader);
+
+		// IBL Bindings
+		glm::vec3 cameraPosition = camera->GetPosition();
+		probeManager->BindProbes(cameraPosition, m_LightingShader); // TODO: Should use camera component
 
 		// Perform lighting on the terrain (turn IBL off)
 		m_LightingShader->SetUniform("computeIBL", 0);
-		m_GLCache->SetStencilFunc(GL_EQUAL, DeferredStencilValue::TerrainStencilValue, 0xFF);
+		m_GLCache->SetStencilFunc(GL_EQUAL, StencilValue::TerrainStencilValue, 0xFF);
 		Renderer::DrawNdcPlane();
 
-		// Perform lighting on the models in the scene (turn IBL on)
-		if (useIBL) {
+		// Perform lighting on the models in the scene
+		if (useIBL)
+		{
 			m_LightingShader->SetUniform("computeIBL", 1);
 		}
-		else {
+		else
+		{
 			m_LightingShader->SetUniform("computeIBL", 0);
 		}
-		m_GLCache->SetStencilFunc(GL_EQUAL, DeferredStencilValue::ModelStencilValue, 0xFF);
+		m_GLCache->SetStencilFunc(GL_EQUAL, StencilValue::ModelStencilValue, 0xFF);
 		Renderer::DrawNdcPlane();
 
 
@@ -112,9 +117,16 @@ namespace Arcane
 		return passOutput;
 	}
 
-	void DeferredLightingPass::bindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData) {
-		shadowmapData.shadowmapFramebuffer->GetDepthStencilTexture()->Bind();
+	void DeferredLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
+	{
+		bool hasShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
+		shader->SetUniform("hasDirectionalShadow", hasShadowMap);
+		if (!hasShadowMap)
+			return;
+
+		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
 		shader->SetUniform("shadowmap", 0);
 		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+		shader->SetUniform("shadowBias", shadowmapData.directionalShadowmapBias);
 	}
 }

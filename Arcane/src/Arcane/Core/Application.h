@@ -81,10 +81,11 @@ namespace Arcane
 
 		static Application *s_Instance;
 
-		// Temp Location
+#if DEBUG_PROFILING
 		Arcane::RuntimePane m_RuntimePane;
 		Arcane::DebugPane m_DebugPane;
 		Arcane::WaterPane m_WaterPane;
+#endif
 	};
 
 	// Implemented by the client
