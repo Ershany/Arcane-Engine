@@ -24,13 +24,12 @@ namespace Arcane
 					if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
 					{
 						DrawVec3Control("Translation", transform.Translation);
-						glm::vec3 rotation = transform.GetRotationEulerAngles();
+						glm::vec3 rotation = glm::degrees(transform.GetRotationEulerAngles());
 						DrawVec3Control("Rotation", rotation, 0.1f);
 						rotation.x = fmod(rotation.x, 360.0f);
 						rotation.y = fmod(rotation.y, 360.0f);
 						rotation.z = fmod(rotation.z, 360.0f);
-						glm::vec3 radiansRotation = glm::radians(rotation);
-						transform.Rotation = glm::quat(radiansRotation);
+						transform.Rotation = glm::quat(glm::radians(rotation));
 						DrawVec3Control("Scale", transform.Scale);
 					}
 				}

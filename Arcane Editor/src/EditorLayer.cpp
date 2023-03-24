@@ -72,7 +72,8 @@ namespace Arcane
 			auto window = m_EditorScene->CreateEntity("Window");
 			auto& transformComponent = window.GetComponent<TransformComponent>();
 			transformComponent.Translation = { -32.60f, 10.0f, 48.48f };
-			//transformComponent.Rotation = { 0.0f, glm::radians(180.0f), 0.0f };
+			glm::vec3 rotation = { 0.0f, glm::radians(180.0f), 0.0f };
+			transformComponent.Rotation = glm::quat(rotation);
 			transformComponent.Scale = { 10.0f, 10.0f, 10.0f };
 			auto& meshComponent = window.AddComponent<MeshComponent>(quadModel);
 			meshComponent.IsStatic = true;
@@ -82,7 +83,8 @@ namespace Arcane
 		{
 			auto directionalLight = m_EditorScene->CreateEntity("Directional Light");
 			auto &transformComponent = directionalLight.GetComponent<TransformComponent>();
-			transformComponent.Rotation.x = glm::radians(-120.0f);
+			glm::vec3 rotation = { glm::radians(-120.0f), 0.0f, 0.0f };
+			transformComponent.Rotation = glm::quat(rotation);
 			auto &lightComponent = directionalLight.AddComponent<LightComponent>();
 			lightComponent.Type = LightType::LightType_Directional;
 			lightComponent.Intensity = 3.0f;
@@ -120,7 +122,8 @@ namespace Arcane
 			auto spotLight = m_EditorScene->CreateEntity("Spot Light1");
 			auto &transformComponent = spotLight.GetComponent<TransformComponent>();
 			transformComponent.Translation = glm::vec3(-86.9f, -5.0f, -28.2f);
-			transformComponent.Rotation.x = glm::radians(-50.0f);
+			glm::vec3 rotation = { glm::radians(-50.0f), 0.0f, 0.0f };
+			transformComponent.Rotation = glm::quat(rotation);
 			auto &lightComponent = spotLight.AddComponent<LightComponent>();
 			lightComponent.Type = LightType::LightType_Spot;
 			lightComponent.Intensity = 150.0f;
