@@ -44,6 +44,13 @@ struct SpotLight {
 	float outerCutOff;
 };
 
+struct ShadowData {
+	mat4 lightSpaceViewProjectionMatrix;
+	bool hasShadow;
+	float shadowBias;
+	int lightShadowIndex;
+};
+
 #define MAX_DIR_LIGHTS 3
 #define MAX_POINT_LIGHTS 6
 #define MAX_SPOT_LIGHTS 6
@@ -78,15 +85,10 @@ uniform mat4 viewInverse;
 uniform mat4 projectionInverse;
 
 // Shadow Data
-uniform bool hasDirLightShadow;
-uniform mat4 dirLightSpaceViewProjectionMatrix;
 uniform sampler2D dirLightShadowmap;
-uniform float dirLightShadowBias;
-
-uniform bool hasSpotLightShadow;
-uniform mat4 spotLightSpaceViewProjectionMatrix;
+uniform ShadowData dirLightShadowData;
 uniform sampler2D spotLightShadowmap;
-uniform float spotLightShadowBias;
+uniform ShadowData spotLightShadowData;
 
 // Light radiance calculations
 vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragPos, vec3 fragToView, vec3 baseReflectivity);
@@ -314,10 +316,10 @@ vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity) {
 
 
 float CalculateDirLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
-	if (!hasDirLightShadow)
+	if (!dirLightShadowData.hasShadow)
 		return 0.0;
 
-	vec4 fragPosLightClipSpace = dirLightSpaceViewProjectionMatrix * vec4(fragPos, 1.0);
+	vec4 fragPosLightClipSpace = dirLightShadowData.lightSpaceViewProjectionMatrix * vec4(fragPos, 1.0);
 	vec3 ndcCoords = fragPosLightClipSpace.xyz / fragPosLightClipSpace.w;
 	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
 
@@ -329,7 +331,7 @@ float CalculateDirLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
 	for (int y = -1; y <= 1; ++y) {
 		for (int x = -1; x <= 1; ++x) {
 			float sampledDepthPCF = texture(dirLightShadowmap, depthmapCoords.xy + (texelSize * vec2(x, y))).r;
-			shadow += currentDepth > sampledDepthPCF + dirLightShadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
+			shadow += currentDepth > sampledDepthPCF + dirLightShadowData.shadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
 		}
 	}
 	shadow /= 9.0;
@@ -340,10 +342,10 @@ float CalculateDirLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
 }
 
 float CalculateSpotLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
-	if (!hasSpotLightShadow)
+	if (!spotLightShadowData.hasShadow)
 		return 0.0;
 
-	vec4 fragPosLightClipSpace = spotLightSpaceViewProjectionMatrix * vec4(fragPos, 1.0);
+	vec4 fragPosLightClipSpace = spotLightShadowData.lightSpaceViewProjectionMatrix * vec4(fragPos, 1.0);
 	vec3 ndcCoords = fragPosLightClipSpace.xyz / fragPosLightClipSpace.w;
 	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
 
@@ -355,7 +357,7 @@ float CalculateSpotLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
 	for (int y = -1; y <= 1; ++y) {
 		for (int x = -1; x <= 1; ++x) {
 			float sampledDepthPCF = texture(spotLightShadowmap, depthmapCoords.xy + (texelSize * vec2(x, y))).r;
-			shadow += currentDepth > sampledDepthPCF + spotLightShadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
+			shadow += currentDepth > sampledDepthPCF + spotLightShadowData.shadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
 		}
 	}
 	shadow /= 9.0;

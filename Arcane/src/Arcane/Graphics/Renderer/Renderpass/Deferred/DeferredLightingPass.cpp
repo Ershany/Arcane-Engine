@@ -122,22 +122,22 @@ namespace Arcane
 		bool hasDirShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
 		bool hasSpotShadowMap = shadowmapData.spotLightShadowmapFramebuffer != nullptr;
 
-		shader->SetUniform("hasDirLightShadow", hasDirShadowMap);
-		shader->SetUniform("hasSpotLightShadow", hasSpotShadowMap);
+		shader->SetUniform("dirLightShadowData.hasShadow", hasDirShadowMap);
+		shader->SetUniform("spotLightShadowData.hasShadow", hasSpotShadowMap);
 
 		if (hasDirShadowMap)
 		{
 			shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind(0);
 			shader->SetUniform("dirLightShadowmap", 0);
-			shader->SetUniform("dirLightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
-			shader->SetUniform("dirLightShadowBias", shadowmapData.directionalShadowmapBias);
+			shader->SetUniform("dirLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+			shader->SetUniform("dirLightShadowData.shadowBias", shadowmapData.directionalShadowmapBias);
 		}
 		if (hasSpotShadowMap)
 		{
 			shadowmapData.spotLightShadowmapFramebuffer->GetDepthStencilTexture()->Bind(1);
 			shader->SetUniform("spotLightShadowmap", 1);
-			shader->SetUniform("spotLightSpaceViewProjectionMatrix", shadowmapData.spotLightViewProjMatrix);
-			shader->SetUniform("spotLightShadowBias", shadowmapData.spotLightShadowmapBias);
+			shader->SetUniform("spotLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.spotLightViewProjMatrix);
+			shader->SetUniform("spotLightShadowData.shadowBias", shadowmapData.spotLightShadowmapBias);
 		}
 	}
 }
