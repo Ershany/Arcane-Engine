@@ -203,14 +203,25 @@ namespace Arcane
 
 	void ForwardLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
 	{
-		bool hasShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
-		shader->SetUniform("hasDirectionalShadow", hasShadowMap);
-		if (!hasShadowMap)
-			return;
+		bool hasDirShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
+		bool hasSpotShadowMap = shadowmapData.spotLightShadowmapFramebuffer != nullptr;
 
-		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
-		shader->SetUniform("shadowmap", 0);
-		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
-		shader->SetUniform("shadowBias", shadowmapData.directionalShadowmapBias);
+		shader->SetUniform("hasDirLightShadow", hasDirShadowMap);
+		shader->SetUniform("hasSpotLightShadow", hasSpotShadowMap);
+
+		if (hasDirShadowMap)
+		{
+			shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind(0);
+			shader->SetUniform("dirLightShadowmap", 0);
+			shader->SetUniform("dirLightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+			shader->SetUniform("dirLightShadowBias", shadowmapData.directionalShadowmapBias);
+		}
+		if (hasSpotShadowMap)
+		{
+			shadowmapData.spotLightShadowmapFramebuffer->GetDepthStencilTexture()->Bind(1);
+			shader->SetUniform("spotLightShadowmap", 1);
+			shader->SetUniform("spotLightSpaceViewProjectionMatrix", shadowmapData.spotLightViewProjMatrix);
+			shader->SetUniform("spotLightShadowBias", shadowmapData.spotLightShadowmapBias);
+		}
 	}
 }

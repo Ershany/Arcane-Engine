@@ -17,13 +17,14 @@
 namespace Arcane
 {
 	ForwardProbePass::ForwardProbePass(Scene *scene) : RenderPass(scene),
-		m_SceneCaptureShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false),
+		m_SceneCaptureDirLightShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureSpotLightShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false),
 		m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION, false), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION, false)
 	{
 		m_SceneCaptureSettings.TextureFormat = GL_RGBA16F;
 		m_SceneCaptureCubemap.SetCubemapSettings(m_SceneCaptureSettings);
 
-		m_SceneCaptureShadowFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+		m_SceneCaptureDirLightShadowFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+		m_SceneCaptureSpotLightShadowFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 		m_SceneCaptureLightingFramebuffer.AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
 		m_LightProbeConvolutionFramebuffer.AddColorTexture(FloatingPoint16).CreateFramebuffer();
 		m_ReflectionProbeSamplingFramebuffer.AddColorTexture(FloatingPoint16).CreateFramebuffer();
@@ -170,7 +171,7 @@ namespace Arcane
 
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.SetCenterPosition(probePosition);
-		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
+		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureDirLightShadowFramebuffer, &m_SceneCaptureSpotLightShadowFramebuffer);
 		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 
 		// Render the scene to the probe's cubemap
@@ -223,7 +224,7 @@ namespace Arcane
 
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.SetCenterPosition(probePosition);
-		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureShadowFramebuffer);
+		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureDirLightShadowFramebuffer, &m_SceneCaptureSpotLightShadowFramebuffer);
 		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 
 		// Render the scene to the probe's cubemap

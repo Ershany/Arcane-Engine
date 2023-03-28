@@ -68,9 +68,6 @@ uniform samplerCube prefilterMap;
 uniform sampler2D brdfLUT;
 
 // Lighting
-uniform sampler2D shadowmap;
-uniform float shadowBias;
-uniform bool hasDirectionalShadow;
 uniform ivec4 numDirPointSpotLights;
 uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
@@ -79,7 +76,17 @@ uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 uniform vec3 viewPos;
 uniform mat4 viewInverse;
 uniform mat4 projectionInverse;
-uniform mat4 lightSpaceViewProjectionMatrix;
+
+// Shadow Data
+uniform bool hasDirLightShadow;
+uniform mat4 dirLightSpaceViewProjectionMatrix;
+uniform sampler2D dirLightShadowmap;
+uniform float dirLightShadowBias;
+
+uniform bool hasSpotLightShadow;
+uniform mat4 spotLightSpaceViewProjectionMatrix;
+uniform sampler2D spotLightShadowmap;
+uniform float spotLightShadowBias;
 
 // Light radiance calculations
 vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragPos, vec3 fragToView, vec3 baseReflectivity);
@@ -93,7 +100,8 @@ float GeometrySchlickGGX(float cosTheta, float roughness);
 vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity);
 
 // Other function prototypes
-float CalculateShadow(vec3 fragPos, vec3 normal, vec3 fragToLight);
+float CalculateDirLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight);
+float CalculateSpotLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight);
 vec3 WorldPosFromDepth();
 
 void main() {
@@ -144,7 +152,6 @@ void main() {
 	color = vec4(ambient + directLightIrradiance, 1.0);
 }
 
-// TODO: Need to also add multiple shadow support
 vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragPos, vec3 fragToView, vec3 baseReflectivity) {
 	vec3 directLightIrradiance = vec3(0.0);
 
@@ -172,7 +179,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 		vec3 diffuse = diffuseRatio * albedo / PI;
 
 		// Add the light's radiance to the irradiance sum
-		directLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0) * (1.0 - CalculateShadow(fragPos, normal, lightDir));
+		directLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0) * (1.0 - CalculateDirLightShadow(fragPos, normal, lightDir));
 	}
 
 	return directLightIrradiance;
@@ -261,7 +268,7 @@ vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float 
 		vec3 diffuse = diffuseRatio * albedo / PI;
 
 		// Add the light's radiance to the irradiance sum
-		spotLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0);
+		spotLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0) * (1.0 - CalculateSpotLightShadow(fragPos, normal, fragToLight));
 	}
 
 	return spotLightIrradiance;
@@ -306,11 +313,11 @@ vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity) {
 }
 
 
-float CalculateShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
-	if (!hasDirectionalShadow)
+float CalculateDirLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
+	if (!hasDirLightShadow)
 		return 0.0;
 
-	vec4 fragPosLightClipSpace = lightSpaceViewProjectionMatrix * vec4(fragPos, 1.0);
+	vec4 fragPosLightClipSpace = dirLightSpaceViewProjectionMatrix * vec4(fragPos, 1.0);
 	vec3 ndcCoords = fragPosLightClipSpace.xyz / fragPosLightClipSpace.w;
 	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
 
@@ -318,11 +325,37 @@ float CalculateShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
 	float currentDepth = depthmapCoords.z;
 
 	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows
-	vec2 texelSize = 1.0 / textureSize(shadowmap, 0);
+	vec2 texelSize = 1.0 / textureSize(dirLightShadowmap, 0);
 	for (int y = -1; y <= 1; ++y) {
 		for (int x = -1; x <= 1; ++x) {
-			float sampledDepthPCF = texture(shadowmap, depthmapCoords.xy + (texelSize * vec2(x, y))).r;
-			shadow += currentDepth > sampledDepthPCF + shadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
+			float sampledDepthPCF = texture(dirLightShadowmap, depthmapCoords.xy + (texelSize * vec2(x, y))).r;
+			shadow += currentDepth > sampledDepthPCF + dirLightShadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
+		}
+	}
+	shadow /= 9.0;
+
+	if (currentDepth > 1.0)
+		shadow = 0.0;
+	return shadow;
+}
+
+float CalculateSpotLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
+	if (!hasSpotLightShadow)
+		return 0.0;
+
+	vec4 fragPosLightClipSpace = spotLightSpaceViewProjectionMatrix * vec4(fragPos, 1.0);
+	vec3 ndcCoords = fragPosLightClipSpace.xyz / fragPosLightClipSpace.w;
+	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
+
+	float shadow = 0.0;
+	float currentDepth = depthmapCoords.z;
+
+	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows
+	vec2 texelSize = 1.0 / textureSize(spotLightShadowmap, 0);
+	for (int y = -1; y <= 1; ++y) {
+		for (int x = -1; x <= 1; ++x) {
+			float sampledDepthPCF = texture(spotLightShadowmap, depthmapCoords.xy + (texelSize * vec2(x, y))).r;
+			shadow += currentDepth > sampledDepthPCF + spotLightShadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
 		}
 	}
 	shadow /= 9.0;

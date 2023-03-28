@@ -41,20 +41,36 @@ namespace Arcane
 		static glm::uvec2 GetShadowQualityResolution(ShadowQuality quality);
 
 		// Getters
-		inline bool HasDirectionalShadowCaster() const { return m_ClosestDirectionalShadowCaster != nullptr; }
-		Framebuffer *GetDirectionalShadowCasterFramebuffer() { return m_DirectionalShadowFramebuffer; }
-		glm::vec3 GetDirectionalShadowCasterLightDir();
-		glm::vec2 GetDirectionalShadowCasterNearFarPlane();
-		float GetDirectionalShadowCasterBias();
+		inline bool HasDirectionalLightShadowCaster() const { return m_ClosestDirectionalLightShadowCaster != nullptr; }
+		Framebuffer* GetDirectionalLightShadowCasterFramebuffer() { return m_DirectionalLightShadowFramebuffer; }
+		glm::vec3 GetDirectionalLightShadowCasterLightDir();
+		glm::vec2 GetDirectionalLightShadowCasterNearFarPlane();
+		float GetDirectionalLightShadowCasterBias();
+
+		inline bool HasSpotlightShadowCaster() const { return m_ClosestSpotLightShadowCaster != nullptr; }
+		Framebuffer* GetSpotLightShadowCasterFramebuffer() { return m_SpotLightShadowFramebuffer; }
+		glm::vec3 GetSpotLightShadowCasterLightDir();
+		glm::vec3 GetSpotLightShadowCasterLightPosition();
+		float GetSpotLightShadowCasterOuterCutOffAngle(); // Returns outer cutoff angle in radians
+		float GetSpotLightShadowCasterAttenuationRange();
+		glm::vec2 GetSpotLightShadowCasterNearFarPlane();
+		float GetSpotLightShadowCasterBias();
 	private:
 		void FindClosestDirectionalLightShadowCaster();
+		void FindClosestSpotLightShadowCaster();
 		void BindLights(Shader *shader, bool bindOnlyStatic);
-		void ReallocateTargets(glm::uvec2 newResolution);
+		void ReallocateTarget(Framebuffer **framebuffer, glm::uvec2 newResolution);
 	private:
 		Scene *m_Scene;
 
-		LightComponent *m_ClosestDirectionalShadowCaster;
-		TransformComponent *m_ClosestDirectionalShadowCasterTransform;
-		Framebuffer *m_DirectionalShadowFramebuffer;
+		// Directional Light Shadows
+		LightComponent *m_ClosestDirectionalLightShadowCaster;
+		TransformComponent *m_ClosestDirectionalLightShadowCasterTransform;
+		Framebuffer *m_DirectionalLightShadowFramebuffer;
+
+		// Spot Light Shadows
+		LightComponent *m_ClosestSpotLightShadowCaster;
+		TransformComponent *m_ClosestSpotLightShadowCasterTransform;
+		Framebuffer *m_SpotLightShadowFramebuffer;
 	};
 }

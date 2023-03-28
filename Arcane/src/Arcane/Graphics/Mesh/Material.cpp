@@ -18,11 +18,12 @@ namespace Arcane
 
 
 	void Material::BindMaterialInformation(Shader *shader) const {
-		// Texture unit 0 is reserved for the shadowmap
-		// Texture unit 1 is reserved for the irradianceMap used for indirect diffuse IBL
-		// Texture unit 2 is reserved for the prefilterMap
-		// Texture unit 3 is reserved for the brdfLUT
-		int currentTextureUnit = 4;
+		// Texture unit 0 is reserved for the directional shadowmap
+		// Texture unit 1 is reserved for the spotlight shadowmap
+		// Texture unit 2 is reserved for the irradianceMap used for indirect diffuse IBL
+		// Texture unit 3 is reserved for the prefilterMap
+		// Texture unit 4 is reserved for the brdfLUT
+		int currentTextureUnit = 5;
 
 		shader->SetUniform("material.albedoColour", m_AlbedoColour);
 		if (m_AlbedoMap && m_AlbedoMap->IsGenerated()) {

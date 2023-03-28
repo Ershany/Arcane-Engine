@@ -62,20 +62,20 @@ namespace Arcane
 		m_LightingShader->SetUniform("projectionInverse", glm::inverse(camera->GetProjectionMatrix()));
 
 		// Bind GBuffer data
-		inputGbuffer->GetAlbedo()->Bind(4);
-		m_LightingShader->SetUniform("albedoTexture", 4);
+		inputGbuffer->GetAlbedo()->Bind(5);
+		m_LightingShader->SetUniform("albedoTexture", 5);
 
-		inputGbuffer->GetNormal()->Bind(5);
-		m_LightingShader->SetUniform("normalTexture", 5);
+		inputGbuffer->GetNormal()->Bind(6);
+		m_LightingShader->SetUniform("normalTexture", 6);
 
-		inputGbuffer->GetMaterialInfo()->Bind(6);
-		m_LightingShader->SetUniform("materialInfoTexture", 6);
+		inputGbuffer->GetMaterialInfo()->Bind(7);
+		m_LightingShader->SetUniform("materialInfoTexture", 7);
 
-		preLightingOutput.ssaoTexture->Bind(7);
-		m_LightingShader->SetUniform("ssaoTexture", 7);
+		preLightingOutput.ssaoTexture->Bind(8);
+		m_LightingShader->SetUniform("ssaoTexture", 8);
 
-		inputGbuffer->GetDepthStencilTexture()->Bind(8);
-		m_LightingShader->SetUniform("depthTexture", 8);
+		inputGbuffer->GetDepthStencilTexture()->Bind(9);
+		m_LightingShader->SetUniform("depthTexture", 9);
 
 		m_LightingShader->SetUniform("nearPlane", NEAR_PLANE);
 		m_LightingShader->SetUniform("farPlane", FAR_PLANE);
@@ -119,14 +119,25 @@ namespace Arcane
 
 	void DeferredLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
 	{
-		bool hasShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
-		shader->SetUniform("hasDirectionalShadow", hasShadowMap);
-		if (!hasShadowMap)
-			return;
+		bool hasDirShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
+		bool hasSpotShadowMap = shadowmapData.spotLightShadowmapFramebuffer != nullptr;
 
-		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
-		shader->SetUniform("shadowmap", 0);
-		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
-		shader->SetUniform("shadowBias", shadowmapData.directionalShadowmapBias);
+		shader->SetUniform("hasDirLightShadow", hasDirShadowMap);
+		shader->SetUniform("hasSpotLightShadow", hasSpotShadowMap);
+
+		if (hasDirShadowMap)
+		{
+			shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind(0);
+			shader->SetUniform("dirLightShadowmap", 0);
+			shader->SetUniform("dirLightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+			shader->SetUniform("dirLightShadowBias", shadowmapData.directionalShadowmapBias);
+		}
+		if (hasSpotShadowMap)
+		{
+			shadowmapData.spotLightShadowmapFramebuffer->GetDepthStencilTexture()->Bind(1);
+			shader->SetUniform("spotLightShadowmap", 1);
+			shader->SetUniform("spotLightSpaceViewProjectionMatrix", shadowmapData.spotLightViewProjMatrix);
+			shader->SetUniform("spotLightShadowBias", shadowmapData.spotLightShadowmapBias);
+		}
 	}
 }
