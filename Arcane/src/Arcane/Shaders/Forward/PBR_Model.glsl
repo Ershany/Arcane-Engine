@@ -208,7 +208,6 @@ void main() {
 	color = vec4(ambient + directLightIrradiance, albedoAlpha);
 }
 
-// TODO: Need to also add multiple shadow support
 vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragToView, vec3 baseReflectivity) {
 	vec3 directLightIrradiance = vec3(0.0);
 
@@ -235,8 +234,13 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 		// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
 		vec3 diffuse = diffuseRatio * albedo / PI;
 
+		// Calculate shadows, but first check to make sure the current light index is the shadow caster
+		float shadowAmount = 0.0f;
+		if (i == dirLightShadowData.lightShadowIndex)
+			shadowAmount = CalculateDirLightShadow(normal, lightDir);
+
 		// Add the light's radiance to the irradiance sum
-		directLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0) * (1.0 - CalculateDirLightShadow(normal, lightDir));
+		directLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0) * (1.0 - shadowAmount);
 	}
 
 	return directLightIrradiance;
@@ -324,8 +328,13 @@ vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float 
 		// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
 		vec3 diffuse = diffuseRatio * albedo / PI;
 
+		// Calculate shadows, but first check to make sure the current light index is the shadow caster
+		float shadowAmount = 0.0f;
+		if (i == spotLightShadowData.lightShadowIndex)
+			shadowAmount = CalculateSpotLightShadow(normal, fragToLight);
+
 		// Add the light's radiance to the irradiance sum
-		spotLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0) * (1.0 - CalculateSpotLightShadow(normal, fragToLight));
+		spotLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0) * (1.0 - shadowAmount);
 	}
 
 	return spotLightIrradiance;

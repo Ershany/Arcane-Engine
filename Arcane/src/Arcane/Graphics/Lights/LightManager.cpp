@@ -53,6 +53,7 @@ namespace Arcane
 	void LightManager::FindClosestDirectionalLightShadowCaster()
 	{
 		float closestDistance2 = std::numeric_limits<float>::max();
+		int currentDirectionalLightIndex = -1;
 
 		// Prioritize the closest light to the camera as our directional shadow caster
 		auto group = m_Scene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
@@ -60,7 +61,12 @@ namespace Arcane
 		{
 			auto&[transformComponent, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
 
-			if (lightComponent.Type != LightType::LightType_Directional || !lightComponent.CastShadows)
+			if (lightComponent.Type != LightType::LightType_Directional)
+				continue;
+
+			currentDirectionalLightIndex++;
+
+			if (!lightComponent.CastShadows)
 				continue;
 
 			float currentDistance2 = glm::distance2(m_Scene->GetCamera()->GetPosition(), transformComponent.Translation);
@@ -69,6 +75,7 @@ namespace Arcane
 				closestDistance2 = currentDistance2;
 				m_ClosestDirectionalLightShadowCaster = &lightComponent;
 				m_ClosestDirectionalLightShadowCasterTransform = &transformComponent;
+				m_ClosestDirectionalLightIndex = currentDirectionalLightIndex;
 
 				// TODO:
 				// Ideally we won't be re-allocating everytime we encounter a different sized shadow map. This NEEDS to be solved if we ever allow multiple directional light shadow casters
@@ -86,6 +93,7 @@ namespace Arcane
 	void LightManager::FindClosestSpotLightShadowCaster()
 	{
 		float closestDistance2 = std::numeric_limits<float>::max();
+		int currentSpotLightIndex = -1;
 
 		// Prioritize the closest light to the camera as our spotlight shadow caster
 		auto group = m_Scene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
@@ -93,7 +101,12 @@ namespace Arcane
 		{
 			auto&[transformComponent, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
 
-			if (lightComponent.Type != LightType::LightType_Spot || !lightComponent.CastShadows)
+			if (lightComponent.Type != LightType::LightType_Spot)
+				continue;
+
+			currentSpotLightIndex++;
+
+			if (!lightComponent.CastShadows)
 				continue;
 
 			float currentDistance2 = glm::distance2(m_Scene->GetCamera()->GetPosition(), transformComponent.Translation);
@@ -102,6 +115,7 @@ namespace Arcane
 				closestDistance2 = currentDistance2;
 				m_ClosestSpotLightShadowCaster = &lightComponent;
 				m_ClosestSpotLightShadowCasterTransform = &transformComponent;
+				m_ClosestSpotLightIndex = currentSpotLightIndex;
 
 				// TODO:
 				// Ideally we won't be re-allocating everytime we encounter a different sized shadow map. This NEEDS to be solved if we ever allow multiple directional light shadow casters
@@ -232,6 +246,17 @@ namespace Arcane
 		return m_ClosestDirectionalLightShadowCaster->ShadowBias;
 	}
 
+	int LightManager::GetDirectionalLightShadowCasterIndex()
+	{
+		if (!m_ClosestDirectionalLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene - could not get index");
+			return 0;
+		}
+
+		return m_ClosestDirectionalLightIndex;
+	}
+
 	glm::vec3 LightManager::GetSpotLightShadowCasterLightDir()
 	{
 		if (!m_ClosestSpotLightShadowCaster)
@@ -296,5 +321,16 @@ namespace Arcane
 		}
 
 		return m_ClosestSpotLightShadowCaster->ShadowBias;
+	}
+
+	int LightManager::GetSpotLightShadowCasterIndex()
+	{
+		if (!m_ClosestSpotLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Spotlight shadow caster does not exist in current scene - could not get index");
+			return 0;
+		}
+
+		return m_ClosestSpotLightIndex;
 	}
 }

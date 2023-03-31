@@ -46,6 +46,7 @@ namespace Arcane
 		glm::vec3 GetDirectionalLightShadowCasterLightDir();
 		glm::vec2 GetDirectionalLightShadowCasterNearFarPlane();
 		float GetDirectionalLightShadowCasterBias();
+		int GetDirectionalLightShadowCasterIndex();
 
 		inline bool HasSpotlightShadowCaster() const { return m_ClosestSpotLightShadowCaster != nullptr; }
 		Framebuffer* GetSpotLightShadowCasterFramebuffer() { return m_SpotLightShadowFramebuffer; }
@@ -55,6 +56,7 @@ namespace Arcane
 		float GetSpotLightShadowCasterAttenuationRange();
 		glm::vec2 GetSpotLightShadowCasterNearFarPlane();
 		float GetSpotLightShadowCasterBias();
+		int GetSpotLightShadowCasterIndex();
 	private:
 		void FindClosestDirectionalLightShadowCaster();
 		void FindClosestSpotLightShadowCaster();
@@ -66,11 +68,13 @@ namespace Arcane
 		// Directional Light Shadows
 		LightComponent *m_ClosestDirectionalLightShadowCaster;
 		TransformComponent *m_ClosestDirectionalLightShadowCasterTransform;
+		int m_ClosestDirectionalLightIndex = 0;
 		Framebuffer *m_DirectionalLightShadowFramebuffer;
 
 		// Spot Light Shadows
 		LightComponent *m_ClosestSpotLightShadowCaster;
 		TransformComponent *m_ClosestSpotLightShadowCasterTransform;
+		int m_ClosestSpotLightIndex = 0;
 		Framebuffer *m_SpotLightShadowFramebuffer;
 	};
 }

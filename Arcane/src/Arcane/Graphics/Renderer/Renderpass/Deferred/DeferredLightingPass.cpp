@@ -119,6 +119,8 @@ namespace Arcane
 
 	void DeferredLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
 	{
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
+
 		bool hasDirShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
 		bool hasSpotShadowMap = shadowmapData.spotLightShadowmapFramebuffer != nullptr;
 
@@ -131,6 +133,7 @@ namespace Arcane
 			shader->SetUniform("dirLightShadowmap", 0);
 			shader->SetUniform("dirLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 			shader->SetUniform("dirLightShadowData.shadowBias", shadowmapData.directionalShadowmapBias);
+			shader->SetUniform("dirLightShadowData.lightShadowIndex", lightManager->GetDirectionalLightShadowCasterIndex());
 		}
 		if (hasSpotShadowMap)
 		{
@@ -138,6 +141,7 @@ namespace Arcane
 			shader->SetUniform("spotLightShadowmap", 1);
 			shader->SetUniform("spotLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.spotLightViewProjMatrix);
 			shader->SetUniform("spotLightShadowData.shadowBias", shadowmapData.spotLightShadowmapBias);
+			shader->SetUniform("spotLightShadowData.lightShadowIndex", lightManager->GetSpotLightShadowCasterIndex());
 		}
 	}
 }
