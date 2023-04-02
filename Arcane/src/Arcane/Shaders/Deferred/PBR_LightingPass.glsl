@@ -277,7 +277,7 @@ vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float 
 		// Calculate shadows, but first check to make sure the current light index is the shadow caster
 		float shadowAmount = 0.0f;
 		if (i == spotLightShadowData.lightShadowIndex)
-			shadowAmount = CalculateSpotLightShadow(fragPos, normal, lightDir);
+			shadowAmount = CalculateSpotLightShadow(fragPos, normal, fragToLight);
 
 		// Add the light's radiance to the irradiance sum
 		spotLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0) * (1.0 - shadowAmount);
