@@ -25,7 +25,8 @@ namespace Arcane
 		// Load some assets for the scene at startup
 		Model *gunModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
 		Model *shieldModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"));
-		Model *sphereModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Sphere/globe-sphere.obj"));
+		Cube *cube = new Cube();
+		Model* cubeModel = new Model(*cube);
 		Quad *quad = new Quad();
 		Model *quadModel = new Model(*quad);
 		quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png")));
@@ -51,10 +52,10 @@ namespace Arcane
 		}
 
 		{
-			auto sphere = m_EditorScene->CreateEntity("Sphere");
-			auto &transformComponent = sphere.GetComponent<TransformComponent>();
+			auto cube = m_EditorScene->CreateEntity("Cube");
+			auto &transformComponent = cube.GetComponent<TransformComponent>();
 			transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
-			auto &meshComponent = sphere.AddComponent<MeshComponent>(sphereModel);
+			auto &meshComponent = cube.AddComponent<MeshComponent>(cubeModel);
 			meshComponent.IsStatic = true;
 			meshComponent.IsTransparent = false;
 		}
