@@ -145,6 +145,16 @@ namespace Arcane
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, targetType, target, mipToWriteTo);
 	}
 
+	void Framebuffer::SetDepthAttachment(DepthStencilAttachmentFormat textureFormat, unsigned int target, unsigned int targetType) {
+		GLenum attachmentType = GL_DEPTH_STENCIL_ATTACHMENT;
+		if (textureFormat == NormalizedDepthOnly)
+		{
+			attachmentType = GL_DEPTH_ATTACHMENT;
+		}
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, targetType, target, 0);
+	}
+
 	void Framebuffer::Bind() {
 		glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 	}

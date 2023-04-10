@@ -25,6 +25,10 @@ namespace Arcane
 		glm::mat4 spotLightViewProjMatrix;
 		Framebuffer *spotLightShadowmapFramebuffer = nullptr;
 		float spotLightShadowmapBias;
+
+		glm::mat4 pointLightViewProjMatrix;
+		Cubemap* pointLightShadowCubemap;
+		float pointLightShadowMapBias;
 	};
 
 	struct LightingPassOutput

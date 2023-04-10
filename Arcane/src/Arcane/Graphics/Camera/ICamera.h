@@ -7,7 +7,7 @@ namespace Arcane
 		virtual ~ICamera() {}
 
 		virtual glm::mat4 GetViewMatrix() = 0;
-		virtual glm::mat4 GetProjectionMatrix() = 0;
+		virtual glm::mat4 GetProjectionMatrix(float nearPlane = NEAR_PLANE, float farPlane = FAR_PLANE) = 0;
 
 		virtual const glm::vec3& GetPosition() const = 0;
 		virtual const glm::vec3& GetFront() const = 0;

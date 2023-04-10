@@ -190,7 +190,7 @@ namespace Arcane
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
 
-		// Take the capture and apply convolution for the irradiance map (indirect diffuse liing)
+		// Take the capture and apply convolution for the irradiance map (indirect diffuse)
 		m_GLCache->SetShader(m_ConvolutionShader);
 		m_GLCache->SetFaceCull(false);
 		m_GLCache->SetDepthTest(false); // Important cause the depth buffer isn't cleared so it has zero depth
