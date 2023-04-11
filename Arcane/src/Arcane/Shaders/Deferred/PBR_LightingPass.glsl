@@ -51,6 +51,13 @@ struct ShadowData {
 	int lightShadowIndex;
 };
 
+struct ShadowDataPointLight {
+	float farPlane;
+	bool hasShadow;
+	float shadowBias;
+	int lightShadowIndex;
+}
+
 #define MAX_DIR_LIGHTS 3
 #define MAX_POINT_LIGHTS 6
 #define MAX_SPOT_LIGHTS 6
@@ -89,6 +96,8 @@ uniform sampler2D dirLightShadowmap;
 uniform ShadowData dirLightShadowData;
 uniform sampler2D spotLightShadowmap;
 uniform ShadowData spotLightShadowData;
+uniform samplerCube pointLightShadowCubemap;
+uniform ShadowDataPointLight pointLightShadowData;
 
 // Light radiance calculations
 vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic, float roughness, vec3 fragPos, vec3 fragToView, vec3 baseReflectivity);
@@ -102,8 +111,9 @@ float GeometrySchlickGGX(float cosTheta, float roughness);
 vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity);
 
 // Other function prototypes
-float CalculateDirLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight);
-float CalculateSpotLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight);
+float CalculateDirLightShadow(vec3 fragPos);
+float CalculateSpotLightShadow(vec3 fragPos);
+float CalculatePointLightShadow(vec3 lightToFrag);
 vec3 WorldPosFromDepth();
 
 void main() {
@@ -183,7 +193,7 @@ vec3 CalculateDirectionalLightRadiance(vec3 albedo, vec3 normal, float metallic,
 		// Calculate shadows, but first check to make sure the current light index is the shadow caster
 		float shadowAmount = 0.0f;
 		if (i == dirLightShadowData.lightShadowIndex)
-			shadowAmount = CalculateDirLightShadow(fragPos, normal, lightDir);
+			shadowAmount = CalculateDirLightShadow(fragPos);
 
 		// Add the light's radiance to the irradiance sum
 		directLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, lightDir), 0.0) * (1.0 - shadowAmount);
@@ -227,8 +237,13 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 		// Also calculate the diffuse, a lambertian calculation will be added onto the final radiance calculation
 		vec3 diffuse = diffuseRatio * albedo / PI;
 
+		// Calculate shadows, but first check to make sure the current light index is the shadow caster
+		float shadowAmount = 0.0f;
+		if (i == pointLightShadowData.lightShadowIndex)
+			shadowAmount = CalculatePointLightShadow(-fragToLight);
+
 		// Add the light's radiance to the irradiance sum
-		pointLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0);
+		pointLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0) * (1.0 - shadowAmount);
 	}
 
 	return pointLightIrradiance;
@@ -277,7 +292,7 @@ vec3 CalculateSpotLightRadiance(vec3 albedo, vec3 normal, float metallic, float 
 		// Calculate shadows, but first check to make sure the current light index is the shadow caster
 		float shadowAmount = 0.0f;
 		if (i == spotLightShadowData.lightShadowIndex)
-			shadowAmount = CalculateSpotLightShadow(fragPos, normal, fragToLight);
+			shadowAmount = CalculateSpotLightShadow(fragPos);
 
 		// Add the light's radiance to the irradiance sum
 		spotLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLight), 0.0) * (1.0 - shadowAmount);
@@ -325,7 +340,7 @@ vec3 FresnelSchlick(float cosTheta, vec3 baseReflectivity) {
 }
 
 
-float CalculateDirLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
+float CalculateDirLightShadow(vec3 fragPos) {
 	if (!dirLightShadowData.hasShadow)
 		return 0.0;
 
@@ -351,7 +366,7 @@ float CalculateDirLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
 	return shadow;
 }
 
-float CalculateSpotLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
+float CalculateSpotLightShadow(vec3 fragPos) {
 	if (!spotLightShadowData.hasShadow)
 		return 0.0;
 
@@ -374,6 +389,36 @@ float CalculateSpotLightShadow(vec3 fragPos, vec3 normal, vec3 fragToLight) {
 
 	if (currentDepth > 1.0)
 		shadow = 0.0;
+	return shadow;
+}
+
+vec3 sampleOffsetDirections[20] = vec3[]
+(
+	vec3( 1,  1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1,  1,  1), 
+	vec3( 1,  1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1,  1, -1),
+	vec3( 1,  1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1,  1,  0),
+	vec3( 1,  0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1,  0, -1),
+	vec3( 0,  1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0,  1, -1)
+);
+
+float CalculatePointLightShadow(vec3 lightToFrag) {
+	if (!pointLightShadowData.hasShadow)
+		return 0.0;
+
+	float currentDepth = length(lightToFrag);
+
+	float shadow = 0.0;
+	float samples = 20;
+	float diskRadius = 0.05;
+	for (int i = 0; i < samples; i++)
+	{
+		float closestDepth = texture(pointLightShadowCubemap, lightToFrag + sampleOffsetDirections[i] * diskRadius).r;
+		closestDepth *= pointLightShadowData.farPlane; // undo the [0,1] mapping
+		if (currentDepth - pointLightShadowData.shadowBias > closestDepth)
+			shadow += 1.0;
+	}
+	shadow /= float(samples);
+
 	return shadow;
 }
 

@@ -62,7 +62,6 @@ namespace Arcane
 
 		// Getters for point light shadow caster
 		inline bool HasPointlightShadowCaster() const { return m_ClosestPointLightShadowCaster != nullptr; }
-		Framebuffer* GetPointLightShadowCasterFramebuffer() { return m_PointLightShadowFramebuffer; }
 		Cubemap* GetPointLightShadowCasterCubemap() { return m_PointLightShadowCubemap; }
 		glm::vec3 GetPointLightShadowCasterLightPosition();
 		glm::vec2 GetPointLightShadowCasterNearFarPlane();
@@ -95,6 +94,5 @@ namespace Arcane
 		TransformComponent* m_ClosestPointLightShadowCasterTranform;
 		int m_ClosestPointLightIndex = 0;
 		Cubemap *m_PointLightShadowCubemap;
-		Framebuffer* m_PointLightShadowFramebuffer;
 	};
 }

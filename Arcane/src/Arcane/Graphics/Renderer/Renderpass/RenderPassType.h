@@ -5,6 +5,8 @@
 
 namespace Arcane
 {
+	class Cubemap;
+
 	enum RenderPassType
 	{
 		MaterialRequired,
@@ -26,9 +28,9 @@ namespace Arcane
 		Framebuffer *spotLightShadowmapFramebuffer = nullptr;
 		float spotLightShadowmapBias;
 
-		glm::mat4 pointLightViewProjMatrix;
-		Cubemap* pointLightShadowCubemap;
-		float pointLightShadowMapBias;
+		Cubemap* pointLightShadowCubemap = nullptr;
+		float pointLightShadowmapBias;
+		float pointLightFarPlane;
 	};
 
 	struct LightingPassOutput

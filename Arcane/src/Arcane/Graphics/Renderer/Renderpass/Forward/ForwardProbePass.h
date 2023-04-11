@@ -25,6 +25,7 @@ namespace Arcane
 		void generateFallbackProbes();
 	private:
 		Framebuffer m_SceneCaptureDirLightShadowFramebuffer, m_SceneCaptureSpotLightShadowFramebuffer, m_SceneCaptureLightingFramebuffer, m_LightProbeConvolutionFramebuffer, m_ReflectionProbeSamplingFramebuffer;
+		Cubemap m_SceneCapturePointLightDepthCubemap;
 		CubemapCamera m_CubemapCamera;
 		CubemapSettings m_SceneCaptureSettings;
 		Cubemap m_SceneCaptureCubemap;

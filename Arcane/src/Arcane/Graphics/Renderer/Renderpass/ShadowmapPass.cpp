@@ -11,20 +11,28 @@
 
 namespace Arcane
 {
-	ShadowmapPass::ShadowmapPass(Scene *scene) : RenderPass(scene)
+	ShadowmapPass::ShadowmapPass(Scene *scene) : RenderPass(scene), m_EmptyFramebuffer(0, 0, false)
 	{
-		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
+		Init();
 	}
 
-	ShadowmapPass::ShadowmapPass(Scene *scene, Framebuffer *customDirectionalLightShadowFramebuffer, Framebuffer *customSpotLightShadowFramebuffer, Framebuffer* customPointLightShadowFramebuffer)
-		: RenderPass(scene), m_CustomDirectionalLightShadowFramebuffer(customDirectionalLightShadowFramebuffer), m_CustomSpotLightShadowFramebuffer(customSpotLightShadowFramebuffer), m_CustomPointLightShadowFramebuffer(customPointLightShadowFramebuffer)
+	ShadowmapPass::ShadowmapPass(Scene *scene, Framebuffer *customDirectionalLightShadowFramebuffer, Framebuffer *customSpotLightShadowFramebuffer, Cubemap* customPointLightShadowCubemap)
+		: RenderPass(scene), m_EmptyFramebuffer(0, 0, false),
+		m_CustomDirectionalLightShadowFramebuffer(customDirectionalLightShadowFramebuffer), m_CustomSpotLightShadowFramebuffer(customSpotLightShadowFramebuffer), m_CustomPointLightShadowCubemap(customPointLightShadowCubemap)
 	{
-		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
+		Init();
 	}
 
 	ShadowmapPass::~ShadowmapPass()
 	{
 
+	}
+
+	void ShadowmapPass::Init()
+	{
+		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
+		m_ShadowmapLinearShader = ShaderLoader::LoadShader("Shadowmap_Generation_Linear.glsl");
+		m_EmptyFramebuffer.CreateFramebuffer();
 	}
 
 	ShadowmapPassOutput ShadowmapPass::generateShadowmaps(ICamera *camera, bool renderOnlyStatic)
@@ -146,18 +154,16 @@ namespace Arcane
 		}
 
 		// Point Light Shadow Setup
-		Cubemap *pointLightShadowCubemap = lightManager->GetPointLightShadowCasterCubemap();
-		if (m_CustomPointLightShadowFramebuffer)
+		Cubemap* pointLightShadowCubemap = nullptr;
+		if (m_CustomPointLightShadowCubemap)
 		{
-			shadowFramebuffer = m_CustomPointLightShadowFramebuffer;
+			pointLightShadowCubemap = m_CustomPointLightShadowCubemap;
 		}
 		else
 		{
-			shadowFramebuffer = lightManager->GetPointLightShadowCasterFramebuffer();
+			pointLightShadowCubemap = lightManager->GetPointLightShadowCasterCubemap();
 		}
-		glViewport(0, 0, shadowFramebuffer->GetWidth(), shadowFramebuffer->GetHeight());
-		shadowFramebuffer->Bind();
-		shadowFramebuffer->ClearDepth();
+		m_EmptyFramebuffer.Bind();
 
 		// Point Light Shadows
 		if (lightManager->HasPointlightShadowCaster())
@@ -168,19 +174,25 @@ namespace Arcane
 
 			// Camera Setup
 			m_CubemapCamera.SetCenterPosition(lightManager->GetPointLightShadowCasterLightPosition());
-			glm::mat4 pointLightProjection = m_CubemapCamera.GetProjectionMatrix();
+			glm::mat4 pointLightProjection = m_CubemapCamera.GetProjectionMatrix(nearFarPlane.x, nearFarPlane.y);
+
+			// Shader setup (point light uses custom shader)
+			m_GLCache->SetShader(m_ShadowmapLinearShader);
+			m_ShadowmapLinearShader->SetUniform("lightPos", m_CubemapCamera.GetPosition());
+			m_ShadowmapLinearShader->SetUniform("lightFarPlane", nearFarPlane.y);
 
 			// Render the scene to the probe's cubemap
+			glViewport(0, 0, pointLightShadowCubemap->GetFaceWidth(), pointLightShadowCubemap->GetFaceHeight());
 			for (int i = 0; i < 6; i++)
 			{
 				// Setup the camera's view
 				m_CubemapCamera.SwitchCameraToFace(i);
 				glm::mat4 pointLightView = m_CubemapCamera.GetViewMatrix();
 				glm::mat4 pointLightViewProjMatrix = pointLightProjection * pointLightView;
-				m_ShadowmapShader->SetUniform("lightSpaceViewProjectionMatrix", pointLightViewProjMatrix);
+				m_ShadowmapLinearShader->SetUniform("lightSpaceViewProjectionMatrix", pointLightViewProjMatrix);
 
-				shadowFramebuffer->SetDepthAttachment(DepthStencilAttachmentFormat::NormalizedDepthOnly, pointLightShadowCubemap->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
-				shadowFramebuffer->ClearDepth();
+				m_EmptyFramebuffer.SetDepthAttachment(DepthStencilAttachmentFormat::NormalizedDepthOnly, pointLightShadowCubemap->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
+				m_EmptyFramebuffer.ClearDepth();
 
 				// Setup model renderer
 				if (renderOnlyStatic)
@@ -196,16 +208,18 @@ namespace Arcane
 				m_GLCache->SetDepthTest(true);
 				m_GLCache->SetBlend(false);
 				m_GLCache->SetFaceCull(false);
-				Renderer::Flush(camera, m_ShadowmapShader, RenderPassType::NoMaterialRequired);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+				Renderer::Flush(camera, m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
 
 				// Render terrain
-				terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired); 
+				terrain->Draw(m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);
 
-				// Update output
-				passOutput.pointLightViewProjMatrix = pointLightViewProjMatrix; // HOW AM I GONNA DO 6 OF THESE?!
-				passOutput.pointLightShadowMapBias = lightManager->GetPointLightShadowCasterBias();
-				passOutput.pointLightShadowCubemap = pointLightShadowCubemap;
+				m_EmptyFramebuffer.SetDepthAttachment(DepthStencilAttachmentFormat::NormalizedDepthOnly, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			}
+
+			// Update output
+			passOutput.pointLightShadowmapBias = lightManager->GetPointLightShadowCasterBias();
+			passOutput.pointLightShadowCubemap = pointLightShadowCubemap;
+			passOutput.pointLightFarPlane = nearFarPlane.y;
 		}
 
 		return passOutput;

@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Skybox.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
+#include <Arcane/Graphics/Texture/Cubemap.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
@@ -207,9 +208,11 @@ namespace Arcane
 
 		bool hasDirShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
 		bool hasSpotShadowMap = shadowmapData.spotLightShadowmapFramebuffer != nullptr;
+		bool hasPointShadowMap = shadowmapData.pointLightShadowCubemap != nullptr;
 
 		shader->SetUniform("dirLightShadowData.hasShadow", hasDirShadowMap);
 		shader->SetUniform("spotLightShadowData.hasShadow", hasSpotShadowMap);
+		shader->SetUniform("pointLightShadowData.hasShadow", hasPointShadowMap);
 
 		if (hasDirShadowMap)
 		{
@@ -226,6 +229,14 @@ namespace Arcane
 			shader->SetUniform("spotLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.spotLightViewProjMatrix);
 			shader->SetUniform("spotLightShadowData.shadowBias", shadowmapData.spotLightShadowmapBias);
 			shader->SetUniform("spotLightShadowData.lightShadowIndex", lightManager->GetSpotLightShadowCasterIndex());
+		}
+		if (hasPointShadowMap)
+		{
+			shadowmapData.pointLightShadowCubemap->Bind(2);
+			shader->SetUniform("pointLightShadowCubemap", 2);
+			shader->SetUniform("pointLightShadowData.shadowBias", shadowmapData.pointLightShadowmapBias);
+			shader->SetUniform("pointLightShadowData.lightShadowIndex", lightManager->GetPointLightShadowCasterIndex());
+			shader->SetUniform("pointLightShadowData.farPlane", shadowmapData.pointLightFarPlane);
 		}
 	}
 }

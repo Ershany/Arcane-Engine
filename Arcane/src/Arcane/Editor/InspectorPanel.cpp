@@ -169,7 +169,7 @@ namespace Arcane
 							DrawFloatControl("Shadow Bias", lightComponent.ShadowBias, 0.0001f, 0.0f, 1.0f, "%.4f");
 							
 							bool nearModified = DrawFloatControl("Near Plane", lightComponent.ShadowNearPlane, 0.01f, 0.0f, 100.0f);
-							bool farModified = DrawFloatControl("Far Plane", lightComponent.ShadowFarPlane, 1.0f, 0.0f, 1000000.0f);
+							bool farModified = DrawFloatControl("Far Plane", lightComponent.ShadowFarPlane, 1.0f, 0.01f, 1000000.0f);
 
 							if (nearModified)
 							{

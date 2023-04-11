@@ -11,7 +11,7 @@
 
 namespace Arcane
 {
-	LightManager::LightManager(Scene *scene) : m_Scene(scene), m_DirectionalLightShadowFramebuffer(nullptr), m_SpotLightShadowFramebuffer(nullptr), m_PointLightShadowFramebuffer(nullptr), m_PointLightShadowCubemap(nullptr)
+	LightManager::LightManager(Scene *scene) : m_Scene(scene), m_DirectionalLightShadowFramebuffer(nullptr), m_SpotLightShadowFramebuffer(nullptr), m_PointLightShadowCubemap(nullptr)
 	{
 
 	}
@@ -20,7 +20,6 @@ namespace Arcane
 	{
 		delete m_DirectionalLightShadowFramebuffer;
 		delete m_SpotLightShadowFramebuffer;
-		delete m_PointLightShadowFramebuffer;
 		delete m_PointLightShadowCubemap;
 	}
 
@@ -39,11 +38,6 @@ namespace Arcane
 		{
 			m_SpotLightShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
 			m_SpotLightShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
-		}
-		if (!m_PointLightShadowFramebuffer)
-		{
-			m_PointLightShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
-			m_PointLightShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 		}
 	}
 
@@ -180,11 +174,9 @@ namespace Arcane
 		{
 			// TODO:
 			// Ideally we won't be re-allocating everytime we encounter a different sized shadow map. This NEEDS to be solved if we ever allow multiple point light shadow casters
-			// Just allocate the biggest and only render to a portion with glViewPort, and make sure when we sample the shadowmap we account for the smaller size as well
 			glm::uvec2 requiredShadowResolution = GetShadowQualityResolution(m_ClosestPointLightShadowCaster->ShadowResolution);
-			if (!m_PointLightShadowFramebuffer || m_PointLightShadowFramebuffer->GetWidth() != requiredShadowResolution.x || m_PointLightShadowFramebuffer->GetHeight() != requiredShadowResolution.y)
+			if (!m_PointLightShadowCubemap || m_PointLightShadowCubemap->GetFaceWidth() != requiredShadowResolution.x || m_PointLightShadowCubemap->GetFaceHeight() != requiredShadowResolution.y)
 			{
-				ReallocateTarget(&m_PointLightShadowFramebuffer, requiredShadowResolution);
 				ReallocateCubemap(&m_PointLightShadowCubemap, requiredShadowResolution);
 			}
 		}
@@ -208,14 +200,14 @@ namespace Arcane
 			delete *cubemap;
 		}
 
-		CubemapSettings settings;
-		settings.TextureFormat = GL_DEPTH_COMPONENT;
-		settings.TextureMinificationFilterMode = GL_NEAREST;
-		settings.TextureMagnificationFilterMode = GL_NEAREST;
-		*cubemap = new Cubemap(settings);
+		CubemapSettings depthCubemapSettings;
+		depthCubemapSettings.TextureFormat = GL_DEPTH_COMPONENT;
+		depthCubemapSettings.TextureMinificationFilterMode = GL_NEAREST;
+		depthCubemapSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		*cubemap = new Cubemap(depthCubemapSettings);
 		for (int i = 0; i < 6; i++)
 		{
-			(*cubemap)->GenerateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, m_PointLightShadowFramebuffer->GetWidth(), m_PointLightShadowFramebuffer->GetWidth(), GL_DEPTH_COMPONENT, nullptr);
+			(*cubemap)->GenerateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, newResolution.x, newResolution.y, GL_DEPTH_COMPONENT, nullptr);
 		}
 	}
 

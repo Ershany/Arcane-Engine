@@ -35,9 +35,9 @@ namespace Arcane
 	void ReflectionProbe::Bind(Shader *shader) {
 		shader->SetUniform("reflectionProbeMipCount", REFLECTION_PROBE_MIP_COUNT);
 		
-		m_PrefilterMap->Bind(3);
-		shader->SetUniform("prefilterMap", 3);
-		s_BRDF_LUT->Bind(4);
-		shader->SetUniform("brdfLUT", 4);
+		m_PrefilterMap->Bind(4);
+		shader->SetUniform("prefilterMap", 4);
+		s_BRDF_LUT->Bind(5);
+		shader->SetUniform("brdfLUT", 5);
 	}
 }

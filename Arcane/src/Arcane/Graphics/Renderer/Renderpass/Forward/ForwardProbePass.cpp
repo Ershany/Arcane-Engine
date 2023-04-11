@@ -17,11 +17,17 @@
 namespace Arcane
 {
 	ForwardProbePass::ForwardProbePass(Scene *scene) : RenderPass(scene),
-		m_SceneCaptureDirLightShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureSpotLightShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false),
-		m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION, false), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION, false)
+		m_SceneCaptureDirLightShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCaptureSpotLightShadowFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_SceneCapturePointLightDepthCubemap(),
+		m_SceneCaptureLightingFramebuffer(IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, false), m_LightProbeConvolutionFramebuffer(LIGHT_PROBE_RESOLUTION, LIGHT_PROBE_RESOLUTION, false), m_ReflectionProbeSamplingFramebuffer(REFLECTION_PROBE_RESOLUTION, REFLECTION_PROBE_RESOLUTION, false)
 	{
 		m_SceneCaptureSettings.TextureFormat = GL_RGBA16F;
 		m_SceneCaptureCubemap.SetCubemapSettings(m_SceneCaptureSettings);
+
+		CubemapSettings depthCubemapSettings;
+		depthCubemapSettings.TextureFormat = GL_DEPTH_COMPONENT;
+		depthCubemapSettings.TextureMinificationFilterMode = GL_NEAREST;
+		depthCubemapSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		m_SceneCapturePointLightDepthCubemap.SetCubemapSettings(depthCubemapSettings);
 
 		m_SceneCaptureDirLightShadowFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 		m_SceneCaptureSpotLightShadowFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
@@ -29,7 +35,12 @@ namespace Arcane
 		m_LightProbeConvolutionFramebuffer.AddColorTexture(FloatingPoint16).CreateFramebuffer();
 		m_ReflectionProbeSamplingFramebuffer.AddColorTexture(FloatingPoint16).CreateFramebuffer();
 
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 6; i++)
+		{
+			m_SceneCapturePointLightDepthCubemap.GenerateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, GL_DEPTH_COMPONENT, nullptr);
+		}
+		for (int i = 0; i < 6; i++)
+		{
 			m_SceneCaptureCubemap.GenerateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, IBL_CAPTURE_RESOLUTION, IBL_CAPTURE_RESOLUTION, GL_RGB, nullptr);
 		}
 
@@ -171,7 +182,7 @@ namespace Arcane
 
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.SetCenterPosition(probePosition);
-		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureDirLightShadowFramebuffer, &m_SceneCaptureSpotLightShadowFramebuffer);
+		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureDirLightShadowFramebuffer, &m_SceneCaptureSpotLightShadowFramebuffer, &m_SceneCapturePointLightDepthCubemap);
 		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 
 		// Render the scene to the probe's cubemap
@@ -224,7 +235,7 @@ namespace Arcane
 
 		// Initialize step before rendering to the probe's cubemap
 		m_CubemapCamera.SetCenterPosition(probePosition);
-		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureDirLightShadowFramebuffer, &m_SceneCaptureSpotLightShadowFramebuffer);
+		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureDirLightShadowFramebuffer, &m_SceneCaptureSpotLightShadowFramebuffer, &m_SceneCapturePointLightDepthCubemap);
 		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 
 		// Render the scene to the probe's cubemap
