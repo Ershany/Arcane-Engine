@@ -63,20 +63,20 @@ namespace Arcane
 		m_LightingShader->SetUniform("projectionInverse", glm::inverse(camera->GetProjectionMatrix()));
 
 		// Bind GBuffer data
-		inputGbuffer->GetAlbedo()->Bind(5);
-		m_LightingShader->SetUniform("albedoTexture", 5);
+		inputGbuffer->GetAlbedo()->Bind(6);
+		m_LightingShader->SetUniform("albedoTexture", 6);
 
-		inputGbuffer->GetNormal()->Bind(6);
-		m_LightingShader->SetUniform("normalTexture", 6);
+		inputGbuffer->GetNormal()->Bind(7);
+		m_LightingShader->SetUniform("normalTexture", 7);
 
-		inputGbuffer->GetMaterialInfo()->Bind(7);
-		m_LightingShader->SetUniform("materialInfoTexture", 7);
+		inputGbuffer->GetMaterialInfo()->Bind(8);
+		m_LightingShader->SetUniform("materialInfoTexture", 8);
 
-		preLightingOutput.ssaoTexture->Bind(8);
-		m_LightingShader->SetUniform("ssaoTexture", 8);
+		preLightingOutput.ssaoTexture->Bind(9);
+		m_LightingShader->SetUniform("ssaoTexture", 9);
 
-		inputGbuffer->GetDepthStencilTexture()->Bind(9);
-		m_LightingShader->SetUniform("depthTexture", 9);
+		inputGbuffer->GetDepthStencilTexture()->Bind(10);
+		m_LightingShader->SetUniform("depthTexture", 10);
 
 		m_LightingShader->SetUniform("nearPlane", NEAR_PLANE);
 		m_LightingShader->SetUniform("farPlane", FAR_PLANE);

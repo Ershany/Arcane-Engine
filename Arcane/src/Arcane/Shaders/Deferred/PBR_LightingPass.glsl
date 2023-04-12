@@ -56,7 +56,7 @@ struct ShadowDataPointLight {
 	bool hasShadow;
 	float shadowBias;
 	int lightShadowIndex;
-}
+};
 
 #define MAX_DIR_LIGHTS 3
 #define MAX_POINT_LIGHTS 6

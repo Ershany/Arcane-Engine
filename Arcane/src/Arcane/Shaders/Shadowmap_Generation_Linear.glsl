@@ -25,7 +25,7 @@ uniform vec3 lightPos;
 uniform float lightFarPlane;
 
 void main() {
-	float lightDistance = length(worldFragPos.xyz, lightPos);
+	float lightDistance = length(worldFragPos.xyz - lightPos);
 	lightDistance = lightDistance / lightFarPlane; // Map value to [0, 1]
 	gl_FragDepth = lightDistance;
 }

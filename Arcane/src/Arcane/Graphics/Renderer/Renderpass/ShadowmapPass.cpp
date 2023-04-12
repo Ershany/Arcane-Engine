@@ -11,13 +11,13 @@
 
 namespace Arcane
 {
-	ShadowmapPass::ShadowmapPass(Scene *scene) : RenderPass(scene), m_EmptyFramebuffer(0, 0, false)
+	ShadowmapPass::ShadowmapPass(Scene *scene) : RenderPass(scene), m_EmptyFramebuffer(256, 256, false) // TODO: THIS SHOULD BE 0, 0
 	{
 		Init();
 	}
 
 	ShadowmapPass::ShadowmapPass(Scene *scene, Framebuffer *customDirectionalLightShadowFramebuffer, Framebuffer *customSpotLightShadowFramebuffer, Cubemap* customPointLightShadowCubemap)
-		: RenderPass(scene), m_EmptyFramebuffer(0, 0, false),
+		: RenderPass(scene), m_EmptyFramebuffer(256, 256, false),
 		m_CustomDirectionalLightShadowFramebuffer(customDirectionalLightShadowFramebuffer), m_CustomSpotLightShadowFramebuffer(customSpotLightShadowFramebuffer), m_CustomPointLightShadowCubemap(customPointLightShadowCubemap)
 	{
 		Init();
@@ -32,7 +32,7 @@ namespace Arcane
 	{
 		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
 		m_ShadowmapLinearShader = ShaderLoader::LoadShader("Shadowmap_Generation_Linear.glsl");
-		m_EmptyFramebuffer.CreateFramebuffer();
+		m_EmptyFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 	}
 
 	ShadowmapPassOutput ShadowmapPass::generateShadowmaps(ICamera *camera, bool renderOnlyStatic)
@@ -154,7 +154,7 @@ namespace Arcane
 		}
 
 		// Point Light Shadow Setup
-		Cubemap* pointLightShadowCubemap = nullptr;
+		Cubemap *pointLightShadowCubemap = nullptr;
 		if (m_CustomPointLightShadowCubemap)
 		{
 			pointLightShadowCubemap = m_CustomPointLightShadowCubemap;

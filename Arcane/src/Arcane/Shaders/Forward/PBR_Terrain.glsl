@@ -100,7 +100,14 @@ struct SpotLight {
 };
 
 struct ShadowData {
-	mat4 lightSpaceViewProjectionMatrix; // Not needed for point light shadows
+	mat4 lightSpaceViewProjectionMatrix;
+	bool hasShadow;
+	float shadowBias;
+	int lightShadowIndex;
+};
+
+struct ShadowDataPointLight {
+	float farPlane;
 	bool hasShadow;
 	float shadowBias;
 	int lightShadowIndex;

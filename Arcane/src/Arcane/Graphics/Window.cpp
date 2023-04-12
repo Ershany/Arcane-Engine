@@ -57,6 +57,11 @@ namespace Arcane
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
+		// Error callback setup
+#if USE_OPENGL_DEBUG
+		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
+#endif
+
 		// Window hints
 		glfwWindowHint(GLFW_DOUBLEBUFFER, true);
 
@@ -123,15 +128,16 @@ namespace Arcane
 		// Setup default OpenGL viewport
 		glViewport(0, 0, s_Width, s_Height);
 
-		// Error callback setup
-#ifdef ARC_DEV_BUILD
+		// More error callback setup
+#if USE_OPENGL_DEBUG
 		glEnable(GL_DEBUG_OUTPUT);
-		glDebugMessageCallback(DebugMessageCallback, 0);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(glDebugOutput, 0);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_LOW, 0, nullptr, GL_FALSE);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_MEDIUM, 0, nullptr, GL_TRUE);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, nullptr, GL_TRUE);
-#endif // ARC_DEV_BUILD
+#endif
 		
 		// Everything was successful so return true
 		return 1;
@@ -278,7 +284,49 @@ namespace Arcane
 		InputManager::GetInstance().JoystickCallback(joystick, event);
 	}
 
-	static void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-		ARC_LOG_WARN("GL CALLBACK: type {0} - severity {1} - message {2}", type, severity, message);
+	void APIENTRY glDebugOutput(GLenum source,
+		GLenum type,
+		unsigned int id,
+		GLenum severity,
+		GLsizei length,
+		const char* message,
+		const void* userParam)
+	{
+		// ignore non-significant error/warning codes
+		if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
+
+		ARC_LOG_WARN("---------------");
+		ARC_LOG_WARN("Debug message ({0}) {1}", id, message);
+
+		switch (source)
+		{
+		case GL_DEBUG_SOURCE_API:             ARC_LOG_WARN("Source: API"); break;
+		case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   ARC_LOG_WARN("Source: Window System"); break;
+		case GL_DEBUG_SOURCE_SHADER_COMPILER: ARC_LOG_WARN("Source: Shader Compiler"); break;
+		case GL_DEBUG_SOURCE_THIRD_PARTY:     ARC_LOG_WARN("Source: Third Party"); break;
+		case GL_DEBUG_SOURCE_APPLICATION:     ARC_LOG_WARN("Source: Application"); break;
+		case GL_DEBUG_SOURCE_OTHER:           ARC_LOG_WARN("Source: Other"); break;
+		}
+
+		switch (type)
+		{
+		case GL_DEBUG_TYPE_ERROR:               ARC_LOG_WARN("Type: Error"); break;
+		case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: ARC_LOG_WARN("Type: Deprecated Behaviour"); break;
+		case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  ARC_LOG_WARN("Type: Undefined Behaviour"); break;
+		case GL_DEBUG_TYPE_PORTABILITY:         ARC_LOG_WARN("Type: Portability"); break;
+		case GL_DEBUG_TYPE_PERFORMANCE:         ARC_LOG_WARN("Type: Performance"); break;
+		case GL_DEBUG_TYPE_MARKER:              ARC_LOG_WARN("Type: Marker"); break;
+		case GL_DEBUG_TYPE_PUSH_GROUP:          ARC_LOG_WARN("Type: Push Group"); break;
+		case GL_DEBUG_TYPE_POP_GROUP:           ARC_LOG_WARN("Type: Pop Group"); break;
+		case GL_DEBUG_TYPE_OTHER:               ARC_LOG_WARN("Type: Other"); break;
+		}
+
+		switch (severity)
+		{
+		case GL_DEBUG_SEVERITY_HIGH:         ARC_LOG_WARN("Severity: high"); break;
+		case GL_DEBUG_SEVERITY_MEDIUM:       ARC_LOG_WARN("Severity: medium"); break;
+		case GL_DEBUG_SEVERITY_LOW:          ARC_LOG_WARN("Severity: low"); break;
+		case GL_DEBUG_SEVERITY_NOTIFICATION: ARC_LOG_WARN("Severity: notification"); break;
+		}
 	}
 }
