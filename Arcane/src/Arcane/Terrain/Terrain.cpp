@@ -169,9 +169,11 @@ namespace Arcane
 	}
 
 	void Terrain::Draw(Shader *shader, RenderPassType pass) const {
-		// Texture unit 0 is reserved for the shadowmap
+		// Texture unit 0 is reserved for the directional light shadowmap
+		// Texture unit 1 is reserved for the spot light shadowmap
+		// Texture unit 2 is reserved for the point light shadowmap
 		if (pass == MaterialRequired) {
-			int currentTextureUnit = 1;
+			int currentTextureUnit = 3;
 			// Textures
 			m_Textures[0]->Bind(currentTextureUnit);
 			shader->SetUniform("material.texture_albedo1", currentTextureUnit++);

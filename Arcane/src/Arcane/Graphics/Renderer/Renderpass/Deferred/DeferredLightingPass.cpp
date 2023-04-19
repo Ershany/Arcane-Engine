@@ -78,9 +78,6 @@ namespace Arcane
 		inputGbuffer->GetDepthStencilTexture()->Bind(10);
 		m_LightingShader->SetUniform("depthTexture", 10);
 
-		m_LightingShader->SetUniform("nearPlane", NEAR_PLANE);
-		m_LightingShader->SetUniform("farPlane", FAR_PLANE);
-
 		// Shadowmap code
 		BindShadowmap(m_LightingShader, inputShadowmapData);
 
@@ -124,11 +121,14 @@ namespace Arcane
 
 		bool hasDirShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
 		bool hasSpotShadowMap = shadowmapData.spotLightShadowmapFramebuffer != nullptr;
-		bool hasPointShadowMap = shadowmapData.pointLightShadowCubemap != nullptr;
 
 		shader->SetUniform("dirLightShadowData.hasShadow", hasDirShadowMap);
 		shader->SetUniform("spotLightShadowData.hasShadow", hasSpotShadowMap);
-		shader->SetUniform("pointLightShadowData.hasShadow", hasPointShadowMap);
+		shader->SetUniform("pointLightShadowData.hasShadow", shadowmapData.hasPointLightShadows);
+
+		shader->SetUniform("dirLightShadowData.lightShadowIndex", hasDirShadowMap ? lightManager->GetDirectionalLightShadowCasterIndex() : -1);
+		shader->SetUniform("spotLightShadowData.lightShadowIndex", hasSpotShadowMap ? lightManager->GetSpotLightShadowCasterIndex() : -1);
+		shader->SetUniform("pointLightShadowData.lightShadowIndex", shadowmapData.hasPointLightShadows ? lightManager->GetPointLightShadowCasterIndex() : -1);
 
 		if (hasDirShadowMap)
 		{
@@ -136,7 +136,6 @@ namespace Arcane
 			shader->SetUniform("dirLightShadowmap", 0);
 			shader->SetUniform("dirLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
 			shader->SetUniform("dirLightShadowData.shadowBias", shadowmapData.directionalShadowmapBias);
-			shader->SetUniform("dirLightShadowData.lightShadowIndex", lightManager->GetDirectionalLightShadowCasterIndex());
 		}
 		if (hasSpotShadowMap)
 		{
@@ -144,15 +143,13 @@ namespace Arcane
 			shader->SetUniform("spotLightShadowmap", 1);
 			shader->SetUniform("spotLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.spotLightViewProjMatrix);
 			shader->SetUniform("spotLightShadowData.shadowBias", shadowmapData.spotLightShadowmapBias);
-			shader->SetUniform("spotLightShadowData.lightShadowIndex", lightManager->GetSpotLightShadowCasterIndex());
 		}
-		if (hasPointShadowMap)
+		if (shadowmapData.hasPointLightShadows)
 		{
-			shadowmapData.pointLightShadowCubemap->Bind(2);
-			shader->SetUniform("pointLightShadowCubemap", 2);
 			shader->SetUniform("pointLightShadowData.shadowBias", shadowmapData.pointLightShadowmapBias);
-			shader->SetUniform("pointLightShadowData.lightShadowIndex", lightManager->GetPointLightShadowCasterIndex());
 			shader->SetUniform("pointLightShadowData.farPlane", shadowmapData.pointLightFarPlane);
 		}
+		shader->SetUniform("pointLightShadowCubemap", 2);
+		shadowmapData.pointLightShadowCubemap->Bind(2); // Must be bound even if there is no point light shadows. Thanks OpenGL Driver!
 	}
 }

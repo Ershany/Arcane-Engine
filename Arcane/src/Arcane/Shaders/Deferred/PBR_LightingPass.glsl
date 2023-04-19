@@ -238,7 +238,7 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 		vec3 diffuse = diffuseRatio * albedo / PI;
 
 		// Calculate shadows, but first check to make sure the current light index is the shadow caster
-		float shadowAmount = 0.0f;
+		float shadowAmount = 0.0;
 		if (i == pointLightShadowData.lightShadowIndex)
 			shadowAmount = CalculatePointLightShadow(-fragToLight);
 

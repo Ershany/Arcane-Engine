@@ -166,6 +166,7 @@ namespace Arcane
 		m_EmptyFramebuffer.Bind();
 
 		// Point Light Shadows
+		passOutput.hasPointLightShadows = false;
 		if (lightManager->HasPointlightShadowCaster())
 		{
 			// Setup
@@ -217,10 +218,11 @@ namespace Arcane
 			}
 
 			// Update output
+			passOutput.hasPointLightShadows = true;
 			passOutput.pointLightShadowmapBias = lightManager->GetPointLightShadowCasterBias();
-			passOutput.pointLightShadowCubemap = pointLightShadowCubemap;
 			passOutput.pointLightFarPlane = nearFarPlane.y;
 		}
+		passOutput.pointLightShadowCubemap = pointLightShadowCubemap; // Has to be bound even if it isn't used, thanks to OpenGL Driver
 
 		return passOutput;
 	}

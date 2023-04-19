@@ -39,6 +39,10 @@ namespace Arcane
 			m_SpotLightShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
 			m_SpotLightShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 		}
+		if (!m_PointLightShadowCubemap)
+		{
+			ReallocateCubemap(&m_PointLightShadowCubemap, glm::uvec2(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT));
+		}
 	}
 
 	
