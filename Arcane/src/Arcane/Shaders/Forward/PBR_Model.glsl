@@ -263,7 +263,8 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 	for (int i = 0; i < numDirPointSpotLights.y; ++i) {
 		vec3 fragToLightNorm = normalize(pointLights[i].position - FragPos);
 		vec3 halfwayNorm = normalize(fragToViewNorm + fragToLightNorm);
-		float fragToLightDistance = length(pointLights[i].position - FragPos);
+		vec3 lightToFrag = FragPos - pointLights[i].position;
+		float fragToLightDistance = length(lightToFrag);
 
 		// Attenuation calculation (based on Epic's UE4 falloff model)
 		float d = fragToLightDistance / pointLights[i].attenuationRadius;
@@ -294,7 +295,7 @@ vec3 CalculatePointLightRadiance(vec3 albedo, vec3 normal, float metallic, float
 		// Calculate shadows, but first check to make sure the current light index is the shadow caster
 		float shadowAmount = 0.0f;
 		if (i == pointLightShadowData.lightShadowIndex)
-			shadowAmount = CalculatePointLightShadow(-fragToLightNorm);
+			shadowAmount = CalculatePointLightShadow(lightToFrag);
 
 		// Add the light's radiance to the irradiance sum
 		pointLightIrradiance += (diffuse + specular) * radiance * max(dot(normal, fragToLightNorm), 0.0) * (1.0 - shadowAmount);
