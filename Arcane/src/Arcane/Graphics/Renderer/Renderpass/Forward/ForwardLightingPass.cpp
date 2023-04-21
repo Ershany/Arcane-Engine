@@ -209,10 +209,6 @@ namespace Arcane
 		bool hasDirShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
 		bool hasSpotShadowMap = shadowmapData.spotLightShadowmapFramebuffer != nullptr;
 
-		shader->SetUniform("dirLightShadowData.hasShadow", hasDirShadowMap);
-		shader->SetUniform("spotLightShadowData.hasShadow", hasSpotShadowMap);
-		shader->SetUniform("pointLightShadowData.hasShadow", shadowmapData.hasPointLightShadows);
-
 		shader->SetUniform("dirLightShadowData.lightShadowIndex", hasDirShadowMap ? lightManager->GetDirectionalLightShadowCasterIndex() : -1);
 		shader->SetUniform("spotLightShadowData.lightShadowIndex", hasSpotShadowMap ? lightManager->GetSpotLightShadowCasterIndex() : -1);
 		shader->SetUniform("pointLightShadowData.lightShadowIndex", shadowmapData.hasPointLightShadows ? lightManager->GetPointLightShadowCasterIndex() : -1);

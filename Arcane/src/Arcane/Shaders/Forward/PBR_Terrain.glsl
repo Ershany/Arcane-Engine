@@ -101,14 +101,12 @@ struct SpotLight {
 
 struct ShadowData {
 	mat4 lightSpaceViewProjectionMatrix;
-	bool hasShadow;
 	float shadowBias;
 	int lightShadowIndex;
 };
 
 struct ShadowDataPointLight {
 	float farPlane;
-	bool hasShadow;
 	float shadowBias;
 	int lightShadowIndex;
 };
@@ -399,7 +397,7 @@ vec3 UnpackNormal(vec3 textureNormal) {
 
 
 float CalculateDirLightShadow() {
-	if (!dirLightShadowData.hasShadow)
+	if (dirLightShadowData.lightShadowIndex == -1)
 		return 0.0;
 
 	vec4 fragPosLightClipSpace = dirLightShadowData.lightSpaceViewProjectionMatrix * vec4(FragPos, 1.0);
@@ -425,7 +423,7 @@ float CalculateDirLightShadow() {
 }
 
 float CalculateSpotLightShadow() {
-	if (!spotLightShadowData.hasShadow)
+	if (spotLightShadowData.lightShadowIndex == -1)
 		return 0.0;
 
 	vec4 fragPosLightClipSpace = spotLightShadowData.lightSpaceViewProjectionMatrix * vec4(FragPos, 1.0);
@@ -460,7 +458,7 @@ vec3 sampleOffsetDirections[20] = vec3[]
 );
 
 float CalculatePointLightShadow(vec3 lightToFrag) {
-	if (!pointLightShadowData.hasShadow)
+	if (pointLightShadowData.lightShadowIndex == -1)
 		return 0.0;
 
 	float currentDepth = length(lightToFrag);
