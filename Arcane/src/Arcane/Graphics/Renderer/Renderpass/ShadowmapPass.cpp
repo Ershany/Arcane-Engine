@@ -213,9 +213,9 @@ namespace Arcane
 
 				// Render terrain
 				terrain->Draw(m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);
-
-				m_EmptyFramebuffer.SetDepthAttachment(DepthStencilAttachmentFormat::NormalizedDepthOnly, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			}
+			// Reset state
+			m_EmptyFramebuffer.SetDepthAttachment(DepthStencilAttachmentFormat::NormalizedDepthOnly, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
 
 			// Update output
 			passOutput.hasPointLightShadows = true;
