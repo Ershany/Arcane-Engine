@@ -128,8 +128,8 @@ namespace Arcane
 			// Convolute the scene's capture and store it in the Light Probe's cubemap
 			m_LightProbeConvolutionFramebuffer.SetColorAttachment(fallbackLightProbe->GetIrradianceMap()->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			Renderer::DrawNdcCube(); // Since we are sampling a cubemap, just use a cube
-			m_LightProbeConvolutionFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
+		m_LightProbeConvolutionFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
 		m_GLCache->SetFaceCull(true);
 		m_GLCache->SetDepthTest(true);
 
@@ -165,8 +165,8 @@ namespace Arcane
 				// Importance sample the scene's capture and store it in the Reflection Probe's cubemap
 				m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(fallbackReflectionProbe->GetPrefilterMap()->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mip);
 				Renderer::DrawNdcCube(); // Since we are sampling a cubemap, just use a cube
-				m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			}
+			m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
 		}
 		m_GLCache->SetFaceCull(true);
 		m_GLCache->SetDepthTest(true);
@@ -198,8 +198,8 @@ namespace Arcane
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(m_SceneCaptureCubemap.GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			LightingPassOutput output = lightingPass.ExecuteOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
 			lightingPass.ExecuteTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
-			m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
+		m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
 
 		// Take the capture and apply convolution for the irradiance map (indirect diffuse)
 		m_GLCache->SetShader(m_ConvolutionShader);
@@ -220,8 +220,8 @@ namespace Arcane
 			// Convolute the scene's capture and store it in the Light Probe's cubemap
 			m_LightProbeConvolutionFramebuffer.SetColorAttachment(lightProbe->GetIrradianceMap()->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			Renderer::DrawNdcCube(); // Since we are sampling a cubemap, just use a cube
-			m_LightProbeConvolutionFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
+		m_LightProbeConvolutionFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
 		m_GLCache->SetFaceCull(true);
 		m_GLCache->SetDepthTest(true);
 
@@ -251,8 +251,8 @@ namespace Arcane
 			m_SceneCaptureLightingFramebuffer.SetColorAttachment(m_SceneCaptureCubemap.GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			LightingPassOutput output = lightingPass.ExecuteOpaqueLightingPass(shadowpassOutput, &m_CubemapCamera, true, false);
 			lightingPass.ExecuteTransparentLightingPass(shadowpassOutput, output.outputFramebuffer, &m_CubemapCamera, true, false);
-			m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 		}
+		m_SceneCaptureLightingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
 
 		// Take the capture and perform importance sampling on the cubemap's mips that represent increased roughness levels
 		m_GLCache->SetShader(m_ImportanceSamplingShader);
@@ -281,8 +281,8 @@ namespace Arcane
 				// Importance sample the scene's capture and store it in the Reflection Probe's cubemap
 				m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(reflectionProbe->GetPrefilterMap()->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mip);
 				Renderer::DrawNdcCube(); // Since we are sampling a cubemap, just use a cube
-				m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			}
+			m_ReflectionProbeSamplingFramebuffer.SetColorAttachment(0, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
 		}
 		m_GLCache->SetFaceCull(true);
 		m_GLCache->SetDepthTest(true);
