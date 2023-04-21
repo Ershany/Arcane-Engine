@@ -24,7 +24,7 @@ namespace Arcane
 		FPSCamera(float xPos, float yPos, float zPos, float xUp, float yUp, float zUp, float yaw, float pitch);
 
 		virtual glm::mat4 GetViewMatrix() override;
-		virtual glm::mat4 GetProjectionMatrix() override;
+		virtual glm::mat4 GetProjectionMatrix(float nearPlane = NEAR_PLANE, float farPlane = FAR_PLANE) override;
 
 		void ProcessInput(float deltaTime);
 

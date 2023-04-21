@@ -3,6 +3,7 @@
 namespace Arcane
 {
 	class Framebuffer;
+	class Cubemap;
 	struct LightComponent;
 	struct TransformComponent;
 	class Scene;
@@ -40,7 +41,7 @@ namespace Arcane
 
 		static glm::uvec2 GetShadowQualityResolution(ShadowQuality quality);
 
-		// Getters
+		// Getters for directional light shadow caster
 		inline bool HasDirectionalLightShadowCaster() const { return m_ClosestDirectionalLightShadowCaster != nullptr; }
 		Framebuffer* GetDirectionalLightShadowCasterFramebuffer() { return m_DirectionalLightShadowFramebuffer; }
 		glm::vec3 GetDirectionalLightShadowCasterLightDir();
@@ -48,7 +49,8 @@ namespace Arcane
 		float GetDirectionalLightShadowCasterBias();
 		int GetDirectionalLightShadowCasterIndex();
 
-		inline bool HasSpotlightShadowCaster() const { return m_ClosestSpotLightShadowCaster != nullptr; }
+		// Getters for spot light shadow caster
+		inline bool HasSpotLightShadowCaster() const { return m_ClosestSpotLightShadowCaster != nullptr; }
 		Framebuffer* GetSpotLightShadowCasterFramebuffer() { return m_SpotLightShadowFramebuffer; }
 		glm::vec3 GetSpotLightShadowCasterLightDir();
 		glm::vec3 GetSpotLightShadowCasterLightPosition();
@@ -57,11 +59,21 @@ namespace Arcane
 		glm::vec2 GetSpotLightShadowCasterNearFarPlane();
 		float GetSpotLightShadowCasterBias();
 		int GetSpotLightShadowCasterIndex();
+
+		// Getters for point light shadow caster
+		inline bool HasPointlightShadowCaster() const { return m_ClosestPointLightShadowCaster != nullptr; }
+		Cubemap* GetPointLightShadowCasterCubemap() { return m_PointLightShadowCubemap; }
+		glm::vec3 GetPointLightShadowCasterLightPosition();
+		glm::vec2 GetPointLightShadowCasterNearFarPlane();
+		float GetPointLightShadowCasterBias();
+		int GetPointLightShadowCasterIndex();
 	private:
 		void FindClosestDirectionalLightShadowCaster();
 		void FindClosestSpotLightShadowCaster();
+		void FindClosestPointLightShadowCaster();
 		void BindLights(Shader *shader, bool bindOnlyStatic);
 		void ReallocateTarget(Framebuffer **framebuffer, glm::uvec2 newResolution);
+		void ReallocateCubemap(Cubemap** cubemap, glm::uvec2 newResolution);
 	private:
 		Scene *m_Scene;
 
@@ -76,5 +88,11 @@ namespace Arcane
 		TransformComponent *m_ClosestSpotLightShadowCasterTransform;
 		int m_ClosestSpotLightIndex = 0;
 		Framebuffer *m_SpotLightShadowFramebuffer;
+
+		// Point Light Shadows
+		LightComponent* m_ClosestPointLightShadowCaster;
+		TransformComponent* m_ClosestPointLightShadowCasterTranform;
+		int m_ClosestPointLightIndex = 0;
+		Cubemap *m_PointLightShadowCubemap;
 	};
 }

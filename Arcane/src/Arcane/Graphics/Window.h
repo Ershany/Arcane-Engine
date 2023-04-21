@@ -53,7 +53,7 @@ namespace Arcane
 		static friend void scroll_callback_imgui(GLFWwindow* window, double xoffset, double yoffset);
 		static friend void char_callback_imgui(GLFWwindow* window, unsigned int c);
 		static friend void joystick_callback(int joystick, int event);
-		static friend void GLAPIENTRY DebugMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
+		static friend void APIENTRY glDebugOutput(GLenum source, GLenum type, unsigned int id, GLenum severity, GLsizei length, const char* message, const void* userParam);
 	private:
 		Application *m_Application;
 		const char *m_Title;
