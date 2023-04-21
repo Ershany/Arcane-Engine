@@ -86,7 +86,7 @@ namespace Arcane
 			// Render models
 			m_GLCache->SetDepthTest(true);
 			m_GLCache->SetBlend(false);
-			m_GLCache->SetFaceCull(false);
+			m_GLCache->SetFaceCull(false); // For one sided objects
 			Renderer::Flush(camera, m_ShadowmapShader, RenderPassType::NoMaterialRequired);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
 
 			// Render terrain
@@ -140,7 +140,7 @@ namespace Arcane
 			// Render models
 			m_GLCache->SetDepthTest(true);
 			m_GLCache->SetBlend(false);
-			m_GLCache->SetFaceCull(false);
+			m_GLCache->SetFaceCull(false); // For one sided objects
 			Renderer::Flush(camera, m_ShadowmapShader, RenderPassType::NoMaterialRequired); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
 
 			// Render terrain
@@ -207,7 +207,7 @@ namespace Arcane
 				// Render models
 				m_GLCache->SetDepthTest(true);
 				m_GLCache->SetBlend(false);
-				m_GLCache->SetFaceCull(false);
+				m_GLCache->SetFaceCull(false); // For one sided objects
 				Renderer::Flush(camera, m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
 
 				// Render terrain
