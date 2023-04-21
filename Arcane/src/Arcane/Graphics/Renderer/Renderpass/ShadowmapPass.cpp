@@ -11,13 +11,13 @@
 
 namespace Arcane
 {
-	ShadowmapPass::ShadowmapPass(Scene *scene) : RenderPass(scene), m_EmptyFramebuffer(256, 256, false) // TODO: THIS SHOULD BE 0, 0
+	ShadowmapPass::ShadowmapPass(Scene *scene) : RenderPass(scene), m_EmptyFramebuffer(1, 1, false)
 	{
 		Init();
 	}
 
 	ShadowmapPass::ShadowmapPass(Scene *scene, Framebuffer *customDirectionalLightShadowFramebuffer, Framebuffer *customSpotLightShadowFramebuffer, Cubemap* customPointLightShadowCubemap)
-		: RenderPass(scene), m_EmptyFramebuffer(256, 256, false),
+		: RenderPass(scene), m_EmptyFramebuffer(1, 1, false),
 		m_CustomDirectionalLightShadowFramebuffer(customDirectionalLightShadowFramebuffer), m_CustomSpotLightShadowFramebuffer(customSpotLightShadowFramebuffer), m_CustomPointLightShadowCubemap(customPointLightShadowCubemap)
 	{
 		Init();
@@ -121,8 +121,7 @@ namespace Arcane
 			// View + Projection setup
 			float outerAngleRadians = lightManager->GetSpotLightShadowCasterOuterCutOffAngle();
 			float radius = lightManager->GetSpotLightShadowCasterAttenuationRange() * glm::tan(outerAngleRadians); // Need to get spotlight's radius given it's range and angle so we can use it for the projection bounds
-			float padding = 1.0f;
-			glm::mat4 spotLightProjection = glm::ortho(-(radius + padding), radius + padding, -(radius + padding), radius + padding, nearFarPlane.x, nearFarPlane.y);
+			glm::mat4 spotLightProjection = glm::ortho(-radius, radius, -radius, radius, nearFarPlane.x, nearFarPlane.y);
 			glm::vec3 spotLightPos = lightManager->GetSpotLightShadowCasterLightPosition();
 			glm::mat4 spotLightView = glm::lookAt(spotLightPos, spotLightPos + lightManager->GetSpotLightShadowCasterLightDir(), glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::mat4 spotLightViewProjMatrix = spotLightProjection * spotLightView;
