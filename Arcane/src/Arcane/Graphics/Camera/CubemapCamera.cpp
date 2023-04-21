@@ -44,7 +44,7 @@ namespace Arcane
 		return glm::lookAt(m_CenterPosition, m_CenterPosition + m_Front, m_Up);
 	}
 	
-	glm::mat4 CubemapCamera::GetProjectionMatrix() {
-		return glm::perspective(glm::radians(90.0f), 1.0f, NEAR_PLANE, FAR_PLANE);
+	glm::mat4 CubemapCamera::GetProjectionMatrix(float nearPlane, float farPlane) {
+		return glm::perspective(glm::radians(90.0f), 1.0f, nearPlane, farPlane);
 	}
 }

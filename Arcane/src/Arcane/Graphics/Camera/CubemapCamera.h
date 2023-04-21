@@ -13,7 +13,7 @@ namespace Arcane
 		inline void SetCenterPosition(glm::vec3 &newPosition) { m_CenterPosition = newPosition; }
 
 		virtual glm::mat4 GetViewMatrix() override;
-		virtual glm::mat4 GetProjectionMatrix() override;
+		virtual glm::mat4 GetProjectionMatrix(float nearPlane = NEAR_PLANE, float farPlane = FAR_PLANE) override;
 		inline virtual const glm::vec3& GetPosition() const override { return m_CenterPosition; }
 		inline virtual const glm::vec3& GetFront() const override { return m_Front; }
 		inline virtual const glm::vec3& GetUp() const override { return m_Up; }

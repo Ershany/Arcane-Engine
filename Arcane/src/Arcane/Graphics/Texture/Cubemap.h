@@ -2,13 +2,14 @@
 
 namespace Arcane
 {
-	struct CubemapSettings {
+	struct CubemapSettings
+	{
 		// Texture format
 		GLenum TextureFormat = GL_NONE; // If set to GL_NONE, the data format will be used
 
-		/* isSRGB will let the loader know that the texture needs to be "linearlized" before it is sampled in the shaders (ie the texture is in a non liner space)
+		/* isSRGB will let the loader know that the texture needs to be "linearlized" before it is sampled in the shaders (ie the texture is in a non linear space)
 		 * Anything that will be used for colour in a renderer should be linearlized. However textures that contain data (Heightfields, normal maps, metallic maps etc.) should not be,
-		 * thus they are not in SRGB space. Note: If you generate your own data and it is already in linear space (like light probes), be careful */
+		 * thus they are not in sRGB space. Note: If you generate your own data and it is already in linear space (like light probes), be careful */
 		bool IsSRGB = false;
 
 		// Texture wrapping options
@@ -26,7 +27,8 @@ namespace Arcane
 		int MipBias = 0; // positive means blurrier texture selected, negative means sharper texture which can show texture aliasing
 	};
 
-	class Cubemap {
+	class Cubemap
+	{
 	public:
 		Cubemap();
 		Cubemap(CubemapSettings &settings);

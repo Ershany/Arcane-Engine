@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Skybox.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
+#include <Arcane/Graphics/Texture/Cubemap.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
@@ -203,14 +204,35 @@ namespace Arcane
 
 	void ForwardLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
 	{
-		bool hasShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
-		shader->SetUniform("hasDirectionalShadow", hasShadowMap);
-		if (!hasShadowMap)
-			return;
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 
-		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
-		shader->SetUniform("shadowmap", 0);
-		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
-		shader->SetUniform("shadowBias", shadowmapData.directionalShadowmapBias);
+		bool hasDirShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
+		bool hasSpotShadowMap = shadowmapData.spotLightShadowmapFramebuffer != nullptr;
+
+		shader->SetUniform("dirLightShadowData.lightShadowIndex", hasDirShadowMap ? lightManager->GetDirectionalLightShadowCasterIndex() : -1);
+		shader->SetUniform("spotLightShadowData.lightShadowIndex", hasSpotShadowMap ? lightManager->GetSpotLightShadowCasterIndex() : -1);
+		shader->SetUniform("pointLightShadowData.lightShadowIndex", shadowmapData.hasPointLightShadows ? lightManager->GetPointLightShadowCasterIndex() : -1);
+
+		if (hasDirShadowMap)
+		{
+			shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind(0);
+			shader->SetUniform("dirLightShadowmap", 0);
+			shader->SetUniform("dirLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+			shader->SetUniform("dirLightShadowData.shadowBias", shadowmapData.directionalShadowmapBias);
+		}
+		if (hasSpotShadowMap)
+		{
+			shadowmapData.spotLightShadowmapFramebuffer->GetDepthStencilTexture()->Bind(1);
+			shader->SetUniform("spotLightShadowmap", 1);
+			shader->SetUniform("spotLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.spotLightViewProjMatrix);
+			shader->SetUniform("spotLightShadowData.shadowBias", shadowmapData.spotLightShadowmapBias);
+		}
+		if (shadowmapData.hasPointLightShadows)
+		{
+			shader->SetUniform("pointLightShadowData.shadowBias", shadowmapData.pointLightShadowmapBias);
+			shader->SetUniform("pointLightShadowData.farPlane", shadowmapData.pointLightFarPlane);
+		}
+		shader->SetUniform("pointLightShadowCubemap", 2);
+		shadowmapData.pointLightShadowCubemap->Bind(2); // Must be bound even if there is no point light shadows. Thanks OpenGL Driver!
 	}
 }

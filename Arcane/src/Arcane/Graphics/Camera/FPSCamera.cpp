@@ -34,7 +34,7 @@ namespace Arcane
 		return glm::lookAt(m_Position, m_Position + m_Front, m_Up);
 	}
 
-	glm::mat4 FPSCamera::GetProjectionMatrix() {
+	glm::mat4 FPSCamera::GetProjectionMatrix(float nearPlane/* = NEAR_PLANE*/, float farPlane/* = FAR_PLANE*/) {
 		return glm::perspective(glm::radians(m_CurrentFOV), (float)Window::GetRenderResolutionWidth() / (float)Window::GetRenderResolutionHeight(), NEAR_PLANE, FAR_PLANE);
 	}
 

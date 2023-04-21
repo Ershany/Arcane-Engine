@@ -3,6 +3,7 @@
 
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Shader.h>
+#include <Arcane/Graphics/Texture/Cubemap.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
@@ -62,23 +63,20 @@ namespace Arcane
 		m_LightingShader->SetUniform("projectionInverse", glm::inverse(camera->GetProjectionMatrix()));
 
 		// Bind GBuffer data
-		inputGbuffer->GetAlbedo()->Bind(4);
-		m_LightingShader->SetUniform("albedoTexture", 4);
+		inputGbuffer->GetAlbedo()->Bind(6);
+		m_LightingShader->SetUniform("albedoTexture", 6);
 
-		inputGbuffer->GetNormal()->Bind(5);
-		m_LightingShader->SetUniform("normalTexture", 5);
+		inputGbuffer->GetNormal()->Bind(7);
+		m_LightingShader->SetUniform("normalTexture", 7);
 
-		inputGbuffer->GetMaterialInfo()->Bind(6);
-		m_LightingShader->SetUniform("materialInfoTexture", 6);
+		inputGbuffer->GetMaterialInfo()->Bind(8);
+		m_LightingShader->SetUniform("materialInfoTexture", 8);
 
-		preLightingOutput.ssaoTexture->Bind(7);
-		m_LightingShader->SetUniform("ssaoTexture", 7);
+		preLightingOutput.ssaoTexture->Bind(9);
+		m_LightingShader->SetUniform("ssaoTexture", 9);
 
-		inputGbuffer->GetDepthStencilTexture()->Bind(8);
-		m_LightingShader->SetUniform("depthTexture", 8);
-
-		m_LightingShader->SetUniform("nearPlane", NEAR_PLANE);
-		m_LightingShader->SetUniform("farPlane", FAR_PLANE);
+		inputGbuffer->GetDepthStencilTexture()->Bind(10);
+		m_LightingShader->SetUniform("depthTexture", 10);
 
 		// Shadowmap code
 		BindShadowmap(m_LightingShader, inputShadowmapData);
@@ -119,14 +117,35 @@ namespace Arcane
 
 	void DeferredLightingPass::BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData)
 	{
-		bool hasShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
-		shader->SetUniform("hasDirectionalShadow", hasShadowMap);
-		if (!hasShadowMap)
-			return;
+		LightManager *lightManager = m_ActiveScene->GetLightManager();
 
-		shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind();
-		shader->SetUniform("shadowmap", 0);
-		shader->SetUniform("lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
-		shader->SetUniform("shadowBias", shadowmapData.directionalShadowmapBias);
+		bool hasDirShadowMap = shadowmapData.directionalShadowmapFramebuffer != nullptr;
+		bool hasSpotShadowMap = shadowmapData.spotLightShadowmapFramebuffer != nullptr;
+
+		shader->SetUniform("dirLightShadowData.lightShadowIndex", hasDirShadowMap ? lightManager->GetDirectionalLightShadowCasterIndex() : -1);
+		shader->SetUniform("spotLightShadowData.lightShadowIndex", hasSpotShadowMap ? lightManager->GetSpotLightShadowCasterIndex() : -1);
+		shader->SetUniform("pointLightShadowData.lightShadowIndex", shadowmapData.hasPointLightShadows ? lightManager->GetPointLightShadowCasterIndex() : -1);
+
+		if (hasDirShadowMap)
+		{
+			shadowmapData.directionalShadowmapFramebuffer->GetDepthStencilTexture()->Bind(0);
+			shader->SetUniform("dirLightShadowmap", 0);
+			shader->SetUniform("dirLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.directionalLightViewProjMatrix);
+			shader->SetUniform("dirLightShadowData.shadowBias", shadowmapData.directionalShadowmapBias);
+		}
+		if (hasSpotShadowMap)
+		{
+			shadowmapData.spotLightShadowmapFramebuffer->GetDepthStencilTexture()->Bind(1);
+			shader->SetUniform("spotLightShadowmap", 1);
+			shader->SetUniform("spotLightShadowData.lightSpaceViewProjectionMatrix", shadowmapData.spotLightViewProjMatrix);
+			shader->SetUniform("spotLightShadowData.shadowBias", shadowmapData.spotLightShadowmapBias);
+		}
+		if (shadowmapData.hasPointLightShadows)
+		{
+			shader->SetUniform("pointLightShadowData.shadowBias", shadowmapData.pointLightShadowmapBias);
+			shader->SetUniform("pointLightShadowData.farPlane", shadowmapData.pointLightFarPlane);
+		}
+		shader->SetUniform("pointLightShadowCubemap", 2);
+		shadowmapData.pointLightShadowCubemap->Bind(2); // Must be bound even if there is no point light shadows. Thanks OpenGL Driver!
 	}
 }

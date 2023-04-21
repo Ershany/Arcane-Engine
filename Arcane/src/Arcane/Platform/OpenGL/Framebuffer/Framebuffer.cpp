@@ -40,6 +40,7 @@ namespace Arcane
 			return *this;
 		}
 #endif // ARC_DEV_BUILD
+		ARC_ASSERT(m_Width > 0 && m_Height > 0, "Framebuffer width and height need to be > 0 to generate color texture");
 
 		Bind();
 
@@ -74,6 +75,7 @@ namespace Arcane
 			return *this;
 		}
 #endif // ARC_DEV_BUILD
+		ARC_ASSERT(m_Width > 0 && m_Height > 0, "Framebuffer width and height need to be > 0 to generate depth/stencil texture");
 
 		GLenum attachmentType = GL_DEPTH_STENCIL_ATTACHMENT;
 		if (textureFormat == NormalizedDepthOnly) {
@@ -115,6 +117,7 @@ namespace Arcane
 			return *this;
 		}
 #endif // ARC_DEV_BUILD
+		ARC_ASSERT(m_Width > 0 && m_Height > 0, "Framebuffer width and height need to be > 0 to generate depth/stencil attachment");
 
 		Bind();
 
@@ -143,6 +146,16 @@ namespace Arcane
 
 	void Framebuffer::SetColorAttachment(unsigned int target, unsigned int targetType, int mipToWriteTo) {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, targetType, target, mipToWriteTo);
+	}
+
+	void Framebuffer::SetDepthAttachment(DepthStencilAttachmentFormat textureFormat, unsigned int target, unsigned int targetType) {
+		GLenum attachmentType = GL_DEPTH_STENCIL_ATTACHMENT;
+		if (textureFormat == NormalizedDepthOnly)
+		{
+			attachmentType = GL_DEPTH_ATTACHMENT;
+		}
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, attachmentType, targetType, target, 0);
 	}
 
 	void Framebuffer::Bind() {

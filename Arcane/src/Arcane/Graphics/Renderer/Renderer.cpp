@@ -98,8 +98,8 @@ namespace Arcane
 			{
 				QuadDrawCallInfo &current = s_QuadDrawCallQueue.front();
 
-				current.texture->Bind(4);
-				shader->SetUniform("sprite", 4);
+				current.texture->Bind(5);
+				shader->SetUniform("sprite", 5);
 				SetupModelMatrix(shader, current);
 				localQuad.Draw();
 				s_RendererData.DrawCallCount++;

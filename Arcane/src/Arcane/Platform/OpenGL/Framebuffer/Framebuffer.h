@@ -24,7 +24,8 @@ namespace Arcane
 		TerrainStencilValue = 0x02
 	};
 
-	class Framebuffer {
+	class Framebuffer
+	{
 	public:
 		Framebuffer(unsigned int width, unsigned int height, bool isMultisampled);
 		virtual ~Framebuffer();
@@ -40,6 +41,7 @@ namespace Arcane
 
 		// Assumes framebuffer is bound
 		void SetColorAttachment(unsigned int target, unsigned int targetType, int mipToWriteTo = 0);
+		void SetDepthAttachment(DepthStencilAttachmentFormat textureFormat, unsigned int target, unsigned int targetType);
 		void ClearAll();
 		void ClearColour();
 		void ClearDepth();

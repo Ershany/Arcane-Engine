@@ -22,7 +22,7 @@ Arcane Engine is a real-time game engine that uses physically based rendering. A
 - MSAA (Forward Anti-Aliasing)
 - FXAA (Deferred Anti-Aliasing)
 - Directional, Point, and Spot Light Sources
-- Directional Light Shadowmapping
+- Shadows for directional, point, and spot lights
 - Skybox Support
 - Terrain Material Blending
 - Water + Wave Simulation

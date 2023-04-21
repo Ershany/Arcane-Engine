@@ -24,7 +24,8 @@ namespace Arcane
 		void generateBRDFLUT();
 		void generateFallbackProbes();
 	private:
-		Framebuffer m_SceneCaptureShadowFramebuffer, m_SceneCaptureLightingFramebuffer, m_LightProbeConvolutionFramebuffer, m_ReflectionProbeSamplingFramebuffer;
+		Framebuffer m_SceneCaptureDirLightShadowFramebuffer, m_SceneCaptureSpotLightShadowFramebuffer, m_SceneCaptureLightingFramebuffer, m_LightProbeConvolutionFramebuffer, m_ReflectionProbeSamplingFramebuffer;
+		Cubemap m_SceneCapturePointLightDepthCubemap;
 		CubemapCamera m_CubemapCamera;
 		CubemapSettings m_SceneCaptureSettings;
 		Cubemap m_SceneCaptureCubemap;

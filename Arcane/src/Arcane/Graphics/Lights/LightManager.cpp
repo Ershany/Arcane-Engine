@@ -5,29 +5,43 @@
 
 #include <Arcane/Graphics/Lights/LightBindings.h>
 #include <Arcane/Graphics/Shader.h>
+#include <Arcane/Graphics/Texture/Cubemap.h>
 #include <Arcane/Scene/Components.h>
 #include <Arcane/Scene/Scene.h>
 
 namespace Arcane
 {
-	LightManager::LightManager(Scene *scene) : m_Scene(scene), m_DirectionalShadowFramebuffer(nullptr)
+	LightManager::LightManager(Scene *scene) : m_Scene(scene), m_DirectionalLightShadowFramebuffer(nullptr), m_SpotLightShadowFramebuffer(nullptr), m_PointLightShadowCubemap(nullptr)
 	{
 
 	}
 
 	LightManager::~LightManager()
 	{
-		delete m_DirectionalShadowFramebuffer;
+		delete m_DirectionalLightShadowFramebuffer;
+		delete m_SpotLightShadowFramebuffer;
+		delete m_PointLightShadowCubemap;
 	}
 
 	void LightManager::Init()
 	{
 		FindClosestDirectionalLightShadowCaster();
+		FindClosestSpotLightShadowCaster();
+		FindClosestPointLightShadowCaster();
 
-		if (!m_DirectionalShadowFramebuffer)
+		if (!m_DirectionalLightShadowFramebuffer)
 		{
-			m_DirectionalShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
-			m_DirectionalShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+			m_DirectionalLightShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
+			m_DirectionalLightShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+		}
+		if (!m_SpotLightShadowFramebuffer)
+		{
+			m_SpotLightShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
+			m_SpotLightShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+		}
+		if (!m_PointLightShadowCubemap)
+		{
+			ReallocateCubemap(&m_PointLightShadowCubemap, glm::uvec2(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT));
 		}
 	}
 
@@ -35,53 +49,170 @@ namespace Arcane
 	void LightManager::Update()
 	{
 		// Reset out pointers since it is possible no shadow caster exists anymore
-		m_ClosestDirectionalShadowCaster = nullptr;
+		m_ClosestDirectionalLightShadowCaster = nullptr;
+		m_ClosestSpotLightShadowCaster = nullptr;
+		m_ClosestPointLightShadowCaster = nullptr;
 		
 		FindClosestDirectionalLightShadowCaster();
+		FindClosestSpotLightShadowCaster();
+		FindClosestPointLightShadowCaster();
 	}
 
 	// TODO: Should use camera component's position
 	void LightManager::FindClosestDirectionalLightShadowCaster()
 	{
 		float closestDistance2 = std::numeric_limits<float>::max();
+		int currentDirectionalLightIndex = -1;
 
-		// Prioritize the closest light to the camera as our directional shadow caster
+		// Prioritize the closest directional light to the camera as our directional shadow caster
 		auto group = m_Scene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
 		for (auto entity : group)
 		{
 			auto&[transformComponent, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
 
-			if (lightComponent.Type != LightType::LightType_Directional || !lightComponent.CastShadows)
+			if (lightComponent.Type != LightType::LightType_Directional)
+				continue;
+
+			currentDirectionalLightIndex++;
+
+			if (!lightComponent.CastShadows)
 				continue;
 
 			float currentDistance2 = glm::distance2(m_Scene->GetCamera()->GetPosition(), transformComponent.Translation);
 			if (currentDistance2 < closestDistance2)
 			{
 				closestDistance2 = currentDistance2;
-				m_ClosestDirectionalShadowCaster = &lightComponent;
-				m_ClosestDirectionalShadowCasterTransform = &transformComponent;
+				m_ClosestDirectionalLightShadowCaster = &lightComponent;
+				m_ClosestDirectionalLightShadowCasterTransform = &transformComponent;
+				m_ClosestDirectionalLightIndex = currentDirectionalLightIndex;
+			}
+		}
 
-				// TODO:
-				// Ideally we won't be re-allocating everytime we encounter a different sized shadow map. This NEEDS to be solved if we ever allow multiple directional light shadow casters
-				// Just allocate the biggest and only render to a portion with glViewPort, and make sure when we sample the shadowmap we account for the smaller size as well
-				glm::uvec2 requiredShadowResolution = GetShadowQualityResolution(m_ClosestDirectionalShadowCaster->ShadowResolution);
-				if (!m_DirectionalShadowFramebuffer || m_DirectionalShadowFramebuffer->GetWidth() != requiredShadowResolution.x || m_DirectionalShadowFramebuffer->GetHeight() != requiredShadowResolution.y)
-				{
-					ReallocateTargets(requiredShadowResolution);
-				}
+		if (m_ClosestDirectionalLightShadowCaster)
+		{
+			// TODO:
+			// Ideally we won't be re-allocating everytime we encounter a different sized shadow map. This NEEDS to be solved if we ever allow multiple directional light shadow casters
+			// Just allocate the biggest and only render to a portion with glViewPort, and make sure when we sample the shadowmap we account for the smaller size as well
+			glm::uvec2 requiredShadowResolution = GetShadowQualityResolution(m_ClosestDirectionalLightShadowCaster->ShadowResolution);
+			if (!m_DirectionalLightShadowFramebuffer || m_DirectionalLightShadowFramebuffer->GetWidth() != requiredShadowResolution.x || m_DirectionalLightShadowFramebuffer->GetHeight() != requiredShadowResolution.y)
+			{
+				ReallocateTarget(&m_DirectionalLightShadowFramebuffer, requiredShadowResolution);
 			}
 		}
 	}
 
-	void LightManager::ReallocateTargets(glm::uvec2 newResolution)
+	// TODO: Should use camera component's position
+	void LightManager::FindClosestSpotLightShadowCaster()
 	{
-		if (m_DirectionalShadowFramebuffer)
+		float closestDistance2 = std::numeric_limits<float>::max();
+		int currentSpotLightIndex = -1;
+
+		// Prioritize the closest spot light to the camera as our spotlight shadow caster
+		auto group = m_Scene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
+		for (auto entity : group)
 		{
-			delete m_DirectionalShadowFramebuffer;
+			auto&[transformComponent, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
+
+			if (lightComponent.Type != LightType::LightType_Spot)
+				continue;
+
+			currentSpotLightIndex++;
+
+			if (!lightComponent.CastShadows)
+				continue;
+
+			float currentDistance2 = glm::distance2(m_Scene->GetCamera()->GetPosition(), transformComponent.Translation);
+			if (currentDistance2 < closestDistance2)
+			{
+				closestDistance2 = currentDistance2;
+				m_ClosestSpotLightShadowCaster = &lightComponent;
+				m_ClosestSpotLightShadowCasterTransform = &transformComponent;
+				m_ClosestSpotLightIndex = currentSpotLightIndex;
+			}
 		}
 
-		m_DirectionalShadowFramebuffer = new Framebuffer(newResolution.x, newResolution.y, false);
-		m_DirectionalShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+		if (m_ClosestSpotLightShadowCaster)
+		{
+			// TODO:
+			// Ideally we won't be re-allocating everytime we encounter a different sized shadow map. This NEEDS to be solved if we ever allow multiple spot light shadow casters
+			// Just allocate the biggest and only render to a portion with glViewPort, and make sure when we sample the shadowmap we account for the smaller size as well
+			glm::uvec2 requiredShadowResolution = GetShadowQualityResolution(m_ClosestSpotLightShadowCaster->ShadowResolution);
+			if (!m_SpotLightShadowFramebuffer || m_SpotLightShadowFramebuffer->GetWidth() != requiredShadowResolution.x || m_SpotLightShadowFramebuffer->GetHeight() != requiredShadowResolution.y)
+			{
+				ReallocateTarget(&m_SpotLightShadowFramebuffer, requiredShadowResolution);
+			}
+		}
+	}
+
+	// TODO: Should use camera component's position
+	void LightManager::FindClosestPointLightShadowCaster()
+	{
+		float closestDistance2 = std::numeric_limits<float>::max();
+		int currentPointLightIndex = -1;
+
+		// Prioritize the closest point light to the camera as our pointlight shadow caster
+		auto group = m_Scene->m_Registry.group<LightComponent>(entt::get<TransformComponent>);
+		for (auto entity : group)
+		{
+			auto& [transformComponent, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
+
+			if (lightComponent.Type != LightType::LightType_Point)
+				continue;
+
+			currentPointLightIndex++;
+
+			if (!lightComponent.CastShadows)
+				continue;
+
+			float currentDistance2 = glm::distance2(m_Scene->GetCamera()->GetPosition(), transformComponent.Translation);
+			if (currentDistance2 < closestDistance2)
+			{
+				closestDistance2 = currentDistance2;
+				m_ClosestPointLightShadowCaster = &lightComponent;
+				m_ClosestPointLightShadowCasterTranform = &transformComponent;
+				m_ClosestPointLightIndex = currentPointLightIndex;
+			}
+		}
+
+		if (m_ClosestPointLightShadowCaster)
+		{
+			// TODO:
+			// Ideally we won't be re-allocating everytime we encounter a different sized shadow map. This NEEDS to be solved if we ever allow multiple point light shadow casters
+			glm::uvec2 requiredShadowResolution = GetShadowQualityResolution(m_ClosestPointLightShadowCaster->ShadowResolution);
+			if (!m_PointLightShadowCubemap || m_PointLightShadowCubemap->GetFaceWidth() != requiredShadowResolution.x || m_PointLightShadowCubemap->GetFaceHeight() != requiredShadowResolution.y)
+			{
+				ReallocateCubemap(&m_PointLightShadowCubemap, requiredShadowResolution);
+			}
+		}
+	}
+
+	void LightManager::ReallocateTarget(Framebuffer **framebuffer, glm::uvec2 newResolution)
+	{
+		if (*framebuffer) // Can this ever be garbage data or nullptr? If it is just a nullptr this isn't needed. Ehh this function is temporary until this is improved anyways
+		{
+			delete *framebuffer;
+		}
+
+		*framebuffer = new Framebuffer(newResolution.x, newResolution.y, false);
+		(*framebuffer)->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+	}
+
+	void LightManager::ReallocateCubemap(Cubemap** cubemap, glm::uvec2 newResolution)
+	{
+		if (*cubemap) // Can this ever be garbage data or nullptr? If it is just a nullptr this isn't needed. Ehh this function is temporary until this is improved anyways
+		{
+			delete *cubemap;
+		}
+
+		CubemapSettings depthCubemapSettings;
+		depthCubemapSettings.TextureFormat = GL_DEPTH_COMPONENT;
+		depthCubemapSettings.TextureMinificationFilterMode = GL_NEAREST;
+		depthCubemapSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		*cubemap = new Cubemap(depthCubemapSettings);
+		for (int i = 0; i < 6; i++)
+		{
+			(*cubemap)->GenerateCubemapFace(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, newResolution.x, newResolution.y, GL_DEPTH_COMPONENT, nullptr);
+		}
 	}
 
 	void LightManager::BindLightingUniforms(Shader *shader)
@@ -157,36 +288,168 @@ namespace Arcane
 	}
 
 	// Getters
-	glm::vec3 LightManager::GetDirectionalShadowCasterLightDir()
+	glm::vec3 LightManager::GetDirectionalLightShadowCasterLightDir()
 	{
-		if (!m_ClosestDirectionalShadowCaster)
+		if (!m_ClosestDirectionalLightShadowCaster)
 		{
 			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene - could not get light direction");
 			return glm::vec3(0.0f, -1.0f, 0.0f);
 		}
 
-		return m_ClosestDirectionalShadowCasterTransform->GetForward();
+		return m_ClosestDirectionalLightShadowCasterTransform->GetForward();
 	}
 
-	glm::vec2 LightManager::GetDirectionalShadowCasterNearFarPlane()
+	glm::vec2 LightManager::GetDirectionalLightShadowCasterNearFarPlane()
 	{
-		if (!m_ClosestDirectionalShadowCaster)
+		if (!m_ClosestDirectionalLightShadowCaster)
 		{
 			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene - could not get near/far plane");
 			return glm::vec2(SHADOWMAP_NEAR_PLANE_DEFAULT, SHADOWMAP_FAR_PLANE_DEFAULT);
 		}
 
-		return glm::vec2(m_ClosestDirectionalShadowCaster->ShadowNearPlane, m_ClosestDirectionalShadowCaster->ShadowFarPlane);
+		return glm::vec2(m_ClosestDirectionalLightShadowCaster->ShadowNearPlane, m_ClosestDirectionalLightShadowCaster->ShadowFarPlane);
 	}
 
-	float LightManager::GetDirectionalShadowCasterBias()
+	float LightManager::GetDirectionalLightShadowCasterBias()
 	{
-		if (!m_ClosestDirectionalShadowCaster)
+		if (!m_ClosestDirectionalLightShadowCaster)
 		{
 			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene - could not get bias");
 			return SHADOWMAP_BIAS_DEFAULT;
 		}
 
-		return m_ClosestDirectionalShadowCaster->ShadowBias;
+		return m_ClosestDirectionalLightShadowCaster->ShadowBias;
+	}
+
+	int LightManager::GetDirectionalLightShadowCasterIndex()
+	{
+		if (!m_ClosestDirectionalLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Directional shadow caster does not exist in current scene - could not get index");
+			return -1;
+		}
+
+		return m_ClosestDirectionalLightIndex;
+	}
+
+	glm::vec3 LightManager::GetSpotLightShadowCasterLightDir()
+	{
+		if (!m_ClosestSpotLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Spotlight shadow caster does not exist in current scene - could not get light direction");
+			return glm::vec3(0.0f, -1.0f, 0.0f);
+		}
+
+		return m_ClosestSpotLightShadowCasterTransform->GetForward();
+	}
+
+	glm::vec3 LightManager::GetSpotLightShadowCasterLightPosition()
+	{
+		if (!m_ClosestSpotLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Spotlight shadow caster does not exist in current scene - could not get light position");
+			return glm::vec3(0.0f, 0.0f, 0.0f);
+		}
+
+		return m_ClosestSpotLightShadowCasterTransform->Translation;
+	}
+
+	float LightManager::GetSpotLightShadowCasterOuterCutOffAngle()
+	{
+		if (!m_ClosestSpotLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Spotlight shadow caster does not exist in current scene - could not get outer cutoff angle");
+			return 0.0f;
+		}
+
+		return glm::acos(m_ClosestSpotLightShadowCaster->OuterCutOff);
+	}
+
+	float LightManager::GetSpotLightShadowCasterAttenuationRange()
+	{
+		if (!m_ClosestSpotLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Spotlight shadow caster does not exist in current scene - could not get attenuation range");
+			return 0.0f;
+		}
+
+		return m_ClosestSpotLightShadowCaster->AttenuationRange;
+	}
+
+	glm::vec2 LightManager::GetSpotLightShadowCasterNearFarPlane()
+	{
+		if (!m_ClosestSpotLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Spotlight shadow caster does not exist in current scene - could not get near/far plane");
+			return glm::vec2(SHADOWMAP_NEAR_PLANE_DEFAULT, SHADOWMAP_FAR_PLANE_DEFAULT);
+		}
+
+		return glm::vec2(m_ClosestSpotLightShadowCaster->ShadowNearPlane, m_ClosestSpotLightShadowCaster->ShadowFarPlane);
+	}
+
+	float LightManager::GetSpotLightShadowCasterBias()
+	{
+		if (!m_ClosestSpotLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Spotlight shadow caster does not exist in current scene - could not get bias");
+			return SHADOWMAP_BIAS_DEFAULT;
+		}
+
+		return m_ClosestSpotLightShadowCaster->ShadowBias;
+	}
+
+	int LightManager::GetSpotLightShadowCasterIndex()
+	{
+		if (!m_ClosestSpotLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Spotlight shadow caster does not exist in current scene - could not get index");
+			return -1;
+		}
+
+		return m_ClosestSpotLightIndex;
+	}
+
+	glm::vec3 LightManager::GetPointLightShadowCasterLightPosition()
+	{
+		if (!m_ClosestPointLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Point light shadow caster does not exist in current scene - could not get light position");
+			return glm::vec3(0.0f, 0.0f, 0.0f);
+		}
+
+		return m_ClosestPointLightShadowCasterTranform->Translation;
+	}
+
+	glm::vec2 LightManager::GetPointLightShadowCasterNearFarPlane()
+	{
+		if (!m_ClosestPointLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Point light shadow caster does not exist in current scene - could not get near/far plane");
+			return glm::vec2(SHADOWMAP_NEAR_PLANE_DEFAULT, SHADOWMAP_FAR_PLANE_DEFAULT);
+		}
+
+		return glm::vec2(m_ClosestPointLightShadowCaster->ShadowNearPlane, m_ClosestPointLightShadowCaster->ShadowFarPlane);
+	}
+
+	float LightManager::GetPointLightShadowCasterBias()
+	{
+		if (!m_ClosestPointLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Point light shadow caster does not exist in current scene - could not get bias");
+			return SHADOWMAP_BIAS_DEFAULT;
+		}
+
+		return m_ClosestPointLightShadowCaster->ShadowBias;
+	}
+
+	int LightManager::GetPointLightShadowCasterIndex()
+	{
+		if (!m_ClosestPointLightShadowCaster)
+		{
+			ARC_ASSERT(false, "Point light shadow caster does not exist in current scene - could not get index");
+			return -1;
+		}
+
+		return m_ClosestPointLightIndex;
 	}
 }
