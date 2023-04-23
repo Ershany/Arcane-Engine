@@ -146,9 +146,11 @@ xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"</Co
   <ItemGroup>
     <ClCompile Include="src\ArcaneEditorApplication.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
+    <ClCompile Include="src\Testbed.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\Testbed.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Arcane\Arcane.vcxproj">
