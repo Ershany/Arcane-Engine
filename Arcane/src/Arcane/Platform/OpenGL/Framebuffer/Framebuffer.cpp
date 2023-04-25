@@ -68,7 +68,7 @@ namespace Arcane
 		return *this;
 	}
 
-	Framebuffer& Framebuffer::AddDepthStencilTexture(DepthStencilAttachmentFormat textureFormat) {
+	Framebuffer& Framebuffer::AddDepthStencilTexture(DepthStencilAttachmentFormat textureFormat, bool bilinearFiltering/* = false*/) {
 #ifdef ARC_DEV_BUILD
 		if (m_DepthStencilTexture.IsGenerated()) {
 			ARC_LOG_ERROR("Framebuffer already has a depth attachment");
@@ -88,8 +88,16 @@ namespace Arcane
 		depthStencilSettings.TextureFormat = textureFormat;
 		depthStencilSettings.TextureWrapSMode = GL_CLAMP_TO_BORDER;
 		depthStencilSettings.TextureWrapTMode = GL_CLAMP_TO_BORDER;
-		depthStencilSettings.TextureMinificationFilterMode = GL_NEAREST;
-		depthStencilSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		if (bilinearFiltering)
+		{
+			depthStencilSettings.TextureMinificationFilterMode = GL_LINEAR;
+			depthStencilSettings.TextureMagnificationFilterMode = GL_LINEAR;
+		}
+		else
+		{
+			depthStencilSettings.TextureMinificationFilterMode = GL_NEAREST;
+			depthStencilSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		}
 		depthStencilSettings.TextureAnisotropyLevel = 1.0f;
 		depthStencilSettings.HasBorder = true;
 		depthStencilSettings.BorderColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);

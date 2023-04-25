@@ -32,7 +32,7 @@ namespace Arcane
 	{
 		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
 		m_ShadowmapLinearShader = ShaderLoader::LoadShader("Shadowmap_Generation_Linear.glsl");
-		m_EmptyFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+		m_EmptyFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly, true).CreateFramebuffer();
 	}
 
 	ShadowmapPassOutput ShadowmapPass::generateShadowmaps(ICamera *camera, bool renderOnlyStatic)

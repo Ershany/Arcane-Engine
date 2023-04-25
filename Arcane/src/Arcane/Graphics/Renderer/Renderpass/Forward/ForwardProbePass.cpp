@@ -25,12 +25,12 @@ namespace Arcane
 
 		CubemapSettings depthCubemapSettings;
 		depthCubemapSettings.TextureFormat = GL_DEPTH_COMPONENT;
-		depthCubemapSettings.TextureMinificationFilterMode = GL_NEAREST;
-		depthCubemapSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		depthCubemapSettings.TextureMinificationFilterMode = GL_LINEAR;
+		depthCubemapSettings.TextureMagnificationFilterMode = GL_LINEAR;
 		m_SceneCapturePointLightDepthCubemap.SetCubemapSettings(depthCubemapSettings);
 
-		m_SceneCaptureDirLightShadowFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
-		m_SceneCaptureSpotLightShadowFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+		m_SceneCaptureDirLightShadowFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly, true).CreateFramebuffer();
+		m_SceneCaptureSpotLightShadowFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly, true).CreateFramebuffer();
 		m_SceneCaptureLightingFramebuffer.AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
 		m_LightProbeConvolutionFramebuffer.AddColorTexture(FloatingPoint16).CreateFramebuffer();
 		m_ReflectionProbeSamplingFramebuffer.AddColorTexture(FloatingPoint16).CreateFramebuffer();

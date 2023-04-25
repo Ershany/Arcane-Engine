@@ -33,7 +33,7 @@ namespace Arcane
 		// Creation functions
 		void CreateFramebuffer();
 		Framebuffer& AddColorTexture(ColorAttachmentFormat textureFormat);
-		Framebuffer& AddDepthStencilTexture(DepthStencilAttachmentFormat textureFormat);
+		Framebuffer& AddDepthStencilTexture(DepthStencilAttachmentFormat textureFormat, bool bilinearFiltering = false); // bilinearFiltering should be false for GBuffer but shadowmaps can set this to true to get some free bilinear sampling
 		Framebuffer& AddDepthStencilRBO(DepthStencilAttachmentFormat rboFormat);
 
 		void Bind();

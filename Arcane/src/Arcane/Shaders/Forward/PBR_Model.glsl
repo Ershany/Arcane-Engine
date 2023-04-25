@@ -407,21 +407,21 @@ float CalculateDirLightShadow() {
 	vec3 ndcCoords = fragPosLightClipSpace.xyz / fragPosLightClipSpace.w;
 	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
 
-	float shadow = 0.0;
 	float currentDepth = depthmapCoords.z;
+	if (currentDepth > 1.0)
+		return 0.0;
 
-	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows
+	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows - Use bilinear filtering to get some free samples (4 bilinear samples, 4 samples -> 16 values actually processed)
+	float shadow = 0.0;
 	vec2 texelSize = 1.0 / textureSize(dirLightShadowmap, 0);
-	for (int y = -1; y <= 1; ++y) {
-		for (int x = -1; x <= 1; ++x) {
+	for (float y = -1.5; y < 1.0; y += 2.0) {
+		for (float x = -1.5; x < 1.0; x += 2.0) {
 			float sampledDepthPCF = texture(dirLightShadowmap, depthmapCoords.xy + (texelSize * vec2(x, y))).r;
 			shadow += currentDepth > sampledDepthPCF + dirLightShadowData.shadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
 		}
 	}
-	shadow /= 9.0;
+	shadow *= 0.25;
 
-	if (currentDepth > 1.0)
-		shadow = 0.0;
 	return shadow;
 }
 
@@ -433,21 +433,21 @@ float CalculateSpotLightShadow() {
 	vec3 ndcCoords = fragPosLightClipSpace.xyz / fragPosLightClipSpace.w;
 	vec3 depthmapCoords = ndcCoords * 0.5 + 0.5;
 
-	float shadow = 0.0;
 	float currentDepth = depthmapCoords.z;
+	if (currentDepth > 1.0)
+		return 0.0;
 
-	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows
+	// Perform Percentage Closer Filtering (PCF) in order to produce soft shadows - Use bilinear filtering to get some free samples (4 bilinear samples, 4 samples -> 16 values actually processed)
+	float shadow = 0.0;
 	vec2 texelSize = 1.0 / textureSize(spotLightShadowmap, 0);
-	for (int y = -1; y <= 1; ++y) {
-		for (int x = -1; x <= 1; ++x) {
+	for (float y = -1.5; y < 1.0; y += 2.0) {
+		for (float x = -1.5; x < 1.0; x += 2.0) {
 			float sampledDepthPCF = texture(spotLightShadowmap, depthmapCoords.xy + (texelSize * vec2(x, y))).r;
 			shadow += currentDepth > sampledDepthPCF + spotLightShadowData.shadowBias ? 1.0 : 0.0; // Add shadow bias to avoid shadow acne. However too much bias can cause peter panning
 		}
 	}
-	shadow /= 9.0;
+	shadow *= 0.25;
 
-	if (currentDepth > 1.0)
-		shadow = 0.0;
 	return shadow;
 }
 
@@ -465,6 +465,8 @@ float CalculatePointLightShadow(vec3 lightToFrag) {
 		return 0.0;
 
 	float currentDepth = length(lightToFrag);
+	if (currentDepth > pointLightShadowData.farPlane)
+		return 0.0;
 
 	float shadow = 0.0;
 	float samples = 20;
