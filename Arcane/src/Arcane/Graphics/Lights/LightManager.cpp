@@ -32,12 +32,12 @@ namespace Arcane
 		if (!m_DirectionalLightShadowFramebuffer)
 		{
 			m_DirectionalLightShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
-			m_DirectionalLightShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+			m_DirectionalLightShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly, true).CreateFramebuffer();
 		}
 		if (!m_SpotLightShadowFramebuffer)
 		{
 			m_SpotLightShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
-			m_SpotLightShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+			m_SpotLightShadowFramebuffer->AddDepthStencilTexture(NormalizedDepthOnly, true).CreateFramebuffer();
 		}
 		if (!m_PointLightShadowCubemap)
 		{
@@ -194,7 +194,7 @@ namespace Arcane
 		}
 
 		*framebuffer = new Framebuffer(newResolution.x, newResolution.y, false);
-		(*framebuffer)->AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+		(*framebuffer)->AddDepthStencilTexture(NormalizedDepthOnly, true).CreateFramebuffer();
 	}
 
 	void LightManager::ReallocateCubemap(Cubemap** cubemap, glm::uvec2 newResolution)
@@ -206,8 +206,8 @@ namespace Arcane
 
 		CubemapSettings depthCubemapSettings;
 		depthCubemapSettings.TextureFormat = GL_DEPTH_COMPONENT;
-		depthCubemapSettings.TextureMinificationFilterMode = GL_NEAREST;
-		depthCubemapSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		depthCubemapSettings.TextureMinificationFilterMode = GL_LINEAR;
+		depthCubemapSettings.TextureMagnificationFilterMode = GL_LINEAR;
 		*cubemap = new Cubemap(depthCubemapSettings);
 		for (int i = 0; i < 6; i++)
 		{
