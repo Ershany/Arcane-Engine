@@ -8,17 +8,8 @@ namespace Arcane
 {
 	Mesh::Mesh() : m_VAO(0), m_VBO(0), m_IBO(0) {}
 
-	Mesh::Mesh(std::vector<glm::vec3> &positions, std::vector<unsigned int> &indices)
-		: m_Positions(positions), m_Indices(indices), m_VAO(0), m_VBO(0), m_IBO(0) {}
-
-	Mesh::Mesh(std::vector<glm::vec3> &positions, std::vector<glm::vec2> &uvs, std::vector<unsigned int> &indices)
-		: m_Positions(positions), m_UVs(uvs), m_Indices(indices), m_VAO(0), m_VBO(0), m_IBO(0) {}
-
-	Mesh::Mesh(std::vector<glm::vec3> &positions, std::vector<glm::vec2> &uvs, std::vector<glm::vec3> &normals, std::vector<unsigned int> &indices)
-		: m_Positions(positions), m_UVs(uvs), m_Normals(normals), m_Indices(indices), m_VAO(0), m_VBO(0), m_IBO(0) {}
-
-	Mesh::Mesh(std::vector<glm::vec3> &positions, std::vector<glm::vec2> &uvs, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &tangents, std::vector<glm::vec3> &bitangents, std::vector<unsigned int> &indices)
-		: m_Positions(positions), m_UVs(uvs), m_Normals(normals), m_Tangents(tangents), m_Bitangents(bitangents), m_Indices(indices), m_VAO(0), m_VBO(0), m_IBO(0) {}
+	Mesh::Mesh(std::vector<glm::vec3>&& positions, std::vector<glm::vec2>&& uvs, std::vector<glm::vec3>&& normals, std::vector<glm::vec3>&& tangents, std::vector<glm::vec3>&& bitangents, std::vector<unsigned int>&& indices)
+		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(std::move(normals)), m_Tangents(std::move(tangents)), m_Bitangents(std::move(bitangents)), m_Indices(std::move(indices)) {}
  
 
 	void Mesh::Draw() const {

@@ -111,7 +111,7 @@ namespace Arcane
 			}
 		}
 
-		Mesh newMesh(positions, uvs, normals, tangents, bitangents, indices);
+		Mesh newMesh(std::move(positions), std::move(uvs), std::move(normals), std::move(tangents), std::move(bitangents), std::move(indices));
 		newMesh.LoadData();
 
 		// Process Materials (textures in this case)

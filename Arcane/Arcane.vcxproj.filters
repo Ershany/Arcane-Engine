@@ -221,5 +221,6 @@
     <None Include="src\Arcane\Shaders\Outline.glsl" />
     <None Include="src\Arcane\Shaders\2D\UnlitSprite.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear.glsl" />
+    <None Include="src\Arcane\Shaders\Deferred\PBR_Skinned_Model_GeometryPass.glsl" />
   </ItemGroup>
 </Project>
