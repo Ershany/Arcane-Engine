@@ -7,7 +7,7 @@ namespace Arcane
 
 	struct VertexBoneData
 	{
-		unsigned int BoneIDs[MaxBonesPerVertex];
+		int BoneIDs[MaxBonesPerVertex];
 		float Weights[MaxBonesPerVertex];
 	};
 

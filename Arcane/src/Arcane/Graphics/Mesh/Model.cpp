@@ -116,13 +116,13 @@ namespace Arcane
 
 			if (mesh->mNumBones > 0)
 			{
-				memset(boneWeights[i].BoneIDs, -1, sizeof(unsigned int) * MaxBonesPerVertex);
+				memset(boneWeights[i].BoneIDs, -1, sizeof(int) * MaxBonesPerVertex);
 				memset(boneWeights[i].Weights, 0, sizeof(float) * MaxBonesPerVertex);
 			}
 		}
 
 		// Process bones
-		for (int boneIndex = 0; boneIndex < mesh->mNumBones; boneIndex++)
+		for (unsigned int boneIndex = 0; boneIndex < mesh->mNumBones; boneIndex++)
 		{
 			int boneID = -1;
 			aiBone *bone = mesh->mBones[boneIndex];
@@ -151,7 +151,7 @@ namespace Arcane
 			{
 				int vertexID = weights[weightIndex].mVertexId;
 				float weight = weights[weightIndex].mWeight;
-				ARC_ASSERT(vertexID < mesh->mNumVertices, "Bone data is trying to access an vertex that doesn't exist");
+				ARC_ASSERT(vertexID < (int)mesh->mNumVertices, "Bone data is trying to access an vertex that doesn't exist");
 
 				// Let's attempt to add our bone weight and bone ID to the vertex data. It might be full since we limit how many bones can influence a single vertex
 				for (int i = 0; i < MaxBonesPerVertex; i++)
