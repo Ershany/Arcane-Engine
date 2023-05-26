@@ -163,6 +163,7 @@
     <ClInclude Include="src\Arcane\Vendor\Imgui\stb_truetype.h" />
     <ClInclude Include="src\Arcane\Vendor\stb\stb_image.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.h" />
+    <ClInclude Include="src\Arcane\Animation\AnimationData.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

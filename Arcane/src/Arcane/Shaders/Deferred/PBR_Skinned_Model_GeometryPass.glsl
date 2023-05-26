@@ -17,6 +17,7 @@ out vec3 ViewPosTangentSpace;
 uniform bool hasDisplacement;
 uniform vec3 viewPos;
 
+uniform mat3 normalMatrix;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
