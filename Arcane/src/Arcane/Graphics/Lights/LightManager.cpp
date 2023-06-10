@@ -254,11 +254,9 @@ namespace Arcane
 			}
 		}
 
-#ifdef ARC_DEV_BUILD
 		numDirLights = std::min<int>(numDirLights, LightBindings::MaxDirLights);
 		numPointLights = std::min<int>(numPointLights, LightBindings::MaxPointLights);
 		numSpotLights = std::min<int>(numSpotLights, LightBindings::MaxSpotLights);
-#endif
 		shader->SetUniform("numDirPointSpotLights", glm::ivec4(numDirLights, numPointLights, numSpotLights, 0));
 	}
 

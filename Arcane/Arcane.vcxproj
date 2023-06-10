@@ -157,6 +157,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Arcane\Animation\AnimationClip.cpp" />
+    <ClCompile Include="src\Arcane\Animation\Bone.cpp" />
+    <ClCompile Include="src\Arcane\Animation\PoseAnimator.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.cpp" />
     <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
@@ -258,6 +261,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Arcane\Animation\AnimationData.h" />
+    <ClInclude Include="src\Arcane\Animation\AnimationClip.h" />
+    <ClInclude Include="src\Arcane\Animation\Bone.h" />
+    <ClInclude Include="src\Arcane\Animation\PoseAnimator.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.h" />
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
     <ClInclude Include="src\Arcane.h" />

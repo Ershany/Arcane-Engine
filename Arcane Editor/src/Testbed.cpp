@@ -127,3 +127,13 @@ void Testbed::LoadTestbedPhysics()
 {
 
 }
+
+void Testbed::LoadTestbedAnimation()
+{
+	Scene* scene = Arcane::Application::GetInstance().GetScene();
+	AssetManager& assetManager = AssetManager::GetInstance();
+
+	// Load some assets for the scene at startup
+	//Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
+	Model* animatedVampire = assetManager.LoadModel(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
+}

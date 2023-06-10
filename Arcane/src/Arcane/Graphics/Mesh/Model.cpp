@@ -134,7 +134,7 @@ namespace Arcane
 			{
 				BoneData newBoneData;
 				newBoneData.boneID = m_BoneCount++;
-				newBoneData.inverseBindPose = ConvertMatrix(bone->mOffsetMatrix);
+				newBoneData.inverseBindPose = ConvertAssimpMatrixToGLM(bone->mOffsetMatrix);
 				m_BoneDataMap[boneName] = newBoneData;
 				boneID = newBoneData.boneID;
 			}
@@ -144,25 +144,56 @@ namespace Arcane
 			}
 			ARC_ASSERT(boneID != -1, "Bone not found or created..");
 
-			// Now let's go through every vertex this bone affects and attempt to add the weight and index of the bone to the vertex bone data
+			// Now let's go through every vertex this bone affects and attempt to add the weight and index of the bone to that vertex
 			aiVertexWeight *weights = bone->mWeights;
 			int numWeights = bone->mNumWeights;
 			for (int weightIndex = 0; weightIndex < numWeights; weightIndex++)
 			{
 				int vertexID = weights[weightIndex].mVertexId;
-				float weight = weights[weightIndex].mWeight;
+				float currentWeight = weights[weightIndex].mWeight;
 				ARC_ASSERT(vertexID < (int)mesh->mNumVertices, "Bone data is trying to access an vertex that doesn't exist");
 
 				// Let's attempt to add our bone weight and bone ID to the vertex data. It might be full since we limit how many bones can influence a single vertex
+				bool foundSlot = false;
 				for (int i = 0; i < MaxBonesPerVertex; i++)
 				{
-					if (boneWeights[vertexID].BoneIDs[i] != -1)
+					// Check if a slot is empty, if so mark it as found, and fill the slot
+					if (boneWeights[vertexID].BoneIDs[i] == -1)
 					{
 						boneWeights[vertexID].BoneIDs[i] = boneID;
-						boneWeights[vertexID].Weights[i] = weight;
+						boneWeights[vertexID].Weights[i] = currentWeight;
+						foundSlot = true;
 						break;
 					}
-					ARC_LOG_WARN("Could not add bone weight to vertex id: {0} because it already hit the limit of how many bones can influence it", vertexID);
+				}
+				if (!foundSlot)
+				{
+					// Since we haven't found an open slot left, let's iterate over our slots and keep track of the lowest weight. This can be useful since all slots are full since we can replace a bone weight for the vertex
+					// if another bone exists that has more influence. This is just working around bone vertex limitations, in such a way that hopefully reduces the quality loss when doing skeletal animation
+					float lowestWeight = 1.0f; // Maximum weight a bone can have on a vert
+					int smallestWeightIndex = -1;
+					for (int i = 0; i < MaxBonesPerVertex; i++)
+					{
+						if (boneWeights[vertexID].Weights[i] < lowestWeight)
+						{
+							lowestWeight = boneWeights[vertexID].Weights[i];
+							smallestWeightIndex = i;
+						}
+					}
+
+					// Now let's check if we should replace
+					if (currentWeight > lowestWeight && smallestWeightIndex != -1)
+					{
+						ARC_LOG_INFO("Hit Bone Vertex Capacity on Vertex id:{0} - Replacing bone:{1} on the vert because it's influence:{2} is less than the bone:{3} we're trying to add's influence:{4}",
+							vertexID, boneWeights[vertexID].BoneIDs[smallestWeightIndex], boneWeights[vertexID].Weights[smallestWeightIndex], boneID, currentWeight);
+
+						boneWeights[vertexID].BoneIDs[smallestWeightIndex] = boneID;
+						boneWeights[vertexID].Weights[smallestWeightIndex] = currentWeight;
+					}
+					else
+					{
+						ARC_LOG_INFO("Hit Bone Vertex Capacity on Vertex id:{0} - Not adding bone:{1}'s influence amount:{2} because it is the least significant", vertexID, boneID, currentWeight);
+					}
 				}
 			}
 		}
