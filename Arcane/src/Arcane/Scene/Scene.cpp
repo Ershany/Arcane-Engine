@@ -76,36 +76,36 @@ namespace Arcane
 			switch (filter)
 			{
 			case ModelFilterType::AllModels:
-				Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+				Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent, model.ShouldBackfaceCull);
 				break;
 			case ModelFilterType::StaticModels:
 				if (model.IsStatic)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			case ModelFilterType::OpaqueModels:
 				if (model.IsTransparent == false)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			case ModelFilterType::OpaqueStaticModels:
 				if (model.IsTransparent == false && model.IsStatic)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			case ModelFilterType::TransparentModels:
 				if (model.IsTransparent)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			case ModelFilterType::TransparentStaticModels:
 				if (model.IsTransparent && model.IsStatic)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			}

@@ -51,7 +51,7 @@ namespace Arcane
 			m_ColourWriteShader->SetUniform("colour", glm::vec3(1.0, 1.0, 1.0));
 			m_ColourWriteShader->SetUniform("view", camera->GetViewMatrix());
 			m_ColourWriteShader->SetUniform("projection", camera->GetProjectionMatrix());
-			Renderer::QueueMesh(meshComponent.AssetModel, transformComponent.GetTransform(), meshComponent.IsTransparent);
+			Renderer::QueueMesh(meshComponent.AssetModel, transformComponent.GetTransform(), meshComponent.IsTransparent, meshComponent.ShouldBackfaceCull);
 			Renderer::Flush(camera, m_ColourWriteShader, RenderPassType::NoMaterialRequired);
 
 			// Combine the objects that need to be highlighted with the scene to get the final output

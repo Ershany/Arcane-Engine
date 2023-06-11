@@ -28,6 +28,7 @@ namespace Arcane
 	{
 		Model *model;
 		glm::mat4 transform;
+		bool cullBackface;
 	};
 	struct QuadDrawCallInfo
 	{
@@ -44,7 +45,7 @@ namespace Arcane
 		static void BeginFrame();
 		static void EndFrame();
 
-		static void QueueMesh(Model *model, const glm::mat4 &transform, bool isTransparent=false);
+		static void QueueMesh(Model *model, const glm::mat4 &transform, bool isTransparent, bool cullBackface);
 		static void QueueQuad(const glm::vec3 &position, const glm::vec2 &size, const Texture *texture); // TODO: Should use batch rendering to efficiently render quads together
 		static void QueueQuad(const glm::mat4 &transform, const Texture *texture); // TODO: Should use batch rendering to efficiently render quads together
 

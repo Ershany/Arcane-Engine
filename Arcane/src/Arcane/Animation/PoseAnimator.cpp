@@ -10,7 +10,7 @@ namespace Arcane
 		: m_CurrentAnimationClip(nullptr), m_CurrentTime(0.0f), m_DeltaTime(0.0f), m_FinalBoneMatrices(100, glm::mat4(1.0f))
 	{}
 
-	void PoseAnimator::UpdateAnimation(float deltaTime)
+	void PoseAnimator::PlayAnimation(float deltaTime)
 	{
 		m_DeltaTime = deltaTime;
 		if (m_CurrentAnimationClip)
@@ -21,7 +21,7 @@ namespace Arcane
 		}
 	}
 
-	void PoseAnimator::PlayAnimation(AnimationClip *clip)
+	void PoseAnimator::SetAnimationClip(AnimationClip *clip)
 	{
 		m_CurrentAnimationClip = clip;
 		m_CurrentTime = 0.0f;
@@ -32,19 +32,25 @@ namespace Arcane
 		std::string nodeName = node->name;
 		glm::mat4 currentTransform;
 
+		// Get the current bone engaged in the animation
 		Bone *bone = m_CurrentAnimationClip->FindBone(nodeName);
 		if (bone)
 		{
+			// Update the bones local transform with the keyframe data when we supply it the current animation time
 			bone->Update(m_CurrentTime);
 			currentTransform = bone->GetLocalTransform();
 		}
 		else
 		{
+			// If we can't find the bone, then just default to the node's transformation
 			currentTransform = node->transformation;
 		}
 
+		// Calculate the total transformation given its parent
 		glm::mat4 globalTransformation = parentTransform * currentTransform;
 
+		// We need to apply the inverse bind pose to our globalTransformation. This is necessary because the model starts in bind pose
+		// and you need to animate a vertex, you need to transform it to the bone's local coordinate system, calculate the transformation and move it back into world space in the shader
 		auto boneDataMap = m_CurrentAnimationClip->GetBoneDataMap();
 		if (boneDataMap->find(nodeName) != boneDataMap->end())
 		{

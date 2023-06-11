@@ -10,9 +10,9 @@ namespace Arcane
 	public:
 		PoseAnimator();
 
-		void UpdateAnimation(float deltaTime);
-		void PlayAnimation(AnimationClip *clip);
-
+		void PlayAnimation(float deltaTime);
+		void SetAnimationClip(AnimationClip *clip);
+	private:
 		void CalculateBoneTransform(const AssimpNodeData *node, glm::mat4 parentTransform);
 	private:
 		std::vector<glm::mat4> m_FinalBoneMatrices;

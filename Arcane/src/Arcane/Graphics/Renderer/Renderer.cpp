@@ -55,15 +55,15 @@ namespace Arcane
 		s_QuadDrawCallQueue.emplace_back(QuadDrawCallInfo{ texture, transform });
 	}
 
-	void Renderer::QueueMesh(Model *model, const glm::mat4 &transform, bool isTransparent)
+	void Renderer::QueueMesh(Model *model, const glm::mat4 &transform, bool isTransparent, bool cullBackface)
 	{
 		if (isTransparent)
 		{
-			s_TransparentMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, transform });
+			s_TransparentMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, transform, cullBackface });
 		}
 		else
 		{
-			s_OpaqueMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, transform });
+			s_OpaqueMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, transform, cullBackface });
 		}
 	}
 
@@ -80,6 +80,7 @@ namespace Arcane
 			{
 				MeshDrawCallInfo &current = s_OpaqueMeshDrawCallQueue.front();
 
+				s_GLCache->SetFaceCull(current.cullBackface);
 				SetupModelMatrix(shader, current, renderPassType);
 				current.model->Draw(shader, renderPassType);
 				s_RendererData.DrawCallCount++;
@@ -122,6 +123,7 @@ namespace Arcane
 			{
 				MeshDrawCallInfo &current = s_TransparentMeshDrawCallQueue.front();
 
+				s_GLCache->SetFaceCull(current.cullBackface);
 				SetupModelMatrix(shader, current, renderPassType);
 				current.model->Draw(shader, renderPassType);
 				s_RendererData.DrawCallCount++;
@@ -182,7 +184,6 @@ namespace Arcane
 	{
 		s_GLCache->SetDepthTest(true);
 		s_GLCache->SetBlend(false);
-		s_GLCache->SetFaceCull(true);
 		s_GLCache->SetCullFace(GL_BACK);
 	}
 
@@ -190,7 +191,7 @@ namespace Arcane
 	{
 		s_GLCache->SetDepthTest(true);
 		s_GLCache->SetBlend(true);
-		s_GLCache->SetFaceCull(false);
+		s_GLCache->SetCullFace(GL_BACK);
 		s_GLCache->SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 

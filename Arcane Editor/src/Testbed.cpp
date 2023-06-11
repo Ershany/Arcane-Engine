@@ -70,6 +70,7 @@ void Testbed::LoadTestbedGraphics()
 		auto& meshComponent = window.AddComponent<MeshComponent>(quadModel);
 		meshComponent.IsStatic = true;
 		meshComponent.IsTransparent = true;
+		meshComponent.ShouldBackfaceCull = false;
 	}
 
 	{
@@ -136,4 +137,33 @@ void Testbed::LoadTestbedAnimation()
 	// Load some assets for the scene at startup
 	//Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
 	Model* animatedVampire = assetManager.LoadModel(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
+
+	// Initialize some entities and components at startup
+	{
+		auto vampire = scene->CreateEntity("Animated Vampire");
+		auto& transformComponent = vampire.GetComponent<TransformComponent>();
+		transformComponent.Translation = { -92.38f, -6.12f, -36.62f };
+		transformComponent.Scale = { 0.05f, 0.05f, 0.05f };
+		auto& meshComponent = vampire.AddComponent<MeshComponent>(animatedVampire);
+		meshComponent.IsStatic = false;
+		meshComponent.IsTransparent = false;
+		meshComponent.ShouldBackfaceCull = false;
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetRoughnessValue(1.0f);
+		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_normal.png")));
+		meshMaterial.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_specular.png")));
+	}
+
+	{
+		auto directionalLight = scene->CreateEntity("Directional Light");
+		auto& transformComponent = directionalLight.GetComponent<TransformComponent>();
+		transformComponent.Rotation.x = glm::radians(-63.5f);
+		auto& lightComponent = directionalLight.AddComponent<LightComponent>();
+		lightComponent.Type = LightType::LightType_Directional;
+		lightComponent.Intensity = 1.0f;
+		lightComponent.LightColour = glm::vec3(1.0f, 0.6f, 0.0f);
+		lightComponent.IsStatic = true;
+		lightComponent.CastShadows = true;
+		lightComponent.ShadowResolution = ShadowQuality::ShadowQuality_Ultra;
+	}
 }

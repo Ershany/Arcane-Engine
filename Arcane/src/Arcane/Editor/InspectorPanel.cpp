@@ -44,6 +44,8 @@ namespace Arcane
 						int choice = meshComponent.IsTransparent;
 						ImGui::Combo("Rendering Mode", &choice, items, IM_ARRAYSIZE(items));
 						meshComponent.IsTransparent = choice;
+						ImGui::Checkbox("Is Static", &meshComponent.IsStatic);
+						ImGui::Checkbox("Cull Backface", &meshComponent.ShouldBackfaceCull);
 						ImGui::Text("Texture Maps");
 						ImGui::Separator();
 

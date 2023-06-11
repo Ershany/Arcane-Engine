@@ -13,7 +13,7 @@ namespace Arcane
 
 		auto animation = scene->mAnimations[0];
 		m_ClipDuration = static_cast<float>(animation->mDuration);
-		m_TicksPerSecond = static_cast<float>(animation->mTicksPerSecond);
+		m_TicksPerSecond = animation->mTicksPerSecond != 0 ? static_cast<float>(animation->mTicksPerSecond) : 30.0f;
 		ReadHierarchyData(m_RootNode, scene->mRootNode);
 		ReadMissingBones(animation, model);
 	}

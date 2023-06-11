@@ -39,7 +39,8 @@ namespace Arcane
 		Assimp::Importer import;
 		const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 
-		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
 			ARC_LOG_ERROR("failed to load model - {0}", import.GetErrorString());
 			return;
 		}
@@ -184,15 +185,15 @@ namespace Arcane
 					// Now let's check if we should replace
 					if (currentWeight > lowestWeight && smallestWeightIndex != -1)
 					{
-						ARC_LOG_INFO("Hit Bone Vertex Capacity on Vertex id:{0} - Replacing bone:{1} on the vert because it's influence:{2} is less than the bone:{3} we're trying to add's influence:{4}",
-							vertexID, boneWeights[vertexID].BoneIDs[smallestWeightIndex], boneWeights[vertexID].Weights[smallestWeightIndex], boneID, currentWeight);
+						ARC_LOG_WARN("Hit Bone Vertex Capacity {0} on Vertex id:{1} - Replacing bone:{2} on the vert because it's influence:{3} is less than the bone:{4} we're trying to add's influence:{5}",
+							MaxBonesPerVertex, vertexID, boneWeights[vertexID].BoneIDs[smallestWeightIndex], boneWeights[vertexID].Weights[smallestWeightIndex], boneID, currentWeight);
 
 						boneWeights[vertexID].BoneIDs[smallestWeightIndex] = boneID;
 						boneWeights[vertexID].Weights[smallestWeightIndex] = currentWeight;
 					}
 					else
 					{
-						ARC_LOG_INFO("Hit Bone Vertex Capacity on Vertex id:{0} - Not adding bone:{1}'s influence amount:{2} because it is the least significant", vertexID, boneID, currentWeight);
+						ARC_LOG_WARN("Hit Bone Vertex Capacity {0} on Vertex id:{1} - Not adding bone:{2}'s influence amount:{3} because it is the least significant", MaxBonesPerVertex, vertexID, boneID, currentWeight);
 					}
 				}
 			}
