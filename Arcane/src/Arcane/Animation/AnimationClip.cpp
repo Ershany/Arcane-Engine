@@ -5,17 +5,17 @@
 
 namespace Arcane
 {
-	AnimationClip::AnimationClip(const std::string &animationPath, Model *model)
+	AnimationClip::AnimationClip(const std::string &animationPath, int animationIndex, Model *model) : m_Model(model)
 	{
 		Assimp::Importer importer;
 		const aiScene *scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
 		ARC_ASSERT(scene && scene->mRootNode, "Failed importing animationPath");
 
-		auto animation = scene->mAnimations[0];
-		m_ClipDuration = static_cast<float>(animation->mDuration);
-		m_TicksPerSecond = animation->mTicksPerSecond != 0 ? static_cast<float>(animation->mTicksPerSecond) : 30.0f;
+		m_AssimpAnimation = scene->mAnimations[animationIndex];
+		m_ClipDuration = static_cast<float>(m_AssimpAnimation->mDuration);
+		m_TicksPerSecond = m_AssimpAnimation->mTicksPerSecond != 0 ? static_cast<float>(m_AssimpAnimation->mTicksPerSecond) : 30.0f;
 		ReadHierarchyData(m_RootNode, scene->mRootNode);
-		ReadMissingBones(animation, model);
+		ReadMissingBones();
 	}
 
 	AnimationClip::~AnimationClip()
@@ -34,17 +34,17 @@ namespace Arcane
 		return nullptr;
 	}
 
-	void AnimationClip::ReadMissingBones(const aiAnimation *animation, Model *model)
+	void AnimationClip::ReadMissingBones()
 	{
-		int size = animation->mNumChannels;
+		int size = m_AssimpAnimation->mNumChannels;
 
-		auto boneInfoMap = model->GetBoneDataMap();
-		int &boneCount = model->GetBoneCountRef();
+		auto boneInfoMap = m_Model->GetBoneDataMap();
+		int &boneCount = m_Model->GetBoneCountRef();
 
-		// reading channels(bones engaged in an animation and their keyframes)
+		// Sometimes we miss bones, so this function will find any other bones engaged in the animation and add them. Assimp struggles..
 		for (int i = 0; i < size; i++)
 		{
-			auto channel = animation->mChannels[i];
+			auto channel = m_AssimpAnimation->mChannels[i];
 			std::string boneName = channel->mNodeName.data;
 
 			if (boneInfoMap->find(boneName) == boneInfoMap->end())
@@ -55,7 +55,7 @@ namespace Arcane
 		}
 	}
 
-	void AnimationClip::ReadHierarchyData(AssimpNodeData &dest, const aiNode *src)
+	void AnimationClip::ReadHierarchyData(AssimpBoneData &dest, const aiNode *src)
 	{
 		ARC_ASSERT(src, "Needs src data to read in AnimationClip");
 
@@ -65,7 +65,7 @@ namespace Arcane
 
 		for (unsigned int i = 0; i < src->mNumChildren; i++)
 		{
-			AssimpNodeData newData;
+			AssimpBoneData newData;
 			ReadHierarchyData(newData, src->mChildren[i]);
 			dest.children.push_back(newData);
 		}

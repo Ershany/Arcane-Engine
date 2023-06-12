@@ -4,6 +4,8 @@
 
 #include <Arcane/Graphics/Mesh/Model.h>
 #include <Arcane/Graphics/Lights/LightManager.h>
+#include <Arcane/Animation/AnimationClip.h>
+#include <Arcane/Animation/PoseAnimator.h>
 
 namespace Arcane
 {
@@ -103,6 +105,7 @@ namespace Arcane
 
 	struct PoseAnimatorComponent
 	{
-
+		PoseAnimator PoseAnimator;
+		AnimationClip *clip;
 	};
 }

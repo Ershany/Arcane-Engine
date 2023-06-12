@@ -9,6 +9,7 @@
 #include <Arcane/Scene/Components.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Scene/Entity.h>
+#include <Arcane/Animation/AnimationClip.h>
 
 
 using namespace Arcane;
@@ -138,6 +139,9 @@ void Testbed::LoadTestbedAnimation()
 	//Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
 	Model* animatedVampire = assetManager.LoadModel(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
 
+	int animIndex = 0;
+	AnimationClip *clip = new AnimationClip(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"), animIndex, animatedVampire);
+
 	// Initialize some entities and components at startup
 	{
 		auto vampire = scene->CreateEntity("Animated Vampire");
@@ -152,6 +156,8 @@ void Testbed::LoadTestbedAnimation()
 		meshMaterial.SetRoughnessValue(1.0f);
 		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_normal.png")));
 		meshMaterial.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_specular.png")));
+		auto& poseAnimatorComponent = vampire.AddComponent<PoseAnimatorComponent>();
+		poseAnimatorComponent.clip = clip;
 	}
 
 	{

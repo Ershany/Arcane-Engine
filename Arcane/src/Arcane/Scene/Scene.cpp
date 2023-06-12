@@ -33,6 +33,7 @@ namespace Arcane
 		// Setup our ECS groupings to avoid performance costs at runtime if they get created
 		auto fullOwningGroup1 = m_Registry.group<TransformComponent, MeshComponent>();
 		auto partialOwningGroup1 = m_Registry.group<LightComponent>(entt::get<TransformComponent>);
+		//auto patialOwningGroup2 = m_Registry.group<TransformComponent, MeshComponent>(entt::get<PoseAnimatorComponent>); // TODO: Is this correct?
 
 		// Skybox init needs to happen before probes are generated
 		std::vector<std::string> skyboxFilePaths;

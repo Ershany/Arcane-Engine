@@ -186,6 +186,19 @@ namespace Arcane
 						}
 					}
 				}
+
+				if (m_FocusedEntity.HasComponent<PoseAnimatorComponent>())
+				{
+					if (ImGui::CollapsingHeader("Pose Animator", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						auto &animatorComponent = m_FocusedEntity.GetComponent<PoseAnimatorComponent>();
+						
+						if (animatorComponent.clip)
+						{
+							ImGui::Text("Animation Name: %s", animatorComponent.clip->GetAnimationName());
+						}
+					}
+				}
 			}
 		}
 		ImGui::End();

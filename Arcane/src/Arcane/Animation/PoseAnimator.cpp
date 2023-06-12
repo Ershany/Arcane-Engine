@@ -17,7 +17,7 @@ namespace Arcane
 		{
 			m_CurrentTime += m_CurrentAnimationClip->GetTicksPerSecond() * deltaTime;
 			m_CurrentTime = fmod(m_CurrentTime, m_CurrentAnimationClip->GetDuration());
-			CalculateBoneTransform(m_CurrentAnimationClip->GetRootNode(), glm::mat4(1.0f));
+			CalculateBoneTransform(m_CurrentAnimationClip->GetRootBone(), glm::mat4(1.0f));
 		}
 	}
 
@@ -27,7 +27,7 @@ namespace Arcane
 		m_CurrentTime = 0.0f;
 	}
 
-	void PoseAnimator::CalculateBoneTransform(const AssimpNodeData *node, glm::mat4 parentTransform)
+	void PoseAnimator::CalculateBoneTransform(const AssimpBoneData *node, glm::mat4 parentTransform)
 	{
 		std::string nodeName = node->name;
 		glm::mat4 currentTransform;

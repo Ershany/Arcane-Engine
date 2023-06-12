@@ -3,7 +3,7 @@
 namespace Arcane
 {
 	class AnimationClip;
-	struct AssimpNodeData;
+	struct AssimpBoneData;
 
 	class PoseAnimator
 	{
@@ -13,7 +13,7 @@ namespace Arcane
 		void PlayAnimation(float deltaTime);
 		void SetAnimationClip(AnimationClip *clip);
 	private:
-		void CalculateBoneTransform(const AssimpNodeData *node, glm::mat4 parentTransform);
+		void CalculateBoneTransform(const AssimpBoneData *node, glm::mat4 parentTransform);
 	private:
 		std::vector<glm::mat4> m_FinalBoneMatrices;
 		AnimationClip *m_CurrentAnimationClip;
