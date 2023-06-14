@@ -117,7 +117,7 @@ namespace Arcane
 		}
 
 		// Finally render the meshes
-		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
+		Renderer::Flush(camera, RenderPassType::MaterialRequired, m_ModelShader, nullptr); // TODO: Add skinned shader
 
 		// Render pass output
 		LightingPassOutput passOutput;
@@ -194,7 +194,7 @@ namespace Arcane
 		}
 
 		// Render the transparent meshes
-		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
+		Renderer::Flush(camera, RenderPassType::MaterialRequired, m_ModelShader, nullptr); // TODO: Add skinned shader
 
 		// Render pass output
 		LightingPassOutput passOutput;

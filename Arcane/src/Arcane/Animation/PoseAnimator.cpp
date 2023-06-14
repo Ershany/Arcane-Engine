@@ -55,6 +55,7 @@ namespace Arcane
 		if (boneDataMap->find(nodeName) != boneDataMap->end())
 		{
 			int index = (*boneDataMap)[nodeName].boneID;
+			ARC_ASSERT(index < MaxBonesPerModel, "We exceeded the MaxBonesPerModel limit");
 			glm::mat4 inverseBindPose = (*boneDataMap)[nodeName].inverseBindPose;
 			m_FinalBoneMatrices[index] = globalTransformation * inverseBindPose;
 		}

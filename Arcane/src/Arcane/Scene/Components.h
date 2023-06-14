@@ -106,6 +106,5 @@ namespace Arcane
 	struct PoseAnimatorComponent
 	{
 		PoseAnimator PoseAnimator;
-		AnimationClip *clip;
 	};
 }

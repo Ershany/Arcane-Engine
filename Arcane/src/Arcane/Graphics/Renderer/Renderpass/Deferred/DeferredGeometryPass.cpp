@@ -13,6 +13,7 @@ namespace Arcane
 {
 	DeferredGeometryPass::DeferredGeometryPass(Scene *scene) : RenderPass(scene), m_AllocatedGBuffer(true) {
 		m_ModelShader = ShaderLoader::LoadShader("deferred/PBR_Model_GeometryPass.glsl");
+		m_SkinnedModelShader = ShaderLoader::LoadShader("deferred/PBR_Skinned_Model_GeometryPass.glsl");
 		m_TerrainShader = ShaderLoader::LoadShader("deferred/PBR_Terrain_GeometryPass.glsl");
 
 		m_GBuffer = new GBuffer(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight());
@@ -60,7 +61,7 @@ namespace Arcane
 		// Render opaque objects (use stencil to denote models for the deferred lighting pass)
 		m_GLCache->SetStencilWriteMask(0xFF);
 		m_GLCache->SetStencilFunc(GL_ALWAYS, StencilValue::ModelStencilValue, 0xFF);
-		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
+		Renderer::Flush(camera, RenderPassType::MaterialRequired, m_ModelShader, m_SkinnedModelShader);
 		m_GLCache->SetStencilWriteMask(0x00);
 
 		// Setup terrain information

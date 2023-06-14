@@ -63,36 +63,44 @@ namespace Arcane
 		glUniformMatrix4fv(glGetUniformLocation(m_ShaderID, name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	void Shader::SetUniformArray(const char *name, int arraySize, float *value) {
+	void Shader::SetUniformArray(const char *name, int arraySize, const float *value) {
 		glUniform1fv(glGetUniformLocation(m_ShaderID, name), arraySize, value);
 	}
 
-	void Shader::SetUniformArray(const char *name, int arraySize, int *value) {
+	void Shader::SetUniformArray(const char *name, int arraySize, const int *value) {
 		glUniform1iv(glGetUniformLocation(m_ShaderID, name), arraySize, value);
 	}
 
-	void Shader::SetUniformArray(const char *name, int arraySize, glm::vec2 *value) {
+	void Shader::SetUniformArray(const char *name, int arraySize, const glm::vec2 *value) {
 		glUniform2fv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
 	}
 
-	void Shader::SetUniformArray(const char *name, int arraySize, glm::ivec2 *value) {
+	void Shader::SetUniformArray(const char *name, int arraySize, const glm::ivec2 *value) {
 		glUniform2iv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
 	}
 
-	void Shader::SetUniformArray(const char *name, int arraySize, glm::vec3 *value) {
+	void Shader::SetUniformArray(const char *name, int arraySize, const glm::vec3 *value) {
 		glUniform3fv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
 	}
 
-	void Shader::SetUniformArray(const char *name, int arraySize, glm::ivec3 *value) {
+	void Shader::SetUniformArray(const char *name, int arraySize, const glm::ivec3 *value) {
 		glUniform3iv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
 	}
 
-	void Shader::SetUniformArray(const char *name, int arraySize, glm::vec4 *value) {
+	void Shader::SetUniformArray(const char *name, int arraySize, const glm::vec4 *value) {
 		glUniform4fv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
 	}
 
-	void Shader::SetUniformArray(const char *name, int arraySize, glm::ivec4 *value) {
+	void Shader::SetUniformArray(const char *name, int arraySize, const glm::ivec4 *value) {
 		glUniform4iv(glGetUniformLocation(m_ShaderID, name), arraySize, glm::value_ptr(*value));
+	}
+
+	void Shader::SetUniformArray(const char *name, int arraySize, const glm::mat3 *value) {
+		glUniformMatrix3fv(glGetUniformLocation(m_ShaderID, name), arraySize, GL_FALSE, glm::value_ptr(*value));
+	}
+
+	void Shader::SetUniformArray(const char *name, int arraySize, const glm::mat4 *value) {
+		glUniformMatrix4fv(glGetUniformLocation(m_ShaderID, name), arraySize, GL_FALSE, glm::value_ptr(*value));
 	}
 
 	int Shader::GetUniformLocation(const char* name) {

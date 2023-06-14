@@ -12,6 +12,9 @@ namespace Arcane
 
 		void PlayAnimation(float deltaTime);
 		void SetAnimationClip(AnimationClip *clip);
+
+		inline AnimationClip* GetCurrentAnimationClip() { return m_CurrentAnimationClip; }
+		inline const std::vector<glm::mat4>& GetFinalBoneMatrices() const { return m_FinalBoneMatrices; }
 	private:
 		void CalculateBoneTransform(const AssimpBoneData *node, glm::mat4 parentTransform);
 	private:

@@ -193,9 +193,10 @@ namespace Arcane
 					{
 						auto &animatorComponent = m_FocusedEntity.GetComponent<PoseAnimatorComponent>();
 						
-						if (animatorComponent.clip)
+						AnimationClip *clip = animatorComponent.PoseAnimator.GetCurrentAnimationClip();
+						if (clip)
 						{
-							ImGui::Text("Animation Name: %s", animatorComponent.clip->GetAnimationName());
+							ImGui::Text("Animation Name: %s", clip->GetAnimationName());
 						}
 					}
 				}

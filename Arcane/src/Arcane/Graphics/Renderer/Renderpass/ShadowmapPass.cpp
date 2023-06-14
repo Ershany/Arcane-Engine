@@ -87,7 +87,7 @@ namespace Arcane
 			m_GLCache->SetDepthTest(true);
 			m_GLCache->SetBlend(false);
 			m_GLCache->SetFaceCull(false); // For one sided objects
-			Renderer::Flush(camera, m_ShadowmapShader, RenderPassType::NoMaterialRequired);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+			Renderer::Flush(camera, RenderPassType::NoMaterialRequired, m_ShadowmapShader, nullptr);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights   // TODO: Add skinned shader
 
 			// Render terrain
 			terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
@@ -141,7 +141,7 @@ namespace Arcane
 			m_GLCache->SetDepthTest(true);
 			m_GLCache->SetBlend(false);
 			m_GLCache->SetFaceCull(false); // For one sided objects
-			Renderer::Flush(camera, m_ShadowmapShader, RenderPassType::NoMaterialRequired); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+			Renderer::Flush(camera, RenderPassType::NoMaterialRequired, m_ShadowmapShader, nullptr); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights   // TODO: Add skinned shader
 
 			// Render terrain
 			terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
@@ -208,7 +208,7 @@ namespace Arcane
 				m_GLCache->SetDepthTest(true);
 				m_GLCache->SetBlend(false);
 				m_GLCache->SetFaceCull(false); // For one sided objects
-				Renderer::Flush(camera, m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+				Renderer::Flush(camera, RenderPassType::NoMaterialRequired, m_ShadowmapLinearShader, nullptr);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights   // TODO: Add skinned shader
 
 				// Render terrain
 				terrain->Draw(m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);

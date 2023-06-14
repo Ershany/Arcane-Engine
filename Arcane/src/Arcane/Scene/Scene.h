@@ -40,6 +40,7 @@ namespace Arcane
 		void OnUpdate(float deltaTime);
 
 		void AddModelsToRenderer(ModelFilterType filter);
+		void AddSkinnedModelsToRenderer(ModelFilterType filter);
 
 		inline Terrain* GetTerrain() { return &m_Terrain; }
 		inline LightManager* GetLightManager() { return &m_LightManager; }

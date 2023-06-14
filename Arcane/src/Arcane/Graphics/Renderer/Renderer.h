@@ -4,6 +4,7 @@
 #include <Arcane/Graphics/Mesh/Common/Cube.h>
 #include <Arcane/Graphics/Mesh/Common/Quad.h>
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
+#include <Arcane/Animation/PoseAnimator.h>
 
 #include <deque>
 
@@ -26,13 +27,14 @@ namespace Arcane
 	// Some sort of draw call bucketing system
 	struct MeshDrawCallInfo
 	{
-		Model *model;
+		Model *model = nullptr;
+		PoseAnimator *animator = nullptr;
 		glm::mat4 transform;
 		bool cullBackface;
 	};
 	struct QuadDrawCallInfo
 	{
-		const Texture *texture;
+		const Texture *texture = nullptr;
 		glm::mat4 transform;
 	};
 
@@ -45,11 +47,11 @@ namespace Arcane
 		static void BeginFrame();
 		static void EndFrame();
 
-		static void QueueMesh(Model *model, const glm::mat4 &transform, bool isTransparent, bool cullBackface);
+		static void QueueMesh(Model *model, const glm::mat4 &transform, PoseAnimator *animator = nullptr, bool isTransparent = false, bool cullBackface = true);
 		static void QueueQuad(const glm::vec3 &position, const glm::vec2 &size, const Texture *texture); // TODO: Should use batch rendering to efficiently render quads together
 		static void QueueQuad(const glm::mat4 &transform, const Texture *texture); // TODO: Should use batch rendering to efficiently render quads together
 
-		static void Flush(ICamera *camera, Shader *shader, RenderPassType renderPassType);
+		static void Flush(ICamera *camera, RenderPassType renderPassType, Shader *shader, Shader *skinnedShader);
 
 		static void DrawNdcPlane();
 		static void DrawNdcCube();
@@ -58,6 +60,7 @@ namespace Arcane
 	private:
 		static void SetupModelMatrix(Shader *shader, MeshDrawCallInfo &drawCallInfo, RenderPassType pass);
 		static void SetupModelMatrix(Shader *shader, QuadDrawCallInfo &drawCallInfo);
+		static void SetupBoneMatrices(Shader *shader, MeshDrawCallInfo &drawCallInfo);
 		static void SetupOpaqueRenderState();
 		static void SetupTransparentRenderState();
 		static void SetupQuadRenderState();
@@ -69,7 +72,9 @@ namespace Arcane
 		static GLCache *s_GLCache;
 
 		static std::deque<MeshDrawCallInfo> s_OpaqueMeshDrawCallQueue;
+		static std::deque<MeshDrawCallInfo> s_OpaqueSkinnedMeshDrawCallQueue;
 		static std::deque<MeshDrawCallInfo> s_TransparentMeshDrawCallQueue;
+		static std::deque<MeshDrawCallInfo> s_TransparentSkinnedMeshDrawCallQueue;
 		static std::deque<QuadDrawCallInfo> s_QuadDrawCallQueue;
 	};
 }

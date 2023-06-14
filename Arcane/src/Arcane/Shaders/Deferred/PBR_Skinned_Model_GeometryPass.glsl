@@ -27,6 +27,7 @@ const int MAX_BONES_PER_VERTEX = 4;
 uniform mat4 bonesMatrices[MAX_BONES];
 
 void main() {
+/*
 	mat4 boneTransform = bonesMatrices[boneIds[0]] * weights[0] +
 						 bonesMatrices[boneIds[1]] * weights[1] +
 						 bonesMatrices[boneIds[2]] * weights[2] +
@@ -39,6 +40,17 @@ void main() {
 	vec3 T = normalize(boneNormalMatrix * tangent);
 	vec3 B = normalize(boneNormalMatrix * bitangent);
 	vec3 N = normalize(boneNormalMatrix * normal);
+	TBN = mat3(T, B, N);
+*/
+	mat4 boneTransform = bonesMatrices[boneIds[0]] * weights[0] +
+						 bonesMatrices[boneIds[1]] * weights[1] +
+						 bonesMatrices[boneIds[2]] * weights[2] +
+						 bonesMatrices[boneIds[3]] * weights[3];
+
+	mat3 normalBoneMatrix = mat3(boneTransform) * normalMatrix;
+	vec3 T = normalize(normalBoneMatrix * tangent);
+	vec3 B = normalize(normalBoneMatrix * bitangent);
+	vec3 N = normalize(normalBoneMatrix * normal);
 	TBN = mat3(T, B, N);
 
 	TexCoords = texCoords;

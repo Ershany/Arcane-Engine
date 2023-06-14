@@ -157,7 +157,7 @@ void Testbed::LoadTestbedAnimation()
 		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_normal.png")));
 		meshMaterial.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_specular.png")));
 		auto& poseAnimatorComponent = vampire.AddComponent<PoseAnimatorComponent>();
-		poseAnimatorComponent.clip = clip;
+		poseAnimatorComponent.PoseAnimator.SetAnimationClip(clip);
 	}
 
 	{

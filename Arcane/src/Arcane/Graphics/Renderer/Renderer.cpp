@@ -12,7 +12,9 @@ namespace Arcane
 	RendererData Renderer::s_RendererData = {};
 	GLCache* Renderer::s_GLCache = nullptr;
 	std::deque<MeshDrawCallInfo> Renderer::s_OpaqueMeshDrawCallQueue;
+	std::deque<MeshDrawCallInfo> Renderer::s_OpaqueSkinnedMeshDrawCallQueue;
 	std::deque<MeshDrawCallInfo> Renderer::s_TransparentMeshDrawCallQueue;
+	std::deque<MeshDrawCallInfo> Renderer::s_TransparentSkinnedMeshDrawCallQueue;
 	std::deque<QuadDrawCallInfo> Renderer::s_QuadDrawCallQueue;
 
 	void Renderer::Init()
@@ -55,25 +57,38 @@ namespace Arcane
 		s_QuadDrawCallQueue.emplace_back(QuadDrawCallInfo{ texture, transform });
 	}
 
-	void Renderer::QueueMesh(Model *model, const glm::mat4 &transform, bool isTransparent, bool cullBackface)
+	void Renderer::QueueMesh(Model *model, const glm::mat4 &transform, PoseAnimator *animator/*= nullptr*/, bool isTransparent/*= false*/, bool cullBackface/*= true*/)
 	{
 		if (isTransparent)
 		{
-			s_TransparentMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, transform, cullBackface });
+			if (animator)
+			{
+				s_TransparentSkinnedMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, animator, transform, cullBackface });
+			}
+			else
+			{
+				s_TransparentMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, nullptr, transform, cullBackface });
+			}
 		}
 		else
 		{
-			s_OpaqueMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, transform, cullBackface });
+			if (animator)
+			{
+				s_OpaqueSkinnedMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, animator, transform, cullBackface });
+			}
+			else
+			{
+				s_OpaqueMeshDrawCallQueue.emplace_back(MeshDrawCallInfo{ model, nullptr, transform, cullBackface });
+			}
 		}
 	}
 
-	void Renderer::Flush(ICamera *camera, Shader *shader, RenderPassType renderPassType)
+	void Renderer::Flush(ICamera *camera, RenderPassType renderPassType, Shader *shader, Shader *skinnedShader)
 	{
-		s_GLCache->SetShader(shader);
-
-		// Render opaque objects
+		// Render opaque non-skinned meshes
 		if (!s_OpaqueMeshDrawCallQueue.empty())
 		{
+			s_GLCache->SetShader(shader);
 			SetupOpaqueRenderState();
 
 			while (!s_OpaqueMeshDrawCallQueue.empty())
@@ -89,9 +104,30 @@ namespace Arcane
 			}
 		}
 
+		// Render opaque skinned meshes
+		if (!s_OpaqueSkinnedMeshDrawCallQueue.empty())
+		{
+			s_GLCache->SetShader(skinnedShader);
+			SetupOpaqueRenderState();
+
+			while (!s_OpaqueSkinnedMeshDrawCallQueue.empty())
+			{
+				MeshDrawCallInfo &current = s_OpaqueSkinnedMeshDrawCallQueue.front();
+
+				s_GLCache->SetFaceCull(current.cullBackface);
+				SetupModelMatrix(shader, current, renderPassType);
+				SetupBoneMatrices(shader, current);
+				current.model->Draw(shader, renderPassType);
+				s_RendererData.DrawCallCount++;
+
+				s_OpaqueSkinnedMeshDrawCallQueue.pop_front();
+			}
+		}
+
 		// Render Quads
 		if (!s_QuadDrawCallQueue.empty())
 		{
+			s_GLCache->SetShader(shader);
 			static Quad localQuad(false);
 			SetupQuadRenderState();
 
@@ -109,9 +145,10 @@ namespace Arcane
 			}
 		}
 
-		// Render transparent objects (sort from back to front, does not account for rotations or scaling)
+		// Render transparent non-skinned meshes (sort from back to front, does not account for rotations or scaling)
 		if (!s_TransparentMeshDrawCallQueue.empty())
 		{
+			s_GLCache->SetShader(shader);
 			SetupTransparentRenderState();
 
 			std::sort(s_TransparentMeshDrawCallQueue.begin(), s_TransparentMeshDrawCallQueue.end(),
@@ -129,6 +166,31 @@ namespace Arcane
 				s_RendererData.DrawCallCount++;
 
 				s_TransparentMeshDrawCallQueue.pop_front();
+			}
+		}
+
+		// Render transparent skinned meshes (sort from back to front, does not account for rotations, scaling, or animation)
+		if (!s_TransparentSkinnedMeshDrawCallQueue.empty())
+		{
+			s_GLCache->SetShader(skinnedShader);
+			SetupTransparentRenderState();
+
+			std::sort(s_TransparentSkinnedMeshDrawCallQueue.begin(), s_TransparentSkinnedMeshDrawCallQueue.end(),
+				[camera](MeshDrawCallInfo &a, MeshDrawCallInfo &b) -> bool
+				{
+					return glm::length2(camera->GetPosition() - glm::vec3(a.transform[3])) > glm::length2(camera->GetPosition() - glm::vec3(b.transform[3])); // transform[3] - Gets the translation part of the matrix
+				});
+			while (!s_TransparentSkinnedMeshDrawCallQueue.empty())
+			{
+				MeshDrawCallInfo &current = s_TransparentSkinnedMeshDrawCallQueue.front();
+
+				s_GLCache->SetFaceCull(current.cullBackface);
+				SetupModelMatrix(shader, current, renderPassType);
+				SetupBoneMatrices(shader, current);
+				current.model->Draw(shader, renderPassType);
+				s_RendererData.DrawCallCount++;
+
+				s_TransparentSkinnedMeshDrawCallQueue.pop_front();
 			}
 		}
 	}
@@ -178,6 +240,15 @@ namespace Arcane
 		}
 #endif
 		shader->SetUniform("model", drawCallInfo.transform);
+	}
+
+	void Renderer::SetupBoneMatrices(Shader *shader, MeshDrawCallInfo &drawCallInfo)
+	{
+		if (drawCallInfo.animator)
+		{
+			const std::vector<glm::mat4> &matrices = drawCallInfo.animator->GetFinalBoneMatrices();
+			shader->SetUniformArray("bonesMatrices", static_cast<int>(matrices.size()), &matrices[0]);
+		}
 	}
 
 	void Renderer::SetupOpaqueRenderState()
