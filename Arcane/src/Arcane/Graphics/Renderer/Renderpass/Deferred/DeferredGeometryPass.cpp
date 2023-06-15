@@ -45,11 +45,6 @@ namespace Arcane
 		// Setup
 		Terrain *terrain = m_ActiveScene->GetTerrain();
 
-		m_GLCache->SetShader(m_ModelShader);
-		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
-		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
-		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
-
 		// Setup model renderer for opaque objects only
 		if (renderOnlyStatic) {
 			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueStaticModels);

@@ -87,9 +87,6 @@ namespace Arcane
 			m_ModelShader->SetUniform("usesClipPlane", false);
 		}
 		(lightManager->*lightBindFunction) (m_ModelShader);
-		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
-		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
-		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Shadowmap code
 		BindShadowmap(m_ModelShader, inputShadowmapData);
@@ -164,9 +161,6 @@ namespace Arcane
 			m_ModelShader->SetUniform("usesClipPlane", false);
 		}
 		(lightManager->*lightBindFunction) (m_ModelShader);
-		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
-		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
-		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
 
 		// Shadowmap code
 		BindShadowmap(m_ModelShader, inputShadowmapData);

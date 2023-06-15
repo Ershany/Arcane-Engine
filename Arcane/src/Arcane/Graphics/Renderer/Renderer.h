@@ -58,6 +58,8 @@ namespace Arcane
 
 		static RendererData& GetRendererData();
 	private:
+		static void BindModelCameraInfo(ICamera *camera, Shader *shader);
+		static void BindQuadCameraInfo(ICamera *camera, Shader *shader);
 		static void SetupModelMatrix(Shader *shader, MeshDrawCallInfo &drawCallInfo, RenderPassType pass);
 		static void SetupModelMatrix(Shader *shader, QuadDrawCallInfo &drawCallInfo);
 		static void SetupBoneMatrices(Shader *shader, MeshDrawCallInfo &drawCallInfo);

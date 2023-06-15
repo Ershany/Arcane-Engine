@@ -55,8 +55,6 @@ namespace Arcane
 			// Add objects that need to be outlined to the renderer
 			m_GLCache->SetShader(m_ColourWriteShader);
 			m_ColourWriteShader->SetUniform("colour", glm::vec3(1.0, 1.0, 1.0));
-			m_ColourWriteShader->SetUniform("view", camera->GetViewMatrix());
-			m_ColourWriteShader->SetUniform("projection", camera->GetProjectionMatrix());
 			Renderer::QueueMesh(meshComponent.AssetModel, transformComponent.GetTransform(), poseAnimator, meshComponent.IsTransparent, meshComponent.ShouldBackfaceCull);
 			Renderer::Flush(camera, RenderPassType::NoMaterialRequired, m_ColourWriteShader, nullptr); // TODO: Add skinned shader
 
