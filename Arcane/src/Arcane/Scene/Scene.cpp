@@ -64,7 +64,18 @@ namespace Arcane
 	{
 		// Camera Update
 		m_SceneCamera.ProcessInput(deltaTime);
+
+		// Update Lights
 		m_LightManager.Update();
+
+		// Update Animated Entities
+		auto animatedView = m_Registry.view<PoseAnimatorComponent>();
+		for (auto entity : animatedView)
+		{
+			auto& poseAnimator = animatedView.get<PoseAnimatorComponent>(entity);
+
+			poseAnimator.PoseAnimator.UpdateAnimation(deltaTime);
+		}
 	}
 
 	void Scene::AddModelsToRenderer(ModelFilterType filter)

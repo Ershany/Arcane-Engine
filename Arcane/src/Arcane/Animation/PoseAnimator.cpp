@@ -10,8 +10,9 @@ namespace Arcane
 		: m_CurrentAnimationClip(nullptr), m_CurrentTime(0.0f), m_FinalBoneMatrices(100, glm::mat4(1.0f))
 	{}
 
-	void PoseAnimator::PlayAnimation(float deltaTime)
+	void PoseAnimator::UpdateAnimation(float deltaTime)
 	{
+		// Play animation clip
 		if (m_CurrentAnimationClip)
 		{
 			m_CurrentTime += m_CurrentAnimationClip->GetTicksPerSecond() * deltaTime;

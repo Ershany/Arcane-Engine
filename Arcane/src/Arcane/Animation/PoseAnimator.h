@@ -10,7 +10,7 @@ namespace Arcane
 	public:
 		PoseAnimator();
 
-		void PlayAnimation(float deltaTime);
+		void UpdateAnimation(float deltaTime);
 		void SetAnimationClip(AnimationClip *clip);
 
 		inline AnimationClip* GetCurrentAnimationClip() { return m_CurrentAnimationClip; }
