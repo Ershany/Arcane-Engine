@@ -31,7 +31,12 @@ namespace Arcane
 				return bone.GetName() == name;
 			}
 		);
-		return nullptr;
+
+		// If we didn't find just return nullptr
+		if (iter == m_Bones.end()) return nullptr;
+		
+		// Otherwise we found it
+		return &(*iter);
 	}
 
 	void AnimationClip::ReadMissingBones()
