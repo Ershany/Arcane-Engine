@@ -30,7 +30,7 @@ namespace Arcane
 		std::vector<glm::vec3> m_Normals;
 		std::vector<glm::vec3> m_Tangents;
 		std::vector<glm::vec3> m_Bitangents;
-		std::vector<VertexBoneData> m_BoneWeights;
+		std::vector<VertexBoneData> m_BoneData;
 
 		std::vector<unsigned int> m_Indices;
 

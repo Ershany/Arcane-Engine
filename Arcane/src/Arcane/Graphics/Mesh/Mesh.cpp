@@ -9,13 +9,13 @@ namespace Arcane
 	Mesh::Mesh() : m_VAO(0), m_VBO(0), m_IBO(0) {}
 
 	Mesh::Mesh(std::vector<glm::vec3>&& positions, std::vector<glm::vec2>&& uvs, std::vector<unsigned int>&& indices)
-		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(), m_Tangents(), m_Bitangents(), m_BoneWeights(), m_Indices(std::move(indices)) {}
+		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(), m_Tangents(), m_Bitangents(), m_BoneData(), m_Indices(std::move(indices)) {}
 
 	Mesh::Mesh(std::vector<glm::vec3>&& positions, std::vector<glm::vec2>&& uvs, std::vector<glm::vec3>&& normals, std::vector<glm::vec3>&& tangents, std::vector<glm::vec3>&& bitangents, std::vector<unsigned int>&& indices)
-		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(std::move(normals)), m_Tangents(std::move(tangents)), m_Bitangents(std::move(bitangents)), m_BoneWeights(), m_Indices(std::move(indices)) {}
+		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(std::move(normals)), m_Tangents(std::move(tangents)), m_Bitangents(std::move(bitangents)), m_BoneData(), m_Indices(std::move(indices)) {}
 
 	Mesh::Mesh(std::vector<glm::vec3> &&positions, std::vector<glm::vec2> &&uvs, std::vector<glm::vec3> &&normals, std::vector<glm::vec3> &&tangents, std::vector<glm::vec3> &&bitangents, std::vector<VertexBoneData> &&boneWeights, std::vector<unsigned int> &&indices)
-		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(std::move(normals)), m_Tangents(std::move(tangents)), m_Bitangents(std::move(bitangents)), m_BoneWeights(std::move(boneWeights)), m_Indices(std::move(indices)) {}
+		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(std::move(normals)), m_Tangents(std::move(tangents)), m_Bitangents(std::move(bitangents)), m_BoneData(std::move(boneWeights)), m_Indices(std::move(indices)) {}
  
 
 	void Mesh::Draw() const
@@ -50,8 +50,8 @@ namespace Arcane
 				ARC_LOG_WARN("Mesh Tangent count doesn't match the vertex count");
 			if (m_Bitangents.size() != 0 && m_Bitangents.size() != vertexCount)
 				ARC_LOG_WARN("Mesh Bitangent count doesn't match the vertex count");
-			if (m_BoneWeights.size() != 0 && m_BoneWeights.size() != vertexCount)
-				ARC_LOG_WARN("Mesh Bone Weights count doesn't match the vertex count");
+			if (m_BoneData.size() != 0 && m_BoneData.size() != vertexCount)
+				ARC_LOG_WARN("Mesh Bone Data count doesn't match the vertex count");
 		}
 #endif
 
@@ -69,11 +69,11 @@ namespace Arcane
 			m_BufferComponentCount += 3;
 		if (m_Bitangents.size() > 0)
 			m_BufferComponentCount += 3;
-		if (m_BoneWeights.size() > 0)
+		if (m_BoneData.size() > 0)
 			m_BufferComponentCount += (2 * MaxBonesPerVertex);
 
 		// Pre-process the mesh data in the format that was specified
-		m_BufferData.reserve((3 * m_Positions.size()) + (3 * m_Normals.size()) + (2 * m_UVs.size()) + (3 * m_Tangents.size()) + (3 * m_Bitangents.size()) + (m_BoneWeights.size() * 2 * MaxBonesPerVertex));
+		m_BufferData.reserve((3 * m_Positions.size()) + (3 * m_Normals.size()) + (2 * m_UVs.size()) + (3 * m_Tangents.size()) + (3 * m_Bitangents.size()) + (m_BoneData.size() * 2 * MaxBonesPerVertex));
 		if (interleaved)
 		{
 			for (unsigned int i = 0; i < m_Positions.size(); i++)
@@ -104,15 +104,15 @@ namespace Arcane
 					m_BufferData.push_back(m_Bitangents[i].y);
 					m_BufferData.push_back(m_Bitangents[i].z);
 				}
-				if (m_BoneWeights.size() > 0)
+				if (m_BoneData.size() > 0)
 				{
 					for (int j = 0; j < MaxBonesPerVertex; j++)
 					{
-						m_BufferData.push_back((float)m_BoneWeights[i].BoneIDs[j]);
+						m_BufferData.push_back((float)m_BoneData[i].BoneIDs[j]);
 					}
 					for (int j = 0; j < MaxBonesPerVertex; j++)
 					{
-						m_BufferData.push_back(m_BoneWeights[i].Weights[j]);
+						m_BufferData.push_back(m_BoneData[i].Weights[j]);
 					}
 				}
 			}
@@ -148,18 +148,18 @@ namespace Arcane
 				m_BufferData.push_back(m_Bitangents[i].y);
 				m_BufferData.push_back(m_Bitangents[i].z);
 			}
-			for (unsigned int i = 0; i < m_BoneWeights.size(); i++)
+			for (unsigned int i = 0; i < m_BoneData.size(); i++)
 			{
 				for (int j = 0; j < MaxBonesPerVertex; j++)
 				{
-					m_BufferData.push_back((float)m_BoneWeights[i].BoneIDs[j]);
+					m_BufferData.push_back((float)m_BoneData[i].BoneIDs[j]);
 				}
 			}
-			for (unsigned int i = 0; i < m_BoneWeights.size(); i++)
+			for (unsigned int i = 0; i < m_BoneData.size(); i++)
 			{
 				for (int j = 0; j < MaxBonesPerVertex; j++)
 				{
-					m_BufferData.push_back(m_BoneWeights[i].Weights[j]);
+					m_BufferData.push_back(m_BoneData[i].Weights[j]);
 				}
 			}
 		}
@@ -214,7 +214,7 @@ namespace Arcane
 				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), (void*)offset);
 				offset += 3 * sizeof(float);
 			}
-			if (m_BoneWeights.size() > 0)
+			if (m_BoneData.size() > 0)
 			{
 				glEnableVertexAttribArray(5);
 				glVertexAttribIPointer(5, 4, GL_INT, static_cast<GLsizei>(stride), (void*)offset);
@@ -256,15 +256,15 @@ namespace Arcane
 				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, (void*)offset);
 				offset += m_Bitangents.size() * 3 * sizeof(float);
 			}
-			if (m_BoneWeights.size() > 0)
+			if (m_BoneData.size() > 0)
 			{
 				glEnableVertexAttribArray(5);
 				glVertexAttribIPointer(5, 4, GL_INT, 0, (void*)offset);
-				offset += m_BoneWeights.size() * 4 * sizeof(int);
+				offset += m_BoneData.size() * 4 * sizeof(int);
 
 				glEnableVertexAttribArray(6);
 				glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 0, (void*)offset);
-				offset += m_BoneWeights.size() * 4 * sizeof(float);
+				offset += m_BoneData.size() * 4 * sizeof(float);
 			}
 		}
 
