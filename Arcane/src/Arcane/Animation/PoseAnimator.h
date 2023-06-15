@@ -21,6 +21,5 @@ namespace Arcane
 		std::vector<glm::mat4> m_FinalBoneMatrices;
 		AnimationClip *m_CurrentAnimationClip;
 		float m_CurrentTime;
-		float m_DeltaTime;
 	};
 }

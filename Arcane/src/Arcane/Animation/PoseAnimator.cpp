@@ -7,12 +7,11 @@
 namespace Arcane
 {
 	PoseAnimator::PoseAnimator() 
-		: m_CurrentAnimationClip(nullptr), m_CurrentTime(0.0f), m_DeltaTime(0.0f), m_FinalBoneMatrices(100, glm::mat4(1.0f))
+		: m_CurrentAnimationClip(nullptr), m_CurrentTime(0.0f), m_FinalBoneMatrices(100, glm::mat4(1.0f))
 	{}
 
 	void PoseAnimator::PlayAnimation(float deltaTime)
 	{
-		m_DeltaTime = deltaTime;
 		if (m_CurrentAnimationClip)
 		{
 			m_CurrentTime += m_CurrentAnimationClip->GetTicksPerSecond() * deltaTime;
@@ -29,7 +28,7 @@ namespace Arcane
 
 	void PoseAnimator::CalculateBoneTransform(const AssimpBoneData *node, glm::mat4 parentTransform)
 	{
-		std::string nodeName = node->name;
+		const std::string &nodeName = node->name;
 		glm::mat4 currentTransform;
 
 		// Get the current bone engaged in the animation

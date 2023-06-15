@@ -62,6 +62,7 @@ namespace Arcane
 		dest.name = src->mName.data;
 		dest.transformation = Model::ConvertAssimpMatrixToGLM(src->mTransformation);
 		dest.childCount = src->mNumChildren;
+		dest.children.reserve(dest.childCount);
 
 		for (unsigned int i = 0; i < src->mNumChildren; i++)
 		{
