@@ -78,41 +78,41 @@ namespace Arcane
 		{
 			for (unsigned int i = 0; i < m_Positions.size(); i++)
 			{
-				m_BufferData.push_back(m_Positions[i].x);
-				m_BufferData.push_back(m_Positions[i].y);
-				m_BufferData.push_back(m_Positions[i].z);
+				m_BufferData.push_back({ m_Positions[i].x });
+				m_BufferData.push_back({ m_Positions[i].y });
+				m_BufferData.push_back({ m_Positions[i].z });
 				if (m_Normals.size() > 0)
 				{
-					m_BufferData.push_back(m_Normals[i].x);
-					m_BufferData.push_back(m_Normals[i].y);
-					m_BufferData.push_back(m_Normals[i].z);
+					m_BufferData.push_back({ m_Normals[i].x });
+					m_BufferData.push_back({ m_Normals[i].y });
+					m_BufferData.push_back({ m_Normals[i].z });
 				}
 				if (m_UVs.size() > 0)
 				{
-					m_BufferData.push_back(m_UVs[i].x);
-					m_BufferData.push_back(m_UVs[i].y);
+					m_BufferData.push_back({ m_UVs[i].x });
+					m_BufferData.push_back({ m_UVs[i].y });
 				}
 				if (m_Tangents.size() > 0)
 				{
-					m_BufferData.push_back(m_Tangents[i].x);
-					m_BufferData.push_back(m_Tangents[i].y);
-					m_BufferData.push_back(m_Tangents[i].z);
+					m_BufferData.push_back({ m_Tangents[i].x });
+					m_BufferData.push_back({ m_Tangents[i].y });
+					m_BufferData.push_back({ m_Tangents[i].z });
 				}
 				if (m_Bitangents.size() > 0)
 				{
-					m_BufferData.push_back(m_Bitangents[i].x);
-					m_BufferData.push_back(m_Bitangents[i].y);
-					m_BufferData.push_back(m_Bitangents[i].z);
+					m_BufferData.push_back({ m_Bitangents[i].x });
+					m_BufferData.push_back({ m_Bitangents[i].y });
+					m_BufferData.push_back({ m_Bitangents[i].z });
 				}
 				if (m_BoneData.size() > 0)
 				{
 					for (int j = 0; j < MaxBonesPerVertex; j++)
 					{
-						m_BufferData.push_back((float)m_BoneData[i].BoneIDs[j]);
+						m_BufferData.push_back({ m_BoneData[i].BoneIDs[j] });
 					}
 					for (int j = 0; j < MaxBonesPerVertex; j++)
 					{
-						m_BufferData.push_back(m_BoneData[i].Weights[j]);
+						m_BufferData.push_back({ m_BoneData[i].Weights[j] });
 					}
 				}
 			}
@@ -121,45 +121,45 @@ namespace Arcane
 		{
 			for (unsigned int i = 0; i < m_Positions.size(); i++)
 			{
-				m_BufferData.push_back(m_Positions[i].x);
-				m_BufferData.push_back(m_Positions[i].y);
-				m_BufferData.push_back(m_Positions[i].z);
+				m_BufferData.push_back({ m_Positions[i].x });
+				m_BufferData.push_back({ m_Positions[i].y });
+				m_BufferData.push_back({ m_Positions[i].z });
 			}
 			for (unsigned int i = 0; i < m_Normals.size(); i++)
 			{
-				m_BufferData.push_back(m_Normals[i].x);
-				m_BufferData.push_back(m_Normals[i].y);
-				m_BufferData.push_back(m_Normals[i].z);
+				m_BufferData.push_back({ m_Normals[i].x });
+				m_BufferData.push_back({ m_Normals[i].y });
+				m_BufferData.push_back({ m_Normals[i].z });
 			}
 			for (unsigned int i = 0; i < m_UVs.size(); i++)
 			{
-				m_BufferData.push_back(m_UVs[i].x);
-				m_BufferData.push_back(m_UVs[i].y);
+				m_BufferData.push_back({ m_UVs[i].x });
+				m_BufferData.push_back({ m_UVs[i].y });
 			}
 			for (unsigned int i = 0; i < m_Tangents.size(); i++)
 			{
-				m_BufferData.push_back(m_Tangents[i].x);
-				m_BufferData.push_back(m_Tangents[i].y);
-				m_BufferData.push_back(m_Tangents[i].z);
+				m_BufferData.push_back({ m_Tangents[i].x });
+				m_BufferData.push_back({ m_Tangents[i].y });
+				m_BufferData.push_back({ m_Tangents[i].z });
 			}
 			for (unsigned int i = 0; i < m_Bitangents.size(); i++)
 			{
-				m_BufferData.push_back(m_Bitangents[i].x);
-				m_BufferData.push_back(m_Bitangents[i].y);
-				m_BufferData.push_back(m_Bitangents[i].z);
+				m_BufferData.push_back({ m_Bitangents[i].x });
+				m_BufferData.push_back({ m_Bitangents[i].y });
+				m_BufferData.push_back({ m_Bitangents[i].z });
 			}
 			for (unsigned int i = 0; i < m_BoneData.size(); i++)
 			{
 				for (int j = 0; j < MaxBonesPerVertex; j++)
 				{
-					m_BufferData.push_back((float)m_BoneData[i].BoneIDs[j]);
+					m_BufferData.push_back({ m_BoneData[i].BoneIDs[j] });
 				}
 			}
 			for (unsigned int i = 0; i < m_BoneData.size(); i++)
 			{
 				for (int j = 0; j < MaxBonesPerVertex; j++)
 				{
-					m_BufferData.push_back(m_BoneData[i].Weights[j]);
+					m_BufferData.push_back({ m_BoneData[i].Weights[j] });
 				}
 			}
 		}
