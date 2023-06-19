@@ -122,6 +122,9 @@ namespace Arcane
 			}
 		}
 
+		// Save some animation related info
+		m_GlobalInverseTransform = glm::inverse(ConvertAssimpMatrixToGLM(scene->mRootNode->mTransformation));
+
 		// Process bones
 		for (unsigned int boneIndex = 0; boneIndex < mesh->mNumBones; boneIndex++)
 		{

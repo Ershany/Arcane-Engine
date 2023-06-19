@@ -21,5 +21,7 @@ namespace Arcane
 		std::vector<glm::mat4> m_FinalBoneMatrices;
 		AnimationClip *m_CurrentAnimationClip;
 		float m_CurrentTime;
+
+		bool m_PlayClipIndefinitely = true;
 	};
 }

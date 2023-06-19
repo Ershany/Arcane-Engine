@@ -12,10 +12,15 @@ namespace Arcane
 		float Weights[MaxBonesPerVertex];
 	};
 
-	// Stores bone index (this will be the same index used for final bone transformation matrix) and stores the inverse bind pose so we can apply it before doing any transformations
 	struct BoneData
 	{
 		int boneID;
-		glm::mat4 inverseBindPose; // We upload the vertices already in bind pose. Since we are transforming the bones we need to undo this transformation by using the inverse bind pose before we can apply rotations and stuff for animations
+
+		/*
+		Matrix that transforms from bone space to mesh space in bind pose.
+		This matrix describes the position of the mesh in the local space of this bone when the skeleton was bound.
+		Thus it can be used directly to determine a desired vertex position, given the world-space transform of the bone when animated, and the position of the vertex in mesh space.
+		*/
+		glm::mat4 inverseBindPose;
 	};
 }

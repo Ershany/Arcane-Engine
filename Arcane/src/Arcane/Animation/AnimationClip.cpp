@@ -13,7 +13,9 @@ namespace Arcane
 
 		m_AssimpAnimation = scene->mAnimations[animationIndex];
 		m_ClipDuration = static_cast<float>(m_AssimpAnimation->mDuration);
-		m_TicksPerSecond = m_AssimpAnimation->mTicksPerSecond != 0 ? static_cast<float>(m_AssimpAnimation->mTicksPerSecond) : 30.0f;
+		m_TicksPerSecond = m_AssimpAnimation->mTicksPerSecond != 0 ? static_cast<float>(m_AssimpAnimation->mTicksPerSecond) : 1.0f;
+
+		// Setup our root node bone and recursively build the others
 		ReadHierarchyData(m_RootNode, scene->mRootNode);
 		ReadMissingBones();
 	}
