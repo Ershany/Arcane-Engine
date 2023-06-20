@@ -27,21 +27,6 @@ const int MAX_BONES_PER_VERTEX = 4;
 uniform mat4 bonesMatrices[MAX_BONES];
 
 void main() {
-/*
-	mat4 boneTransform = bonesMatrices[boneIds[0]] * weights[0] +
-						 bonesMatrices[boneIds[1]] * weights[1] +
-						 bonesMatrices[boneIds[2]] * weights[2] +
-						 bonesMatrices[boneIds[3]] * weights[3];
-	mat4 boneModelMatrix = model * boneTransform;
-
-	// Use the normal matrix to maintain the orthogonal property of a vector when it is scaled non-uniformly
-	mat3 boneNormalMatrix = transpose(inverse(mat3(boneModelMatrix)));
-
-	vec3 T = normalize(boneNormalMatrix * tangent);
-	vec3 B = normalize(boneNormalMatrix * bitangent);
-	vec3 N = normalize(boneNormalMatrix * normal);
-	TBN = mat3(T, B, N);
-*/
 	mat4 boneTransform = bonesMatrices[boneIds[0]] * weights[0] +
 						 bonesMatrices[boneIds[1]] * weights[1] +
 						 bonesMatrices[boneIds[2]] * weights[2] +

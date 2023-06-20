@@ -11,7 +11,8 @@
 
 namespace Arcane
 {
-	DeferredGeometryPass::DeferredGeometryPass(Scene *scene) : RenderPass(scene), m_AllocatedGBuffer(true) {
+	DeferredGeometryPass::DeferredGeometryPass(Scene *scene) : RenderPass(scene), m_AllocatedGBuffer(true)
+	{
 		m_ModelShader = ShaderLoader::LoadShader("deferred/PBR_Model_GeometryPass.glsl");
 		m_SkinnedModelShader = ShaderLoader::LoadShader("deferred/PBR_Skinned_Model_GeometryPass.glsl");
 		m_TerrainShader = ShaderLoader::LoadShader("deferred/PBR_Terrain_GeometryPass.glsl");
@@ -19,18 +20,21 @@ namespace Arcane
 		m_GBuffer = new GBuffer(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight());
 	}
 
-	DeferredGeometryPass::DeferredGeometryPass(Scene *scene, GBuffer *customGBuffer) : RenderPass(scene), m_AllocatedGBuffer(false), m_GBuffer(customGBuffer) {
+	DeferredGeometryPass::DeferredGeometryPass(Scene *scene, GBuffer *customGBuffer) : RenderPass(scene), m_AllocatedGBuffer(false), m_GBuffer(customGBuffer)
+	{
 		m_ModelShader = ShaderLoader::LoadShader("deferred/PBR_Model_GeometryPass.glsl");
 		m_TerrainShader = ShaderLoader::LoadShader("deferred/PBR_Terrain_GeometryPass.glsl");
 	}
 
-	DeferredGeometryPass::~DeferredGeometryPass() {
+	DeferredGeometryPass::~DeferredGeometryPass()
+	{
 		if (m_AllocatedGBuffer) {
 			delete m_GBuffer;
 		}
 	}
 
-	GeometryPassOutput DeferredGeometryPass::ExecuteGeometryPass(ICamera *camera, bool renderOnlyStatic) {
+	GeometryPassOutput DeferredGeometryPass::ExecuteGeometryPass(ICamera *camera, bool renderOnlyStatic)
+	{
 		glViewport(0, 0, m_GBuffer->GetWidth(), m_GBuffer->GetHeight());
 		m_GBuffer->Bind();
 		m_GBuffer->ClearAll();
@@ -46,17 +50,20 @@ namespace Arcane
 		Terrain *terrain = m_ActiveScene->GetTerrain();
 
 		// Setup model renderer for opaque objects only
-		if (renderOnlyStatic) {
+		if (renderOnlyStatic)
+		{
 			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueStaticModels);
 		}
-		else {
+		else
+		{
 			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueModels);
 		}
 
 		// Render opaque objects (use stencil to denote models for the deferred lighting pass)
 		m_GLCache->SetStencilWriteMask(0xFF);
 		m_GLCache->SetStencilFunc(GL_ALWAYS, StencilValue::ModelStencilValue, 0xFF);
-		Renderer::Flush(camera, RenderPassType::MaterialRequired, m_ModelShader, m_SkinnedModelShader);
+		Renderer::FlushOpaqueSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_SkinnedModelShader);
+		Renderer::FlushOpaqueNonSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_ModelShader);
 		m_GLCache->SetStencilWriteMask(0x00);
 
 		// Setup terrain information

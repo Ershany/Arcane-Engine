@@ -41,7 +41,7 @@ namespace Arcane
 		glFinish();
 		m_ProfilingTimer.Reset();
 #endif // DEBUG_PROFILING
-		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->GetCamera(), false);
+		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.GenerateShadowmaps(m_ActiveScene->GetCamera(), false);
 #if DEBUG_PROFILING
 		glFinish();
 		RuntimePane::SetShadowmapTimer((float)m_ProfilingTimer.Elapsed());
@@ -62,7 +62,7 @@ namespace Arcane
 		glFinish();
 		m_ProfilingTimer.Reset();
 #endif // DEBUG_PROFILING
-		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.generateShadowmaps(m_ActiveScene->GetCamera(), false);
+		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.GenerateShadowmaps(m_ActiveScene->GetCamera(), false);
 #if DEBUG_PROFILING
 		glFinish();
 		RuntimePane::SetShadowmapTimer((float)m_ProfilingTimer.Elapsed());

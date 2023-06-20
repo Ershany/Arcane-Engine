@@ -357,13 +357,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Arcane\Shaders\2D\UnlitSprite.glsl" />
+    <None Include="src\Arcane\Shaders\ColourWriteSkinned.glsl" />
     <None Include="src\Arcane\Shaders\Deferred\PBR_Skinned_Model_GeometryPass.glsl" />
+    <None Include="src\Arcane\Shaders\Forward\PBR_Skinned_Model.glsl" />
     <None Include="src\Arcane\Shaders\Outline.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomBrightPass.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomGaussianBlur.glsl" />
     <None Include="src\Arcane\Shaders\BRDF_Integration.glsl" />
     <None Include="src\Arcane\Shaders\ColourWrite.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear.glsl" />
+    <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear_Skinned.glsl" />
+    <None Include="src\Arcane\Shaders\Shadowmap_Generation_Skinned.glsl" />
     <None Include="src\shaders\compute\frame_luminance.comp" />
     <None Include="src\Arcane\Shaders\Compute\Scene_Luminance.glsl" />
     <None Include="src\Arcane\Shaders\Deferred\PBR_LightingPass.glsl" />

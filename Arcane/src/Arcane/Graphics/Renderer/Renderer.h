@@ -51,7 +51,11 @@ namespace Arcane
 		static void QueueQuad(const glm::vec3 &position, const glm::vec2 &size, const Texture *texture); // TODO: Should use batch rendering to efficiently render quads together
 		static void QueueQuad(const glm::mat4 &transform, const Texture *texture); // TODO: Should use batch rendering to efficiently render quads together
 
-		static void Flush(ICamera *camera, RenderPassType renderPassType, Shader *shader, Shader *skinnedShader);
+		static void FlushOpaqueSkinnedMeshes(ICamera *camera, RenderPassType renderPassType, Shader *skinnedShader);
+		static void FlushOpaqueNonSkinnedMeshes(ICamera *camera, RenderPassType renderPassType, Shader *shader);
+		static void FlushTransparentSkinnedMeshes(ICamera *camera, RenderPassType renderPassType, Shader *skinnedShader);
+		static void FlushTransparentNonSkinnedMeshes(ICamera *camera, RenderPassType renderPassType, Shader *shader);
+		static void FlushQuads(ICamera *camera, Shader *shader);
 
 		static void DrawNdcPlane();
 		static void DrawNdcCube();

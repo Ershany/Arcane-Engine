@@ -13,6 +13,7 @@ namespace Arcane
 	EditorPass::EditorPass(Scene *scene) : RenderPass(scene)
 	{
 		m_ColourWriteShader = ShaderLoader::LoadShader("ColourWrite.glsl");
+		m_ColourWriteShaderSkinned = ShaderLoader::LoadShader("ColourWriteSkinned.glsl");
 		m_OutlineShader = ShaderLoader::LoadShader("Outline.glsl");
 		m_UnlitSpriteShader = ShaderLoader::LoadShader("2D/UnlitSprite.glsl");
 		m_DirectionalLightTexture = AssetManager::GetInstance().Load2DTextureAsync("res/editor/directional_light.png");
@@ -52,11 +53,20 @@ namespace Arcane
 			m_GLCache->SetBlend(false);
 			m_GLCache->SetMultisample(false);
 
-			// Add objects that need to be outlined to the renderer
-			m_GLCache->SetShader(m_ColourWriteShader);
-			m_ColourWriteShader->SetUniform("colour", glm::vec3(1.0, 1.0, 1.0));
-			Renderer::QueueMesh(meshComponent.AssetModel, transformComponent.GetTransform(), poseAnimator, meshComponent.IsTransparent, meshComponent.ShouldBackfaceCull);
-			Renderer::Flush(camera, RenderPassType::NoMaterialRequired, m_ColourWriteShader, nullptr); // TODO: Add skinned shader
+			// Add objects that need to be outlined to the renderer (make them opaque so no sorting is done while we are writing to our outline shader)
+			Renderer::QueueMesh(meshComponent.AssetModel, transformComponent.GetTransform(), poseAnimator, false, meshComponent.ShouldBackfaceCull);
+
+			// Finally render our meshes (skinned and non-skinned)
+			{
+				m_GLCache->SetShader(m_ColourWriteShaderSkinned);
+				m_ColourWriteShaderSkinned->SetUniform("colour", glm::vec3(1.0, 1.0, 1.0));
+				Renderer::FlushOpaqueSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ColourWriteShaderSkinned);
+			}
+			{
+				m_GLCache->SetShader(m_ColourWriteShader);
+				m_ColourWriteShader->SetUniform("colour", glm::vec3(1.0, 1.0, 1.0));
+				Renderer::FlushOpaqueNonSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ColourWriteShader);
+			}
 
 			// Combine the objects that need to be highlighted with the scene to get the final output
 			glViewport(0, 0, extraFramebuffer2->GetWidth(), extraFramebuffer2->GetHeight());
@@ -116,7 +126,7 @@ namespace Arcane
 
 				Renderer::QueueQuad(transformComponent.GetTransform(), lightSprite);
 			}
-			Renderer::Flush(camera, NoMaterialRequired, m_UnlitSpriteShader, nullptr); // TODO: Add skinned shader
+			Renderer::FlushQuads(camera, m_UnlitSpriteShader);
 
 			// Reset State
 			m_GLCache->SetDepthTest(true);
