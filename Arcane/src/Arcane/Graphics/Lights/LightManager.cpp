@@ -11,7 +11,8 @@
 
 namespace Arcane
 {
-	LightManager::LightManager(Scene *scene) : m_Scene(scene), m_DirectionalLightShadowFramebuffer(nullptr), m_SpotLightShadowFramebuffer(nullptr), m_PointLightShadowCubemap(nullptr)
+	LightManager::LightManager(Scene *scene) : m_Scene(scene), m_DirectionalLightShadowFramebuffer(nullptr), m_SpotLightShadowFramebuffer(nullptr), m_PointLightShadowCubemap(nullptr),
+		m_ClosestDirectionalLightShadowCaster(nullptr), m_ClosestSpotLightShadowCaster(nullptr), m_ClosestPointLightShadowCaster(nullptr)
 	{
 
 	}
