@@ -7,6 +7,7 @@
 #include <Arcane/Editor/GraphicsSettings.h>
 #include <Arcane/Editor/InspectorPanel.h>
 #include <Arcane/Editor/ScenePanel.h>
+#include <Arcane/Editor/RendererStatsDisplay.h>
 
 namespace Arcane
 {
@@ -32,6 +33,7 @@ namespace Arcane
 		ConsolePanel m_ConsolePanel;
 		ScenePanel m_ScenePanel;
 		InspectorPanel m_InspectorPanel;
+		RendererStatsDisplay m_RendererStatsDisplay;
 
 		GraphicsSettings m_GraphicsSettings;
 

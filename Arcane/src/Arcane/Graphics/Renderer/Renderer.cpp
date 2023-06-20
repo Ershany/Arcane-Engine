@@ -16,11 +16,13 @@ namespace Arcane
 	std::deque<MeshDrawCallInfo> Renderer::s_TransparentMeshDrawCallQueue;
 	std::deque<MeshDrawCallInfo> Renderer::s_TransparentSkinnedMeshDrawCallQueue;
 	std::deque<QuadDrawCallInfo> Renderer::s_QuadDrawCallQueue;
+	unsigned int Renderer::m_CurrentDrawCallCount = 0;
+	unsigned int Renderer::m_CurrentMeshesDrawnCount = 0;
+	unsigned int Renderer::m_CurrentQuadsDrawnCount = 0;
 
 	void Renderer::Init()
 	{
 		// Setup RendererData
-		s_RendererData.DrawCallCount = 0;
 		float maxAnisotropy;
 		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
 		s_RendererData.MaxAnisotropy = maxAnisotropy;
@@ -38,12 +40,16 @@ namespace Arcane
 
 	void Renderer::BeginFrame()
 	{
-		s_RendererData.DrawCallCount = 0;
+		m_CurrentDrawCallCount = 0;
+		m_CurrentMeshesDrawnCount = 0;
+		m_CurrentQuadsDrawnCount = 0;
 	}
 
 	void Renderer::EndFrame()
 	{
-
+		s_RendererData.DrawCallCount = m_CurrentDrawCallCount;
+		s_RendererData.MeshesDrawnCount = m_CurrentMeshesDrawnCount;
+		s_RendererData.QuadsDrawnCount = m_CurrentQuadsDrawnCount;
 	}
 
 	void Renderer::QueueQuad(const glm::vec3 &position, const glm::vec2 &size, const Texture *texture)
@@ -99,7 +105,8 @@ namespace Arcane
 				SetupModelMatrix(skinnedShader, current, renderPassType);
 				SetupBoneMatrices(skinnedShader, current);
 				current.model->Draw(skinnedShader, renderPassType);
-				s_RendererData.DrawCallCount++;
+				m_CurrentDrawCallCount++;
+				m_CurrentMeshesDrawnCount++;
 
 				s_OpaqueSkinnedMeshDrawCallQueue.pop_front();
 			}
@@ -121,7 +128,8 @@ namespace Arcane
 				s_GLCache->SetFaceCull(current.cullBackface);
 				SetupModelMatrix(shader, current, renderPassType);
 				current.model->Draw(shader, renderPassType);
-				s_RendererData.DrawCallCount++;
+				m_CurrentDrawCallCount++;
+				m_CurrentMeshesDrawnCount++;
 
 				s_OpaqueMeshDrawCallQueue.pop_front();
 			}
@@ -150,7 +158,8 @@ namespace Arcane
 				SetupModelMatrix(skinnedShader, current, renderPassType);
 				SetupBoneMatrices(skinnedShader, current);
 				current.model->Draw(skinnedShader, renderPassType);
-				s_RendererData.DrawCallCount++;
+				m_CurrentDrawCallCount++;
+				m_CurrentMeshesDrawnCount++;
 
 				s_TransparentSkinnedMeshDrawCallQueue.pop_front();
 			}
@@ -178,7 +187,8 @@ namespace Arcane
 				s_GLCache->SetFaceCull(current.cullBackface);
 				SetupModelMatrix(shader, current, renderPassType);
 				current.model->Draw(shader, renderPassType);
-				s_RendererData.DrawCallCount++;
+				m_CurrentDrawCallCount++;
+				m_CurrentMeshesDrawnCount++;
 
 				s_TransparentMeshDrawCallQueue.pop_front();
 			}
@@ -202,7 +212,8 @@ namespace Arcane
 				shader->SetUniform("sprite", 5);
 				SetupModelMatrix(shader, current);
 				localQuad.Draw();
-				s_RendererData.DrawCallCount++;
+				m_CurrentDrawCallCount++;
+				m_CurrentQuadsDrawnCount++;
 
 				s_QuadDrawCallQueue.pop_front();
 			}
@@ -212,16 +223,16 @@ namespace Arcane
 	void Renderer::DrawNdcPlane()
 	{
 		s_NdcPlane->Draw();
-		s_RendererData.DrawCallCount++;
+		m_CurrentDrawCallCount++;
 	}
 
 	void Renderer::DrawNdcCube()
 	{
 		s_NdcCube->Draw();
-		s_RendererData.DrawCallCount++;
+		m_CurrentDrawCallCount++;
 	}
 
-	RendererData& Renderer::GetRendererData()
+	const RendererData& Renderer::GetRendererData()
 	{
 		return s_RendererData;
 	}

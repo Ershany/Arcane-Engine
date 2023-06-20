@@ -179,6 +179,7 @@ namespace Arcane
 		m_ConsolePanel.OnImGuiRender();
 		m_ScenePanel.OnImGuiRender();
 		m_InspectorPanel.OnImGuiRender();
+		m_RendererStatsDisplay.OnImGuiRender();
 		if (m_ShowGraphicsSettings) m_GraphicsSettings.OnImGuiRender(&m_ShowGraphicsSettings);
 
 		ImGui::End();

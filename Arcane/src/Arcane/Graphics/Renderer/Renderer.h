@@ -20,7 +20,9 @@ namespace Arcane
 
 		// Texture *BRDFLut;
 
-		int DrawCallCount;
+		unsigned int DrawCallCount;
+		unsigned int MeshesDrawnCount;
+		unsigned int QuadsDrawnCount;
 	};
 
 	// TODO: Should eventually have a render ID and we can order drawcalls to avoid changing GPU state (shaders etc)
@@ -60,7 +62,7 @@ namespace Arcane
 		static void DrawNdcPlane();
 		static void DrawNdcCube();
 
-		static RendererData& GetRendererData();
+		static const RendererData& GetRendererData();
 	private:
 		static void BindModelCameraInfo(ICamera *camera, Shader *shader);
 		static void BindQuadCameraInfo(ICamera *camera, Shader *shader);
@@ -82,5 +84,9 @@ namespace Arcane
 		static std::deque<MeshDrawCallInfo> s_TransparentMeshDrawCallQueue;
 		static std::deque<MeshDrawCallInfo> s_TransparentSkinnedMeshDrawCallQueue;
 		static std::deque<QuadDrawCallInfo> s_QuadDrawCallQueue;
+
+		static unsigned int m_CurrentDrawCallCount;
+		static unsigned int m_CurrentMeshesDrawnCount;
+		static unsigned int m_CurrentQuadsDrawnCount;
 	};
 }

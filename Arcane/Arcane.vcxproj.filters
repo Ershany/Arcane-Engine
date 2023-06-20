@@ -74,6 +74,7 @@
     <ClCompile Include="src\Arcane\Animation\Bone.cpp" />
     <ClCompile Include="src\Arcane\Animation\AnimationClip.cpp" />
     <ClCompile Include="src\Arcane\Animation\PoseAnimator.cpp" />
+    <ClCompile Include="src\Arcane\Editor\RendererStatsDisplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="src\Arcane\Animation\Bone.h" />
     <ClInclude Include="src\Arcane\Animation\AnimationClip.h" />
     <ClInclude Include="src\Arcane\Animation\PoseAnimator.h" />
+    <ClInclude Include="src\Arcane\Editor\RendererStatsDisplay.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />
