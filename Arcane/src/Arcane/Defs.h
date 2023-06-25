@@ -7,9 +7,9 @@
 
 
 // Window Settings
-#define WINDOW_X_RESOLUTION 1920
-#define WINDOW_Y_RESOLUTION 1080
-#define V_SYNC 1
+#define WINDOW_X_RESOLUTION 2560
+#define WINDOW_Y_RESOLUTION 1440
+#define V_SYNC 0
 #define FULLSCREEN_MODE 0 // If set, window resolution is maximized to your screen resolution
 
 // Render Settings

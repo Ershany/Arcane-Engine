@@ -16,6 +16,11 @@
 
 #include "glfw/glfw3native.h"
 
+#ifdef ARC_DEV_BUILD
+#include <Arcane/Platform/OpenGL/GPUTimerManager.h>
+#endif
+
+
 extern bool g_ApplicationRunning;
 namespace Arcane
 {
@@ -51,6 +56,10 @@ namespace Arcane
 			delete layer;
 		}
 
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::Shutdown();
+#endif
+
 		Renderer::Shutdown();
 
 		delete m_Window;
@@ -73,6 +82,10 @@ namespace Arcane
 
 		// Initialize the master render pass
 		m_MasterRenderPass->Init();
+
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::Startup();
+#endif
 
 		if (m_Specification.EnableImGui)
 		{
@@ -125,6 +138,10 @@ namespace Arcane
 						RenderImGui();
 				}
 				Renderer::EndFrame();
+
+#ifdef ARC_DEV_BUILD
+				GPUTimerManager::EndOfFrameUpdate();
+#endif
 
 				++frameCounter;
 			}

@@ -12,6 +12,7 @@
 
 namespace Arcane
 {
+	class GPUTimer;
 	class Scene;
 	class Shader;
 
@@ -52,6 +53,8 @@ namespace Arcane
 		// Controls
 		bool m_RenderToSwapchain;
 
-		Timer m_ProfilingTimer;
+#ifdef ARC_DEV_BUILD
+		GPUTimer *m_ShadowPassTimer, *m_DeferredGeometryPassTimer, *m_DeferredLightingPassTimer, *m_WaterPassTimer, *m_PostGBufferForwardPassTimer, *m_PostProcessPassTimer, *m_EditorPassTimer;
+#endif
 	};
 }

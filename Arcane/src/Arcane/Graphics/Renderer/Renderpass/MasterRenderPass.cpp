@@ -8,6 +8,10 @@
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/UI/RuntimePane.h>
 
+#ifdef ARC_DEV_BUILD
+#include <Arcane/Platform/OpenGL/GPUTimerManager.h>
+#endif
+
 namespace Arcane
 {
 	MasterRenderPass::MasterRenderPass(Scene *scene) : m_ActiveScene(scene),
@@ -32,6 +36,16 @@ namespace Arcane
 
 		m_EnvironmentProbePass.pregenerateIBL();
 		m_EnvironmentProbePass.pregenerateProbes();
+
+#ifdef ARC_DEV_BUILD
+		m_ShadowPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Shadow Map Generation Pass (GPU)"));
+		m_DeferredGeometryPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Deferred Geometry Pass (GPU)"));
+		m_DeferredLightingPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Deferred Lighting Pass (GPU)"));
+		m_WaterPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Water Pass (GPU)"));
+		m_PostGBufferForwardPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Post GBuffer Forward Transparent Pass (GPU)"));
+		m_PostProcessPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Post Process Pass (GPU)"));
+		m_EditorPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Editor Pass (GPU)"));
+#endif
 	}
 
 	void MasterRenderPass::Render() {
@@ -58,15 +72,14 @@ namespace Arcane
 
 		/* Deferred Rendering */
 #else
-#if DEBUG_PROFILING
-		glFinish();
-		m_ProfilingTimer.Reset();
-#endif // DEBUG_PROFILING
+
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::BeginQuery(m_ShadowPassTimer);
+#endif
 		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.GenerateShadowmaps(m_ActiveScene->GetCamera(), false);
-#if DEBUG_PROFILING
-		glFinish();
-		RuntimePane::SetShadowmapTimer((float)m_ProfilingTimer.Elapsed());
-#endif // DEBUG_PROFILING
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::EndQuery(m_ShadowPassTimer);
+#endif
 
 		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.ExecuteGeometryPass(m_ActiveScene->GetCamera(), false);
 		PreLightingPassOutput preLightingOutput = m_PostProcessPass.ExecutePreLightingPass(geometryOutput.outputGBuffer, m_ActiveScene->GetCamera());

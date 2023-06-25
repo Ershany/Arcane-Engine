@@ -205,6 +205,7 @@
     <ClCompile Include="src\Arcane\UI\Pane.cpp" />
     <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
     <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
+    <ClCompile Include="src\Arcane\Platform\OpenGL\GPUTimerManager.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -322,6 +323,7 @@
     <ClInclude Include="src\Arcane\UI\Pane.h" />
     <ClInclude Include="src\Arcane\UI\RuntimePane.h" />
     <ClInclude Include="src\Arcane\UI\WaterPane.h" />
+    <ClInclude Include="src\Arcane\Platform\OpenGL\GPUTimerManager.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.h" />

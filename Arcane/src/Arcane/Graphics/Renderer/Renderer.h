@@ -16,10 +16,11 @@ namespace Arcane
 
 	struct RendererData
 	{
+		// Renderer Parameters
 		float MaxAnisotropy;
-
 		// Texture *BRDFLut;
 
+		// Draw Call Statistics
 		unsigned int DrawCallCount;
 		unsigned int MeshesDrawnCount;
 		unsigned int QuadsDrawnCount;
