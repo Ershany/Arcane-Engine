@@ -2,7 +2,6 @@
 #include "FPSCamera.h"
 
 #include <Arcane/Graphics/Window.h>
-#include <Arcane/UI/DebugPane.h>
 #include "Arcane/RenderdocManager.h"
 
 namespace Arcane
@@ -16,8 +15,6 @@ namespace Arcane
 		m_CurrentYaw = yaw;
 		m_CurrentPitch = pitch;
 		UpdateCameraVectors();
-
-		DebugPane::BindCameraPositionValue(&m_Position);
 	}
 
 	FPSCamera::FPSCamera(float xPos, float yPos, float zPos, float xUp, float yUp, float zUp, float yaw = -90.0f, float pitch = 0.0f)

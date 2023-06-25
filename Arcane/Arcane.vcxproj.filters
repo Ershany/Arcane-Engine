@@ -74,7 +74,14 @@
     <ClCompile Include="src\Arcane\Physics\3D\RigidbodyManager.cpp" />
     <ClCompile Include="src\Arcane\Physics\3D\RigidbodyComponent.cpp" />
     <ClCompile Include="src\Arcane\Physics\3D\PhysicsFactory.cpp" />
+    <ClCompile Include="src\Arcane\UI\Pane.cpp" />
+    <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.cpp" />
+    <ClCompile Include="src\Arcane\Animation\Bone.cpp" />
+    <ClCompile Include="src\Arcane\Animation\AnimationClip.cpp" />
+    <ClCompile Include="src\Arcane\Animation\PoseAnimator.cpp" />
+    <ClCompile Include="src\Arcane\Editor\RendererStatsDisplay.cpp" />
+    <ClCompile Include="src\Arcane\Platform\OpenGL\GPUTimerManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Arcane\Physics\3D\PhysicsScene.h" />
@@ -129,9 +136,7 @@
     <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h" />
     <ClInclude Include="src\Arcane\Scene\Components.h" />
     <ClInclude Include="src\Arcane\Scene\Entity.h" />
-    <ClInclude Include="src\Arcane\UI\DebugPane.h" />
     <ClInclude Include="src\Arcane\UI\Pane.h" />
-    <ClInclude Include="src\Arcane\UI\RuntimePane.h" />
     <ClInclude Include="src\Arcane\UI\WaterPane.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />
@@ -172,6 +177,12 @@
     <ClInclude Include="src\Arcane\Physics\3D\PhysicsFactory.h" />
     <ClInclude Include="src\Arcane\Physics\3D\PhysicsDefs.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.h" />
+    <ClInclude Include="src\Arcane\Animation\AnimationData.h" />
+    <ClInclude Include="src\Arcane\Animation\Bone.h" />
+    <ClInclude Include="src\Arcane\Animation\AnimationClip.h" />
+    <ClInclude Include="src\Arcane\Animation\PoseAnimator.h" />
+    <ClInclude Include="src\Arcane\Editor\RendererStatsDisplay.h" />
+    <ClInclude Include="src\Arcane\Platform\OpenGL\GPUTimerManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />
@@ -230,5 +241,10 @@
     <None Include="src\Arcane\Shaders\Outline.glsl" />
     <None Include="src\Arcane\Shaders\2D\UnlitSprite.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear.glsl" />
+    <None Include="src\Arcane\Shaders\Deferred\PBR_Skinned_Model_GeometryPass.glsl" />
+    <None Include="src\Arcane\Shaders\Forward\PBR_Skinned_Model.glsl" />
+    <None Include="src\Arcane\Shaders\Shadowmap_Generation_Skinned.glsl" />
+    <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear_Skinned.glsl" />
+    <None Include="src\Arcane\Shaders\ColourWriteSkinned.glsl" />
   </ItemGroup>
 </Project>

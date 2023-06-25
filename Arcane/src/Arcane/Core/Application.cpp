@@ -16,6 +16,11 @@
 
 #include "glfw/glfw3native.h"
 
+#ifdef ARC_DEV_BUILD
+#include <Arcane/Platform/OpenGL/GPUTimerManager.h>
+#endif
+
+
 extern bool g_ApplicationRunning;
 namespace Arcane
 {
@@ -23,10 +28,7 @@ namespace Arcane
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification) 
-#if DEBUG_PROFILING
-		,m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
-#endif
+	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification), m_Wireframe(false)
 	{
 		s_Instance = this;
 
@@ -52,6 +54,10 @@ namespace Arcane
 			delete layer;
 		}
 
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::Shutdown();
+#endif
+
 		Renderer::Shutdown();
 
 		delete m_Window;
@@ -74,6 +80,10 @@ namespace Arcane
 
 		// Initialize the master render pass
 		m_MasterRenderPass->Init();
+
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::Startup();
+#endif
 
 		if (m_Specification.EnableImGui)
 		{
@@ -101,12 +111,10 @@ namespace Arcane
 			if (!m_Minimized)
 			{
 				// Wireframe stuff
-				#if DEBUG_PROFILING
-					if (m_DebugPane.GetWireframeMode())
-						glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-					else
-						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				#endif // DEBUG_PROFILING
+				if (m_Wireframe)
+					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				else
+					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 				m_Window->Bind();
 				m_Window->ClearAll();
@@ -121,15 +129,20 @@ namespace Arcane
 				Renderer::BeginFrame();
 				{
 					m_MasterRenderPass->Render();
-
-					if (m_Specification.EnableImGui)
-						RenderImGui();
 				}
 				Renderer::EndFrame();
 
 
 				// Only update physics when maximized??
 				m_PhysicsSim->UpdateSim(deltaTime.GetDeltaTime());
+
+				// Render ImGui Layers On-top
+				if (m_Specification.EnableImGui)
+					RenderImGui();
+
+#ifdef ARC_DEV_BUILD
+				GPUTimerManager::EndOfFrameUpdate();
+#endif
 
 				++frameCounter;
 			}
@@ -172,11 +185,7 @@ namespace Arcane
 	{
 		m_ImGuiLayer->Begin();
 
-		//m_RuntimePane.Render();
-		//m_DebugPane.Render();
-		//m_WaterPane.Render();
-
-		for (Layer* layer : m_LayerStack)
+		for (Layer *layer : m_LayerStack)
 			layer->OnImGuiRender();
 
 		m_ImGuiLayer->End();

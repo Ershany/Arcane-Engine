@@ -33,6 +33,7 @@ namespace Arcane
 		// Setup our ECS groupings to avoid performance costs at runtime if they get created
 		auto fullOwningGroup1 = m_Registry.group<TransformComponent, MeshComponent>();
 		auto partialOwningGroup1 = m_Registry.group<LightComponent>(entt::get<TransformComponent>);
+		auto patialOwningGroup2 = m_Registry.group<TransformComponent, MeshComponent>(entt::get<PoseAnimatorComponent>);
 
 		// Skybox init needs to happen before probes are generated
 		std::vector<std::string> skyboxFilePaths;
@@ -63,7 +64,18 @@ namespace Arcane
 	{
 		// Camera Update
 		m_SceneCamera.ProcessInput(deltaTime);
+
+		// Update Lights
 		m_LightManager.Update();
+
+		// Update Animated Entities
+		auto animatedView = m_Registry.view<PoseAnimatorComponent>();
+		for (auto entity : animatedView)
+		{
+			auto& poseAnimator = animatedView.get<PoseAnimatorComponent>(entity);
+
+			poseAnimator.PoseAnimator.UpdateAnimation(deltaTime);
+		}
 	}
 
 	void Scene::AddModelsToRenderer(ModelFilterType filter)
@@ -72,40 +84,47 @@ namespace Arcane
 		for (auto entity : group)
 		{
 			auto&[transform, model] = group.get<TransformComponent, MeshComponent>(entity);
+			Entity currentEntity(this, entity);
+
+			PoseAnimator *poseAnimator = nullptr;
+			if (currentEntity.HasComponent<PoseAnimatorComponent>())
+			{
+				poseAnimator = &currentEntity.GetComponent<PoseAnimatorComponent>().PoseAnimator;
+			}
 
 			switch (filter)
 			{
 			case ModelFilterType::AllModels:
-				Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+				Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), poseAnimator, model.IsTransparent, model.ShouldBackfaceCull);
 				break;
 			case ModelFilterType::StaticModels:
 				if (model.IsStatic)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), poseAnimator, model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			case ModelFilterType::OpaqueModels:
 				if (model.IsTransparent == false)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), poseAnimator, model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			case ModelFilterType::OpaqueStaticModels:
 				if (model.IsTransparent == false && model.IsStatic)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), poseAnimator, model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			case ModelFilterType::TransparentModels:
 				if (model.IsTransparent)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), poseAnimator, model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			case ModelFilterType::TransparentStaticModels:
 				if (model.IsTransparent && model.IsStatic)
 				{
-					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), model.IsTransparent);
+					Renderer::QueueMesh(model.AssetModel, transform.GetTransform(), poseAnimator, model.IsTransparent, model.ShouldBackfaceCull);
 				}
 				break;
 			}

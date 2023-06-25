@@ -159,7 +159,7 @@ namespace Arcane
 
 		m_Textures[20] = assetManager.Load2DTextureAsync(std::string("res/terrain/blendMap.tga"), &textureSettings);
 
-		m_Mesh = new Mesh(positions, uvs, normals, tangents, bitangents, indices);
+		m_Mesh = new Mesh(std::move(positions), std::move(uvs), std::move(normals), std::move(tangents), std::move(bitangents), std::move(indices));
 		m_Mesh->LoadData(true);
 		m_Mesh->GenerateGpuData();
 	}

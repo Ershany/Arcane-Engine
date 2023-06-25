@@ -31,6 +31,7 @@ namespace Arcane
 	void EditorLayer::OnAttach()
 	{
 		Testbed::LoadTestbedGraphics();
+		//Testbed::LoadTestbedAnimation();
 
 #ifdef OLD_LOADING_METHOD
 		//Model *pbrGun = new Arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
@@ -219,6 +220,7 @@ namespace Arcane
 		m_ConsolePanel.OnImGuiRender();
 		m_ScenePanel.OnImGuiRender();
 		m_InspectorPanel.OnImGuiRender();
+		m_RendererStatsDisplay.OnImGuiRender();
 		if (m_ShowGraphicsSettings) m_GraphicsSettings.OnImGuiRender(&m_ShowGraphicsSettings);
 
 		ImGui::End();

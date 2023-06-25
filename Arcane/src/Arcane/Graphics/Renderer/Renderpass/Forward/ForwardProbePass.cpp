@@ -191,7 +191,7 @@ namespace Arcane
 			m_CubemapCamera.SwitchCameraToFace(i);
 
 			// Shadow pass
-			ShadowmapPassOutput shadowpassOutput = shadowPass.generateShadowmaps(&m_CubemapCamera, true);
+			ShadowmapPassOutput shadowpassOutput = shadowPass.GenerateShadowmaps(&m_CubemapCamera, true);
 
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.Bind();
@@ -244,7 +244,7 @@ namespace Arcane
 			m_CubemapCamera.SwitchCameraToFace(i);
 
 			// Shadow pass
-			ShadowmapPassOutput shadowpassOutput = shadowPass.generateShadowmaps(&m_CubemapCamera, true);
+			ShadowmapPassOutput shadowpassOutput = shadowPass.GenerateShadowmaps(&m_CubemapCamera, true);
 
 			// Light pass
 			m_SceneCaptureLightingFramebuffer.Bind();

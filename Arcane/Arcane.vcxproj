@@ -164,6 +164,10 @@
     <ClCompile Include="src\Arcane\Physics\3D\RigidbodyComponent.cpp" />
     <ClCompile Include="src\Arcane\Physics\3D\RigidbodyManager.cpp" />
     <ClCompile Include="src\Arcane\Physics\3D\PhysicsScene.cpp" />
+    <ClCompile Include="src\Arcane\Animation\AnimationClip.cpp" />
+    <ClCompile Include="src\Arcane\Animation\Bone.cpp" />
+    <ClCompile Include="src\Arcane\Animation\PoseAnimator.cpp" />
+    <ClCompile Include="src\Arcane\Editor\RendererStatsDisplay.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.cpp" />
     <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
@@ -204,10 +208,9 @@
     <ClCompile Include="src\Arcane\Input\JoystickManager.cpp" />
     <ClCompile Include="src\Arcane\main.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.cpp" />
-    <ClCompile Include="src\Arcane\UI\DebugPane.cpp" />
     <ClCompile Include="src\Arcane\UI\Pane.cpp" />
-    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
     <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
+    <ClCompile Include="src\Arcane\Platform\OpenGL\GPUTimerManager.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -269,6 +272,11 @@
     <ClInclude Include="src\Arcane\Physics\3D\RigidbodyComponent.h" />
     <ClInclude Include="src\Arcane\Physics\3D\RigidbodyManager.h" />
     <ClInclude Include="src\Arcane\Physics\3D\PhysicsScene.h" />
+    <ClInclude Include="src\Arcane\Animation\AnimationData.h" />
+    <ClInclude Include="src\Arcane\Animation\AnimationClip.h" />
+    <ClInclude Include="src\Arcane\Animation\Bone.h" />
+    <ClInclude Include="src\Arcane\Animation\PoseAnimator.h" />
+    <ClInclude Include="src\Arcane\Editor\RendererStatsDisplay.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.h" />
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
     <ClInclude Include="src\Arcane.h" />
@@ -321,10 +329,9 @@
     <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h" />
     <ClInclude Include="src\Arcane\Scene\Components.h" />
     <ClInclude Include="src\Arcane\Scene\Entity.h" />
-    <ClInclude Include="src\Arcane\UI\DebugPane.h" />
     <ClInclude Include="src\Arcane\UI\Pane.h" />
-    <ClInclude Include="src\Arcane\UI\RuntimePane.h" />
     <ClInclude Include="src\Arcane\UI\WaterPane.h" />
+    <ClInclude Include="src\Arcane\Platform\OpenGL\GPUTimerManager.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.h" />
@@ -362,12 +369,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Arcane\Shaders\2D\UnlitSprite.glsl" />
+    <None Include="src\Arcane\Shaders\ColourWriteSkinned.glsl" />
+    <None Include="src\Arcane\Shaders\Deferred\PBR_Skinned_Model_GeometryPass.glsl" />
+    <None Include="src\Arcane\Shaders\Forward\PBR_Skinned_Model.glsl" />
     <None Include="src\Arcane\Shaders\Outline.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomBrightPass.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomGaussianBlur.glsl" />
     <None Include="src\Arcane\Shaders\BRDF_Integration.glsl" />
     <None Include="src\Arcane\Shaders\ColourWrite.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear.glsl" />
+    <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear_Skinned.glsl" />
+    <None Include="src\Arcane\Shaders\Shadowmap_Generation_Skinned.glsl" />
     <None Include="src\shaders\compute\frame_luminance.comp" />
     <None Include="src\Arcane\Shaders\Compute\Scene_Luminance.glsl" />
     <None Include="src\Arcane\Shaders\Deferred\PBR_LightingPass.glsl" />

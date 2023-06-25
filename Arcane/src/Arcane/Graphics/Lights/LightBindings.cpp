@@ -8,10 +8,7 @@ namespace Arcane
 {
 	void LightBindings::BindDirectionalLight(const TransformComponent &transformComponent, const LightComponent &lightComponent, Shader *shader, int currentLightIndex)
 	{
-#ifdef ARC_DEV_BUILD
-		if (currentLightIndex >= MaxDirLights)
-			return;
-#endif
+		ARC_ASSERT(currentLightIndex < MaxDirLights, "Exceeded Directional Light Count");
 		shader->SetUniform(("dirLights[" + std::to_string(currentLightIndex) + "].direction").c_str(), transformComponent.GetForward());
 		shader->SetUniform(("dirLights[" + std::to_string(currentLightIndex) + "].intensity").c_str(), lightComponent.Intensity);
 		shader->SetUniform(("dirLights[" + std::to_string(currentLightIndex) + "].lightColour").c_str(), lightComponent.LightColour);
@@ -19,10 +16,7 @@ namespace Arcane
 
 	void LightBindings::BindPointLight(const TransformComponent &transformComponent, const LightComponent &lightComponent, Shader *shader, int currentLightIndex)
 	{
-#ifdef ARC_DEV_BUILD
-		if (currentLightIndex >= MaxPointLights)
-			return;
-#endif
+		ARC_ASSERT(currentLightIndex < MaxPointLights, "Exceeded Point Light Count");
 		shader->SetUniform(("pointLights[" + std::to_string(currentLightIndex) + "].position").c_str(), transformComponent.Translation);
 		shader->SetUniform(("pointLights[" + std::to_string(currentLightIndex) + "].intensity").c_str(), lightComponent.Intensity);
 		shader->SetUniform(("pointLights[" + std::to_string(currentLightIndex) + "].lightColour").c_str(), lightComponent.LightColour);
@@ -31,10 +25,7 @@ namespace Arcane
 
 	void LightBindings::BindSpotLight(const TransformComponent &transformComponent, const LightComponent &lightComponent, Shader *shader, int currentLightIndex)
 	{
-#ifdef ARC_DEV_BUILD
-		if (currentLightIndex >= MaxSpotLights)
-			return;
-#endif
+		ARC_ASSERT(currentLightIndex < MaxSpotLights, "Exceeded Spot Light Count");
 		shader->SetUniform(("spotLights[" + std::to_string(currentLightIndex) + "].position").c_str(), transformComponent.Translation);
 		shader->SetUniform(("spotLights[" + std::to_string(currentLightIndex) + "].direction").c_str(), transformComponent.GetForward());
 		shader->SetUniform(("spotLights[" + std::to_string(currentLightIndex) + "].intensity").c_str(), lightComponent.Intensity);

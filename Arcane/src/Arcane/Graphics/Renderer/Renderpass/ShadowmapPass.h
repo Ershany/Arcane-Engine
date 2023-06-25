@@ -17,11 +17,11 @@ namespace Arcane
 		ShadowmapPass(Scene *scene, Framebuffer *customDirectionalLightShadowFramebuffer, Framebuffer *customSpotLightShadowFramebuffer, Cubemap *customPointLightShadowCubemap);
 		virtual ~ShadowmapPass() override;
 
-		ShadowmapPassOutput generateShadowmaps(ICamera *camera, bool renderOnlyStatic);
+		ShadowmapPassOutput GenerateShadowmaps(ICamera *camera, bool renderOnlyStatic);
 	private:
 		void Init();
 	private:
-		Shader *m_ShadowmapShader, *m_ShadowmapLinearShader;
+		Shader *m_ShadowmapShader, *m_ShadowmapSkinnedShader, *m_ShadowmapLinearShader, *m_ShadowmapLinearSkinnedShader;
 		CubemapCamera m_CubemapCamera;
 		Framebuffer m_EmptyFramebuffer; // Used for attaching to when rendering (like cubemap faces)
 

@@ -31,19 +31,19 @@ namespace Arcane
 	void ShadowmapPass::Init()
 	{
 		m_ShadowmapShader = ShaderLoader::LoadShader("Shadowmap_Generation.glsl");
+		m_ShadowmapSkinnedShader = ShaderLoader::LoadShader("Shadowmap_Generation_Skinned.glsl");
 		m_ShadowmapLinearShader = ShaderLoader::LoadShader("Shadowmap_Generation_Linear.glsl");
+		m_ShadowmapLinearSkinnedShader = ShaderLoader::LoadShader("Shadowmap_Generation_Linear_Skinned.glsl");
 		m_EmptyFramebuffer.AddDepthStencilTexture(NormalizedDepthOnly, true).CreateFramebuffer();
 	}
 
-	ShadowmapPassOutput ShadowmapPass::generateShadowmaps(ICamera *camera, bool renderOnlyStatic)
+	ShadowmapPassOutput ShadowmapPass::GenerateShadowmaps(ICamera *camera, bool renderOnlyStatic)
 	{
 		// Render pass output
 		ShadowmapPassOutput passOutput;
 
 		LightManager *lightManager = m_ActiveScene->GetLightManager();
 		Framebuffer *shadowFramebuffer;
-
-		m_GLCache->SetShader(m_ShadowmapShader);
 
 		// Directional Light Shadow Setup
 		if (m_CustomDirectionalLightShadowFramebuffer)
@@ -71,7 +71,10 @@ namespace Arcane
 			glm::mat4 directionalLightProjection = glm::ortho(-40.0f, 40.0f, -40.0f, 40.0f, nearFarPlane.x, nearFarPlane.y);
 			glm::mat4 directionalLightView = glm::lookAt(dirLightShadowmapEyePos, dirLightShadowmapLookAtPos, glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::mat4 directionalLightViewProjMatrix = directionalLightProjection * directionalLightView;
-			m_ShadowmapShader->SetUniform("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);
+
+			m_GLCache->SetDepthTest(true);
+			m_GLCache->SetBlend(false);
+			m_GLCache->SetFaceCull(false); // For one sided objects - TODO: This will get overwritten by the renderer anyways
 
 			// Setup model renderer
 			if (renderOnlyStatic)
@@ -83,11 +86,21 @@ namespace Arcane
 				m_ActiveScene->AddModelsToRenderer(ModelFilterType::AllModels);
 			}
 
-			// Render models
-			m_GLCache->SetDepthTest(true);
-			m_GLCache->SetBlend(false);
-			m_GLCache->SetFaceCull(false); // For one sided objects
-			Renderer::Flush(camera, m_ShadowmapShader, RenderPassType::NoMaterialRequired);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+			// Render skinned models
+			{
+				m_GLCache->SetShader(m_ShadowmapSkinnedShader);
+				m_ShadowmapSkinnedShader->SetUniform("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);
+				Renderer::FlushOpaqueSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapSkinnedShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+				Renderer::FlushTransparentSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapSkinnedShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+			}
+
+			// Render non-skinned models
+			{
+				m_GLCache->SetShader(m_ShadowmapShader);
+				m_ShadowmapShader->SetUniform("lightSpaceViewProjectionMatrix", directionalLightViewProjMatrix);
+				Renderer::FlushOpaqueNonSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+				Renderer::FlushTransparentNonSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+			}
 
 			// Render terrain
 			terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
@@ -125,7 +138,10 @@ namespace Arcane
 			glm::vec3 spotLightPos = lightManager->GetSpotLightShadowCasterLightPosition();
 			glm::mat4 spotLightView = glm::lookAt(spotLightPos, spotLightPos + lightManager->GetSpotLightShadowCasterLightDir(), glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::mat4 spotLightViewProjMatrix = spotLightProjection * spotLightView;
-			m_ShadowmapShader->SetUniform("lightSpaceViewProjectionMatrix", spotLightViewProjMatrix);
+
+			m_GLCache->SetDepthTest(true);
+			m_GLCache->SetBlend(false);
+			m_GLCache->SetFaceCull(false); // For one sided objects - TODO: This will get overwritten by the renderer anyways
 
 			// Setup model renderer
 			if (renderOnlyStatic)
@@ -137,11 +153,21 @@ namespace Arcane
 				m_ActiveScene->AddModelsToRenderer(ModelFilterType::AllModels);
 			}
 
-			// Render models
-			m_GLCache->SetDepthTest(true);
-			m_GLCache->SetBlend(false);
-			m_GLCache->SetFaceCull(false); // For one sided objects
-			Renderer::Flush(camera, m_ShadowmapShader, RenderPassType::NoMaterialRequired); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+			// Render skinned models
+			{
+				m_GLCache->SetShader(m_ShadowmapSkinnedShader);
+				m_ShadowmapSkinnedShader->SetUniform("lightSpaceViewProjectionMatrix", spotLightViewProjMatrix);
+				Renderer::FlushOpaqueSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapSkinnedShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+				Renderer::FlushTransparentSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapSkinnedShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+			}
+
+			// Render non-skinned models
+			{
+				m_GLCache->SetShader(m_ShadowmapShader);
+				m_ShadowmapShader->SetUniform("lightSpaceViewProjectionMatrix", spotLightViewProjMatrix);
+				Renderer::FlushOpaqueNonSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+				Renderer::FlushTransparentNonSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+			}
 
 			// Render terrain
 			terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
@@ -176,10 +202,9 @@ namespace Arcane
 			m_CubemapCamera.SetCenterPosition(lightManager->GetPointLightShadowCasterLightPosition());
 			glm::mat4 pointLightProjection = m_CubemapCamera.GetProjectionMatrix(nearFarPlane.x, nearFarPlane.y);
 
-			// Shader setup (point light uses custom shader)
-			m_GLCache->SetShader(m_ShadowmapLinearShader);
-			m_ShadowmapLinearShader->SetUniform("lightPos", m_CubemapCamera.GetPosition());
-			m_ShadowmapLinearShader->SetUniform("lightFarPlane", nearFarPlane.y);
+			m_GLCache->SetDepthTest(true);
+			m_GLCache->SetBlend(false);
+			m_GLCache->SetFaceCull(false); // For one sided objects - TODO: This will get overwritten by the renderer anyways
 
 			// Render the scene to the probe's cubemap
 			glViewport(0, 0, pointLightShadowCubemap->GetFaceWidth(), pointLightShadowCubemap->GetFaceHeight());
@@ -189,7 +214,6 @@ namespace Arcane
 				m_CubemapCamera.SwitchCameraToFace(i);
 				glm::mat4 pointLightView = m_CubemapCamera.GetViewMatrix();
 				glm::mat4 pointLightViewProjMatrix = pointLightProjection * pointLightView;
-				m_ShadowmapLinearShader->SetUniform("lightSpaceViewProjectionMatrix", pointLightViewProjMatrix);
 
 				m_EmptyFramebuffer.SetDepthAttachment(DepthStencilAttachmentFormat::NormalizedDepthOnly, pointLightShadowCubemap->GetCubemapID(), GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 				m_EmptyFramebuffer.ClearDepth();
@@ -204,11 +228,25 @@ namespace Arcane
 					m_ActiveScene->AddModelsToRenderer(ModelFilterType::AllModels);
 				}
 
-				// Render models
-				m_GLCache->SetDepthTest(true);
-				m_GLCache->SetBlend(false);
-				m_GLCache->SetFaceCull(false); // For one sided objects
-				Renderer::Flush(camera, m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);  // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+				// Render skinned models
+				{
+					m_GLCache->SetShader(m_ShadowmapLinearSkinnedShader);
+					m_ShadowmapLinearSkinnedShader->SetUniform("lightPos", m_CubemapCamera.GetPosition());
+					m_ShadowmapLinearSkinnedShader->SetUniform("lightFarPlane", nearFarPlane.y);
+					m_ShadowmapLinearSkinnedShader->SetUniform("lightSpaceViewProjectionMatrix", pointLightViewProjMatrix);
+					Renderer::FlushOpaqueSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapLinearSkinnedShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+					Renderer::FlushTransparentSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapLinearSkinnedShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+				}
+
+				// Render non-skinned models
+				{
+					m_GLCache->SetShader(m_ShadowmapLinearShader);
+					m_ShadowmapLinearShader->SetUniform("lightPos", m_CubemapCamera.GetPosition());
+					m_ShadowmapLinearShader->SetUniform("lightFarPlane", nearFarPlane.y);
+					m_ShadowmapLinearShader->SetUniform("lightSpaceViewProjectionMatrix", pointLightViewProjMatrix);
+					Renderer::FlushOpaqueNonSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapLinearShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+					Renderer::FlushTransparentNonSkinnedMeshes(camera, RenderPassType::NoMaterialRequired, m_ShadowmapLinearShader); // TODO: This should not use the camera's position for sorting we are rendering shadow maps for lights
+				}
 
 				// Render terrain
 				terrain->Draw(m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);

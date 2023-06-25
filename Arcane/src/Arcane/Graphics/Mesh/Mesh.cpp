@@ -8,20 +8,18 @@ namespace Arcane
 {
 	Mesh::Mesh() : m_VAO(0), m_VBO(0), m_IBO(0) {}
 
-	Mesh::Mesh(std::vector<glm::vec3> &positions, std::vector<unsigned int> &indices)
-		: m_Positions(positions), m_Indices(indices), m_VAO(0), m_VBO(0), m_IBO(0) {}
+	Mesh::Mesh(std::vector<glm::vec3>&& positions, std::vector<glm::vec2>&& uvs, std::vector<unsigned int>&& indices)
+		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(), m_Tangents(), m_Bitangents(), m_BoneData(), m_Indices(std::move(indices)) {}
 
-	Mesh::Mesh(std::vector<glm::vec3> &positions, std::vector<glm::vec2> &uvs, std::vector<unsigned int> &indices)
-		: m_Positions(positions), m_UVs(uvs), m_Indices(indices), m_VAO(0), m_VBO(0), m_IBO(0) {}
+	Mesh::Mesh(std::vector<glm::vec3>&& positions, std::vector<glm::vec2>&& uvs, std::vector<glm::vec3>&& normals, std::vector<glm::vec3>&& tangents, std::vector<glm::vec3>&& bitangents, std::vector<unsigned int>&& indices)
+		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(std::move(normals)), m_Tangents(std::move(tangents)), m_Bitangents(std::move(bitangents)), m_BoneData(), m_Indices(std::move(indices)) {}
 
-	Mesh::Mesh(std::vector<glm::vec3> &positions, std::vector<glm::vec2> &uvs, std::vector<glm::vec3> &normals, std::vector<unsigned int> &indices)
-		: m_Positions(positions), m_UVs(uvs), m_Normals(normals), m_Indices(indices), m_VAO(0), m_VBO(0), m_IBO(0) {}
-
-	Mesh::Mesh(std::vector<glm::vec3> &positions, std::vector<glm::vec2> &uvs, std::vector<glm::vec3> &normals, std::vector<glm::vec3> &tangents, std::vector<glm::vec3> &bitangents, std::vector<unsigned int> &indices)
-		: m_Positions(positions), m_UVs(uvs), m_Normals(normals), m_Tangents(tangents), m_Bitangents(bitangents), m_Indices(indices), m_VAO(0), m_VBO(0), m_IBO(0) {}
+	Mesh::Mesh(std::vector<glm::vec3> &&positions, std::vector<glm::vec2> &&uvs, std::vector<glm::vec3> &&normals, std::vector<glm::vec3> &&tangents, std::vector<glm::vec3> &&bitangents, std::vector<VertexBoneData> &&boneWeights, std::vector<unsigned int> &&indices)
+		: m_Positions(std::move(positions)), m_UVs(std::move(uvs)), m_Normals(std::move(normals)), m_Tangents(std::move(tangents)), m_Bitangents(std::move(bitangents)), m_BoneData(std::move(boneWeights)), m_Indices(std::move(indices)) {}
  
 
-	void Mesh::Draw() const {
+	void Mesh::Draw() const
+	{
 		glBindVertexArray(m_VAO);
 		if (m_Indices.size() > 0) {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
@@ -34,7 +32,8 @@ namespace Arcane
 		glBindVertexArray(0);
 	}
 
-	void Mesh::LoadData(bool interleaved) {
+	void Mesh::LoadData(bool interleaved)
+	{
 		// Check for possible mesh initialization errors
 #ifdef ARC_DEV_BUILD
 		{
@@ -51,6 +50,8 @@ namespace Arcane
 				ARC_LOG_WARN("Mesh Tangent count doesn't match the vertex count");
 			if (m_Bitangents.size() != 0 && m_Bitangents.size() != vertexCount)
 				ARC_LOG_WARN("Mesh Bitangent count doesn't match the vertex count");
+			if (m_BoneData.size() != 0 && m_BoneData.size() != vertexCount)
+				ARC_LOG_WARN("Mesh Bone Data count doesn't match the vertex count");
 		}
 #endif
 
@@ -68,59 +69,98 @@ namespace Arcane
 			m_BufferComponentCount += 3;
 		if (m_Bitangents.size() > 0)
 			m_BufferComponentCount += 3;
+		if (m_BoneData.size() > 0)
+			m_BufferComponentCount += (2 * MaxBonesPerVertex);
 
 		// Pre-process the mesh data in the format that was specified
-		m_BufferData.reserve(m_Positions.size() + m_Normals.size() + m_UVs.size() + m_Tangents.size() + m_Bitangents.size());
-		if (interleaved) {
-			for (unsigned int i = 0; i < m_Positions.size(); i++) {
-				m_BufferData.push_back(m_Positions[i].x);
-				m_BufferData.push_back(m_Positions[i].y);
-				m_BufferData.push_back(m_Positions[i].z);
-				if (m_Normals.size() > 0) {
-					m_BufferData.push_back(m_Normals[i].x);
-					m_BufferData.push_back(m_Normals[i].y);
-					m_BufferData.push_back(m_Normals[i].z);
+		m_BufferData.reserve((3 * m_Positions.size()) + (3 * m_Normals.size()) + (2 * m_UVs.size()) + (3 * m_Tangents.size()) + (3 * m_Bitangents.size()) + (m_BoneData.size() * 2 * MaxBonesPerVertex));
+		if (interleaved)
+		{
+			for (unsigned int i = 0; i < m_Positions.size(); i++)
+			{
+				m_BufferData.push_back({ m_Positions[i].x });
+				m_BufferData.push_back({ m_Positions[i].y });
+				m_BufferData.push_back({ m_Positions[i].z });
+				if (m_Normals.size() > 0)
+				{
+					m_BufferData.push_back({ m_Normals[i].x });
+					m_BufferData.push_back({ m_Normals[i].y });
+					m_BufferData.push_back({ m_Normals[i].z });
 				}
-				if (m_UVs.size() > 0) {
-					m_BufferData.push_back(m_UVs[i].x);
-					m_BufferData.push_back(m_UVs[i].y);
+				if (m_UVs.size() > 0)
+				{
+					m_BufferData.push_back({ m_UVs[i].x });
+					m_BufferData.push_back({ m_UVs[i].y });
 				}
-				if (m_Tangents.size() > 0) {
-					m_BufferData.push_back(m_Tangents[i].x);
-					m_BufferData.push_back(m_Tangents[i].y);
-					m_BufferData.push_back(m_Tangents[i].z);
+				if (m_Tangents.size() > 0)
+				{
+					m_BufferData.push_back({ m_Tangents[i].x });
+					m_BufferData.push_back({ m_Tangents[i].y });
+					m_BufferData.push_back({ m_Tangents[i].z });
 				}
-				if (m_Bitangents.size() > 0) {
-					m_BufferData.push_back(m_Bitangents[i].x);
-					m_BufferData.push_back(m_Bitangents[i].y);
-					m_BufferData.push_back(m_Bitangents[i].z);
+				if (m_Bitangents.size() > 0)
+				{
+					m_BufferData.push_back({ m_Bitangents[i].x });
+					m_BufferData.push_back({ m_Bitangents[i].y });
+					m_BufferData.push_back({ m_Bitangents[i].z });
+				}
+				if (m_BoneData.size() > 0)
+				{
+					for (int j = 0; j < MaxBonesPerVertex; j++)
+					{
+						m_BufferData.push_back({ m_BoneData[i].BoneIDs[j] });
+					}
+					for (int j = 0; j < MaxBonesPerVertex; j++)
+					{
+						m_BufferData.push_back({ m_BoneData[i].Weights[j] });
+					}
 				}
 			}
 		}
-		else {
-			for (unsigned int i = 0; i < m_Positions.size(); i++) {
-				m_BufferData.push_back(m_Positions[i].x);
-				m_BufferData.push_back(m_Positions[i].y);
-				m_BufferData.push_back(m_Positions[i].z);
+		else
+		{
+			for (unsigned int i = 0; i < m_Positions.size(); i++)
+			{
+				m_BufferData.push_back({ m_Positions[i].x });
+				m_BufferData.push_back({ m_Positions[i].y });
+				m_BufferData.push_back({ m_Positions[i].z });
 			}
-			for (unsigned int i = 0; i < m_Normals.size(); i++) {
-				m_BufferData.push_back(m_Normals[i].x);
-				m_BufferData.push_back(m_Normals[i].y);
-				m_BufferData.push_back(m_Normals[i].z);
+			for (unsigned int i = 0; i < m_Normals.size(); i++)
+			{
+				m_BufferData.push_back({ m_Normals[i].x });
+				m_BufferData.push_back({ m_Normals[i].y });
+				m_BufferData.push_back({ m_Normals[i].z });
 			}
-			for (unsigned int i = 0; i < m_UVs.size(); i++) {
-				m_BufferData.push_back(m_UVs[i].x);
-				m_BufferData.push_back(m_UVs[i].y);
+			for (unsigned int i = 0; i < m_UVs.size(); i++)
+			{
+				m_BufferData.push_back({ m_UVs[i].x });
+				m_BufferData.push_back({ m_UVs[i].y });
 			}
-			for (unsigned int i = 0; i < m_Tangents.size(); i++) {
-				m_BufferData.push_back(m_Tangents[i].x);
-				m_BufferData.push_back(m_Tangents[i].y);
-				m_BufferData.push_back(m_Tangents[i].z);
+			for (unsigned int i = 0; i < m_Tangents.size(); i++)
+			{
+				m_BufferData.push_back({ m_Tangents[i].x });
+				m_BufferData.push_back({ m_Tangents[i].y });
+				m_BufferData.push_back({ m_Tangents[i].z });
 			}
-			for (unsigned int i = 0; i < m_Bitangents.size(); i++) {
-				m_BufferData.push_back(m_Bitangents[i].x);
-				m_BufferData.push_back(m_Bitangents[i].y);
-				m_BufferData.push_back(m_Bitangents[i].z);
+			for (unsigned int i = 0; i < m_Bitangents.size(); i++)
+			{
+				m_BufferData.push_back({ m_Bitangents[i].x });
+				m_BufferData.push_back({ m_Bitangents[i].y });
+				m_BufferData.push_back({ m_Bitangents[i].z });
+			}
+			for (unsigned int i = 0; i < m_BoneData.size(); i++)
+			{
+				for (int j = 0; j < MaxBonesPerVertex; j++)
+				{
+					m_BufferData.push_back({ m_BoneData[i].BoneIDs[j] });
+				}
+			}
+			for (unsigned int i = 0; i < m_BoneData.size(); i++)
+			{
+				for (int j = 0; j < MaxBonesPerVertex; j++)
+				{
+					m_BufferData.push_back({ m_BoneData[i].Weights[j] });
+				}
 			}
 		}
 	}
@@ -174,6 +214,16 @@ namespace Arcane
 				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), (void*)offset);
 				offset += 3 * sizeof(float);
 			}
+			if (m_BoneData.size() > 0)
+			{
+				glEnableVertexAttribArray(5);
+				glVertexAttribIPointer(5, 4, GL_INT, static_cast<GLsizei>(stride), (void*)offset);
+				offset += 4 * sizeof(int);
+
+				glEnableVertexAttribArray(6);
+				glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), (void*)offset);
+				offset += 4 * sizeof(float);
+			}
 		}
 		else
 		{
@@ -205,6 +255,16 @@ namespace Arcane
 				glEnableVertexAttribArray(4);
 				glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 0, (void*)offset);
 				offset += m_Bitangents.size() * 3 * sizeof(float);
+			}
+			if (m_BoneData.size() > 0)
+			{
+				glEnableVertexAttribArray(5);
+				glVertexAttribIPointer(5, 4, GL_INT, 0, (void*)offset);
+				offset += m_BoneData.size() * 4 * sizeof(int);
+
+				glEnableVertexAttribArray(6);
+				glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, 0, (void*)offset);
+				offset += m_BoneData.size() * 4 * sizeof(float);
 			}
 		}
 

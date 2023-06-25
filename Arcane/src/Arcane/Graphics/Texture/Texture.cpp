@@ -161,11 +161,7 @@ namespace Arcane
 	}
 
 	void Texture::SetTextureMagFilter(GLenum textureFilterMode) {
-#ifdef ARC_DEV_BUILD
-		// If mag filter mode exceeds GL_Linear (bilinear) report an error because it is useless to perform more expensive filtering with magnification
-		if (textureFilterMode > GL_LINEAR)
-			ARC_LOG_WARN("Texture's magnification filter exceeded bilinear filtering which won't result in any visual improvements and will just cost more");
-#endif // ARC_DEV_BUILD
+		ARC_ASSERT(textureFilterMode <= GL_LINEAR, "Texture's magnification filter exceeded bilinear filtering which won't result in any visual improvements and will just cost more");
 
 		if (m_TextureSettings.TextureMagnificationFilterMode == textureFilterMode)
 			return;

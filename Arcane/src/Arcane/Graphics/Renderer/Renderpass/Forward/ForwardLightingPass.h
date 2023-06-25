@@ -17,10 +17,12 @@ namespace Arcane
 		LightingPassOutput ExecuteOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL);
 		LightingPassOutput ExecuteTransparentLightingPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera, bool renderOnlyStatic, bool useIBL);
 	private:
+		void Init();
+
 		void BindShadowmap(Shader *shader, ShadowmapPassOutput &shadowmapData);
 	private:
 		bool m_AllocatedFramebuffer;
 		Framebuffer *m_Framebuffer;
-		Shader *m_ModelShader, *m_TerrainShader;
+		Shader *m_ModelShader, *m_SkinnedModelShader, *m_TerrainShader;
 	};
 }

@@ -5,7 +5,6 @@
 #include <Arcane/Graphics/texture/Texture.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Graphics/Window.h>
-#include <Arcane/UI/DebugPane.h>
 
 namespace Arcane
 {

@@ -9,6 +9,7 @@
 #include <Arcane/Scene/Components.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Scene/Entity.h>
+#include <Arcane/Animation/AnimationClip.h>
 
 
 using namespace Arcane;
@@ -31,6 +32,11 @@ void Testbed::LoadTestbedGraphics()
 	Quad* quad = new Quad();
 	Model* quadModel = new Model(*quad);
 	quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png")));
+
+	//Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae")); // TODO: Need an API to load textures and animation clips post async load, then I can use async for animated things
+	Model* animatedVampire = assetManager.LoadModel(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
+	int animIndex = 0;
+	AnimationClip *clip = new AnimationClip(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"), animIndex, animatedVampire);
 
 	// Initialize some entities and components at startup
 	{
@@ -71,6 +77,7 @@ void Testbed::LoadTestbedGraphics()
 		auto& meshComponent = window.AddComponent<MeshComponent>(quadModel);
 		meshComponent.IsStatic = true;
 		meshComponent.IsTransparent = true;
+		meshComponent.ShouldBackfaceCull = false;
 	}
 
 	{
@@ -80,7 +87,7 @@ void Testbed::LoadTestbedGraphics()
 		transformComponent.Rotation = glm::quat(rotation);
 		auto& lightComponent = directionalLight.AddComponent<LightComponent>();
 		lightComponent.Type = LightType::LightType_Directional;
-		lightComponent.Intensity = 3.0f;
+		lightComponent.Intensity = 2.0f;
 		lightComponent.LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
 		lightComponent.IsStatic = true;
 		lightComponent.CastShadows = true;
@@ -124,6 +131,24 @@ void Testbed::LoadTestbedGraphics()
 		lightComponent.LightColour = glm::vec3(1.0f, 1.0f, 1.0f);
 		lightComponent.IsStatic = true;
 	}
+
+	{
+		auto vampire = scene->CreateEntity("Animated Vampire");
+		auto& transformComponent = vampire.GetComponent<TransformComponent>();
+		transformComponent.Translation = { -70.88f, -9.22f, -39.02f };
+		transformComponent.Rotation.y = glm::radians(90.0f);
+		transformComponent.Scale = { 0.05f, 0.05f, 0.05f };
+		auto& meshComponent = vampire.AddComponent<MeshComponent>(animatedVampire);
+		meshComponent.IsStatic = false;
+		meshComponent.IsTransparent = false;
+		meshComponent.ShouldBackfaceCull = false;
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetRoughnessValue(1.0f);
+		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_normal.png")));
+		meshMaterial.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_specular.png")));
+		auto& poseAnimatorComponent = vampire.AddComponent<PoseAnimatorComponent>();
+		poseAnimatorComponent.PoseAnimator.SetAnimationClip(clip);
+	}
 }
 
 void Testbed::LoadTestbedPhysics()
@@ -147,4 +172,47 @@ void Testbed::LoadTestbedPhysics()
 		meshComponent.IsTransparent = false;
 	}
 	*/
+}
+
+void Testbed::LoadTestbedAnimation()
+{
+	Scene* scene = Arcane::Application::GetInstance().GetScene();
+	AssetManager& assetManager = AssetManager::GetInstance();
+
+	// Load some assets for the scene at startup
+	//Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae")); // TODO: Need an API to load textures and animation clips post async load, then I can use async for animated things
+	Model* animatedVampire = assetManager.LoadModel(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
+	int animIndex = 0;
+	AnimationClip *clip = new AnimationClip(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"), animIndex, animatedVampire);
+
+	// Initialize some entities and components at startup
+	{
+		auto vampire = scene->CreateEntity("Animated Vampire");
+		auto& transformComponent = vampire.GetComponent<TransformComponent>();
+		transformComponent.Translation = { -92.38f, -6.12f, -36.62f };
+		transformComponent.Scale = { 0.05f, 0.05f, 0.05f };
+		auto& meshComponent = vampire.AddComponent<MeshComponent>(animatedVampire);
+		meshComponent.IsStatic = false;
+		meshComponent.IsTransparent = false;
+		meshComponent.ShouldBackfaceCull = false;
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetRoughnessValue(1.0f);
+		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_normal.png")));
+		meshMaterial.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_specular.png")));
+		auto& poseAnimatorComponent = vampire.AddComponent<PoseAnimatorComponent>();
+		poseAnimatorComponent.PoseAnimator.SetAnimationClip(clip);
+	}
+
+	{
+		auto directionalLight = scene->CreateEntity("Directional Light");
+		auto& transformComponent = directionalLight.GetComponent<TransformComponent>();
+		transformComponent.Rotation.x = glm::radians(-63.5f);
+		auto& lightComponent = directionalLight.AddComponent<LightComponent>();
+		lightComponent.Type = LightType::LightType_Directional;
+		lightComponent.Intensity = 1.0f;
+		lightComponent.LightColour = glm::vec3(1.0f, 0.6f, 0.0f);
+		lightComponent.IsStatic = true;
+		lightComponent.CastShadows = true;
+		lightComponent.ShadowResolution = ShadowQuality::ShadowQuality_Ultra;
+	}
 }

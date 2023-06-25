@@ -20,7 +20,7 @@ namespace Arcane
 
 		inline void SetFocusedEntity(Entity entity) { m_FocusedEntity = entity; }
 	private:
-		Shader *m_ColourWriteShader,*m_OutlineShader;
+		Shader *m_ColourWriteShader, *m_ColourWriteShaderSkinned, *m_OutlineShader;
 		Shader *m_UnlitSpriteShader;
 
 		Entity m_FocusedEntity;

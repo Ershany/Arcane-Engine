@@ -44,6 +44,8 @@ namespace Arcane
 						int choice = meshComponent.IsTransparent;
 						ImGui::Combo("Rendering Mode", &choice, items, IM_ARRAYSIZE(items));
 						meshComponent.IsTransparent = choice;
+						ImGui::Checkbox("Is Static", &meshComponent.IsStatic);
+						ImGui::Checkbox("Cull Backface", &meshComponent.ShouldBackfaceCull);
 						ImGui::Text("Texture Maps");
 						ImGui::Separator();
 
@@ -181,6 +183,20 @@ namespace Arcane
 								if (lightComponent.ShadowFarPlane < lightComponent.ShadowNearPlane)
 									lightComponent.ShadowNearPlane = lightComponent.ShadowFarPlane;
 							}
+						}
+					}
+				}
+
+				if (m_FocusedEntity.HasComponent<PoseAnimatorComponent>())
+				{
+					if (ImGui::CollapsingHeader("Pose Animator", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						auto &animatorComponent = m_FocusedEntity.GetComponent<PoseAnimatorComponent>();
+						
+						AnimationClip *clip = animatorComponent.PoseAnimator.GetCurrentAnimationClip();
+						if (clip && clip->GetAnimationName())
+						{
+							ImGui::Text("Animation Name: %s", clip->GetAnimationName());
 						}
 					}
 				}
