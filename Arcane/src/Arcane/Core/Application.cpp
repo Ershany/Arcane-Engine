@@ -128,11 +128,12 @@ namespace Arcane
 				Renderer::BeginFrame();
 				{
 					m_MasterRenderPass->Render();
-
-					if (m_Specification.EnableImGui)
-						RenderImGui();
 				}
 				Renderer::EndFrame();
+
+				// Render ImGui Layers On-top
+				if (m_Specification.EnableImGui)
+					RenderImGui();
 
 #ifdef ARC_DEV_BUILD
 				GPUTimerManager::EndOfFrameUpdate();
