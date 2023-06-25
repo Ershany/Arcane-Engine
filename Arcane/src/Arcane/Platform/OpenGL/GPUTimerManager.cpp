@@ -92,7 +92,7 @@ namespace Arcane
 			element->CalculateTime(s_OddFrame);
 			double ms = element->GetTimeMS(s_OddFrame);
 
-			ImGui::Text("%s - %f", element->m_TimerName.c_str(), ms);
+			ImGui::Text("%s - %f ms", element->m_TimerName.c_str(), ms);
 		}
 	}
 #endif

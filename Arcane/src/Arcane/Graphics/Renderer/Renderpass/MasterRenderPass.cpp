@@ -40,6 +40,7 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		m_ShadowPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Shadow Map Generation Pass (GPU)"));
 		m_DeferredGeometryPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Deferred Geometry Pass (GPU)"));
+		m_SSAOPassTimer = GPUTimerManager::CreateGPUTimer(std::string("SSAO Pass (GPU)"));
 		m_DeferredLightingPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Deferred Lighting Pass (GPU)"));
 		m_WaterPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Water Pass (GPU)"));
 		m_PostGBufferForwardPassTimer = GPUTimerManager::CreateGPUTimer(std::string("Post GBuffer Forward Transparent Pass (GPU)"));
@@ -81,15 +82,62 @@ namespace Arcane
 		GPUTimerManager::EndQuery(m_ShadowPassTimer);
 #endif
 
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::BeginQuery(m_DeferredGeometryPassTimer);
+#endif
 		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.ExecuteGeometryPass(m_ActiveScene->GetCamera(), false);
-		PreLightingPassOutput preLightingOutput = m_PostProcessPass.ExecutePreLightingPass(geometryOutput.outputGBuffer, m_ActiveScene->GetCamera());
-		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.ExecuteLightingPass(shadowmapOutput, geometryOutput.outputGBuffer, preLightingOutput, m_ActiveScene->GetCamera(), true);
-		WaterPassOutput waterOutput = m_WaterPass.ExecuteWaterPass(shadowmapOutput, deferredLightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
-		LightingPassOutput postGBufferForward = m_ForwardLightingPass.ExecuteTransparentLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
-		PostProcessPassOutput postProcessOutput = m_PostProcessPass.ExecutePostProcessPass(postGBufferForward.outputFramebuffer);
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::EndQuery(m_DeferredGeometryPassTimer);
+#endif
 
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::BeginQuery(m_SSAOPassTimer);
+#endif
+		PreLightingPassOutput preLightingOutput = m_PostProcessPass.ExecutePreLightingPass(geometryOutput.outputGBuffer, m_ActiveScene->GetCamera());
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::EndQuery(m_SSAOPassTimer);
+#endif
+
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::BeginQuery(m_DeferredLightingPassTimer);
+#endif
+		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.ExecuteLightingPass(shadowmapOutput, geometryOutput.outputGBuffer, preLightingOutput, m_ActiveScene->GetCamera(), true);
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::EndQuery(m_DeferredLightingPassTimer);
+#endif
+
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::BeginQuery(m_WaterPassTimer);
+#endif
+		WaterPassOutput waterOutput = m_WaterPass.ExecuteWaterPass(shadowmapOutput, deferredLightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::EndQuery(m_WaterPassTimer);
+#endif
+
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::BeginQuery(m_PostGBufferForwardPassTimer);
+#endif
+		LightingPassOutput postGBufferForward = m_ForwardLightingPass.ExecuteTransparentLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::EndQuery(m_PostGBufferForwardPassTimer);
+#endif
+
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::BeginQuery(m_PostProcessPassTimer);
+#endif
+		PostProcessPassOutput postProcessOutput = m_PostProcessPass.ExecutePostProcessPass(postGBufferForward.outputFramebuffer);
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::EndQuery(m_PostProcessPassTimer);
+#endif
+
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::BeginQuery(m_EditorPassTimer);
+#endif
 		Framebuffer *extraFramebuffer = postProcessOutput.outFramebuffer == m_PostProcessPass.GetFullRenderTarget() ? m_PostProcessPass.GetTonemappedNonLinearTarget() : m_PostProcessPass.GetFullRenderTarget();
 		EditorPassOutput editorOutput = m_EditorPass.ExecuteEditorPass(postProcessOutput.outFramebuffer, m_PostProcessPass.GetResolveRenderTarget(), extraFramebuffer, m_ActiveScene->GetCamera());
+#ifdef ARC_DEV_BUILD
+		GPUTimerManager::EndQuery(m_EditorPassTimer);
+#endif
 
 #endif
 
