@@ -12,7 +12,6 @@
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardLightingPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/ShadowmapPass.h>
 #include <Arcane/UI/WaterPane.h>
-#include <Arcane/UI/RuntimePane.h>
 
 namespace Arcane
 {

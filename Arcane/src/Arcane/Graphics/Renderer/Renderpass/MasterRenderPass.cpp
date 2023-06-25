@@ -6,7 +6,6 @@
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
-#include <Arcane/UI/RuntimePane.h>
 
 #ifdef ARC_DEV_BUILD
 #include <Arcane/Platform/OpenGL/GPUTimerManager.h>

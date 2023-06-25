@@ -201,9 +201,7 @@
     <ClCompile Include="src\Arcane\Input\JoystickManager.cpp" />
     <ClCompile Include="src\Arcane\main.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.cpp" />
-    <ClCompile Include="src\Arcane\UI\DebugPane.cpp" />
     <ClCompile Include="src\Arcane\UI\Pane.cpp" />
-    <ClCompile Include="src\Arcane\UI\RuntimePane.cpp" />
     <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\GPUTimerManager.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp" />
@@ -319,9 +317,7 @@
     <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h" />
     <ClInclude Include="src\Arcane\Scene\Components.h" />
     <ClInclude Include="src\Arcane\Scene\Entity.h" />
-    <ClInclude Include="src\Arcane\UI\DebugPane.h" />
     <ClInclude Include="src\Arcane\UI\Pane.h" />
-    <ClInclude Include="src\Arcane\UI\RuntimePane.h" />
     <ClInclude Include="src\Arcane\UI\WaterPane.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\GPUTimerManager.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />

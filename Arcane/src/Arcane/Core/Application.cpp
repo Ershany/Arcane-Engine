@@ -28,10 +28,7 @@ namespace Arcane
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification) 
-#if DEBUG_PROFILING
-		,m_RuntimePane(glm::vec2(270.0f, 175.0f)), m_DebugPane(glm::vec2(270.0f, 400.0f)), m_WaterPane(glm::vec2(270.0f, 400.0f))
-#endif
+	Application::Application(const ApplicationSpecification &specification) : m_Specification(specification), m_Wireframe(false)
 	{
 		s_Instance = this;
 
@@ -113,12 +110,10 @@ namespace Arcane
 			if (!m_Minimized)
 			{
 				// Wireframe stuff
-				#if DEBUG_PROFILING
-					if (m_DebugPane.GetWireframeMode())
-						glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-					else
-						glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				#endif // DEBUG_PROFILING
+				if (m_Wireframe)
+					glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+				else
+					glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 				m_Window->Bind();
 				m_Window->ClearAll();
@@ -183,10 +178,6 @@ namespace Arcane
 	void Application::RenderImGui()
 	{
 		m_ImGuiLayer->Begin();
-
-		//m_RuntimePane.Render();
-		//m_DebugPane.Render();
-		//m_WaterPane.Render();
 
 		for (Layer *layer : m_LayerStack)
 			layer->OnImGuiRender();

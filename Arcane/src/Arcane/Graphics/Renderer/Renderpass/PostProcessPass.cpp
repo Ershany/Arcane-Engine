@@ -1,13 +1,13 @@
 #include "arcpch.h"
 #include "PostProcessPass.h"
 
+#include <Arcane/Core/Application.h>
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
-#include <Arcane/UI/RuntimePane.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 
@@ -165,10 +165,10 @@ namespace Arcane
 			inputFramebuffer = &m_ResolveRenderTarget;
 		}
 
-#ifdef ARC_DEV_BUILD
-		if (DebugPane::GetWireframeMode())
+		// Wireframe code otherwise we will just render a quad in wireframe
+		if (Application::GetInstance().GetWireframe())
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-#endif // ARC_DEV_BUILD
+
 		//Texture *sceneWithBloom = Bloom(target->getColourTexture());
 		//TonemapGammaCorrect(&m_TonemappedNonLinearTarget, sceneWithBloom);
 

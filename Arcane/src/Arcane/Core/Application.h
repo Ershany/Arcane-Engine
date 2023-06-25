@@ -6,10 +6,6 @@
 #include <Arcane/Util/Singleton.h>
 #include <Arcane/Input/InputManager.h>
 
-#include <Arcane/UI/DebugPane.h>
-#include <Arcane/UI/RuntimePane.h>
-#include <Arcane/UI/WaterPane.h>
-
 namespace Arcane
 {
 	class Window;
@@ -39,6 +35,8 @@ namespace Arcane
 		inline Window* GetWindow() { return m_Window; }
 		inline Scene* GetScene() { return m_ActiveScene; }
 		inline MasterRenderPass* GetMasterRenderPass() { return m_MasterRenderPass; }
+		inline bool GetWireframe() { return m_Wireframe; }
+		inline bool* GetWireframePtr() { return &m_Wireframe; }
 
 		void Run();
 		void Close();
@@ -79,11 +77,7 @@ namespace Arcane
 
 		static Application *s_Instance;
 
-#if DEBUG_PROFILING
-		Arcane::RuntimePane m_RuntimePane;
-		Arcane::DebugPane m_DebugPane;
-		Arcane::WaterPane m_WaterPane;
-#endif
+		bool m_Wireframe;
 	};
 
 	// Implemented by the client
