@@ -1,7 +1,6 @@
 #pragma once
 
 // Debug Options
-#define DEBUG_PROFILING 1
 #define USE_RENDERDOC 0
 #define USE_OPENGL_DEBUG 1
 
