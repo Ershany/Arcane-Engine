@@ -62,11 +62,6 @@ namespace Arcane
 
 	WaterPassOutput WaterPass::ExecuteWaterPass(ShadowmapPassOutput &inputShadowmapData, Framebuffer *inputFramebuffer, ICamera *camera)
 	{
-#if DEBUG_PROFILING
-		glFinish();
-		m_ProfilingTimer.Reset();
-#endif // DEBUG_PROFILING
-
 		WaterPassOutput passOutput;
 		if (!m_WaterEnabled)
 		{
@@ -163,11 +158,6 @@ namespace Arcane
 		m_SceneRefractionFramebuffer.GetDepthStencilTexture()->Bind(4);
 
 		m_WaterPlane.Draw();
-
-#if DEBUG_PROFILING
-		glFinish();
-		RuntimePane::SetWaterTimer((float)m_ProfilingTimer.Elapsed());
-#endif // DEBUG_PROFILING
 
 		passOutput.outputFramebuffer = inputFramebuffer;
 		return passOutput;
