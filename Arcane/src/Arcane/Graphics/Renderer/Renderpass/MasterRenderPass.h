@@ -54,7 +54,11 @@ namespace Arcane
 		bool m_RenderToSwapchain;
 
 #ifdef ARC_DEV_BUILD
+	#if FORWARD_RENDER
+		GPUTimer *m_ShadowPassTimer, *m_ForwardOpaquePassTimer, *m_WaterPassTimer, *m_ForwardTransparentPassTimer, *m_PostProcessPassTimer, *m_EditorPassTimer;
+	#else
 		GPUTimer *m_ShadowPassTimer, *m_DeferredGeometryPassTimer, *m_SSAOPassTimer, *m_DeferredLightingPassTimer, *m_WaterPassTimer, *m_PostGBufferForwardPassTimer, *m_PostProcessPassTimer, *m_EditorPassTimer;
+	#endif
 #endif
 	};
 }
