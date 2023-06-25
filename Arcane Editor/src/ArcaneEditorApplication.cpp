@@ -31,7 +31,7 @@ Arcane::Application* Arcane::CreateApplication(int argc, char **argv)
 	specification.WindowHeight = 1440;
 	specification.RenderResolutionWidth = 1920 * SUPERSAMPLING_FACTOR;
 	specification.RenderResolutionHeight = 1080 * SUPERSAMPLING_FACTOR;
-	specification.VSync = true;
+	specification.VSync = V_SYNC;
 	specification.EnableImGui = true;
 
 	// Create the app and set the renderer to not present the final buffer to the window's swapchain since the editor is going to be in charge of displaying the viewport

@@ -1,13 +1,13 @@
 #include "arcpch.h"
 #include "PostProcessPass.h"
 
+#include <Arcane/Core/Application.h>
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
-#include <Arcane/UI/RuntimePane.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 
@@ -51,7 +51,8 @@ namespace Arcane
 		// SSAO Hemisphere Sample Generation (tangent space)
 		std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
 		std::default_random_engine generator;
-		for (unsigned int i = 0; i < m_SsaoKernel.size(); i++) {
+		for (unsigned int i = 0; i < m_SsaoKernel.size(); i++)
+		{
 			// Make sure that the samples aren't perfectly perpendicular to the normal, or depth reconstruction will yield artifacts (so make sure the z value isn't close to 0)
 			glm::vec3 hemisphereSample = glm::vec3((randomFloats(generator) * 2.0f) - 1.0f, (randomFloats(generator) * 2.0f) - 1.0f, glm::clamp((double)randomFloats(generator), 0.2, 1.0)); // Z = [0.2, 1] because we want hemisphere in tangent space
 			hemisphereSample = glm::normalize(hemisphereSample);
@@ -67,7 +68,8 @@ namespace Arcane
 		// SSAO Random Rotation Texture (used to apply a random rotation when constructing the change of basis matrix)
 		// Random vectors should be in tangent space
 		std::array<glm::vec3, 16> noiseSSAO;
-		for (unsigned int i = 0; i < noiseSSAO.size(); i++) {
+		for (unsigned int i = 0; i < noiseSSAO.size(); i++)
+		{
 			noiseSSAO[i] = glm::vec3((randomFloats(generator) * 2.0f) - 1.0f, (randomFloats(generator) * 2.0f) - 1.0f, 0.0f);
 		}
 		TextureSettings ssaoNoiseTextureSettings;
@@ -85,13 +87,11 @@ namespace Arcane
 	PostProcessPass::~PostProcessPass() {}
 
 	// Generates the AO of the scene using SSAO and stores it in a single channel texture
-	PreLightingPassOutput PostProcessPass::ExecutePreLightingPass(GBuffer *inputGbuffer, ICamera *camera) {
-#if DEBUG_PROFILING
-		glFinish();
-		m_ProfilingTimer.Reset();
-#endif // DEBUG_PROFILING
+	PreLightingPassOutput PostProcessPass::ExecutePreLightingPass(GBuffer *inputGbuffer, ICamera *camera)
+	{
 		PreLightingPassOutput passOutput;
-		if (!m_SsaoEnabled) {
+		if (!m_SsaoEnabled)
+		{
 			passOutput.ssaoTexture = AssetManager::GetInstance().GetWhiteTexture();
 			return passOutput;
 		}
@@ -144,34 +144,31 @@ namespace Arcane
 		// Reset unusual state
 		m_GLCache->SetDepthTest(true);
 
-#if DEBUG_PROFILING
-		glFinish();
-		RuntimePane::SetSsaoTimer((float)m_ProfilingTimer.Elapsed());
-#endif // DEBUG_PROFILING
-
 		// Render pass output
 		passOutput.ssaoTexture = m_SsaoBlurRenderTarget.GetColourTexture();
 		return passOutput;
 	}
 
-	PostProcessPassOutput PostProcessPass::ExecutePostProcessPass(Framebuffer *framebufferToProcess) {
+	PostProcessPassOutput PostProcessPass::ExecutePostProcessPass(Framebuffer *framebufferToProcess)
+	{
 		PostProcessPassOutput output;
 
 		GLCache *glCache = GLCache::GetInstance();
 
 		// If the framebuffer is multi-sampled, resolve it
 		Framebuffer *inputFramebuffer = framebufferToProcess;
-		if (framebufferToProcess->IsMultisampled()) {
+		if (framebufferToProcess->IsMultisampled())
+		{
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, framebufferToProcess->GetFramebuffer());
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_ResolveRenderTarget.GetFramebuffer());
 			glBlitFramebuffer(0, 0, framebufferToProcess->GetWidth(), framebufferToProcess->GetHeight(), 0, 0, m_ResolveRenderTarget.GetWidth(), m_ResolveRenderTarget.GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
 			inputFramebuffer = &m_ResolveRenderTarget;
 		}
 
-#ifdef ARC_DEV_BUILD
-		if (DebugPane::GetWireframeMode())
+		// Wireframe code otherwise we will just render a quad in wireframe
+		if (Application::GetInstance().GetWireframe())
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-#endif // ARC_DEV_BUILD
+
 		//Texture *sceneWithBloom = Bloom(target->getColourTexture());
 		//TonemapGammaCorrect(&m_TonemappedNonLinearTarget, sceneWithBloom);
 
@@ -180,7 +177,8 @@ namespace Arcane
 		inputFramebuffer = &m_TonemappedNonLinearTarget;
 
 		Framebuffer *framebufferToRenderTo = nullptr;
-		if (m_ChromaticAberrationEnabled) {
+		if (m_ChromaticAberrationEnabled)
+		{
 			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
 			else framebufferToRenderTo = &m_FullRenderTarget;
 
@@ -188,7 +186,8 @@ namespace Arcane
 			inputFramebuffer = framebufferToRenderTo;
 		}
 
-		if (m_FilmGrainEnabled) {
+		if (m_FilmGrainEnabled)
+		{
 			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
 			else framebufferToRenderTo = &m_FullRenderTarget;
 
@@ -196,7 +195,8 @@ namespace Arcane
 			inputFramebuffer = framebufferToRenderTo;
 		}
 
-		if (m_VignetteEnabled) {
+		if (m_VignetteEnabled)
+		{
 			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
 			else framebufferToRenderTo = &m_FullRenderTarget;
 
@@ -204,28 +204,22 @@ namespace Arcane
 			inputFramebuffer = framebufferToRenderTo;
 		}
 
-#if DEBUG_PROFILING
-		glFinish();
-		m_ProfilingTimer.Reset();
-#endif // DEBUG_PROFILING
-		if (m_FxaaEnabled) {
+		if (m_FxaaEnabled)
+		{
 			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
 			else framebufferToRenderTo = &m_FullRenderTarget;
 
 			Fxaa(framebufferToRenderTo, inputFramebuffer->GetColourTexture());
 			inputFramebuffer = framebufferToRenderTo;
 		}
-#if DEBUG_PROFILING
-		glFinish();
-		RuntimePane::SetFxaaTimer((float)m_ProfilingTimer.Elapsed());
-#endif // DEBUG_PROFILING
 
 		// Finally return the output frame after being post processed
 		output.outFramebuffer = inputFramebuffer;
 		return output;
 	}
 
-	void PostProcessPass::TonemapGammaCorrect(Framebuffer *target, Texture *hdrTexture) {
+	void PostProcessPass::TonemapGammaCorrect(Framebuffer *target, Texture *hdrTexture)
+	{
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_TonemapGammaCorrectShader);
 		m_GLCache->SetDepthTest(false);
@@ -243,7 +237,8 @@ namespace Arcane
 		Renderer::DrawNdcPlane();
 	}
 
-	void PostProcessPass::Fxaa(Framebuffer *target, Texture *texture) {
+	void PostProcessPass::Fxaa(Framebuffer *target, Texture *texture)
+	{
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_FxaaShader);
 		m_GLCache->SetDepthTest(false);
@@ -260,7 +255,8 @@ namespace Arcane
 		Renderer::DrawNdcPlane();
 	}
 
-	void PostProcessPass::Vignette(Framebuffer *target, Texture *texture, Texture *optionalVignetteMask) {
+	void PostProcessPass::Vignette(Framebuffer *target, Texture *texture, Texture *optionalVignetteMask)
+	{
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_VignetteShader);
 		m_GLCache->SetDepthTest(false);
@@ -274,7 +270,8 @@ namespace Arcane
 		m_VignetteShader->SetUniform("intensity", m_VignetteIntensity);
 		m_VignetteShader->SetUniform("input_texture", 0);
 		texture->Bind(0);
-		if (optionalVignetteMask != nullptr) {
+		if (optionalVignetteMask != nullptr)
+		{
 			m_VignetteShader->SetUniform("usesMask", 1);
 			m_VignetteShader->SetUniform("vignette_mask", 1);
 			optionalVignetteMask->Bind(1);
@@ -283,7 +280,8 @@ namespace Arcane
 		Renderer::DrawNdcPlane();
 	}
 
-	void PostProcessPass::ChromaticAberration(Framebuffer *target, Texture *texture) {
+	void PostProcessPass::ChromaticAberration(Framebuffer *target, Texture *texture)
+	{
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_ChromaticAberrationShader);
 		m_GLCache->SetDepthTest(false);
@@ -301,7 +299,8 @@ namespace Arcane
 		Renderer::DrawNdcPlane();
 	}
 
-	void PostProcessPass::FilmGrain(Framebuffer *target, Texture *texture) {
+	void PostProcessPass::FilmGrain(Framebuffer *target, Texture *texture)
+	{
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_FilmGrainShader);
 		m_GLCache->SetDepthTest(false);
@@ -319,7 +318,8 @@ namespace Arcane
 		Renderer::DrawNdcPlane();
 	}
 
-	Texture* PostProcessPass::Bloom(Texture *hdrSceneTexture) {
+	Texture* PostProcessPass::Bloom(Texture *hdrSceneTexture)
+	{
 		m_GLCache->SetDepthTest(false);
 		m_GLCache->SetBlend(false);
 		m_GLCache->SetFaceCull(true);

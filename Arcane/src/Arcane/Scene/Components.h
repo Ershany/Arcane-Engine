@@ -4,6 +4,8 @@
 
 #include <Arcane/Graphics/Mesh/Model.h>
 #include <Arcane/Graphics/Lights/LightManager.h>
+#include <Arcane/Animation/AnimationClip.h>
+#include <Arcane/Animation/PoseAnimator.h>
 
 namespace Arcane
 {
@@ -72,6 +74,7 @@ namespace Arcane
 
 		bool IsTransparent = false; // Should be true if the model contains any translucent material
 		bool IsStatic = false;		// Should be true if the model will never have its transform modified
+		bool ShouldBackfaceCull = true; // Should be true for majority of models, unless a model isn't double sided
 	};
 
 	struct LightComponent
@@ -98,5 +101,10 @@ namespace Arcane
 	struct CameraComponent
 	{
 		Arcane::ICamera *camera;
+	};
+
+	struct PoseAnimatorComponent
+	{
+		PoseAnimator PoseAnimator;
 	};
 }

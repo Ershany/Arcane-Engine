@@ -26,14 +26,16 @@ namespace Arcane
 		void SetUniform(const char *name, const glm::mat3& matrix);
 		void SetUniform(const char *name, const glm::mat4& matrix);
 
-		void SetUniformArray(const char *name, int arraySize, float *value);
-		void SetUniformArray(const char *name, int arraySize, int *value);
-		void SetUniformArray(const char *name, int arraySize, glm::vec2 *value);
-		void SetUniformArray(const char *name, int arraySize, glm::ivec2 *value);
-		void SetUniformArray(const char *name, int arraySize, glm::vec3 *value);
-		void SetUniformArray(const char *name, int arraySize, glm::ivec3 *value);
-		void SetUniformArray(const char *name, int arraySize, glm::vec4 *value);
-		void SetUniformArray(const char *name, int arraySize, glm::ivec4 *value);
+		void SetUniformArray(const char *name, int arraySize, const float *value);
+		void SetUniformArray(const char *name, int arraySize, const int *value);
+		void SetUniformArray(const char *name, int arraySize, const glm::vec2 *value);
+		void SetUniformArray(const char *name, int arraySize, const glm::ivec2 *value);
+		void SetUniformArray(const char *name, int arraySize, const glm::vec3 *value);
+		void SetUniformArray(const char *name, int arraySize, const glm::ivec3 *value);
+		void SetUniformArray(const char *name, int arraySize, const glm::vec4 *value);
+		void SetUniformArray(const char *name, int arraySize, const glm::ivec4 *value);
+		void SetUniformArray(const char *name, int arraySize, const glm::mat3 *value);
+		void SetUniformArray(const char *name, int arraySize, const glm::mat4 *value);
 
 		inline unsigned int GetShaderID() { return m_ShaderID; }
 	private:

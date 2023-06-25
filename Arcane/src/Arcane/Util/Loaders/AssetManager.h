@@ -59,8 +59,6 @@ namespace Arcane
 		// Used to load resources asynchronously on a threadpool
 		void LoaderThread();
 
-		static AssetManager *s_Instance;
-
 		std::vector<std::thread> m_WorkerThreads;
 		std::atomic<bool> m_LoadingThreadsActive;
 		bool m_AsyncLoadingActive = true;

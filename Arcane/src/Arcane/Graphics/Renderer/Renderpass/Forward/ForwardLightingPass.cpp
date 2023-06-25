@@ -15,8 +15,7 @@ namespace Arcane
 {
 	ForwardLightingPass::ForwardLightingPass(Scene *scene, bool shouldMultisample) : RenderPass(scene), m_AllocatedFramebuffer(true)
 	{
-		m_ModelShader = ShaderLoader::LoadShader("forward/PBR_Model.glsl");
-		m_TerrainShader = ShaderLoader::LoadShader("forward/PBR_Terrain.glsl");
+		Init();
 
 		m_Framebuffer = new Framebuffer(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), shouldMultisample);
 		m_Framebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthStencil).CreateFramebuffer();
@@ -24,8 +23,7 @@ namespace Arcane
 
 	ForwardLightingPass::ForwardLightingPass(Scene *scene, Framebuffer *customFramebuffer) : RenderPass(scene), m_AllocatedFramebuffer(false), m_Framebuffer(customFramebuffer)
 	{
-		m_ModelShader = ShaderLoader::LoadShader("forward/PBR_Model.glsl");
-		m_TerrainShader = ShaderLoader::LoadShader("forward/PBR_Terrain.glsl");
+		Init();
 	}
 
 	ForwardLightingPass::~ForwardLightingPass()
@@ -33,6 +31,13 @@ namespace Arcane
 		if (m_AllocatedFramebuffer) {
 			delete m_Framebuffer;
 		}
+	}
+
+	void ForwardLightingPass::Init()
+	{
+		m_ModelShader = ShaderLoader::LoadShader("forward/PBR_Model.glsl");
+		m_SkinnedModelShader = ShaderLoader::LoadShader("forward/PBR_Skinned_Model.glsl");
+		m_TerrainShader = ShaderLoader::LoadShader("forward/PBR_Terrain.glsl");
 	}
 
 	LightingPassOutput ForwardLightingPass::ExecuteOpaqueLightingPass(ShadowmapPassOutput &inputShadowmapData, ICamera *camera, bool renderOnlyStatic, bool useIBL)
@@ -75,37 +80,7 @@ namespace Arcane
 		BindShadowmap(m_TerrainShader, inputShadowmapData);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
 
-		// Render opaque and transparent objects (renderer will render the transparent bucket last)
-		m_GLCache->SetShader(m_ModelShader);
-		if (m_GLCache->GetUsesClipPlane())
-		{
-			m_ModelShader->SetUniform("usesClipPlane", true);
-			m_ModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
-		}
-		else
-		{
-			m_ModelShader->SetUniform("usesClipPlane", false);
-		}
-		(lightManager->*lightBindFunction) (m_ModelShader);
-		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
-		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
-		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
-
-		// Shadowmap code
-		BindShadowmap(m_ModelShader, inputShadowmapData);
-
-		// IBL Binding
-		glm::vec3 cameraPosition = camera->GetPosition();
-		probeManager->BindProbes(cameraPosition, m_ModelShader); // TODO: Should use camera component
-		if (useIBL)
-		{
-			m_ModelShader->SetUniform("computeIBL", 1);
-		}
-		else
-		{
-			m_ModelShader->SetUniform("computeIBL", 0);
-		}
-
+		// Render opaque objects since we are in the opaque pass
 		// Add meshes to the renderer
 		if (renderOnlyStatic)
 		{
@@ -116,8 +91,69 @@ namespace Arcane
 			m_ActiveScene->AddModelsToRenderer(ModelFilterType::OpaqueModels);
 		}
 
-		// Finally render the meshes
-		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
+		// Bind data to skinned shader and render skinned models
+		{
+			m_GLCache->SetShader(m_SkinnedModelShader);
+			if (m_GLCache->GetUsesClipPlane())
+			{
+				m_SkinnedModelShader->SetUniform("usesClipPlane", true);
+				m_SkinnedModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
+			}
+			else
+			{
+				m_SkinnedModelShader->SetUniform("usesClipPlane", false);
+			}
+			(lightManager->*lightBindFunction) (m_SkinnedModelShader);
+
+			// Shadowmap code
+			BindShadowmap(m_SkinnedModelShader, inputShadowmapData);
+
+			// IBL Binding
+			glm::vec3 cameraPosition = camera->GetPosition();
+			probeManager->BindProbes(cameraPosition, m_SkinnedModelShader); // TODO: Should use camera component
+			if (useIBL)
+			{
+				m_SkinnedModelShader->SetUniform("computeIBL", 1);
+			}
+			else
+			{
+				m_SkinnedModelShader->SetUniform("computeIBL", 0);
+			}
+
+			Renderer::FlushOpaqueSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_SkinnedModelShader);
+		}
+
+		// Bind data to non-skinned shader and render non-skinned models
+		{
+			m_GLCache->SetShader(m_ModelShader);
+			if (m_GLCache->GetUsesClipPlane())
+			{
+				m_ModelShader->SetUniform("usesClipPlane", true);
+				m_ModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
+			}
+			else
+			{
+				m_ModelShader->SetUniform("usesClipPlane", false);
+			}
+			(lightManager->*lightBindFunction) (m_ModelShader);
+
+			// Shadowmap code
+			BindShadowmap(m_ModelShader, inputShadowmapData);
+
+			// IBL Binding
+			glm::vec3 cameraPosition = camera->GetPosition();
+			probeManager->BindProbes(cameraPosition, m_ModelShader); // TODO: Should use camera component
+			if (useIBL)
+			{
+				m_ModelShader->SetUniform("computeIBL", 1);
+			}
+			else
+			{
+				m_ModelShader->SetUniform("computeIBL", 0);
+			}
+
+			Renderer::FlushOpaqueNonSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_ModelShader);
+		}
 
 		// Render pass output
 		LightingPassOutput passOutput;
@@ -152,37 +188,7 @@ namespace Arcane
 		if (renderOnlyStatic)
 			lightBindFunction = &LightManager::BindStaticLightingUniforms;
 
-		// Setup for transparent objects
-		m_GLCache->SetShader(m_ModelShader);
-		if (m_GLCache->GetUsesClipPlane())
-		{
-			m_ModelShader->SetUniform("usesClipPlane", true);
-			m_ModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
-		}
-		else
-		{
-			m_ModelShader->SetUniform("usesClipPlane", false);
-		}
-		(lightManager->*lightBindFunction) (m_ModelShader);
-		m_ModelShader->SetUniform("viewPos", camera->GetPosition());
-		m_ModelShader->SetUniform("view", camera->GetViewMatrix());
-		m_ModelShader->SetUniform("projection", camera->GetProjectionMatrix());
-
-		// Shadowmap code
-		BindShadowmap(m_ModelShader, inputShadowmapData);
-
-		// IBL Binding
-		glm::vec3 cameraPosition = camera->GetPosition();
-		probeManager->BindProbes(cameraPosition, m_ModelShader); // TODO: Should use camera component
-		if (useIBL)
-		{
-			m_ModelShader->SetUniform("computeIBL", 1);
-		}
-		else
-		{
-			m_ModelShader->SetUniform("computeIBL", 0);
-		}
-
+		// Render transparent objects since we are in the transparent pass
 		// Add meshes to the renderer
 		if (renderOnlyStatic)
 		{
@@ -193,8 +199,69 @@ namespace Arcane
 			m_ActiveScene->AddModelsToRenderer(ModelFilterType::TransparentModels);
 		}
 
-		// Render the transparent meshes
-		Renderer::Flush(camera, m_ModelShader, RenderPassType::MaterialRequired);
+		// Bind data to skinned shader and render skinned models
+		{
+			m_GLCache->SetShader(m_SkinnedModelShader);
+			if (m_GLCache->GetUsesClipPlane())
+			{
+				m_SkinnedModelShader->SetUniform("usesClipPlane", true);
+				m_SkinnedModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
+			}
+			else
+			{
+				m_SkinnedModelShader->SetUniform("usesClipPlane", false);
+			}
+			(lightManager->*lightBindFunction) (m_SkinnedModelShader);
+
+			// Shadowmap code
+			BindShadowmap(m_SkinnedModelShader, inputShadowmapData);
+
+			// IBL Binding
+			glm::vec3 cameraPosition = camera->GetPosition();
+			probeManager->BindProbes(cameraPosition, m_SkinnedModelShader); // TODO: Should use camera component
+			if (useIBL)
+			{
+				m_SkinnedModelShader->SetUniform("computeIBL", 1);
+			}
+			else
+			{
+				m_SkinnedModelShader->SetUniform("computeIBL", 0);
+			}
+
+			Renderer::FlushTransparentSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_SkinnedModelShader);
+		}
+
+		// Bind data to non-skinned shader and render non-skinned models
+		{
+			m_GLCache->SetShader(m_ModelShader);
+			if (m_GLCache->GetUsesClipPlane())
+			{
+				m_ModelShader->SetUniform("usesClipPlane", true);
+				m_ModelShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
+			}
+			else
+			{
+				m_ModelShader->SetUniform("usesClipPlane", false);
+			}
+			(lightManager->*lightBindFunction) (m_ModelShader);
+
+			// Shadowmap code
+			BindShadowmap(m_ModelShader, inputShadowmapData);
+
+			// IBL Binding
+			glm::vec3 cameraPosition = camera->GetPosition();
+			probeManager->BindProbes(cameraPosition, m_ModelShader); // TODO: Should use camera component
+			if (useIBL)
+			{
+				m_ModelShader->SetUniform("computeIBL", 1);
+			}
+			else
+			{
+				m_ModelShader->SetUniform("computeIBL", 0);
+			}
+
+			Renderer::FlushTransparentNonSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_ModelShader);
+		}
 
 		// Render pass output
 		LightingPassOutput passOutput;

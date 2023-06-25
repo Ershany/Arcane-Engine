@@ -18,6 +18,6 @@ namespace Arcane
 	private:
 		bool m_AllocatedGBuffer;
 		GBuffer *m_GBuffer;
-		Shader *m_ModelShader, *m_TerrainShader;
+		Shader *m_ModelShader, *m_SkinnedModelShader, *m_TerrainShader;
 	};
 }

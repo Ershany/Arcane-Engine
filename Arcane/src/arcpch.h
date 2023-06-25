@@ -7,7 +7,10 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <map>
 #include <unordered_map>
+#include <set>
+#include <unordered_set>
 #include <array>
 #include <iterator>
 #include <random>
