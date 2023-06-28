@@ -1,7 +1,15 @@
 #pragma once
+#ifndef LOGGER_H
+#define LOGGER_H
 
+#ifndef SINGLETON_H
 #include <Arcane/Util/Singleton.h>
+#endif
+
+#ifndef SPDLOG_H
 #include <spdlog/spdlog.h>
+#endif
+
 #include <spdlog/fmt/ostr.h>
 
 namespace Arcane
@@ -36,4 +44,6 @@ namespace Arcane
 #define ARC_LOG_WARN(...)  Arcane::Logger::GetEngineLogger()->warn(__VA_ARGS__)
 #define ARC_LOG_INFO(...)  Arcane::Logger::GetEngineLogger()->info(__VA_ARGS__)
 #define ARC_LOG_TRACE(...) Arcane::Logger::GetEngineLogger()->trace(__VA_ARGS__)
+#endif
+
 #endif

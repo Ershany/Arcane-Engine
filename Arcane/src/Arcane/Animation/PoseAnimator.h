@@ -1,4 +1,6 @@
 #pragma once
+#ifndef POSEANIMATOR_H
+#define POSEANIMATOR_H
 
 namespace Arcane
 {
@@ -25,3 +27,4 @@ namespace Arcane
 		bool m_PlayClipIndefinitely = true;
 	};
 }
+#endif

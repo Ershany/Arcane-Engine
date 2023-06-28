@@ -5,19 +5,23 @@
 
 namespace Arcane
 {
-	VertexArray::VertexArray() {
+	VertexArray::VertexArray()
+	{
 		glGenVertexArrays(1, &m_VertexArrayID);
 	}
 
-	VertexArray::~VertexArray() {
-		for (unsigned int i = 0; i < m_Buffers.size(); ++i) {
+	VertexArray::~VertexArray()
+	{
+		for (unsigned int i = 0; i < m_Buffers.size(); ++i)
+		{
 			delete m_Buffers[i];
 		}
 
 		glDeleteVertexArrays(1, &m_VertexArrayID);
 	}
 
-	void VertexArray::AddBuffer(Buffer *buffer, int index) {
+	void VertexArray::AddBuffer(Buffer *buffer, int index)
+	{
 		Bind();
 
 		buffer->Bind();
@@ -28,11 +32,13 @@ namespace Arcane
 		Unbind();
 	}
 
-	void VertexArray::Bind() const {
+	void VertexArray::Bind() const
+	{
 		glBindVertexArray(m_VertexArrayID);
 	}
 
-	void VertexArray::Unbind() const {
+	void VertexArray::Unbind() const
+	{
 		glBindVertexArray(0);
 	}
 }

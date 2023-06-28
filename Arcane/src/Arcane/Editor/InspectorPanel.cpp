@@ -1,8 +1,11 @@
 #include "arcpch.h"
 #include "InspectorPanel.h"
 
+#include <Arcane/Graphics/Mesh/Model.h>
+#include <Arcane/Graphics/Mesh/Material.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
+#include <Arcane/Animation/AnimationClip.h>
 
 namespace Arcane
 {

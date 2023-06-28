@@ -1,6 +1,7 @@
 #include "arcpch.h"
 #include "Shader.h"
 
+#include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Util/FileUtils.h>
 
 namespace Arcane

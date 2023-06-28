@@ -1,6 +1,6 @@
 #pragma once
-
-#include <Arcane/Util/Loaders/ShaderLoader.h>
+#ifndef SHADER_H
+#define SHADER_H
 
 namespace Arcane
 {
@@ -49,3 +49,4 @@ namespace Arcane
 		std::string m_ShaderFilePath;
 	};
 }
+#endif

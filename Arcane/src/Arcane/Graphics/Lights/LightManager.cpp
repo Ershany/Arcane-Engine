@@ -1,8 +1,6 @@
 #include "arcpch.h"
 #include "LightManager.h"
 
-#include <limits>
-
 #include <Arcane/Graphics/Lights/LightBindings.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Texture/Cubemap.h>

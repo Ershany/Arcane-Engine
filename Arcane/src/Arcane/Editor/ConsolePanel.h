@@ -1,4 +1,6 @@
 #pragma once
+#ifndef CONSOLEPANEL_H
+#define CONSOLEPANEL_H
 
 namespace Arcane
 {
@@ -13,3 +15,4 @@ namespace Arcane
 		void RenderConsole();
 	};
 }
+#endif

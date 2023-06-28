@@ -2,6 +2,10 @@
 #include "AnimationClip.h"
 
 #include <assimp/Importer.hpp>
+#include <Arcane/Animation/AnimationData.h>
+#include <Arcane/Graphics/Mesh/Model.h>
+#include <assimp/postprocess.h>
+#include <assimp/scene.h>
 
 namespace Arcane
 {

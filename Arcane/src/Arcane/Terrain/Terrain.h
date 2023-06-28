@@ -1,6 +1,10 @@
 #pragma once
+#ifndef TERRAIN_H
+#define TERRAIN_H
 
+#ifndef RENDERPASSTYPE_H
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
+#endif
 
 namespace Arcane
 {
@@ -8,7 +12,8 @@ namespace Arcane
 	class Mesh;
 	class GLCache;
 
-	class Terrain {
+	class Terrain
+	{
 	public:
 		Terrain(glm::vec3 &worldPosition);
 		~Terrain();
@@ -42,3 +47,4 @@ namespace Arcane
 		std::array<Texture*, 21> m_Textures; // Represents all the textures supported by the terrain's texure splatting (rgba and the default value)
 	};
 }
+#endif

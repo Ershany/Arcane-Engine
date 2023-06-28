@@ -1,14 +1,38 @@
 #pragma once
+#ifndef MASTERRENDERPASS_H
+#define MASTERRENDERPASS_H
 
+#ifndef DEFERREDGEOMETRYPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/Deferred/DeferredGeometryPass.h>
+#endif
+
+#ifndef DEFERREDLIGHTINGPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/Deferred/DeferredLightingPass.h>
+#endif
+
+#ifndef FORWARDPROBEPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardProbePass.h>
+#endif
+
+#ifndef FORWARDLIGHTINGPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/Forward/ForwardLightingPass.h>
+#endif
+
+#ifndef EDITORPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/EditorPass.h>
+#endif
+
+#ifndef WATERPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/WaterPass.h>
+#endif
+
+#ifndef POSTPROCESSPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/PostProcessPass.h>
+#endif
+
+#ifndef SHADOWMAPPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/ShadowmapPass.h>
-#include <Arcane/Util/Timer.h>
+#endif
 
 namespace Arcane
 {
@@ -62,3 +86,4 @@ namespace Arcane
 #endif
 	};
 }
+#endif

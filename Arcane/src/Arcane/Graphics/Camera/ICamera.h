@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ICAMERA_H
+#define ICAMERA_H
 
 namespace Arcane
 {
@@ -17,3 +19,4 @@ namespace Arcane
 		virtual void InvertPitch() = 0;
 	};
 }
+#endif

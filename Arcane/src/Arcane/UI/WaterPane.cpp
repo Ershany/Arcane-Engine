@@ -1,6 +1,8 @@
 #include "arcpch.h"
 #include "WaterPane.h"
 
+#include <Arcane/Vendor/Imgui/imgui.h>
+
 namespace Arcane
 {
 	bool* WaterPane::s_ClearWater = nullptr;

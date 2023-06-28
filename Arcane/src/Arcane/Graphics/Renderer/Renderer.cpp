@@ -4,6 +4,10 @@
 #include <Arcane/Graphics/Mesh/Model.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Shader.h>
+#include <Arcane/Graphics/Mesh/Common/Cube.h>
+#include <Arcane/Graphics/Mesh/Common/Quad.h>
+#include <Arcane/Graphics/Camera/ICamera.h>
+#include <Arcane/Animation/PoseAnimator.h>
 
 namespace Arcane
 {

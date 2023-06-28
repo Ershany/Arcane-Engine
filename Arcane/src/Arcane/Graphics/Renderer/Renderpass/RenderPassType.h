@@ -1,7 +1,14 @@
 #pragma once
+#ifndef RENDERPASSTYPE_H
+#define RENDERPASSTYPE_H
 
+#ifndef FRAMEBUFFER_H
 #include <Arcane/Platform/OpenGL/Framebuffer/Framebuffer.h>
+#endif
+
+#ifndef GBUFFER_H
 #include <Arcane/Platform/OpenGL/Framebuffer/GBuffer.h>
+#endif
 
 namespace Arcane
 {
@@ -59,3 +66,4 @@ namespace Arcane
 		Framebuffer *outFramebuffer = nullptr;
 	};
 }
+#endif

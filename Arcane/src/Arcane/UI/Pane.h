@@ -1,10 +1,11 @@
 #pragma once
-
-#include <Arcane/Vendor/Imgui/imgui.h>
+#ifndef PANE_H
+#define PANE_H
 
 namespace Arcane
 {
-	class Pane {
+	class Pane
+	{
 	public:
 		Pane(std::string &paneName, glm::vec2 &paneSize);
 
@@ -16,3 +17,4 @@ namespace Arcane
 		glm::vec2 m_PaneSize;
 	};
 }
+#endif

@@ -2,7 +2,8 @@
 #include "FPSCamera.h"
 
 #include <Arcane/Graphics/Window.h>
-#include "Arcane/RenderdocManager.h"
+#include <Arcane/RenderdocManager.h>
+#include <Arcane/Input/InputManager.h>
 
 namespace Arcane
 {

@@ -1,6 +1,10 @@
 #pragma once
+#ifndef SKYBOX_H
+#define SKYBOX_H
 
+#ifndef CUBE_H
 #include <Arcane/Graphics/Mesh/Common/Cube.h>
+#endif
 
 namespace Arcane
 {
@@ -24,3 +28,4 @@ namespace Arcane
 		Cubemap *m_SkyboxCubemap;
 	};
 }
+#endif

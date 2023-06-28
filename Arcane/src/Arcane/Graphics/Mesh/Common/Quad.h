@@ -1,6 +1,10 @@
 #pragma once
+#ifndef QUAD_H
+#define QUAD_H
 
+#ifndef MESH_H
 #include <Arcane/Graphics/Mesh/Mesh.h>
+#endif
 
 namespace Arcane
 {
@@ -9,3 +13,4 @@ namespace Arcane
 		Quad(bool ndcQuad = true);
 	};
 }
+#endif

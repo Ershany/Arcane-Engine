@@ -2,9 +2,11 @@
 #include "Model.h"
 
 #include <Arcane/Graphics/Shader.h>
-#include <Arcane/Graphics/Mesh/Mesh.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Animation/AnimationData.h>
+#include <assimp/scene.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
 
 namespace Arcane
 {

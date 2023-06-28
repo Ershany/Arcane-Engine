@@ -1,6 +1,6 @@
 #pragma once
-
-#include "RenderPassType.h"
+#ifndef RENDERPASS_H
+#define RENDERPASS_H
 
 namespace Arcane
 {
@@ -17,3 +17,4 @@ namespace Arcane
 		Scene *m_ActiveScene;
 	};
 }
+#endif

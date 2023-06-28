@@ -1,4 +1,6 @@
 #pragma once
+#ifndef SINGLETON_H
+#define SINGLETON_H
 
 namespace Arcane
 {
@@ -14,3 +16,4 @@ namespace Arcane
 		virtual ~Singleton() = default;
 	};
 }
+#endif

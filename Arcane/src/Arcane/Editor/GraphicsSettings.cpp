@@ -1,6 +1,7 @@
 #include "arcpch.h"
 #include "GraphicsSettings.h"
 
+#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderPass.h>
 #include <Arcane/Core/Application.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Vendor/Imgui/imgui.h>

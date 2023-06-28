@@ -1,10 +1,15 @@
 #pragma once
+#ifndef GBUFFER_H
+#define GBUFFER_H
 
+#ifndef FRAMEBUFFER_H
 #include <Arcane/Platform/OpenGL/Framebuffer/Framebuffer.h>
+#endif
 
 namespace Arcane
 {
-	class GBuffer : public Framebuffer {
+	class GBuffer : public Framebuffer
+	{
 	public:
 		GBuffer(unsigned int width, unsigned int height);
 		~GBuffer();
@@ -21,3 +26,4 @@ namespace Arcane
 		std::array<Texture, 3> m_GBufferRenderTargets;
 	};
 }
+#endif

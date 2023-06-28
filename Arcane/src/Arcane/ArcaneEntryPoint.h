@@ -7,7 +7,6 @@
 
 #include <arcpch.h>
 #include <Arcane/Core/Application.h>
-#include <Arcane/Core/Base.h>
 #include <Arcane/RenderdocManager.h>
 
 extern Arcane::Application* Arcane::CreateApplication(int argc, char **argv);

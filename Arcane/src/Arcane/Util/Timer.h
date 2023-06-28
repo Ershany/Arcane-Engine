@@ -1,4 +1,6 @@
 #pragma once
+#ifndef TIMER_H
+#define TIMER_H
 
 namespace Arcane
 {
@@ -14,3 +16,4 @@ namespace Arcane
 		double m_StartTime;
 	};
 }
+#endif

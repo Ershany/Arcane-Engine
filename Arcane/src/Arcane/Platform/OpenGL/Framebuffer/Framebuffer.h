@@ -1,6 +1,10 @@
 #pragma once
+#ifndef FRAMEBUFFER_H
+#define FRAMEBUFFER_H
 
+#ifndef TEXTURE_H
 #include <Arcane/Graphics/Texture/Texture.h>
+#endif
 
 namespace Arcane
 {
@@ -71,3 +75,4 @@ namespace Arcane
 		unsigned int m_DepthStencilRBO;
 	};
 }
+#endif

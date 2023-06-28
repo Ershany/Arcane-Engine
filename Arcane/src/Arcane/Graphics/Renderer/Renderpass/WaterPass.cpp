@@ -51,7 +51,7 @@ namespace Arcane
 		WaterPane::BindReflectionBias(&m_ReflectionBias);
 		WaterPane::BindRefractionBias(&m_RefractionBias);
 
-		m_Timer.Reset();
+		m_EffectsTimer.Reset();
 	}
 
 	WaterPass::~WaterPass()
@@ -124,7 +124,7 @@ namespace Arcane
 		glm::mat4 rotate = glm::rotate(glm::mat4(1.0f), glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(m_WaterScale, m_WaterScale, m_WaterScale));
 		model = translate * rotate * scale;
-		m_WaveMoveFactor = static_cast<float>(m_Timer.Elapsed() * m_WaveSpeed);
+		m_WaveMoveFactor = static_cast<float>(m_EffectsTimer.Elapsed() * m_WaveSpeed);
 		m_WaveMoveFactor = static_cast<float>(std::fmod((double)m_WaveMoveFactor, 1.0));
 		
 		lightManager->BindLightingUniforms(m_WaterShader);

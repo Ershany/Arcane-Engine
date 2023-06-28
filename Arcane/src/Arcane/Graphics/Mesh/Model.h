@@ -1,11 +1,22 @@
 #pragma once
+#ifndef MODEL_H
+#define MODEL_H
 
+#ifndef MESH_H
 #include <Arcane/Graphics/Mesh/Mesh.h>
-#include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
+#endif
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+#ifndef RENDERPASSTYPE_H
+#include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
+#endif
+
+#include <assimp/material.h>
+#include <assimp/matrix4x4.h>
+
+struct aiScene;
+struct aiMaterial;
+struct aiNode;
+struct aiMesh;
 
 namespace Arcane
 {
@@ -51,3 +62,4 @@ namespace Arcane
 		std::string m_Name;
 	};
 }
+#endif

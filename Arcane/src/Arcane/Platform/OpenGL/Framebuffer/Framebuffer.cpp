@@ -1,8 +1,6 @@
 #include "arcpch.h"
 #include "Framebuffer.h"
 
-#include <Arcane/Util/Loaders/TextureLoader.h>
-
 namespace Arcane
 {
 	Framebuffer::Framebuffer(unsigned int width, unsigned int height, bool isMultisampled)

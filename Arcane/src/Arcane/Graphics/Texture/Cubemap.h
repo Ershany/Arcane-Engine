@@ -1,4 +1,6 @@
 #pragma once
+#ifndef CUBEMAP_H
+#define CUBEMAP_H
 
 namespace Arcane
 {
@@ -57,3 +59,4 @@ namespace Arcane
 		CubemapSettings m_CubemapSettings;
 	};
 }
+#endif

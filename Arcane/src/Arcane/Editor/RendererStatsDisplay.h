@@ -1,4 +1,6 @@
 #pragma once
+#ifndef RENDERERSTATSDISPLAY_H
+#define RENDERERSTATSDISPLAY_H
 
 namespace Arcane
 {
@@ -10,3 +12,4 @@ namespace Arcane
 		void OnImGuiRender();
 	};
 }
+#endif

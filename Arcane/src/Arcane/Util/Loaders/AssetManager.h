@@ -1,7 +1,14 @@
 #pragma once
+#ifndef ASSETMANAGER_H
+#define ASSETMANAGER_H
 
+#ifndef THREADSAFEQUEUE_H
 #include <Arcane/Core/Threads/ThreadSafeQueue.h>
+#endif
+
+#ifndef TEXTURELOADER_H
 #include <Arcane/Util/Loaders/TextureLoader.h>
+#endif
 
 namespace Arcane
 {
@@ -78,3 +85,4 @@ namespace Arcane
 		ThreadSafeQueue<ModelLoadJob> m_GenerateModelQueue;
 	};
 }
+#endif

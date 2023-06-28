@@ -1,6 +1,6 @@
 #pragma once
-
-#include <Arcane/Core/Assert.h>
+#ifndef BASE_H
+#define BASE_H
 
 #ifdef ARC_PLATFORM_WINDOWS
 	#define GLFW_EXPOSE_NATIVE_WIN32
@@ -32,3 +32,5 @@ typedef int8_t s8;
 typedef int16_t s16;
 typedef int32_t s32;
 typedef int64_t s64;
+
+#endif

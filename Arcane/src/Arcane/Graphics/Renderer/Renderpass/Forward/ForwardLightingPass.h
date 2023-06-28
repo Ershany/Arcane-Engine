@@ -1,12 +1,21 @@
 #pragma once
+#ifndef FORWARDLIGHTINGPASS_H
+#define FORWARDLIGHTINGPASS_H
 
+#ifndef RENDERPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPass.h>
+#endif
+
+#ifndef RENDERPASSTYPE_H
+#include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
+#endif
 
 namespace Arcane
 {
 	class Shader;
 	class Scene;
 	class ICamera;
+	class Framebuffer;
 
 	class ForwardLightingPass : public RenderPass {
 	public:
@@ -26,3 +35,4 @@ namespace Arcane
 		Shader *m_ModelShader, *m_SkinnedModelShader, *m_TerrainShader;
 	};
 }
+#endif

@@ -1,6 +1,10 @@
 #pragma once
+#ifndef OPENGLIMGUILAYER_H
+#define OPENGLIMGUILAYER_H
 
+#ifndef IMGUILAYER_H
 #include <Arcane/ImGui/ImGuiLayer.h>
+#endif
 
 namespace Arcane
 {
@@ -22,3 +26,4 @@ namespace Arcane
 #endif
 	};
 }
+#endif

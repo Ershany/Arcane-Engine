@@ -1,4 +1,6 @@
 #pragma once
+#ifndef LIGHTPROBE_H
+#define LIGHTPROBE_H
 
 namespace Arcane
 {
@@ -26,3 +28,4 @@ namespace Arcane
 		bool m_Generated;
 	};
 }
+#endif

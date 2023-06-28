@@ -1,8 +1,11 @@
 #pragma once
+#ifndef INDEXBUFFER_H
+#define INDEXBUFFER_H
 
 namespace Arcane
 {
-	class IndexBuffer {
+	class IndexBuffer
+	{
 	public:
 		IndexBuffer();
 		IndexBuffer(unsigned int *data, int amount);
@@ -19,3 +22,4 @@ namespace Arcane
 		int m_Count;
 	};
 }
+#endif

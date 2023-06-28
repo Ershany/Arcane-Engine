@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ARCPCH_H
+#define ARCPCH_H
 
 // C/C++
 #define NOMINMAX
@@ -15,6 +17,11 @@
 #include <iterator>
 #include <random>
 #include <filesystem>
+#include <sstream>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <limits>
 
 // Dependencies
 #include <gl/glew.h>
@@ -37,3 +44,6 @@
 #include <Arcane/Util/Logger.h>
 #include <Arcane/Core/Base.h>
 #include <Arcane/Core/Events/Event.h>
+#include <Arcane/Core/Assert.h>
+
+#endif

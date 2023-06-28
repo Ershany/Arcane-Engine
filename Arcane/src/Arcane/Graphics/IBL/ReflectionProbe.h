@@ -1,4 +1,6 @@
 #pragma once
+#ifndef REFLECTIONPROBE_H
+#define REFLECTIONPROBE_H
 
 namespace Arcane
 {
@@ -32,3 +34,4 @@ namespace Arcane
 		bool m_Generated;
 	};
 }
+#endif

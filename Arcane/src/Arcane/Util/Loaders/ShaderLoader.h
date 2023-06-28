@@ -1,4 +1,6 @@
 #pragma once
+#ifndef SHADERLOADER_H
+#define SHADERLOADER_H
 
 namespace Arcane
 {
@@ -15,3 +17,4 @@ namespace Arcane
 		static std::hash<std::string> s_Hasher;
 	};
 }
+#endif

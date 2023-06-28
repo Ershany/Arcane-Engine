@@ -1,8 +1,10 @@
 #pragma once
+#ifndef GPUTIMERMANAGER_H
+#define GPUTIMERMANAGER_H
 
+#ifdef ARC_DEV_BUILD
 namespace Arcane
 {
-#ifdef ARC_DEV_BUILD
 	// This class stores queries for even and odd frames. This is because when we query for data OpenGL will stall. So what we do for the current frame is start and stop the timers
 	// and we do not sample these times until the next frame. This should avoid any stalling waiting for a timer
 	class GPUTimer
@@ -45,5 +47,7 @@ namespace Arcane
 		static bool s_FirstFrame; // Eww Anti-pattern
 		static std::vector<GPUTimer*> s_Timers;
 	};
-#endif
 }
+#endif
+
+#endif

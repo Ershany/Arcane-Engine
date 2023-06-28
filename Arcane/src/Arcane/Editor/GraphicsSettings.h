@@ -1,9 +1,11 @@
 #pragma once
-
-#include <Arcane/Graphics/Renderer/RenderPass/MasterRenderPass.h>
+#ifndef GRAPHICSSETTINGS_H
+#define GRAPHICSSETTINGS_H
 
 namespace Arcane
 {
+	class MasterRenderPass;
+
 	class GraphicsSettings
 	{
 	public:
@@ -14,3 +16,4 @@ namespace Arcane
 		MasterRenderPass *m_MasterRenderPass;
 	};
 }
+#endif

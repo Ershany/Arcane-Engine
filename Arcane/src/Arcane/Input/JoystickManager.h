@@ -1,6 +1,10 @@
 #pragma once
+#ifndef JOYSTICKMANAGER_H
+#define JOYSTICKMANAGER_H
 
+#ifndef JOYSTICKINPUTDATA_H
 #include <Arcane/Input/JoystickInputData.h>
+#endif
 
 namespace Arcane
 {
@@ -27,3 +31,4 @@ namespace Arcane
 		static JoystickInputData s_JoystickData[MAX_JOYSTICKS];
 	};
 }
+#endif

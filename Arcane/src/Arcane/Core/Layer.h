@@ -1,4 +1,6 @@
 #pragma once
+#ifndef LAYER_H
+#define LAYER_H
 
 namespace Arcane
 {
@@ -19,3 +21,4 @@ namespace Arcane
 		ARC_DEV_ONLY(std::string m_DebugName);
 	};
 }
+#endif

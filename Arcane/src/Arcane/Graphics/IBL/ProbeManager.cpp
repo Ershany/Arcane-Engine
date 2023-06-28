@@ -2,7 +2,6 @@
 #include "ProbeManager.h"
 
 #include <Arcane/Graphics/Shader.h>
-#include <Arcane/Graphics/Skybox.h>
 #include <Arcane/Graphics/IBL/LightProbe.h>
 #include <Arcane/Graphics/IBL/ReflectionProbe.h>
 

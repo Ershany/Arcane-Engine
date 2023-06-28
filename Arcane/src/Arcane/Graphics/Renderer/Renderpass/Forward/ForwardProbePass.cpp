@@ -2,7 +2,6 @@
 #include "ForwardProbePass.h"
 
 #include <Arcane/Scene/Scene.h>
-#include <Arcane/Graphics/Mesh/Common/Cube.h>
 #include <Arcane/Graphics/IBL/ProbeManager.h>
 #include <Arcane/Graphics/IBL/LightProbe.h>
 #include <Arcane/Graphics/IBL/ReflectionProbe.h>

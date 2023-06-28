@@ -1,4 +1,6 @@
 #pragma once
+#ifndef LAYERSTACK_H
+#define LAYERSTACK_H
 
 #include <vector> // Need to keep this or Arcane Editor complains...
 
@@ -25,3 +27,4 @@ namespace Arcane
 		unsigned int m_LayerInsertIndex = 0;
 	};
 }
+#endif

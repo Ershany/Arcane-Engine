@@ -1,7 +1,10 @@
 #pragma once
+#ifndef INSPECTORPANEL_H
+#define INSPECTORPANEL_H
 
-#include <Arcane/Scene/Scene.h>
+#ifndef ENTITY_H
 #include <Arcane/Scene/Entity.h>
+#endif
 
 namespace Arcane
 {
@@ -21,3 +24,4 @@ namespace Arcane
 		Entity m_FocusedEntity;
 	};
 }
+#endif

@@ -1,8 +1,14 @@
 #pragma once
+#ifndef EDITORPASS_H
+#define EDITORPASS_H
 
+#ifndef RENDERPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPass.h>
-#include <Arcane/Graphics/Renderer/Renderpass/PostProcessPass.h>
+#endif
+
+#ifndef ENTITY_H
 #include <Arcane/Scene/Entity.h>
+#endif
 
 namespace Arcane
 {
@@ -33,3 +39,4 @@ namespace Arcane
 		glm::vec3 m_OutlineColour = glm::vec3(0.68507f, 0.0f, 1.0f);
 	};
 }
+#endif

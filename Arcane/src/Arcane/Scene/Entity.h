@@ -1,9 +1,18 @@
 #pragma once
+#ifndef ENTITY_H
+#define ENTITY_H
 
+#ifndef COMPONENTS_H
 #include <Arcane/Scene/Components.h>
-#include <Arcane/Scene/Scene.h>
+#endif
 
+#ifndef SCENE_H
+#include <Arcane/Scene/Scene.h>
+#endif
+
+#ifndef ENTT_CONFIG_CONFIG_H
 #include "entt.hpp"
+#endif
 
 namespace Arcane
 {
@@ -79,3 +88,4 @@ namespace Arcane
 		Scene *m_Scene = nullptr;
 	};
 }
+#endif

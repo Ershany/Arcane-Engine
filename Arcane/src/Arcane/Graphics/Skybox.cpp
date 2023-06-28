@@ -1,14 +1,10 @@
 #include "arcpch.h"
 #include "Skybox.h"
 
-#include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Texture/Cubemap.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
-#include <Arcane/Platform/OpenGL/Buffer.h>
-#include <Arcane/Platform/OpenGL/IndexBuffer.h>
-#include <Arcane/Platform/OpenGL/VertexArray.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 

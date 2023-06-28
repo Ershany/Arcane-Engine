@@ -1,6 +1,7 @@
 #include "arcpch.h"
 #include "TextureLoader.h"
 
+#include <Arcane/Graphics/Texture/Texture.h>
 #include <Arcane/Graphics/Texture/Cubemap.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 

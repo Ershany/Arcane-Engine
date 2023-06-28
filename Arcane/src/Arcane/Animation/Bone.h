@@ -1,4 +1,6 @@
 #pragma once
+#ifndef BONE_H
+#define BONE_H
 
 struct aiNodeAnim;
 
@@ -49,3 +51,4 @@ namespace Arcane
 		int m_ID;
 	};
 }
+#endif

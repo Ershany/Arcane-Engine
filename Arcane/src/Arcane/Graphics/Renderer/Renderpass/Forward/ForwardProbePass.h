@@ -1,9 +1,22 @@
 #pragma once
+#ifndef FORWARDPROBEPASS_H
+#define FORWARDPROBEPASS_H
 
+#ifndef CUBEMAP_H
 #include <Arcane/Graphics/Texture/Cubemap.h>
+#endif
+
+#ifndef CUBEMAPCAMERA_H
 #include <Arcane/Graphics/Camera/CubemapCamera.h>
+#endif
+
+#ifndef RENDERPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPass.h>
-#include <Arcane/Graphics/Renderer/Renderpass/ShadowmapPass.h>
+#endif
+
+#ifndef FRAMEBUFFER_H
+#include <Arcane/Platform/OpenGL/Framebuffer/Framebuffer.h>
+#endif
 
 namespace Arcane
 {
@@ -33,3 +46,4 @@ namespace Arcane
 		Shader *m_ConvolutionShader, *m_ImportanceSamplingShader;
 	};
 }
+#endif

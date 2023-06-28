@@ -1,10 +1,19 @@
 #pragma once
+#ifndef ANIMATIONCLIP_H
+#define ANIMATIONCLIP_H
 
+#ifndef BONE_H
 #include <Arcane/Animation/Bone.h>
-#include <Arcane/Animation/AnimationData.h>
-#include <Arcane/Graphics/Mesh/Model.h>
+#endif
 
-struct aiAnimation;
+#ifndef MODEL_H
+#include <Arcane/Graphics/Mesh/Model.h>
+#endif
+
+#ifndef AI_ANIM_H_INC
+#include "assimp/anim.h"
+#endif
+
 struct aiNode;
 
 namespace Arcane
@@ -46,3 +55,4 @@ namespace Arcane
 		aiAnimation *m_AssimpAnimation;
 	};
 }
+#endif

@@ -1,8 +1,6 @@
 #pragma once
-
-#include <queue>
-#include <mutex>
-#include <condition_variable>
+#ifndef THREADSAFEQUEUE_H
+#define THREADSAFEQUEUE_H
 
 namespace Arcane
 {
@@ -89,3 +87,4 @@ namespace Arcane
 		std::condition_variable m_dataCondVar;
 	};
 }
+#endif

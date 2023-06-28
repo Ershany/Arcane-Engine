@@ -1,6 +1,8 @@
 #include "arcpch.h"
 #include "ScenePanel.h"
 
+#include <Arcane/Scene/Scene.h>
+#include <Arcane/Editor/InspectorPanel.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
 
 namespace Arcane

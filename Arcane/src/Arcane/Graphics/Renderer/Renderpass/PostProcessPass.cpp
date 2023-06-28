@@ -17,7 +17,7 @@ namespace Arcane
 		m_TonemappedNonLinearTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_ResolveRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_BrightPassRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false),
 		m_BloomFullRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_BloomHalfRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false), m_BloomQuarterRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.25f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.25f), false), m_BloomEightRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.125f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.125f), false),
 		m_FullRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_HalfRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false), m_QuarterRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.25f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.25f), false), m_EighthRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.125f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.125f), false),
-		m_VignetteTexture(nullptr), m_SsaoNoiseTexture(), m_ProfilingTimer(), m_EffectsTimer()
+		m_VignetteTexture(nullptr), m_SsaoNoiseTexture(), m_EffectsTimer()
 	{
 		// Shader setup
 		m_TonemapGammaCorrectShader = ShaderLoader::LoadShader("TonemapGammaCorrect.glsl");

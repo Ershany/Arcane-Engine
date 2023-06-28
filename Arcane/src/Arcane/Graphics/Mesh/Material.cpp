@@ -4,7 +4,6 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/texture/Texture.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
-#include <Arcane/Graphics/Window.h>
 
 namespace Arcane
 {

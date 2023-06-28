@@ -1,11 +1,26 @@
 #pragma once
+#ifndef SCENE_H
+#define SCENE_H
 
+#ifndef FPSCAMERA_H
 #include <Arcane/Graphics/Camera/FPSCamera.h>
-#include <Arcane/Graphics/Lights/LightManager.h>
-#include <Arcane/Graphics/IBL/ProbeManager.h>
-#include <Arcane/Terrain/Terrain.h>
+#endif
 
+#ifndef LIGHTMANAGER_H
+#include <Arcane/Graphics/Lights/LightManager.h>
+#endif
+
+#ifndef PROBEMANAGER_H
+#include <Arcane/Graphics/IBL/ProbeManager.h>
+#endif
+
+#ifndef TERRAIN_H
+#include <Arcane/Terrain/Terrain.h>
+#endif
+
+#ifndef ENTT_CONFIG_CONFIG_H
 #include "entt.hpp"
+#endif
 
 namespace Arcane
 {
@@ -67,3 +82,4 @@ namespace Arcane
 		ProbeManager m_ProbeManager;
 	};
 }
+#endif

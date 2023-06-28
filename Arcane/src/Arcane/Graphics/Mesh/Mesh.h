@@ -1,7 +1,14 @@
 #pragma once
+#ifndef MESH_H
+#define MESH_H
 
+#ifndef MATERIAL_H
 #include <Arcane/Graphics/Mesh/Material.h>
+#endif
+
+#ifndef ANIMATIONDATA_H
 #include <Arcane/Animation/AnimationData.h>
+#endif
 
 namespace Arcane
 {
@@ -49,3 +56,4 @@ namespace Arcane
 		unsigned int m_BufferComponentCount;
 	};
 }
+#endif

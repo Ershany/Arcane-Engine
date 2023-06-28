@@ -1,4 +1,6 @@
 #pragma once
+#ifndef ANIMATIONDATA_H
+#define ANIMATIONDATA_H
 
 namespace Arcane
 {
@@ -24,3 +26,4 @@ namespace Arcane
 		glm::mat4 inverseBindPose;
 	};
 }
+#endif

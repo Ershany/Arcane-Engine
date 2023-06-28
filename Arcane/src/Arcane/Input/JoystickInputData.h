@@ -1,4 +1,6 @@
 #pragma once
+#ifndef JOYSTICKINPUTDATA_H
+#define JOYSTICKINPUTDATA_H
 
 namespace Arcane
 {
@@ -53,3 +55,4 @@ namespace Arcane
 		glm::vec2 m_Triggers;
 	};
 }
+#endif

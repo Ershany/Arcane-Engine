@@ -1,8 +1,10 @@
 #pragma once
+#ifndef APPLICATIONEVENT_H
+#define APPLICATIONEVENT_H
 
+#ifndef EVENT_H
 #include <Arcane/Core/Events/Event.h>
-
-#include <sstream>
+#endif
 
 namespace Arcane
 {
@@ -83,3 +85,4 @@ namespace Arcane
 		}
 	};
 }
+#endif

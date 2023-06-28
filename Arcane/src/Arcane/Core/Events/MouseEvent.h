@@ -1,8 +1,10 @@
 #pragma once
+#ifndef MOUSEEVENT_H
+#define MOUSEEVENT_H
 
+#ifndef EVENT_H
 #include <Arcane/Core/Events/Event.h>
-
-#include <sstream>
+#endif
 
 namespace Arcane
 {
@@ -90,3 +92,4 @@ namespace Arcane
 		float m_XOffset, m_YOffset;
 	};
 }
+#endif

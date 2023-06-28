@@ -1,11 +1,15 @@
 #pragma once
+#ifndef SCENEPANEL_H
+#define SCENEPANEL_H
 
-#include <Arcane/Editor/InspectorPanel.h>
+#ifndef ENTITY_H
 #include <Arcane/Scene/Entity.h>
-#include <Arcane/Scene/Scene.h>
+#endif
 
 namespace Arcane
 {
+	class InspectorPanel;
+
 	class ScenePanel
 	{
 	public:
@@ -23,3 +27,4 @@ namespace Arcane
 		Entity m_SelectedEntity;
 	};
 }
+#endif

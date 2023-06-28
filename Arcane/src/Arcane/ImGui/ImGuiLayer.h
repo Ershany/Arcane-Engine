@@ -1,6 +1,10 @@
 #pragma once
+#ifndef IMGUILAYER_H
+#define IMGUILAYER_H
 
+#ifndef LAYER_H
 #include <Arcane/Core/Layer.h>
+#endif
 
 namespace Arcane
 {
@@ -13,3 +17,4 @@ namespace Arcane
 		static ImGuiLayer* Create(ARC_DEV_ONLY(const std::string &name));
 	};
 }
+#endif

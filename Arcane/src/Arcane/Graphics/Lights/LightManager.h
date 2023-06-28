@@ -1,4 +1,6 @@
 #pragma once
+#ifndef LIGHTMANAGER_H
+#define LIGHTMANAGER_H
 
 namespace Arcane
 {
@@ -96,3 +98,4 @@ namespace Arcane
 		Cubemap *m_PointLightShadowCubemap;
 	};
 }
+#endif

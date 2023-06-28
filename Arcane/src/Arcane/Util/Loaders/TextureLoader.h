@@ -1,6 +1,6 @@
 #pragma once
-
-#include <Arcane/Graphics/Texture/Texture.h>
+#ifndef TEXTURELOADER_H
+#define TEXTURELOADER_H
 
 namespace Arcane
 {
@@ -44,3 +44,4 @@ namespace Arcane
 		static Texture *s_WhiteTexture, *s_BlackTexture;
 	};
 }
+#endif

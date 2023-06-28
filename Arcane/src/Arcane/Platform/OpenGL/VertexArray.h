@@ -1,10 +1,13 @@
 #pragma once
+#ifndef VERTEXARRAY_H
+#define VERTEXARRAY_H
 
 namespace Arcane
 {
 	class Buffer;
 
-	class VertexArray {
+	class VertexArray
+	{
 	public:
 		VertexArray();
 		~VertexArray();
@@ -19,3 +22,4 @@ namespace Arcane
 		std::vector<Buffer*> m_Buffers;
 	};
 }
+#endif

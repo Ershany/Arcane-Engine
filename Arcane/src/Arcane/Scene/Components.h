@@ -1,15 +1,23 @@
 #pragma once
+#ifndef COMPONENTS_H
+#define COMPONENTS_H
 
+#ifndef ARCPCH_H
 #include "arcpch.h"
+#endif
 
-#include <Arcane/Graphics/Mesh/Model.h>
+#ifndef LIGHTMANAGER_H
 #include <Arcane/Graphics/Lights/LightManager.h>
-#include <Arcane/Animation/AnimationClip.h>
+#endif
+
+#ifndef POSEANIMATOR_H
 #include <Arcane/Animation/PoseAnimator.h>
+#endif
 
 namespace Arcane
 {
 	class ICamera;
+	class Model;
 
 	struct TagComponent
 	{
@@ -108,3 +116,4 @@ namespace Arcane
 		PoseAnimator PoseAnimator;
 	};
 }
+#endif

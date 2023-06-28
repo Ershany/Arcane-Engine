@@ -2,7 +2,6 @@
 #include "Terrain.h"
 
 #include <Arcane/Graphics/Mesh/Mesh.h>
-#include <Arcane/Graphics/Mesh/Model.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Util/Loaders/AssetManager.h>

@@ -3,13 +3,15 @@
 
 namespace Arcane
 {
-	GBuffer::GBuffer(unsigned int width, unsigned int height) : Framebuffer(width, height, false) {
+	GBuffer::GBuffer(unsigned int width, unsigned int height) : Framebuffer(width, height, false)
+	{
 		Init();
 	}
 
 	GBuffer::~GBuffer() {}
 
-	void GBuffer::Init() {
+	void GBuffer::Init()
+	{
 		AddDepthStencilTexture(NormalizedDepthStencil);
 
 		Bind();
@@ -64,7 +66,8 @@ namespace Arcane
 		glDrawBuffers(3, attachments);
 
 		// Check if the creation failed
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		{
 			ARC_LOG_FATAL("Could not initialize GBuffer");
 			return;
 		}

@@ -1,7 +1,6 @@
 #include "arcpch.h"
 #include "Application.h"
 
-#include <Arcane/Defs.h>
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Graphics/Renderer/RenderPass/MasterRenderPass.h>
@@ -13,6 +12,7 @@
 #include <Arcane/Core/Layer.h>
 #include <Arcane/ImGui/ImGuiLayer.h>
 #include <Arcane/RenderdocManager.h>
+#include <Arcane/Input/InputManager.h>
 
 #include "glfw/glfw3native.h"
 

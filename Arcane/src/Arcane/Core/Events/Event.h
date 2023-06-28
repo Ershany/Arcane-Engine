@@ -1,6 +1,10 @@
 #pragma once
+#ifndef EVENT_H
+#define EVENT_H
 
+#ifndef ARCPCH_H
 #include "arcpch.h"
+#endif
 
 /*
 	Events in Arcane are not being buffered, instead they are blocking
@@ -77,3 +81,4 @@ namespace Arcane
 		return os << e.ToString();
 	}
 }
+#endif

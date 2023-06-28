@@ -1,8 +1,8 @@
 #include "arcpch.h"
 #include "EditorPass.h"
 
-#include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Shader.h>
+#include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Util/Loaders/AssetManager.h>

@@ -1,8 +1,22 @@
 #pragma once
+#ifndef POSTPROCESSPASS_H
+#define POSTPROCESSPASS_H
 
+#ifndef RENDERPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPass.h>
+#endif
+
+#ifndef FRAMEBUFFER_H
 #include <Arcane/Platform/OpenGL/Framebuffer/Framebuffer.h>
+#endif
+
+#ifndef TIMER_H
 #include <Arcane/Util/Timer.h>
+#endif
+
+#ifndef RENDERPASSTYPE_H
+#include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
+#endif
 
 namespace Arcane
 {
@@ -109,7 +123,7 @@ namespace Arcane
 		std::array<glm::vec3, SSAO_KERNEL_SIZE> m_SsaoKernel;
 		Texture m_SsaoNoiseTexture;
 
-		Timer m_ProfilingTimer;
 		Timer m_EffectsTimer;
 	};
 }
+#endif

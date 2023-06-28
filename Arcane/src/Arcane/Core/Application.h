@@ -1,10 +1,18 @@
 #pragma once
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
-#include <Arcane/Core/LayerStack.h>
-#include <Arcane/Core/Events/Event.h>
+#ifndef APPLICATIONEVENT_H
 #include "Arcane/Core/Events/ApplicationEvent.h"
+#endif
+
+#ifndef LAYERSTACK_H
+#include <Arcane/Core/LayerStack.h>
+#endif
+
+#ifndef SINGLETON_H
 #include <Arcane/Util/Singleton.h>
-#include <Arcane/Input/InputManager.h>
+#endif
 
 namespace Arcane
 {
@@ -83,3 +91,4 @@ namespace Arcane
 	// Implemented by the client
 	Application* CreateApplication(int argc, char** argv);
 }
+#endif

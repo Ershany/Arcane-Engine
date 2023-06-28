@@ -1,6 +1,14 @@
 #pragma once
+#ifndef DEFERREDLIGHTINGPASS_H
+#define DEFERREDLIGHTINGPASS_H
 
+#ifndef RENDERPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPass.h>
+#endif
+
+#ifndef RENDERPASSTYPE_H
+#include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
+#endif
 
 namespace Arcane
 {
@@ -23,3 +31,4 @@ namespace Arcane
 		Shader *m_LightingShader;
 	};
 }
+#endif

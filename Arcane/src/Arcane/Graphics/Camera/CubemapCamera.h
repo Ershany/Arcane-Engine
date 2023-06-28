@@ -1,6 +1,10 @@
 #pragma once
+#ifndef CUBEMAPCAMERA_H
+#define CUBEMAPCAMERA_H
 
+#ifndef ICAMERA_H
 #include <Arcane/Graphics/Camera/ICamera.h>
+#endif
 
 namespace Arcane
 {
@@ -23,3 +27,4 @@ namespace Arcane
 		glm::vec3 m_CenterPosition, m_Front, m_Up;
 	};
 }
+#endif

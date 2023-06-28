@@ -1,4 +1,6 @@
 #pragma once
+#ifndef PROBEMANAGER_H
+#define PROBEMANAGER_H
 
 namespace Arcane
 {
@@ -38,3 +40,4 @@ namespace Arcane
 		ReflectionProbe *m_ReflectionProbeFallback;
 	};
 }
+#endif

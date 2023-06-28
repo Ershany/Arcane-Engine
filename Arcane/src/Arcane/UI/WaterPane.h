@@ -1,6 +1,10 @@
 #pragma once
+#ifndef WATERPANE_H
+#define WATERPANE_H
 
+#ifndef PANE_H
 #include <Arcane/UI/Pane.h>
+#endif
 
 namespace Arcane
 {
@@ -37,3 +41,4 @@ namespace Arcane
 		static float *s_ReflectionBias, *s_RefractionBias;
 	};
 }
+#endif

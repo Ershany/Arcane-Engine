@@ -1,7 +1,18 @@
 #pragma once
+#ifndef SHADOWMAPPASS_H
+#define SHADOWMAPPASS_H
 
+#ifndef CUBEMAPCAMERA_H
 #include <Arcane/Graphics/Camera/CubemapCamera.h>
+#endif
+
+#ifndef RENDERPASS_H
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPass.h>
+#endif
+
+#ifndef RENDERPASSTYPE_H
+#include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
+#endif
 
 namespace Arcane
 {
@@ -31,3 +42,4 @@ namespace Arcane
 		Cubemap *m_CustomPointLightShadowCubemap = nullptr;
 	};
 }
+#endif

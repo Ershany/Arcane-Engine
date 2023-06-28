@@ -1,7 +1,10 @@
 #pragma once
+#ifndef WINDOW_H
+#define WINDOW_H
 
+#ifndef APPLICATION_H
 #include <Arcane/Core/Application.h>
-#include <Arcane/Vendor/Imgui/imgui.h>
+#endif
 
 namespace Arcane
 {
@@ -68,3 +71,4 @@ namespace Arcane
 		static bool s_EnableImGui;
 	};
 }
+#endif

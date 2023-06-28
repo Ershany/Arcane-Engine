@@ -8,6 +8,7 @@
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
+#include <Arcane/Platform/OpenGL/Framebuffer/GBuffer.h>
 
 namespace Arcane
 {

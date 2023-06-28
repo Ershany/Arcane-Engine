@@ -1,4 +1,6 @@
 #pragma once
+#ifndef EDITORVIEWPORT_H
+#define EDITORVIEWPORT_H
 
 namespace Arcane
 {
@@ -17,3 +19,4 @@ namespace Arcane
 		bool m_PlaySelected;
 	};
 }
+#endif

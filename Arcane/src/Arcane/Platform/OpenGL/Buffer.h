@@ -1,8 +1,11 @@
 #pragma once
+#ifndef BUFFER_H
+#define BUFFER_H
 
 namespace Arcane
 {
-	class Buffer {
+	class Buffer
+	{
 	public:
 		Buffer();
 		Buffer(float *data, int amount, unsigned int componentCount);
@@ -19,3 +22,4 @@ namespace Arcane
 		unsigned int m_ComponentCount;
 	};
 }
+#endif

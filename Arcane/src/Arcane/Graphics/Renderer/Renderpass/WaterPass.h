@@ -1,8 +1,22 @@
 #pragma once
+#ifndef WATERPASS_H
+#define WATERPASS_H
 
+#ifndef RENDERPASS_H
 #include <Arcane/graphics/Renderer/Renderpass/RenderPass.h>
+#endif
+
+#ifndef RENDERPASSTYPE_H
+#include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
+#endif
+
+#ifndef QUAD_H
 #include <Arcane/Graphics/Mesh/Common/Quad.h>
+#endif
+
+#ifndef TIMER_H
 #include <Arcane/Util/Timer.h>
+#endif
 
 namespace Arcane
 {
@@ -45,6 +59,7 @@ namespace Arcane
 		float m_DepthdampeningEffect;
 		float m_ReflectionBias, m_RefractionBias;
 
-		Timer m_Timer;
+		Timer m_EffectsTimer;
 	};
 }
+#endif

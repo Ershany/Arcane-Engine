@@ -4,14 +4,10 @@
 #include <Arcane/Graphics/Window.h>
 #include <Arcane/Graphics/Skybox.h>
 #include <Arcane/Graphics/Mesh/Mesh.h>
-#include <Arcane/Graphics/Mesh/Common/Cube.h>
-#include <Arcane/Graphics/Mesh/Common/Sphere.h>
-#include <Arcane/Graphics/Mesh/Common/Quad.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Entity.h>
 #include <Arcane/Scene/Components.h>
-#include <Arcane/Util/Loaders/AssetManager.h>
 
 namespace Arcane
 {

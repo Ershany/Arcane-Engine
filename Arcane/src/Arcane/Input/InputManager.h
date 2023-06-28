@@ -1,7 +1,14 @@
 #pragma once
+#ifndef INPUTMANAGER_H
+#define INPUTMANAGER_H
 
+#ifndef JOYSTICKMANAGER_H
 #include <Arcane/Input/JoystickManager.h>
+#endif
+
+#ifndef SINGLETON_H
 #include <Arcane/Util/Singleton.h>
+#endif
 
 namespace Arcane
 {
@@ -53,3 +60,4 @@ namespace Arcane
 		static double s_ScrollXDelta, s_ScrollYDelta;
 	};
 }
+#endif

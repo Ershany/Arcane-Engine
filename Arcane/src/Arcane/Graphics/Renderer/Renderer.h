@@ -1,10 +1,10 @@
 #pragma once
+#ifndef RENDERER_H
+#define RENDERER_H
 
-#include <Arcane/Graphics/Camera/ICamera.h>
-#include <Arcane/Graphics/Mesh/Common/Cube.h>
-#include <Arcane/Graphics/Mesh/Common/Quad.h>
+#ifndef RENDERPASSTYPE_H
 #include <Arcane/Graphics/Renderer/Renderpass/RenderPassType.h>
-#include <Arcane/Animation/PoseAnimator.h>
+#endif
 
 #include <deque>
 
@@ -13,6 +13,10 @@ namespace Arcane
 	class GLCache;
 	class Model;
 	class Shader;
+	class ICamera;
+	class Cube;
+	class Quad;
+	class PoseAnimator;
 
 	struct RendererData
 	{
@@ -91,3 +95,4 @@ namespace Arcane
 		static unsigned int m_CurrentQuadsDrawnCount;
 	};
 }
+#endif

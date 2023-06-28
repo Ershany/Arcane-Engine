@@ -1,6 +1,10 @@
 #pragma once
+#ifndef FPSCAMERA_H
+#define FPSCAMERA_H
 
+#ifndef ICAMERA_H
 #include <Arcane/Graphics/Camera/ICamera.h>
+#endif
 
 namespace Arcane
 {
@@ -56,3 +60,4 @@ namespace Arcane
 		float m_CurrentFOV;
 	};
 }
+#endif

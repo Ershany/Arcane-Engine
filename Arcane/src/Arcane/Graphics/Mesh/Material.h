@@ -1,4 +1,6 @@
 #pragma once
+#ifndef MATERIAL_H
+#define MATERIAL_H
 
 namespace Arcane
 {
@@ -50,3 +52,4 @@ namespace Arcane
 		int m_ParallaxMinSteps, m_ParallelMaxSteps; // Will need to increase when parallax strength increases
 	};
 }
+#endif

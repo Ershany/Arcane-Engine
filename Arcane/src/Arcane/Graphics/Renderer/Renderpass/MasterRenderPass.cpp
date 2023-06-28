@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Renderer/Renderer.h>
+#include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Scene/Scene.h>
 
 #ifdef ARC_DEV_BUILD

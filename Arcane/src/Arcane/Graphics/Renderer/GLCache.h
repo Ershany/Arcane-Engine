@@ -1,6 +1,10 @@
 #pragma once
+#ifndef GLCACHE_H
+#define GLCACHE_H
 
+#ifndef SINGLETON_H
 #include <Arcane/Util/Singleton.h>
+#endif
 
 namespace Arcane
 {
@@ -70,3 +74,4 @@ namespace Arcane
 		unsigned int m_ActiveShaderID;
 	};
 }
+#endif

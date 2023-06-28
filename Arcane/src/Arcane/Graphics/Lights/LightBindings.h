@@ -1,4 +1,6 @@
 #pragma once
+#ifndef LIGHTBINDINGS_H
+#define LIGHTBINDINGS_H
 
 namespace Arcane
 {
@@ -18,3 +20,4 @@ namespace Arcane
 		const static int MaxSpotLights = 6;
 	};
 }
+#endif

@@ -1,8 +1,10 @@
 #pragma once
+#ifndef KEYEVENT_H
+#define KEYEVENT_H
 
+#ifndef EVENT_H
 #include <Arcane/Core/Events/Event.h>
-
-#include <sstream>
+#endif
 
 namespace Arcane
 {
@@ -67,3 +69,4 @@ namespace Arcane
 		}
 	};
 }
+#endif

@@ -1,8 +1,11 @@
 #pragma once
+#ifndef TIME_H
+#define TIME_H
 
 namespace Arcane
 {
-	struct Time {
+	struct Time
+	{
 	private:
 		GLdouble m_LastFrame;
 		GLdouble m_Delta;
@@ -15,3 +18,4 @@ namespace Arcane
 		inline GLdouble GetDeltaTime() const { return m_Delta; }
 	};
 }
+#endif
