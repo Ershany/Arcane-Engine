@@ -51,7 +51,6 @@ void main() {
 #shader-type fragment
 #version 430 core
 
-// Does AMD support sampler2D in a struct?
 struct Material {
 	sampler2D texture_albedo;
 	sampler2D texture_normal;

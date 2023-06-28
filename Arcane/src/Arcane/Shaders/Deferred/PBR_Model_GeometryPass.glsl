@@ -48,7 +48,6 @@ layout (location = 0) out vec4 gb_Albedo;
 layout (location = 1) out vec3 gb_Normal;
 layout (location = 2) out vec4 gb_MaterialInfo;
 
-// Does AMD support sampler2D in a struct?
 struct Material {
 	sampler2D texture_albedo;
 	sampler2D texture_normal;
