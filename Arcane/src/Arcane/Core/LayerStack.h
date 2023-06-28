@@ -2,8 +2,6 @@
 #ifndef LAYERSTACK_H
 #define LAYERSTACK_H
 
-#include <vector> // Need to keep this or Arcane Editor complains...
-
 namespace Arcane
 {
 	class Layer;
