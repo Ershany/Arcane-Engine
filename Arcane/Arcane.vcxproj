@@ -162,6 +162,7 @@
     <ClCompile Include="src\Arcane\Animation\PoseAnimator.cpp" />
     <ClCompile Include="src\Arcane\Editor\RendererStatsDisplay.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Water\WaterManager.cpp" />
     <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
     <ClCompile Include="src\Arcane\Core\Layer.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="src\Arcane\Animation\PoseAnimator.h" />
     <ClInclude Include="src\Arcane\Editor\RendererStatsDisplay.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Water\WaterManager.h" />
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
     <ClInclude Include="src\Arcane.h" />
     <ClInclude Include="src\Arcane\ArcaneEntryPoint.h" />

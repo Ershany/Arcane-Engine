@@ -10,6 +10,10 @@
 #include <Arcane/Graphics/Lights/LightManager.h>
 #endif
 
+#ifndef WATERMANAGER_H
+#include <Arcane/Graphics/Water/WaterManager.h>
+#endif
+
 #ifndef PROBEMANAGER_H
 #include <Arcane/Graphics/IBL/ProbeManager.h>
 #endif
@@ -44,6 +48,7 @@ namespace Arcane
 		friend class EditorPass;
 		friend class Entity;
 		friend class LightManager;
+		friend class WaterManager;
 		friend class ScenePanel;
 	public:
 		Scene(Window *window);
@@ -80,6 +85,7 @@ namespace Arcane
 		Terrain m_Terrain;
 		LightManager m_LightManager;
 		ProbeManager m_ProbeManager;
+		WaterManager m_WaterManager;
 	};
 }
 #endif

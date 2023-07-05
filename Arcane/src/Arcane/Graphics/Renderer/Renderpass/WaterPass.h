@@ -43,10 +43,12 @@ namespace Arcane
 		Shader *m_WaterShader;
 		Texture *m_WaveTexture, *m_WaterNormalMap;
 
+		// TODO: These will be moved to entity
 		Quad m_WaterPlane;
 		glm::vec3 m_WaterPos;
 		float m_WaterScale;
 
+		// TODO: These will be moved to entity
 		bool m_EnableClearWater, m_EnableShine;
 		float m_WaterTiling;
 		glm::vec3 m_WaterAlbedo;

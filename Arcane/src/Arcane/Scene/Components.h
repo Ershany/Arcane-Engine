@@ -105,15 +105,37 @@ namespace Arcane
 		float ShadowNearPlane = SHADOWMAP_NEAR_PLANE_DEFAULT, ShadowFarPlane = SHADOWMAP_FAR_PLANE_DEFAULT;
 	};
 
+	struct PoseAnimatorComponent
+	{
+		PoseAnimator PoseAnimator;
+	};
+
+	struct WaterComponent
+	{
+		glm::vec3 WaterAlbedo = glm::vec3(0.1f, 0.9f, 0.9f);
+		float AlbedoPower = 0.1f;
+
+		WaterReflectionRefractionQuality WaterRefractionResolution = WaterReflectionRefractionQuality::WaterReflectionRefractionQuality_High;
+		WaterReflectionRefractionQuality WaterReflectionResolution = WaterReflectionRefractionQuality::WaterReflectionRefractionQuality_High;
+
+		bool ClearWater = false;
+		bool EnableShine = true;
+
+		float WaterTiling = 6.0f;
+		float WaveSpeed = 0.05f;
+
+		float ShineDamper = 25.0f;
+		float NormalSmoothing = 1.0f;
+		float DepthDampening = 0.1f;
+
+		float ReflectionPlaneBias = 2.0f;
+		float RefractionPlaneBias = 2.0f;
+	};
+
 	// TODO: Eventually needs to be added and used for the runtime. The editor will always have a "camera" but will be needed for runtime eventually
 	struct CameraComponent
 	{
 		Arcane::ICamera *camera;
-	};
-
-	struct PoseAnimatorComponent
-	{
-		PoseAnimator PoseAnimator;
 	};
 }
 #endif

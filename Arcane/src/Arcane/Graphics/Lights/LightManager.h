@@ -74,24 +74,24 @@ namespace Arcane
 		void FindClosestSpotLightShadowCaster();
 		void FindClosestPointLightShadowCaster();
 		void BindLights(Shader *shader, bool bindOnlyStatic);
-		void ReallocateTarget(Framebuffer **framebuffer, glm::uvec2 newResolution);
-		void ReallocateCubemap(Cubemap** cubemap, glm::uvec2 newResolution);
+		void ReallocateDepthTarget(Framebuffer **framebuffer, glm::uvec2 newResolution);
+		void ReallocateDepthCubemap(Cubemap** cubemap, glm::uvec2 newResolution);
 	private:
 		Scene *m_Scene;
 
-		// Directional Light Shadows
+		// Directional Light Shadows (keeps track of closest one so passes can use these framebuffers for the shadows)
 		LightComponent *m_ClosestDirectionalLightShadowCaster;
 		TransformComponent *m_ClosestDirectionalLightShadowCasterTransform;
 		int m_ClosestDirectionalLightIndex = 0;
 		Framebuffer *m_DirectionalLightShadowFramebuffer;
 
-		// Spot Light Shadows
+		// Spot Light Shadows (keeps track of closest one so passes can use these framebuffers for the shadows)
 		LightComponent *m_ClosestSpotLightShadowCaster;
 		TransformComponent *m_ClosestSpotLightShadowCasterTransform;
 		int m_ClosestSpotLightIndex = 0;
 		Framebuffer *m_SpotLightShadowFramebuffer;
 
-		// Point Light Shadows
+		// Point Light Shadows (keeps track of closest one so passes can use these framebuffers for the shadows)
 		LightComponent* m_ClosestPointLightShadowCaster;
 		TransformComponent* m_ClosestPointLightShadowCasterTranform;
 		int m_ClosestPointLightIndex = 0;

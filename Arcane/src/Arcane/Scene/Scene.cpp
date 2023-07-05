@@ -12,7 +12,7 @@
 namespace Arcane
 {
 	Scene::Scene(Window *window)
-		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_LightManager(this), m_ProbeManager(m_SceneProbeBlendSetting)
+		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_LightManager(this), m_ProbeManager(m_SceneProbeBlendSetting), m_WaterManager(this)
 	{
 		m_GLCache = GLCache::GetInstance();
 
@@ -29,7 +29,7 @@ namespace Arcane
 		// Setup our ECS groupings to avoid performance costs at runtime if they get created
 		auto fullOwningGroup1 = m_Registry.group<TransformComponent, MeshComponent>();
 		auto partialOwningGroup1 = m_Registry.group<LightComponent>(entt::get<TransformComponent>);
-		auto patialOwningGroup2 = m_Registry.group<TransformComponent, MeshComponent>(entt::get<PoseAnimatorComponent>);
+		auto partialOwningGroup2 = m_Registry.group<TransformComponent, MeshComponent>(entt::get<PoseAnimatorComponent>);
 
 		// Skybox init needs to happen before probes are generated
 		std::vector<std::string> skyboxFilePaths;
@@ -45,6 +45,7 @@ namespace Arcane
 	void Scene::Init()
 	{
 		m_LightManager.Init();
+		m_WaterManager.Init();
 	}
 
 	Entity Scene::CreateEntity(const std::string &name)
@@ -63,6 +64,9 @@ namespace Arcane
 
 		// Update Lights
 		m_LightManager.Update();
+
+		// Update Water
+		m_WaterManager.Update();
 
 		// Update Animated Entities
 		auto animatedView = m_Registry.view<PoseAnimatorComponent>();
