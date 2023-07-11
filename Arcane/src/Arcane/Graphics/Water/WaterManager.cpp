@@ -45,6 +45,12 @@ namespace Arcane
 			m_ResolveReflectionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
 		}
 #else
+		if (!m_ReflectionFramebuffer)
+		{
+			m_ReflectionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false);
+			m_ReflectionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
+		}
+#endif
 #ifdef WATER_REFRACTION_USE_MSAA
 		if (!m_RefractionFramebuffer)
 		{
@@ -54,12 +60,7 @@ namespace Arcane
 			m_ResolveRefractionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false);
 			m_ResolveRefractionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 		}
-#endif
-		if (!m_ReflectionFramebuffer)
-		{
-			m_ReflectionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false);
-			m_ReflectionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
-		}
+#else
 		if (!m_RefractionFramebuffer)
 		{
 			m_RefractionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false);
