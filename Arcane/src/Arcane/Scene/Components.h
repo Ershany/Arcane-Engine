@@ -125,7 +125,7 @@ namespace Arcane
 		bool ClearWater = false;
 		bool EnableShine = true;
 
-		float WaterTiling = 6.0f;
+		glm::vec2 WaterTiling = glm::vec2(6.0f, 6.0f);
 		float WaveSpeed = 0.05f;
 		float WaveStrength = 0.02f;
 

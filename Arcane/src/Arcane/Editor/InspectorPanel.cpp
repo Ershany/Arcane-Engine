@@ -214,7 +214,7 @@ namespace Arcane
 						ImGui::Checkbox("Clear Water", &waterComponent.ClearWater);
 						ImGui::Checkbox("Enable Shine", &waterComponent.EnableShine);
 
-						ImGui::SliderFloat("Water Tiling", &waterComponent.WaterTiling, 0.0f, 100.0f, "%.2f");
+						DrawVec2Control("Water Tiling", waterComponent.WaterTiling, 0.01f, 0.1f, 100.0f);
 						ImGui::SliderFloat("Wave Speed", &waterComponent.WaveSpeed, 0.0f, 2.0f, "%.3f");
 						ImGui::SliderFloat("Wave Strength", &waterComponent.WaveStrength, 0.0f, 0.2f, "%.2f");
 
@@ -269,6 +269,23 @@ namespace Arcane
 			}
 		}
 		ImGui::End();
+	}
+
+	bool InspectorPanel::DrawVec2Control(const std::string &label, glm::vec2 &values, float speed /*= 0.1f*/, float min /*= 0.0f*/, float max /*= 0.0f*/, const char *displayDigits /*= "%.2f"*/, float columnWidth /*= 100.0f*/)
+	{
+		bool modified = false;
+
+		ImGui::Columns(3);
+		ImGui::PushID(label.c_str());
+		ImGui::PushItemWidth(80);
+		ImGui::Text(label.c_str()); ImGui::SameLine(); ImGui::NextColumn();
+		ImGui::Text("X"); ImGui::SameLine(); modified |= ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
+		ImGui::Text("Y"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		return modified;
 	}
 
 	bool InspectorPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float speed /*= 0.1f*/, float min /*= 0.0f*/, float max /*= 0.0f*/, const char *displayDigits /*= "%.2f"*/, float columnWidth /*= 100.0f*/)

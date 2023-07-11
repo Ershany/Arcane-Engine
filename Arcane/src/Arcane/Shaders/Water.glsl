@@ -10,7 +10,7 @@ out vec2 planeTexCoords;
 out vec3 fragToView;
 
 uniform vec3 viewPos;
-uniform float waveTiling;
+uniform vec2 waveTiling;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -18,7 +18,7 @@ uniform mat4 projection;
 void main() {
 	worldFragPos = vec3(model * vec4(position, 1.0));
 	clipSpace = projection * view * vec4(worldFragPos, 1.0);
-	planeTexCoords = texCoords * waveTiling;
+	planeTexCoords = vec2(texCoords.x * waveTiling.x, texCoords.y * waveTiling.y);
 	fragToView = viewPos - worldFragPos;
 
 	gl_Position = clipSpace;
