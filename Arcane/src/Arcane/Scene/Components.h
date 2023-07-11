@@ -10,6 +10,10 @@
 #include <Arcane/Graphics/Lights/LightManager.h>
 #endif
 
+#ifndef WATERMANAGER_H
+#include <Arcane/Graphics/Water/WaterManager.h>
+#endif
+
 #ifndef POSEANIMATOR_H
 #include <Arcane/Animation/PoseAnimator.h>
 #endif
@@ -123,6 +127,7 @@ namespace Arcane
 
 		float WaterTiling = 6.0f;
 		float WaveSpeed = 0.05f;
+		float WaveStrength = 0.02f;
 
 		float ShineDamper = 25.0f;
 		float NormalSmoothing = 1.0f;
@@ -130,6 +135,8 @@ namespace Arcane
 
 		float ReflectionPlaneBias = 2.0f;
 		float RefractionPlaneBias = 2.0f;
+
+		float MoveTimer = 0.0f; // Should not be set or used by the user. Just used for water rendering, that is why this isn't viewable/modifiable in the inspector panel
 	};
 
 	// TODO: Eventually needs to be added and used for the runtime. The editor will always have a "camera" but will be needed for runtime eventually
@@ -139,3 +146,4 @@ namespace Arcane
 	};
 }
 #endif
+

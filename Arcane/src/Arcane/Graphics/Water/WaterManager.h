@@ -5,8 +5,9 @@
 namespace Arcane
 {
 	class Scene;
-	class WaterComponent;
-	class TransformComponent;
+	struct WaterComponent;
+	struct TransformComponent;
+	class Framebuffer;
 
 	enum class WaterReflectionRefractionQuality : int
 	{
@@ -33,9 +34,13 @@ namespace Arcane
 		inline bool HasWaterWithRefractionReflection() const { return m_ReflectionFramebuffer != nullptr && m_RefractionFramebuffer != nullptr; }
 		Framebuffer* GetWaterRefractionFramebuffer() { return m_RefractionFramebuffer; }
 		Framebuffer* GetWaterReflectionFramebuffer() { return m_ReflectionFramebuffer; }
-#ifdef WATER_REFLECTION_USE_MSAA
-		Framebuffer* GetWaterRefractionFramebuffer() { return m_ResolveRefractionFramebuffer; }
+#ifdef WATER_REFRACTION_USE_MSAA
+		Framebuffer* GetWaterRefractionResolveFramebuffer() { return m_ResolveRefractionFramebuffer; }
 #endif
+#ifdef WATER_REFLECTION_USE_MSAA
+		Framebuffer* GetWaterReflectionResolveFramebuffer() { return m_ResolveReflectionFramebuffer; }
+#endif
+		inline const WaterComponent* GetClosestWaterComponent() { return m_ClosestWaterComponent; }
 	private:
 		void FindClosestWater();
 
@@ -47,7 +52,6 @@ namespace Arcane
 		// Currently only supports one reflection/refraction water surface at a time, so keep track of the closest so it can reflect and refract it so the water pass can then use these at rendering time
 		WaterComponent *m_ClosestWaterComponent;
 		TransformComponent *m_ClosestWaterTransform;
-		int m_ClosestWaterIndex = 0;
 		Framebuffer *m_ReflectionFramebuffer, *m_RefractionFramebuffer;
 #ifdef WATER_REFLECTION_USE_MSAA
 		Framebuffer *m_ResolveReflectionFramebuffer, *m_ResolveRefractionFramebuffer;

@@ -22,6 +22,10 @@
 #include <Arcane/Terrain/Terrain.h>
 #endif
 
+#ifndef WATERPASS_H
+#include <Arcane/Graphics/Renderer/Renderpass/WaterPass.h>
+#endif
+
 #ifndef ENTT_CONFIG_CONFIG_H
 #include "entt.hpp"
 #endif
@@ -50,6 +54,7 @@ namespace Arcane
 		friend class LightManager;
 		friend class WaterManager;
 		friend class ScenePanel;
+		friend class WaterPass;
 	public:
 		Scene(Window *window);
 		~Scene();
@@ -64,6 +69,7 @@ namespace Arcane
 
 		inline Terrain* GetTerrain() { return &m_Terrain; }
 		inline LightManager* GetLightManager() { return &m_LightManager; }
+		inline WaterManager* GetWaterManager() { return &m_WaterManager; }
 		inline ProbeManager* GetProbeManager() { return &m_ProbeManager; }
 		inline FPSCamera* GetCamera() { return &m_SceneCamera; }
 		inline Skybox* GetSkybox() { return m_Skybox; }

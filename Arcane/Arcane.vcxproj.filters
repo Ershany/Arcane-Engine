@@ -66,8 +66,6 @@
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_demo.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\Arcane\UI\Pane.cpp" />
-    <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.cpp" />
     <ClCompile Include="src\Arcane\Animation\Bone.cpp" />
     <ClCompile Include="src\Arcane\Animation\AnimationClip.cpp" />
@@ -128,8 +126,6 @@
     <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h" />
     <ClInclude Include="src\Arcane\Scene\Components.h" />
     <ClInclude Include="src\Arcane\Scene\Entity.h" />
-    <ClInclude Include="src\Arcane\UI\Pane.h" />
-    <ClInclude Include="src\Arcane\UI\WaterPane.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.h" />

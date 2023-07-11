@@ -83,12 +83,12 @@ uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 uniform mat4 viewInverse;
 uniform mat4 projectionInverse;
 
+uniform bool hasReflectionRefraction;
 uniform bool clearWater;
 uniform bool shouldShine;
 uniform vec3 waterAlbedo;
 uniform float albedoPower;
 uniform float waveMoveFactor;
-uniform vec2 nearFarPlaneValues;
 uniform float waveStrength;
 uniform float shineDamper;
 uniform float waterNormalSmoothing;
@@ -104,32 +104,37 @@ void main() {
 	vec2 reflectCoords = vec2(textureCoords.x, 1.0 - textureCoords.y);
 	vec2 refractCoords = vec2(textureCoords.x, textureCoords.y);
 
-	float near = nearFarPlaneValues.x;
-	float far = nearFarPlaneValues.y;
-	vec3 refractedSurface = WorldPosFromDepth(refractCoords);
-	float waterDepthAtRefractedSurface = worldFragPos.y - refractedSurface.y;
-	float dampeningEffect = clamp(waterDepthAtRefractedSurface * depthDampeningEffect, 0.0, 1.0);
-	float dampeningEffect2 = dampeningEffect * dampeningEffect;
-
 	// Apply offset to the sampled coords for the refracted & reflected texture
 	vec2 distortion;
 	vec2 totalDistortion;
+	float dampeningEffect2 = 1.0f; // Default to 1 in-case we do not have refraction for depth dampening
 	if (clearWater) {
 		distortion = vec2(0.0, 0.0);
 		totalDistortion = vec2(0.0, 0.0);
 	}
 	else {
+		if (hasReflectionRefraction) {
+			vec3 refractedSurface = WorldPosFromDepth(refractCoords);
+			float waterDepthAtRefractedSurface = worldFragPos.y - refractedSurface.y;
+			float dampeningEffect = clamp(waterDepthAtRefractedSurface * depthDampeningEffect, 0.0, 1.0);
+			dampeningEffect2 = dampeningEffect * dampeningEffect;
+		}
+
 		distortion = (texture(dudvWaveTexture, vec2(planeTexCoords.x + waveMoveFactor, planeTexCoords.y)).rg * 2.0 - 1.0) * 0.1; // Unpack the dudv map
 		distortion = planeTexCoords + vec2(distortion.x, distortion.y + waveMoveFactor);
 		totalDistortion = (texture(dudvWaveTexture, distortion).rg * 2.0 - 1.0) * waveStrength * dampeningEffect2;
 	}
 
-	reflectCoords += totalDistortion;
-	reflectCoords = clamp(reflectCoords, 0.001, 0.999);
-	refractCoords += totalDistortion;
-	refractCoords = clamp(refractCoords, 0.001, 0.999);
-	vec4 reflectedColour = texture(reflectionTexture, reflectCoords);
-	vec4 refractedColour = texture(refractionTexture, refractCoords);
+	vec4 reflectedColour = vec4(1.0, 1.0, 1.0, 1.0);
+	vec4 refractedColour = vec4(1.0, 1.0, 1.0, 1.0);
+	if (hasReflectionRefraction) {
+		reflectCoords += totalDistortion;
+		reflectCoords = clamp(reflectCoords, 0.001, 0.999);
+		refractCoords += totalDistortion;
+		refractCoords = clamp(refractCoords, 0.001, 0.999);
+		reflectedColour = texture(reflectionTexture, reflectCoords);
+		refractedColour = texture(refractionTexture, refractCoords);
+	}
 
 	// Calculate other light properties
 	vec3 normal;
@@ -156,6 +161,7 @@ void main() {
 	// Finally combine results for the pixel
 	FragColour = mix(reflectedColour, refractedColour, fresnel);
 	FragColour = mix(FragColour, vec4(waterAlbedo, 1.0), albedoPower) + vec4(specHighlight, 0.0);
+	FragColour = vec4(distortion, 0.0, 1.0);
 }
 
 vec3 WorldPosFromDepth(vec2 texCoords) {

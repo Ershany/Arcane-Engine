@@ -204,24 +204,27 @@ namespace Arcane
 						int refractionChoice = static_cast<int>(waterComponent.WaterRefractionResolution);
 						ImGui::Combo("Refraction Quality", &refractionChoice, qualityItems, IM_ARRAYSIZE(qualityItems)); ImGui::SameLine();
 						ImGui::Text("- %u x %u", resolution.x, resolution.y);
+						waterComponent.WaterRefractionResolution = static_cast<WaterReflectionRefractionQuality>(refractionChoice);
 
 						resolution = WaterManager::GetWaterReflectionRefractionQualityResolution(waterComponent.WaterReflectionResolution);
 						int reflectionChoice = static_cast<int>(waterComponent.WaterReflectionResolution);
 						ImGui::Combo("Reflection Quality", &reflectionChoice, qualityItems, IM_ARRAYSIZE(qualityItems)); ImGui::SameLine();
 						ImGui::Text("- %u x %u", resolution.x, resolution.y);
+						waterComponent.WaterReflectionResolution = static_cast<WaterReflectionRefractionQuality>(reflectionChoice);
 
 						ImGui::Checkbox("Clear Water", &waterComponent.ClearWater);
 						ImGui::Checkbox("Enable Shine", &waterComponent.EnableShine);
 
 						ImGui::SliderFloat("Water Tiling", &waterComponent.WaterTiling, 0.0f, 100.0f, "%.2f");
 						ImGui::SliderFloat("Wave Speed", &waterComponent.WaveSpeed, 0.0f, 10.0f, "%.2f");
+						ImGui::SliderFloat("Wave Strength", &waterComponent.WaveStrength, 0.0f, 0.2f, "%.2f");
 
 						ImGui::SliderFloat("Shine Damper", &waterComponent.ShineDamper, 0.0f, 100.0f, "%.2f");
 						ImGui::SliderFloat("Normal Smoothing", &waterComponent.NormalSmoothing, 0.0f, 5.0f, "%.2f");
 						ImGui::SliderFloat("Depth Dampening", &waterComponent.DepthDampening, 0.0f, 1.0f, "%.2f");
 
-						ImGui::SliderFloat("Reflection Plane Bias", &waterComponent.ReflectionPlaneBias, 0.0f, 10.0f, "%.2f");
-						ImGui::SliderFloat("Refraction Plane Bias", &waterComponent.RefractionPlaneBias, 0.0f, 10.0f, "%.2f");
+						ImGui::SliderFloat("Reflection Plane Bias", &waterComponent.ReflectionPlaneBias, 0.0f, 100.0f, "%.2f");
+						ImGui::SliderFloat("Refraction Plane Bias", &waterComponent.RefractionPlaneBias, 0.0f, 100.0f, "%.2f");
 					}
 				}
 

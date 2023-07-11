@@ -7,9 +7,12 @@
 
 namespace Arcane
 {
-	WaterManager::WaterManager(Scene *scene) : m_Scene(scene), m_ReflectionFramebuffer(nullptr), m_RefractionFramebuffer(nullptr)
+	WaterManager::WaterManager(Scene *scene) : m_Scene(scene), m_ReflectionFramebuffer(nullptr), m_RefractionFramebuffer(nullptr), m_ClosestWaterComponent(nullptr)
 #ifdef WATER_REFLECTION_USE_MSAA
-		, m_ResolveReflectionFramebuffer(nullptr), m_ResolveRefractionFramebuffer(nullptr)
+		, m_ResolveReflectionFramebuffer(nullptr)
+#endif
+#ifdef WATER_REFRACTION_USE_MSAA
+		, m_ResolveRefractionFramebuffer(nullptr)
 #endif
 	{
 
@@ -21,6 +24,8 @@ namespace Arcane
 		delete m_RefractionFramebuffer;
 #ifdef WATER_REFLECTION_USE_MSAA
 		delete m_ResolveReflectionFramebuffer;
+#endif
+#ifdef WATER_REFRACTION_USE_MSAA
 		delete m_ResolveRefractionFramebuffer;
 #endif
 	}
@@ -31,14 +36,6 @@ namespace Arcane
 
 		// Default values if no water is found, hopefully save an allocation when we find some
 #ifdef WATER_REFLECTION_USE_MSAA
-		if (!m_RefractionFramebuffer)
-		{
-			m_RefractionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, true);
-			m_RefractionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
-
-			m_ResolveRefractionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false);
-			m_ResolveRefractionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
-		}
 		if (!m_ReflectionFramebuffer)
 		{
 			m_ReflectionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, true);
@@ -48,39 +45,46 @@ namespace Arcane
 			m_ResolveReflectionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
 		}
 #else
+#ifdef WATER_REFRACTION_USE_MSAA
 		if (!m_RefractionFramebuffer)
 		{
-			m_RefractionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false);
+			m_RefractionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, true);
 			m_RefractionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
+
+			m_ResolveRefractionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false);
+			m_ResolveRefractionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 		}
+#endif
 		if (!m_ReflectionFramebuffer)
 		{
 			m_ReflectionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false);
 			m_ReflectionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilRBO(NormalizedDepthOnly).CreateFramebuffer();
+		}
+		if (!m_RefractionFramebuffer)
+		{
+			m_RefractionFramebuffer = new Framebuffer(WATER_REFRACTION_RESOLUTION_WIDTH, WATER_REFRACTION_RESOLUTION_HEIGHT, false);
+			m_RefractionFramebuffer->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 		}
 #endif
 	}
 
 	void WaterManager::Update()
 	{
-		// Reset our pointers since it is possible no water exists anymore
-		m_ClosestWaterComponent = nullptr;
-
 		FindClosestWater();
 	}
 
 	// TODO: Should use camera component's position
 	void WaterManager::FindClosestWater()
 	{
+		// Reset our pointers since it is possible no water exists anymore
+		m_ClosestWaterComponent = nullptr;
 		float closestDistance2 = std::numeric_limits<float>::max();
-		int currentWaterIndex = -1;
 
-		auto group = m_Scene->m_Registry.view<TransformComponent, MeshComponent, WaterComponent>();
+		auto group = m_Scene->m_Registry.view<TransformComponent, WaterComponent>();
 		for (auto entity : group)
 		{
 			// Water must have a mesh, otherwise nothing to render water on
-			auto&[transformComponent, meshComponent, waterComponent] = group.get<TransformComponent, MeshComponent, WaterComponent>(entity);
-			currentWaterIndex++;
+			auto&[transformComponent, waterComponent] = group.get<TransformComponent, WaterComponent>(entity);
 
 			float currentDistance2 = glm::distance2(m_Scene->GetCamera()->GetPosition(), transformComponent.Translation);
 			if (currentDistance2 < closestDistance2)
@@ -88,7 +92,6 @@ namespace Arcane
 				closestDistance2 = currentDistance2;
 				m_ClosestWaterComponent = &waterComponent;
 				m_ClosestWaterTransform = &transformComponent;
-				m_ClosestWaterIndex = currentWaterIndex;
 			}
 		}
 
@@ -98,17 +101,6 @@ namespace Arcane
 			// Ideally we won't be re-allocating everytime we encounter a different sized reflection/refraction buffer. This NEEDS to be solved if we ever allow multiple water surfaces reflecting and refracting in a single scene
 			// Just allocate the biggest and only render to a portion with glViewPort, and make sure when we sample we account for the smaller size as well
 
-			glm::uvec2 requiredRefractionResolution = GetWaterReflectionRefractionQualityResolution(m_ClosestWaterComponent->WaterRefractionResolution);
-			if (!m_RefractionFramebuffer || m_RefractionFramebuffer->GetWidth() != requiredRefractionResolution.x || m_RefractionFramebuffer->GetHeight() != requiredRefractionResolution.y)
-			{
-#ifdef WATER_REFLECTION_USE_MSAA
-				ReallocateRefractionTarget(&m_RefractionFramebuffer, requiredRefractionResolution, true);
-				ReallocateRefractionTarget(&m_ResolveRefractionFramebuffer, requiredRefractionResolution, false);
-#else
-				ReallocateRefractionTarget(&m_RefractionFramebuffer, requiredRefractionResolution, false);
-#endif
-			}
-
 			glm::uvec2 requiredReflectionResolution = GetWaterReflectionRefractionQualityResolution(m_ClosestWaterComponent->WaterReflectionResolution);
 			if (!m_ReflectionFramebuffer || m_ReflectionFramebuffer->GetWidth() != requiredReflectionResolution.x || m_ReflectionFramebuffer->GetHeight() != requiredReflectionResolution.y)
 			{
@@ -117,6 +109,17 @@ namespace Arcane
 				ReallocateReflectionTarget(&m_ResolveReflectionFramebuffer, requiredReflectionResolution, false);
 #else
 				ReallocateReflectionTarget(&m_ReflectionFramebuffer, requiredReflectionResolution, false);
+#endif
+			}
+
+			glm::uvec2 requiredRefractionResolution = GetWaterReflectionRefractionQualityResolution(m_ClosestWaterComponent->WaterRefractionResolution);
+			if (!m_RefractionFramebuffer || m_RefractionFramebuffer->GetWidth() != requiredRefractionResolution.x || m_RefractionFramebuffer->GetHeight() != requiredRefractionResolution.y)
+			{
+#ifdef WATER_REFRACTION_USE_MSAA
+				ReallocateRefractionTarget(&m_RefractionFramebuffer, requiredRefractionResolution, true);
+				ReallocateRefractionTarget(&m_ResolveRefractionFramebuffer, requiredRefractionResolution, false);
+#else
+				ReallocateRefractionTarget(&m_RefractionFramebuffer, requiredRefractionResolution, false);
 #endif
 			}
 		}
