@@ -100,7 +100,7 @@ namespace Arcane
 					Framebuffer *refractionResolveFramebuffer = waterManager->GetWaterRefractionResolveFramebuffer();
 					glBindFramebuffer(GL_READ_FRAMEBUFFER, refractionFramebuffer->GetFramebuffer());
 					glBindFramebuffer(GL_DRAW_FRAMEBUFFER, refractionResolveFramebuffer->GetFramebuffer());
-					glBlitFramebuffer(0, 0, refractionFramebuffer->GetWidth(), refractionFramebuffer->GetHeight(), 0, 0, refractionResolveFramebuffer->GetWidth(), refractionResolveFramebuffer->GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+					glBlitFramebuffer(0, 0, refractionFramebuffer->GetWidth(), refractionFramebuffer->GetHeight(), 0, 0, refractionResolveFramebuffer->GetWidth(), refractionResolveFramebuffer->GetHeight(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 					refractionFramebuffer = refractionResolveFramebuffer; // Update refraction framebuffer to the resolved with no MSAA
 #endif
 				}
