@@ -174,8 +174,7 @@ namespace Arcane
 							DrawFloatControl("Shadow Bias", lightComponent.ShadowBias, 0.0001f, 0.0f, 1.0f, "%.4f");
 							
 							bool nearModified = DrawFloatControl("Near Plane", lightComponent.ShadowNearPlane, 0.01f, 0.0f, 100.0f);
-							bool farModified = DrawFloatControl("Far Plane", lightComponent.ShadowFarPlane, 1.0f, 0.01f, 1000000.0f);
-
+							bool farModified = DrawFloatControl("Far Plane", lightComponent.ShadowFarPlane, 1.0f, 0.01f, 10000.0f);
 							if (nearModified)
 							{
 								if (lightComponent.ShadowNearPlane > lightComponent.ShadowFarPlane)
@@ -225,6 +224,32 @@ namespace Arcane
 
 						ImGui::SliderFloat("Reflection Plane Bias", &waterComponent.ReflectionPlaneBias, 0.0f, 10.0f, "%.2f");
 						ImGui::SliderFloat("Refraction Plane Bias", &waterComponent.RefractionPlaneBias, 0.0f, 10.0f, "%.2f");
+
+						bool reflectionNearModified = DrawFloatControl("Reflection Near Plane", waterComponent.ReflectionNearPlane, 0.01f, 0.0f, 100.0f);
+						bool reflectionFarModified = DrawFloatControl("Reflection Far Plane", waterComponent.ReflectionFarPlane, 1.0f, 0.01f, 10000.0f);
+						if (reflectionNearModified)
+						{
+							if (waterComponent.ReflectionNearPlane > waterComponent.ReflectionFarPlane)
+								waterComponent.ReflectionFarPlane = waterComponent.ReflectionNearPlane;
+						}
+						else if (reflectionFarModified)
+						{
+							if (waterComponent.ReflectionFarPlane < waterComponent.ReflectionNearPlane)
+								waterComponent.ReflectionNearPlane = waterComponent.ReflectionFarPlane;
+						}
+
+						bool refractionNearModified = DrawFloatControl("Refraction Near Plane", waterComponent.RefractionNearPlane, 0.01f, 0.0f, 100.0f);
+						bool refractionFarModified = DrawFloatControl("Refraction Far Plane", waterComponent.RefractionFarPlane, 1.0f, 0.01f, 10000.0f);
+						if (refractionNearModified)
+						{
+							if (waterComponent.RefractionNearPlane > waterComponent.RefractionFarPlane)
+								waterComponent.RefractionFarPlane = waterComponent.RefractionNearPlane;
+						}
+						else if (refractionFarModified)
+						{
+							if (waterComponent.RefractionFarPlane < waterComponent.RefractionNearPlane)
+								waterComponent.RefractionNearPlane = waterComponent.RefractionFarPlane;
+						}
 					}
 				}
 

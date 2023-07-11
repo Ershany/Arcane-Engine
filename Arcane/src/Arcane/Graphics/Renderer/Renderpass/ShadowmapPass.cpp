@@ -199,8 +199,9 @@ namespace Arcane
 			glm::vec2 nearFarPlane = lightManager->GetPointLightShadowCasterNearFarPlane();
 
 			// Camera Setup
-			m_CubemapCamera.SetCenterPosition(lightManager->GetPointLightShadowCasterLightPosition());
-			glm::mat4 pointLightProjection = m_CubemapCamera.GetProjectionMatrix(nearFarPlane.x, nearFarPlane.y);
+			m_CubemapCamera.SetPosition(lightManager->GetPointLightShadowCasterLightPosition());
+			m_CubemapCamera.SetNearFarPlane(nearFarPlane.x, nearFarPlane.y);
+			glm::mat4 pointLightProjection = m_CubemapCamera.GetProjectionMatrix();
 
 			m_GLCache->SetDepthTest(true);
 			m_GLCache->SetBlend(false);

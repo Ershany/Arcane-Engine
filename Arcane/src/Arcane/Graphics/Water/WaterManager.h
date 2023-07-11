@@ -30,7 +30,7 @@ namespace Arcane
 
 		static glm::uvec2 GetWaterReflectionRefractionQualityResolution(WaterReflectionRefractionQuality quality);
 
-		// Getters for water using reflection/refraction
+		// Getters for water using reflection/refraction (right now the closest water instance is the one that gets reflection/refraction)
 		inline bool HasWaterWithRefractionReflection() const { return m_ReflectionFramebuffer != nullptr && m_RefractionFramebuffer != nullptr; }
 		Framebuffer* GetWaterRefractionFramebuffer() { return m_RefractionFramebuffer; }
 		Framebuffer* GetWaterReflectionFramebuffer() { return m_ReflectionFramebuffer; }
@@ -41,6 +41,8 @@ namespace Arcane
 		Framebuffer* GetWaterReflectionResolveFramebuffer() { return m_ResolveReflectionFramebuffer; }
 #endif
 		inline const WaterComponent* GetClosestWaterComponent() { return m_ClosestWaterComponent; }
+		glm::vec2 GetClosestWaterReflectionNearFarPlane();
+		glm::vec2 GetClosestWaterRefractionNearFarPlane();
 	private:
 		void FindClosestWater();
 

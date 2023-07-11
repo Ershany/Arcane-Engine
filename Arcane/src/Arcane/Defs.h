@@ -34,8 +34,8 @@
 #define BRDF_LUT_RESOLUTION 512
 
 // Frustum Options
-#define NEAR_PLANE 0.3f
-#define FAR_PLANE 5000.0f
+#define DEFAULT_NEAR_PLANE 0.3f
+#define DEFAULT_FAR_PLANE 5000.0f
 
 // Shadowmap Default Options (Resolution controlled by the LightComponent, this will only be used if no light casters are found and a pass needs a fallback)
 // Probes do have their own shadow buffers so this should only be used as defaults for LightComponent
@@ -59,3 +59,7 @@
 #define WATER_REFLECTION_RESOLUTION_HEIGHT 512
 #define WATER_REFRACTION_RESOLUTION_WIDTH 512
 #define WATER_REFRACTION_RESOLUTION_HEIGHT 512
+#define WATER_REFLECTION_NEAR_PLANE_DEFAULT 0.3f
+#define WATER_REFLECTION_FAR_PLANE_DEFAULT 1000.0f
+#define WATER_REFRACTION_NEAR_PLANE_DEFAULT 0.3f
+#define WATER_REFRACTION_FAR_PLANE_DEFAULT 500.0f

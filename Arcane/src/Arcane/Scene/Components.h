@@ -135,6 +135,9 @@ namespace Arcane
 
 		float ReflectionPlaneBias = 1.5f;
 		float RefractionPlaneBias = 0.5f;
+		
+		float ReflectionNearPlane = WATER_REFLECTION_NEAR_PLANE_DEFAULT, ReflectionFarPlane = WATER_REFLECTION_FAR_PLANE_DEFAULT;
+		float RefractionNearPlane = WATER_REFRACTION_NEAR_PLANE_DEFAULT, RefractionFarPlane = WATER_REFRACTION_FAR_PLANE_DEFAULT;
 
 		float MoveTimer = 0.0f; // Should not be set or used by the user. Just used for water rendering, that is why this isn't viewable/modifiable in the inspector panel
 	};

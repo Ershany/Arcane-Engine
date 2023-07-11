@@ -68,9 +68,14 @@ namespace Arcane
 
 				// Generate Reflection framebuffer and render to it
 				{
+					glm::vec2 reflectionNearFarPlane = waterManager->GetClosestWaterReflectionNearFarPlane();
+					float prevNearPlane = camera->GetNearPlane();
+					float prevFarPlane = camera->GetFarPlane();
+
 					m_GLCache->SetClipPlane(glm::vec4(0.0f, 1.0f, 0.0f, -transformComponent.Translation.y + waterComponent.ReflectionPlaneBias));
 					float distance = 2 * (camera->GetPosition().y - transformComponent.Translation.y);
 					camera->SetPosition(camera->GetPosition() - glm::vec3(0.0f, distance, 0.0f));
+					camera->SetNearFarPlane(reflectionNearFarPlane.x, reflectionNearFarPlane.y);
 					camera->InvertPitch();
 
 					ForwardLightingPass lightingPass(m_ActiveScene, reflectionFramebuffer);
@@ -85,12 +90,18 @@ namespace Arcane
 					reflectionFramebuffer = reflectionResolveFramebuffer; // Update reflection framebuffer to the resolved with no MSAA
 #endif
 					camera->SetPosition(camera->GetPosition() + glm::vec3(0.0f, distance, 0.0f));
+					camera->SetNearFarPlane(prevNearPlane, prevFarPlane);
 					camera->InvertPitch();
 				}
 
 				// Generate Refraction framebuffer and render to it
 				{
+					glm::vec2 refractionNearFarPlane = waterManager->GetClosestWaterRefractionNearFarPlane();
+					float prevNearPlane = camera->GetNearPlane();
+					float prevFarPlane = camera->GetFarPlane();
+
 					m_GLCache->SetClipPlane(glm::vec4(0.0f, -1.0f, 0.0f, transformComponent.Translation.y + waterComponent.RefractionPlaneBias));
+					camera->SetNearFarPlane(refractionNearFarPlane.x, refractionNearFarPlane.y);
 
 					ForwardLightingPass lightingPass(m_ActiveScene, refractionFramebuffer);
 					LightingPassOutput output = lightingPass.ExecuteOpaqueLightingPass(inputShadowmapData, camera, false, false);
@@ -103,6 +114,7 @@ namespace Arcane
 					glBlitFramebuffer(0, 0, refractionFramebuffer->GetWidth(), refractionFramebuffer->GetHeight(), 0, 0, refractionResolveFramebuffer->GetWidth(), refractionResolveFramebuffer->GetHeight(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 					refractionFramebuffer = refractionResolveFramebuffer; // Update refraction framebuffer to the resolved with no MSAA
 #endif
+					camera->SetNearFarPlane(prevNearPlane, prevFarPlane);
 				}
 			}
 

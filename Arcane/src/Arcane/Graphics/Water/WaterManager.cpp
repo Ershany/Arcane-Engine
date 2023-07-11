@@ -172,4 +172,26 @@ namespace Arcane
 		*framebuffer = new Framebuffer(newResolution.x, newResolution.y, multisampled);
 		(*framebuffer)->AddColorTexture(FloatingPoint16).AddDepthStencilTexture(NormalizedDepthOnly).CreateFramebuffer();
 	}
+
+	glm::vec2 WaterManager::GetClosestWaterReflectionNearFarPlane()
+	{
+		if (!m_ClosestWaterComponent)
+		{
+			ARC_ASSERT(false, "Water with Reflection does not exist in current scene - could not get near/far plane");
+			return glm::vec2(WATER_REFLECTION_NEAR_PLANE_DEFAULT, WATER_REFLECTION_FAR_PLANE_DEFAULT);
+		}
+
+		return glm::vec2(m_ClosestWaterComponent->ReflectionNearPlane, m_ClosestWaterComponent->ReflectionFarPlane);
+	}
+
+	glm::vec2 WaterManager::GetClosestWaterRefractionNearFarPlane()
+	{
+		if (!m_ClosestWaterComponent)
+		{
+			ARC_ASSERT(false, "Water with Refraction does not exist in current scene - could not get near/far plane");
+			return glm::vec2(WATER_REFRACTION_NEAR_PLANE_DEFAULT, WATER_REFRACTION_FAR_PLANE_DEFAULT);
+		}
+
+		return glm::vec2(m_ClosestWaterComponent->RefractionNearPlane, m_ClosestWaterComponent->RefractionFarPlane);
+	}
 }
