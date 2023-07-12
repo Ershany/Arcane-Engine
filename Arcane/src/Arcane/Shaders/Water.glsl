@@ -76,6 +76,7 @@ uniform sampler2D normalMap;
 uniform sampler2D refractionDepthTexture;
 
 // Lighting
+uniform ivec4 numDirPointSpotLights;
 uniform DirLight dirLights[MAX_DIR_LIGHTS];
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
@@ -152,10 +153,34 @@ void main() {
 	// Direct Specular light highlights (TODO: Actually make this work for multiple directional lights, right now it requires there to be one directional light and only uses one)
 	vec3 specHighlight = vec3(0.0, 0.0, 0.0);
 	if (shouldShine) {
-		vec3 reflectedVec = reflect(normalize(dirLights[0].direction), normal);
-		float specular = max(dot(reflectedVec, viewVec), 0.0);
-		specular = pow(specular, shineDamper);
-		specHighlight = dirLights[0].lightColour * specular * dampeningEffect2;
+		// Directional light specular contribution
+		for (int i = 0; i < numDirPointSpotLights.x; i++) {
+			vec3 reflectedVec = reflect(normalize(dirLights[i].direction), normal);
+			float specular = pow(max(dot(reflectedVec, viewVec), 0.0), shineDamper);
+			specHighlight += dirLights[i].lightColour * specular * dampeningEffect2;
+		}
+
+		// Point light specular contribution
+		for (int i = 0; i < numDirPointSpotLights.y; i++) {
+			vec3 lightToFrag = worldFragPos - pointLights[i].position;
+			vec3 reflectedVec = reflect(normalize(lightToFrag), vec3(0.0, 1.0, 0.0));
+			float specular = pow(max(dot(reflectedVec, viewVec), 0.0), shineDamper);
+
+			// Attenuation calculation (based on Epic's UE4 falloff model)
+			float lightToFragDistance = length(lightToFrag);
+			float d = lightToFragDistance / pointLights[i].attenuationRadius;
+			float d2 = d * d;
+			float d4 = d2 * d2;
+			float falloffNumerator = clamp(1.0 - d4, 0.0, 1.0);
+			float attenuation = (falloffNumerator * falloffNumerator) / ((lightToFragDistance * lightToFragDistance) + 1.0);
+
+			specHighlight += pointLights[i].intensity * pointLights[i].lightColour * specular * dampeningEffect2 * attenuation;
+		}
+
+		// Spot light specular contribution
+		for (int i = 0; i < numDirPointSpotLights.z; i++) {
+			
+		}
 	}
 
 	// Finally combine results for the pixel
