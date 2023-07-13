@@ -163,7 +163,7 @@ void main() {
 		// Point light specular contribution
 		for (int i = 0; i < numDirPointSpotLights.y; i++) {
 			vec3 lightToFrag = worldFragPos - pointLights[i].position;
-			vec3 reflectedVec = reflect(normalize(lightToFrag), vec3(0.0, 1.0, 0.0));
+			vec3 reflectedVec = reflect(normalize(lightToFrag), vec3(0.0, 1.0, 0.0)); // TODO: Should use sampled normal, and lerp between (0, 1, 0) and sampled normal using dampingEffect2 to simulate less waves at the edges of the water
 			float specular = pow(max(dot(reflectedVec, viewVec), 0.0), shineDamper);
 
 			// Attenuation calculation (based on Epic's UE4 falloff model)
@@ -174,12 +174,30 @@ void main() {
 			float falloffNumerator = clamp(1.0 - d4, 0.0, 1.0);
 			float attenuation = (falloffNumerator * falloffNumerator) / ((lightToFragDistance * lightToFragDistance) + 1.0);
 
-			specHighlight += pointLights[i].intensity * pointLights[i].lightColour * specular * dampeningEffect2 * attenuation;
+			specHighlight += pointLights[i].intensity * pointLights[i].lightColour * specular * attenuation;
 		}
 
 		// Spot light specular contribution
 		for (int i = 0; i < numDirPointSpotLights.z; i++) {
-			
+			vec3 lightToFrag = worldFragPos - spotLights[i].position;
+			vec3 lightToFragNorm = normalize(lightToFrag);
+			vec3 reflectedVec = reflect(lightToFragNorm, vec3(0.0, 1.0, 0.0)); // TODO: Should use sampled normal, and lerp between (0, 1, 0) and sampled normal using dampingEffect2 to simulate less waves at the edges of the water
+			float specular = pow(max(dot(reflectedVec, viewVec), 0.0), shineDamper);
+
+			// Attenuation calculation (based on Epic's UE4 falloff model)
+			float lightToFragDistance = length(lightToFrag);
+			float d = lightToFragDistance / spotLights[i].attenuationRadius;
+			float d2 = d * d;
+			float d4 = d2 * d2;
+			float falloffNumerator = clamp(1.0 - d4, 0.0, 1.0);
+
+			// Check if it is in the spotlight's circle and calculate final attenuation
+			float theta = dot(normalize(spotLights[i].direction), lightToFragNorm);
+			float difference = spotLights[i].cutOff - spotLights[i].outerCutOff;
+			float intensity = clamp((theta - spotLights[i].outerCutOff) / difference, 0.0, 1.0);
+			float attenuation = intensity * (falloffNumerator * falloffNumerator) / ((lightToFragDistance * lightToFragDistance) + 1.0);
+
+			specHighlight += spotLights[i].intensity * spotLights[i].lightColour * specular * attenuation;
 		}
 	}
 
