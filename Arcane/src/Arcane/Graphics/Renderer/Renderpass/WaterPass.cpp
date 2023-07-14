@@ -50,21 +50,22 @@ namespace Arcane
 			// Setup state
 			m_GLCache->SetUsesClipPlane(true);
 
-			// Only the closest water receives reflection and refraction from the environment with planar reflections/refractions
-			bool shouldGenerateReflectionRefraction = false;
+			// Only the closest water can receive reflection and refraction from the environment with planar reflections/refractions
+			bool canReflectRefract = false;
 			Framebuffer *reflectionFramebuffer = nullptr;
 			Framebuffer *refractionFramebuffer = nullptr;
 			if (closestWaterWithReflectionRefraction == &waterComponent)
 			{
-				shouldGenerateReflectionRefraction = true;
+				canReflectRefract = true;
 			}
 
-			if (shouldGenerateReflectionRefraction)
+			if (canReflectRefract)
 			{
 				reflectionFramebuffer = waterManager->GetWaterReflectionFramebuffer();
 				refractionFramebuffer = waterManager->GetWaterRefractionFramebuffer();
 
 				// Generate Reflection framebuffer and render to it
+				if (closestWaterWithReflectionRefraction->ReflectionEnabled)
 				{
 					glm::vec2 reflectionNearFarPlane = waterManager->GetClosestWaterReflectionNearFarPlane();
 					float prevNearPlane = camera->GetNearPlane();
@@ -93,6 +94,7 @@ namespace Arcane
 				}
 
 				// Generate Refraction framebuffer and render to it
+				if (closestWaterWithReflectionRefraction->RefractionEnabled)
 				{
 					glm::vec2 refractionNearFarPlane = waterManager->GetClosestWaterRefractionNearFarPlane();
 					float prevNearPlane = camera->GetNearPlane();
@@ -162,11 +164,18 @@ namespace Arcane
 			m_WaterShader->SetUniform("waterNormalSmoothing", waterComponent.NormalSmoothing);
 			m_WaterShader->SetUniform("depthDampeningEffect", waterComponent.DepthDampening);
 
-			m_WaterShader->SetUniform("hasReflectionRefraction", shouldGenerateReflectionRefraction);
-			if (shouldGenerateReflectionRefraction)
+			// Only setup reflections/refractions if it is the closest water component received by the WaterManager, and it has those options enabled
+			bool reflection = canReflectRefract && waterComponent.ReflectionEnabled;
+			bool refraction = canReflectRefract && waterComponent.RefractionEnabled;
+			m_WaterShader->SetUniform("reflectionEnabled", reflection);
+			if (reflection)
 			{
 				m_WaterShader->SetUniform("reflectionTexture", 0);
 				reflectionFramebuffer->GetColourTexture()->Bind(0);
+			}
+			m_WaterShader->SetUniform("refractionEnabled", refraction);
+			if (refraction)
+			{
 				m_WaterShader->SetUniform("refractionTexture", 1);
 				refractionFramebuffer->GetColourTexture()->Bind(1);
 				m_WaterShader->SetUniform("refractionDepthTexture", 4);

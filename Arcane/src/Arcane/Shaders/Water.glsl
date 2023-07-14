@@ -84,7 +84,8 @@ uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 uniform mat4 viewInverse;
 uniform mat4 projectionInverse;
 
-uniform bool hasReflectionRefraction;
+uniform bool reflectionEnabled;
+uniform bool refractionEnabled;
 uniform bool clearWater;
 uniform bool shouldShine;
 uniform vec3 waterAlbedo;
@@ -114,7 +115,7 @@ void main() {
 		totalDistortion = vec2(0.0, 0.0);
 	}
 	else {
-		if (hasReflectionRefraction) {
+		if (refractionEnabled) {
 			vec3 refractedSurface = WorldPosFromDepth(refractCoords);
 			float waterDepthAtRefractedSurface = worldFragPos.y - refractedSurface.y;
 			float dampeningEffect = clamp(waterDepthAtRefractedSurface * depthDampeningEffect, 0.0, 1.0);
@@ -128,12 +129,14 @@ void main() {
 
 	vec4 reflectedColour = vec4(1.0, 1.0, 1.0, 1.0);
 	vec4 refractedColour = vec4(1.0, 1.0, 1.0, 1.0);
-	if (hasReflectionRefraction) {
+	if (reflectionEnabled) {
 		reflectCoords += totalDistortion;
-		reflectCoords = clamp(reflectCoords, 0.001, 0.999);
-		refractCoords += totalDistortion;
-		refractCoords = clamp(refractCoords, 0.001, 0.999);
+		reflectCoords = clamp(reflectCoords, 0.0001, 0.9999);
 		reflectedColour = texture(reflectionTexture, reflectCoords);
+	}
+	if (refractionEnabled) {
+		refractCoords += totalDistortion;
+		refractCoords = clamp(refractCoords, 0.0001, 0.9999);
 		refractedColour = texture(refractionTexture, refractCoords);
 	}
 
@@ -148,7 +151,6 @@ void main() {
 	}
 	
 	vec3 viewVec = normalize(fragToView);
-	float fresnel = dot(viewVec, vec3(0.0, 1.0, 0.0)); // TODO: Should use sampled normal
 
 	// Specular (reflection) light highlights
 	vec3 specHighlight = vec3(0.0, 0.0, 0.0);
@@ -201,9 +203,21 @@ void main() {
 		}
 	}
 
+	float fresnel = dot(viewVec, vec3(0.0, 1.0, 0.0)); // TODO: Should use sampled normal
+	float albedoPercentage = albedoPower;
+	if (reflectionEnabled && !refractionEnabled) {
+		fresnel = 0.0; // If we only have reflection bias it 100%
+	}
+	else if (!reflectionEnabled && refractionEnabled) {
+		fresnel = 1.0; // If we only have refraction bias it 100%
+	}
+	else if (!reflectionEnabled && !refractionEnabled) {
+		albedoPercentage = 1.0; // If we have neither, just display albedo with specular highlights
+	}
+
 	// Finally combine results for the pixel
 	FragColour = mix(reflectedColour, refractedColour, fresnel);
-	FragColour = mix(FragColour, vec4(waterAlbedo, 1.0), albedoPower) + vec4(specHighlight, 0.0);
+	FragColour = mix(FragColour, vec4(waterAlbedo, 1.0), albedoPercentage) + vec4(specHighlight, 0.0);
 }
 
 vec3 WorldPosFromDepth(vec2 texCoords) {
