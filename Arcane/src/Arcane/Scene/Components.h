@@ -116,8 +116,8 @@ namespace Arcane
 
 	struct WaterComponent
 	{
-		glm::vec3 WaterAlbedo = glm::vec3(0.1f, 0.9f, 0.9f);
-		float AlbedoPower = 0.1f;
+		glm::vec3 WaterAlbedo = glm::vec3(0.102f, 0.431f, 0.902f);
+		float AlbedoPower = 0.05f;
 
 		WaterReflectionRefractionQuality WaterRefractionResolution = WaterReflectionRefractionQuality::WaterReflectionRefractionQuality_High;
 		WaterReflectionRefractionQuality WaterReflectionResolution = WaterReflectionRefractionQuality::WaterReflectionRefractionQuality_High;
@@ -129,8 +129,8 @@ namespace Arcane
 		float WaveSpeed = 0.05f;
 		float WaveStrength = 0.02f;
 
-		float ShineDamper = 25.0f;
-		float NormalSmoothing = 1.0f;
+		float ShineDamper = 300.0f;
+		float NormalSmoothing = 3.0f;
 		float DepthDampening = 0.1f;
 
 		float ReflectionPlaneBias = 1.5f;

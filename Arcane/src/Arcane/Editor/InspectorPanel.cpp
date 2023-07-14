@@ -218,7 +218,7 @@ namespace Arcane
 						ImGui::SliderFloat("Wave Speed", &waterComponent.WaveSpeed, 0.0f, 2.0f, "%.3f");
 						ImGui::SliderFloat("Wave Strength", &waterComponent.WaveStrength, 0.0f, 0.2f, "%.2f");
 
-						ImGui::SliderFloat("Shine Damper", &waterComponent.ShineDamper, 0.0f, 100.0f, "%.2f");
+						ImGui::SliderFloat("Shine Damper", &waterComponent.ShineDamper, 0.0f, 1000.0f, "%.2f");
 						ImGui::SliderFloat("Normal Smoothing", &waterComponent.NormalSmoothing, 0.0f, 5.0f, "%.2f");
 						ImGui::SliderFloat("Depth Dampening", &waterComponent.DepthDampening, 0.0f, 1.0f, "%.2f");
 

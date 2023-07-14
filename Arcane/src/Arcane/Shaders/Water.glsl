@@ -144,26 +144,26 @@ void main() {
 	}
 	else {
 		normal = texture(normalMap, distortion).rgb;
-		normal = normalize(vec3(normal.r * 2.0 - 1.0, normal.g * waterNormalSmoothing, normal.b * 2.0 - 1.0)); // Assumes the normal of the water plane is always (0, 1, 0) so the the y component for the normal will never be negative
+		normal = normalize(vec3(normal.r * 2.0 - 1.0, normal.b * waterNormalSmoothing, normal.g * 2.0 - 1.0)); // Normal maps are in tangent space but we know tangent space z component = y component in world space since plane is always flat and assume normal is (0, 1, 0)
 	}
 	
 	vec3 viewVec = normalize(fragToView);
 	float fresnel = dot(viewVec, vec3(0.0, 1.0, 0.0)); // TODO: Should use sampled normal
 
-	// Direct Specular light highlights (TODO: Actually make this work for multiple directional lights, right now it requires there to be one directional light and only uses one)
+	// Specular (reflection) light highlights
 	vec3 specHighlight = vec3(0.0, 0.0, 0.0);
 	if (shouldShine) {
 		// Directional light specular contribution
 		for (int i = 0; i < numDirPointSpotLights.x; i++) {
 			vec3 reflectedVec = reflect(normalize(dirLights[i].direction), normal);
 			float specular = pow(max(dot(reflectedVec, viewVec), 0.0), shineDamper);
-			specHighlight += dirLights[i].lightColour * specular * dampeningEffect2;
+			specHighlight += dirLights[i].intensity * dirLights[i].lightColour * specular * dampeningEffect2;
 		}
 
 		// Point light specular contribution
 		for (int i = 0; i < numDirPointSpotLights.y; i++) {
 			vec3 lightToFrag = worldFragPos - pointLights[i].position;
-			vec3 reflectedVec = reflect(normalize(lightToFrag), vec3(0.0, 1.0, 0.0)); // TODO: Should use sampled normal, and lerp between (0, 1, 0) and sampled normal using dampingEffect2 to simulate less waves at the edges of the water
+			vec3 reflectedVec = reflect(normalize(lightToFrag), normal);
 			float specular = pow(max(dot(reflectedVec, viewVec), 0.0), shineDamper);
 
 			// Attenuation calculation (based on Epic's UE4 falloff model)
@@ -174,14 +174,14 @@ void main() {
 			float falloffNumerator = clamp(1.0 - d4, 0.0, 1.0);
 			float attenuation = (falloffNumerator * falloffNumerator) / ((lightToFragDistance * lightToFragDistance) + 1.0);
 
-			specHighlight += pointLights[i].intensity * pointLights[i].lightColour * specular * attenuation;
+			specHighlight += pointLights[i].intensity * pointLights[i].lightColour * specular * attenuation * dampeningEffect2;
 		}
 
 		// Spot light specular contribution
 		for (int i = 0; i < numDirPointSpotLights.z; i++) {
 			vec3 lightToFrag = worldFragPos - spotLights[i].position;
 			vec3 lightToFragNorm = normalize(lightToFrag);
-			vec3 reflectedVec = reflect(lightToFragNorm, vec3(0.0, 1.0, 0.0)); // TODO: Should use sampled normal, and lerp between (0, 1, 0) and sampled normal using dampingEffect2 to simulate less waves at the edges of the water
+			vec3 reflectedVec = reflect(lightToFragNorm, normal);
 			float specular = pow(max(dot(reflectedVec, viewVec), 0.0), shineDamper);
 
 			// Attenuation calculation (based on Epic's UE4 falloff model)
@@ -197,7 +197,7 @@ void main() {
 			float intensity = clamp((theta - spotLights[i].outerCutOff) / difference, 0.0, 1.0);
 			float attenuation = intensity * (falloffNumerator * falloffNumerator) / ((lightToFragDistance * lightToFragDistance) + 1.0);
 
-			specHighlight += spotLights[i].intensity * spotLights[i].lightColour * specular * attenuation;
+			specHighlight += spotLights[i].intensity * spotLights[i].lightColour * specular * attenuation * dampeningEffect2;
 		}
 	}
 
