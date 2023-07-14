@@ -155,6 +155,8 @@ void Testbed::LoadTestbedGraphics()
 		transformComponent.Rotation = { glm::radians(-90.0f), 0.0f, 0.0f };
 		transformComponent.Scale = { 150.0f, 150.0f, 150.0f };
 		auto& waterComponent = water.AddComponent<WaterComponent>();
+		waterComponent.WaterDistortionTexture = assetManager.Load2DTextureAsync(std::string("res/water/dudv.png"));
+		waterComponent.WaterNormalMap = assetManager.Load2DTextureAsync(std::string("res/water/normals.png"));
 	}
 }
 

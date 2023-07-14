@@ -8,7 +8,7 @@
 namespace Arcane
 {
 	// Static declarations
-	Texture *TextureLoader::s_DefaultNormal;
+	Texture *TextureLoader::s_DefaultNormal; Texture *TextureLoader::s_DefaultWaterDistortion;
 	Texture *TextureLoader::s_WhiteTexture; Texture *TextureLoader::s_BlackTexture;
 
 	void TextureLoader::Load2DTextureData(const std::string &path, TextureGenerationData &inOutData)
@@ -72,6 +72,7 @@ namespace Arcane
 
 		AssetManager &assetManager = AssetManager::GetInstance();
 		s_DefaultNormal = assetManager.Load2DTexture(std::string("res/textures/default/defaultNormal.png"), &settings);
+		s_DefaultWaterDistortion = assetManager.Load2DTexture(std::string("res/textures/default/defaultWaterDistortion.png"), &settings);
 		s_WhiteTexture = assetManager.Load2DTexture(std::string("res/textures/default/white.png"), &settings);
 		s_BlackTexture = assetManager.Load2DTexture(std::string("res/textures/default/black.png"), &settings);
 	}

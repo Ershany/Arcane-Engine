@@ -18,6 +18,10 @@
 #include <Arcane/Animation/PoseAnimator.h>
 #endif
 
+#ifndef TEXTURE_H
+#include <Arcane/Graphics/Texture/Texture.h>
+#endif
+
 namespace Arcane
 {
 	class ICamera;
@@ -140,6 +144,9 @@ namespace Arcane
 		float RefractionNearPlane = WATER_REFRACTION_NEAR_PLANE_DEFAULT, RefractionFarPlane = WATER_REFRACTION_FAR_PLANE_DEFAULT;
 
 		float MoveTimer = 0.0f; // Should not be set or used by the user. Just used for water rendering, that is why this isn't viewable/modifiable in the inspector panel
+
+		Texture *WaterDistortionTexture = nullptr;
+		Texture *WaterNormalMap = nullptr;
 	};
 
 	// TODO: Eventually needs to be added and used for the runtime. The editor will always have a "camera" but will be needed for runtime eventually

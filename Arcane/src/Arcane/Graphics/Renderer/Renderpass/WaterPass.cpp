@@ -20,8 +20,6 @@ namespace Arcane
 		m_WaterShader = ShaderLoader::LoadShader("Water.glsl");
 
 		AssetManager &assetManager = AssetManager::GetInstance();
-		m_WaveTexture = assetManager.Load2DTextureAsync(std::string("res/water/dudv.png"));
-		m_WaterNormalMap = assetManager.Load2DTextureAsync(std::string("res/water/normals.png"));
 
 		m_EffectsTimer.Reset();
 	}
@@ -174,10 +172,18 @@ namespace Arcane
 				m_WaterShader->SetUniform("refractionDepthTexture", 4);
 				refractionFramebuffer->GetDepthStencilTexture()->Bind(4);
 			}
+
 			m_WaterShader->SetUniform("dudvWaveTexture", 2);
-			m_WaveTexture->Bind(2);
+			if (waterComponent.WaterDistortionTexture)
+				waterComponent.WaterDistortionTexture->Bind(2);
+			else
+				AssetManager::GetInstance().GetDefaultWaterDistortionTexture()->Bind(2);
+
 			m_WaterShader->SetUniform("normalMap", 3);
-			m_WaterNormalMap->Bind(3);
+			if (waterComponent.WaterNormalMap)
+				waterComponent.WaterNormalMap->Bind(3);
+			else
+				AssetManager::GetInstance().GetDefaultNormalTexture()->Bind(3);
 
 			m_WaterPlane.Draw();
 		}

@@ -23,7 +23,6 @@ namespace Arcane
 	class Shader;
 	class Scene;
 	class ICamera;
-	class Texture;
 
 	class WaterPass : public RenderPass
 	{
@@ -36,7 +35,6 @@ namespace Arcane
 		bool m_WaterEnabled;
 
 		Shader *m_WaterShader;
-		Texture *m_WaveTexture, *m_WaterNormalMap;
 		Quad m_WaterPlane;
 		Timer m_EffectsTimer;
 	};

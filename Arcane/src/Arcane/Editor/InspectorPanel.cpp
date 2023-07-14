@@ -250,6 +250,24 @@ namespace Arcane
 							if (waterComponent.RefractionFarPlane < waterComponent.RefractionNearPlane)
 								waterComponent.RefractionNearPlane = waterComponent.RefractionFarPlane;
 						}
+
+						ImGui::Image(waterComponent.WaterNormalMap ? (ImTextureID)waterComponent.WaterNormalMap->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetDefaultNormalTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && waterComponent.WaterNormalMap)
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)waterComponent.WaterNormalMap->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Water Normals");
+
+						ImGui::Image(waterComponent.WaterDistortionTexture ? (ImTextureID)waterComponent.WaterDistortionTexture->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetDefaultWaterDistortionTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && waterComponent.WaterDistortionTexture)
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)waterComponent.WaterDistortionTexture->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Water Distortion");
 					}
 				}
 

@@ -62,6 +62,7 @@ namespace Arcane
 		inline static Texture* GetNoMetallicTexture() { return TextureLoader::s_BlackTexture; }
 		inline static Texture* GetFullRoughnessTexture() { return TextureLoader::s_WhiteTexture; }
 		inline static Texture* GetNoRoughnessTexture() { return TextureLoader::s_BlackTexture; }
+		inline static Texture* GetDefaultWaterDistortionTexture() { return TextureLoader::s_DefaultWaterDistortion; }
 	private:
 		// Used to load resources asynchronously on a threadpool
 		void LoaderThread();
