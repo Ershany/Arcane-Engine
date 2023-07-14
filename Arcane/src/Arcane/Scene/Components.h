@@ -123,7 +123,9 @@ namespace Arcane
 		glm::vec3 WaterAlbedo = glm::vec3(0.102f, 0.431f, 0.902f);
 		float AlbedoPower = 0.05f;
 
+		bool ReflectionEnabled = true;
 		WaterReflectionRefractionQuality WaterRefractionResolution = WaterReflectionRefractionQuality::WaterReflectionRefractionQuality_High;
+		bool RefractionEnabled = true;
 		WaterReflectionRefractionQuality WaterReflectionResolution = WaterReflectionRefractionQuality::WaterReflectionRefractionQuality_High;
 
 		bool ClearWater = false;
@@ -135,7 +137,7 @@ namespace Arcane
 
 		float ShineDamper = 300.0f;
 		float NormalSmoothing = 3.0f;
-		float DepthDampening = 0.1f;
+		float DepthDampening = 0.05f;
 
 		float ReflectionPlaneBias = 1.5f;
 		float RefractionPlaneBias = 0.5f;
