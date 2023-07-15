@@ -84,6 +84,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>arcpch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -111,6 +112,7 @@
       <PrecompiledHeaderFile>arcpch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -140,6 +142,7 @@
       <PrecompiledHeaderFile>arcpch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -162,6 +165,7 @@
     <ClCompile Include="src\Arcane\Animation\PoseAnimator.cpp" />
     <ClCompile Include="src\Arcane\Editor\RendererStatsDisplay.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Water\WaterManager.cpp" />
     <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
     <ClCompile Include="src\Arcane\Core\Layer.cpp" />
@@ -201,8 +205,6 @@
     <ClCompile Include="src\Arcane\Input\JoystickManager.cpp" />
     <ClCompile Include="src\Arcane\main.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.cpp" />
-    <ClCompile Include="src\Arcane\UI\Pane.cpp" />
-    <ClCompile Include="src\Arcane\UI\WaterPane.cpp" />
     <ClCompile Include="src\Arcane\Platform\OpenGL\GPUTimerManager.cpp" />
     <ClCompile Include="src\Arcane\Util\Loaders\AssetManager.cpp" />
     <ClCompile Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.cpp">
@@ -266,6 +268,7 @@
     <ClInclude Include="src\Arcane\Animation\PoseAnimator.h" />
     <ClInclude Include="src\Arcane\Editor\RendererStatsDisplay.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Water\WaterManager.h" />
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
     <ClInclude Include="src\Arcane.h" />
     <ClInclude Include="src\Arcane\ArcaneEntryPoint.h" />
@@ -317,8 +320,6 @@
     <ClInclude Include="src\Arcane\Platform\OpenGL\OpenGLImGuiLayer.h" />
     <ClInclude Include="src\Arcane\Scene\Components.h" />
     <ClInclude Include="src\Arcane\Scene\Entity.h" />
-    <ClInclude Include="src\Arcane\UI\Pane.h" />
-    <ClInclude Include="src\Arcane\UI\WaterPane.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\GPUTimerManager.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />

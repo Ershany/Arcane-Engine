@@ -10,8 +10,16 @@
 #include <Arcane/Graphics/Lights/LightManager.h>
 #endif
 
+#ifndef WATERMANAGER_H
+#include <Arcane/Graphics/Water/WaterManager.h>
+#endif
+
 #ifndef POSEANIMATOR_H
 #include <Arcane/Animation/PoseAnimator.h>
+#endif
+
+#ifndef TEXTURE_H
+#include <Arcane/Graphics/Texture/Texture.h>
 #endif
 
 namespace Arcane
@@ -105,15 +113,51 @@ namespace Arcane
 		float ShadowNearPlane = SHADOWMAP_NEAR_PLANE_DEFAULT, ShadowFarPlane = SHADOWMAP_FAR_PLANE_DEFAULT;
 	};
 
+	struct PoseAnimatorComponent
+	{
+		PoseAnimator PoseAnimator;
+	};
+
+	struct WaterComponent
+	{
+		glm::vec3 WaterAlbedo = glm::vec3(0.102f, 0.431f, 0.902f);
+		float AlbedoPower = 0.05f;
+
+		bool ReflectionEnabled = true;
+		WaterReflectionRefractionQuality WaterRefractionResolution = WaterReflectionRefractionQuality::WaterReflectionRefractionQuality_High;
+		bool RefractionEnabled = true;
+		WaterReflectionRefractionQuality WaterReflectionResolution = WaterReflectionRefractionQuality::WaterReflectionRefractionQuality_High;
+
+		bool ReflectionMSAA = true;
+		bool RefractionMSAA = false;
+		bool ClearWater = false;
+		bool EnableShine = true;
+
+		glm::vec2 WaterTiling = glm::vec2(6.0f, 6.0f);
+		float WaveSpeed = 0.05f;
+		float WaveStrength = 0.02f;
+
+		float ShineDamper = 300.0f;
+		float NormalSmoothing = 3.0f;
+		float DepthDampening = 0.05f;
+
+		float ReflectionPlaneBias = 1.5f;
+		float RefractionPlaneBias = 0.5f;
+		
+		float ReflectionNearPlane = WATER_REFLECTION_NEAR_PLANE_DEFAULT, ReflectionFarPlane = WATER_REFLECTION_FAR_PLANE_DEFAULT;
+		float RefractionNearPlane = WATER_REFRACTION_NEAR_PLANE_DEFAULT, RefractionFarPlane = WATER_REFRACTION_FAR_PLANE_DEFAULT;
+
+		float MoveTimer = 0.0f; // Should not be set or used by the user. Just used for water rendering, that is why this isn't viewable/modifiable in the inspector panel
+
+		Texture *WaterDistortionTexture = nullptr;
+		Texture *WaterNormalMap = nullptr;
+	};
+
 	// TODO: Eventually needs to be added and used for the runtime. The editor will always have a "camera" but will be needed for runtime eventually
 	struct CameraComponent
 	{
 		Arcane::ICamera *camera;
 	};
-
-	struct PoseAnimatorComponent
-	{
-		PoseAnimator PoseAnimator;
-	};
 }
 #endif
+

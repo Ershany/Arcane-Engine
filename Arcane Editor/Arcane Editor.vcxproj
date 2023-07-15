@@ -88,6 +88,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -112,6 +113,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"</Co
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StringPooling>true</StringPooling>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,6 +134,7 @@ xcopy /y /d "$(SolutionDir)Dependencies\RenderDoc\renderdoc.dll" "$(OutDir)"</Co
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\Arcane\src;..\Dependencies\GLFW\include;..\Dependencies\GLEW\include;..\Dependencies\GLM\include;..\Dependencies\Assimp\include;..\Dependencies\FreeType\include;..\Dependencies\FreeType-GL\include;..\Dependencies\spdlog\include;src;..\Arcane\src\Arcane\Vendor\entt\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

@@ -102,7 +102,7 @@ namespace Arcane
 	void ForwardProbePass::generateFallbackProbes() {
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 		glm::vec3 origin(0.0f, 0.0f, 0.0f);
-		m_CubemapCamera.SetCenterPosition(origin);
+		m_CubemapCamera.SetPosition(origin);
 
 
 		// Light probe generation
@@ -180,7 +180,7 @@ namespace Arcane
 		lightProbe->Generate();
 
 		// Initialize step before rendering to the probe's cubemap
-		m_CubemapCamera.SetCenterPosition(probePosition);
+		m_CubemapCamera.SetPosition(probePosition);
 		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureDirLightShadowFramebuffer, &m_SceneCaptureSpotLightShadowFramebuffer, &m_SceneCapturePointLightDepthCubemap);
 		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 
@@ -233,7 +233,7 @@ namespace Arcane
 		reflectionProbe->Generate();
 
 		// Initialize step before rendering to the probe's cubemap
-		m_CubemapCamera.SetCenterPosition(probePosition);
+		m_CubemapCamera.SetPosition(probePosition);
 		ShadowmapPass shadowPass(m_ActiveScene, &m_SceneCaptureDirLightShadowFramebuffer, &m_SceneCaptureSpotLightShadowFramebuffer, &m_SceneCapturePointLightDepthCubemap);
 		ForwardLightingPass lightingPass(m_ActiveScene, &m_SceneCaptureLightingFramebuffer); // Use our framebuffer when rendering
 

@@ -174,8 +174,7 @@ namespace Arcane
 							DrawFloatControl("Shadow Bias", lightComponent.ShadowBias, 0.0001f, 0.0f, 1.0f, "%.4f");
 							
 							bool nearModified = DrawFloatControl("Near Plane", lightComponent.ShadowNearPlane, 0.01f, 0.0f, 100.0f);
-							bool farModified = DrawFloatControl("Far Plane", lightComponent.ShadowFarPlane, 1.0f, 0.01f, 1000000.0f);
-
+							bool farModified = DrawFloatControl("Far Plane", lightComponent.ShadowFarPlane, 1.0f, 0.01f, 10000.0f);
 							if (nearModified)
 							{
 								if (lightComponent.ShadowNearPlane > lightComponent.ShadowFarPlane)
@@ -187,6 +186,117 @@ namespace Arcane
 									lightComponent.ShadowNearPlane = lightComponent.ShadowFarPlane;
 							}
 						}
+					}
+				}
+
+				if (m_FocusedEntity.HasComponent<WaterComponent>())
+				{
+					if (ImGui::CollapsingHeader("Water", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						auto &waterComponent = m_FocusedEntity.GetComponent<WaterComponent>();
+
+						ImGui::ColorEdit3("##Water Albedo", (float*)&waterComponent.WaterAlbedo, ImGuiColorEditFlags_DisplayRGB);
+						ImGui::SliderFloat("Albedo Power", &waterComponent.AlbedoPower, 0.0f, 1.0f, "%.2f");
+
+						const char *qualityItems[] = { "Low", "Medium", "High", "Ultra", "Nightmare" };
+						ImGui::Checkbox("Refraction Enabled", &waterComponent.RefractionEnabled);
+						if (waterComponent.RefractionEnabled)
+						{
+							glm::uvec2 resolution = WaterManager::GetWaterReflectionRefractionQualityResolution(waterComponent.WaterRefractionResolution);
+							int refractionChoice = static_cast<int>(waterComponent.WaterRefractionResolution);
+							ImGui::Combo("Refraction Quality", &refractionChoice, qualityItems, IM_ARRAYSIZE(qualityItems)); ImGui::SameLine();
+							ImGui::Text("- %u x %u", resolution.x, resolution.y);
+							waterComponent.WaterRefractionResolution = static_cast<WaterReflectionRefractionQuality>(refractionChoice);
+						}
+
+						ImGui::Checkbox("Reflection Enabled", &waterComponent.ReflectionEnabled);
+						if (waterComponent.ReflectionEnabled)
+						{
+							glm::uvec2 resolution = WaterManager::GetWaterReflectionRefractionQualityResolution(waterComponent.WaterReflectionResolution);
+							int reflectionChoice = static_cast<int>(waterComponent.WaterReflectionResolution);
+							ImGui::Combo("Reflection Quality", &reflectionChoice, qualityItems, IM_ARRAYSIZE(qualityItems)); ImGui::SameLine();
+							ImGui::Text("- %u x %u", resolution.x, resolution.y);
+							waterComponent.WaterReflectionResolution = static_cast<WaterReflectionRefractionQuality>(reflectionChoice);
+						}
+
+						ImGui::Checkbox("Reflection uses MSAA", &waterComponent.ReflectionMSAA);
+						ImGui::Checkbox("Refraction uses MSAA", &waterComponent.RefractionMSAA);
+
+						ImGui::Checkbox("Clear Water", &waterComponent.ClearWater);
+						ImGui::Checkbox("Enable Shine", &waterComponent.EnableShine);
+
+						DrawVec2Control("Water Tiling", waterComponent.WaterTiling, 0.01f, 0.1f, 100.0f);
+						ImGui::SliderFloat("Wave Speed", &waterComponent.WaveSpeed, 0.0f, 2.0f, "%.3f");
+						ImGui::SliderFloat("Wave Strength", &waterComponent.WaveStrength, 0.0f, 0.2f, "%.2f");
+
+						ImGui::SliderFloat("Shine Damper", &waterComponent.ShineDamper, 0.0f, 1000.0f, "%.2f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Used to reduce bright specular reflections from lights on the surface of the water.");
+						ImGui::SliderFloat("Normal Smoothing", &waterComponent.NormalSmoothing, 0.0f, 5.0f, "%.2f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Used to make normals have less x/y variance. Meaning a higher 'Normal Smoothing' value, the more the vectors from the normal map will be aligned with the water planes' normal.");
+						ImGui::SliderFloat("Depth Dampening", &waterComponent.DepthDampening, 0.0f, 1.0f, "%.2f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Used to reduce distortion around edges because that leads to aliasing on reflection/refraction. So you can reduce distortion where there is less depth. Downsides of this is that it can reduce specular shimmer on the surface so adjust appropriately.");
+
+						ImGui::SliderFloat("Reflection Plane Bias", &waterComponent.ReflectionPlaneBias, 0.0f, 10.0f, "%.2f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("With distortion the planar reflection can cut off some things, this is used as a bias so more is rendered to the planar reflection. Downsides of this can be incorrect reflections");
+						ImGui::SliderFloat("Refraction Plane Bias", &waterComponent.RefractionPlaneBias, 0.0f, 10.0f, "%.2f");
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("With distortion the planar refraction can cut off some things, this is used as a bias so more is rendered to the planar refraction. Downsides of this can be incorrect refractions");
+
+						bool reflectionNearModified = DrawFloatControl("Reflection Near Plane", waterComponent.ReflectionNearPlane, 0.01f, 0.0f, 100.0f);
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Controls the frustum's near plane when rendering reflections. If range is too big you can lose precision so pushing this out a bit can help alleviate precision issues and cost less to render");
+						bool reflectionFarModified = DrawFloatControl("Reflection Far Plane", waterComponent.ReflectionFarPlane, 1.0f, 0.01f, 10000.0f);
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Controls the frustum's far plane when rendering reflections. If range is too big you can lose precision, also  can be used to reduce render times by reducing the far plane, since less things will be rendered");
+						if (reflectionNearModified)
+						{
+							if (waterComponent.ReflectionNearPlane > waterComponent.ReflectionFarPlane)
+								waterComponent.ReflectionFarPlane = waterComponent.ReflectionNearPlane;
+						}
+						else if (reflectionFarModified)
+						{
+							if (waterComponent.ReflectionFarPlane < waterComponent.ReflectionNearPlane)
+								waterComponent.ReflectionNearPlane = waterComponent.ReflectionFarPlane;
+						}
+
+						bool refractionNearModified = DrawFloatControl("Refraction Near Plane", waterComponent.RefractionNearPlane, 0.01f, 0.0f, 100.0f);
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Controls the frustum's near plane when rendering refractions. If range is too big you can lose precision so pushing this out a bit can help alleviate precision issues and cost less to render");
+						bool refractionFarModified = DrawFloatControl("Refraction Far Plane", waterComponent.RefractionFarPlane, 1.0f, 0.01f, 10000.0f);
+						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+							ImGui::SetTooltip("Controls the frustum's far plane when rendering refractions. If range is too big you can lose precision, also  can be used to reduce render times by reducing the far plane, since less things will be rendered");
+						if (refractionNearModified)
+						{
+							if (waterComponent.RefractionNearPlane > waterComponent.RefractionFarPlane)
+								waterComponent.RefractionFarPlane = waterComponent.RefractionNearPlane;
+						}
+						else if (refractionFarModified)
+						{
+							if (waterComponent.RefractionFarPlane < waterComponent.RefractionNearPlane)
+								waterComponent.RefractionNearPlane = waterComponent.RefractionFarPlane;
+						}
+
+						ImGui::Image(waterComponent.WaterNormalMap ? (ImTextureID)waterComponent.WaterNormalMap->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetDefaultNormalTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && waterComponent.WaterNormalMap)
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)waterComponent.WaterNormalMap->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Water Normals");
+
+						ImGui::Image(waterComponent.WaterDistortionTexture ? (ImTextureID)waterComponent.WaterDistortionTexture->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetDefaultWaterDistortionTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && waterComponent.WaterDistortionTexture)
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)waterComponent.WaterDistortionTexture->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Water Distortion");
 					}
 				}
 
@@ -206,6 +316,23 @@ namespace Arcane
 			}
 		}
 		ImGui::End();
+	}
+
+	bool InspectorPanel::DrawVec2Control(const std::string &label, glm::vec2 &values, float speed /*= 0.1f*/, float min /*= 0.0f*/, float max /*= 0.0f*/, const char *displayDigits /*= "%.2f"*/, float columnWidth /*= 100.0f*/)
+	{
+		bool modified = false;
+
+		ImGui::Columns(3);
+		ImGui::PushID(label.c_str());
+		ImGui::PushItemWidth(80);
+		ImGui::Text(label.c_str()); ImGui::SameLine(); ImGui::NextColumn();
+		ImGui::Text("X"); ImGui::SameLine(); modified |= ImGui::DragFloat("##X", &values.x, speed, min, max, "%.2f"); ImGui::SameLine(); ImGui::NextColumn();
+		ImGui::Text("Y"); ImGui::SameLine(); modified |= ImGui::DragFloat("##Y", &values.y, speed, min, max, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::Columns(1);
+		ImGui::PopID();
+
+		return modified;
 	}
 
 	bool InspectorPanel::DrawVec3Control(const std::string &label, glm::vec3 &values, float speed /*= 0.1f*/, float min /*= 0.0f*/, float max /*= 0.0f*/, const char *displayDigits /*= "%.2f"*/, float columnWidth /*= 100.0f*/)

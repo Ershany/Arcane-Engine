@@ -28,6 +28,7 @@ namespace Arcane
 		FindClosestSpotLightShadowCaster();
 		FindClosestPointLightShadowCaster();
 
+		// Default framebuffers if a shadow isn't found. Hopefully save an allocation when we find one
 		if (!m_DirectionalLightShadowFramebuffer)
 		{
 			m_DirectionalLightShadowFramebuffer = new Framebuffer(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT, false);
@@ -40,14 +41,14 @@ namespace Arcane
 		}
 		if (!m_PointLightShadowCubemap)
 		{
-			ReallocateCubemap(&m_PointLightShadowCubemap, glm::uvec2(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT));
+			ReallocateDepthCubemap(&m_PointLightShadowCubemap, glm::uvec2(SHADOWMAP_RESOLUTION_X_DEFAULT, SHADOWMAP_RESOLUTION_Y_DEFAULT));
 		}
 	}
 
 	
 	void LightManager::Update()
 	{
-		// Reset out pointers since it is possible no shadow caster exists anymore
+		// Reset our pointers since it is possible no shadow caster exists anymore
 		m_ClosestDirectionalLightShadowCaster = nullptr;
 		m_ClosestSpotLightShadowCaster = nullptr;
 		m_ClosestPointLightShadowCaster = nullptr;
@@ -95,7 +96,7 @@ namespace Arcane
 			glm::uvec2 requiredShadowResolution = GetShadowQualityResolution(m_ClosestDirectionalLightShadowCaster->ShadowResolution);
 			if (!m_DirectionalLightShadowFramebuffer || m_DirectionalLightShadowFramebuffer->GetWidth() != requiredShadowResolution.x || m_DirectionalLightShadowFramebuffer->GetHeight() != requiredShadowResolution.y)
 			{
-				ReallocateTarget(&m_DirectionalLightShadowFramebuffer, requiredShadowResolution);
+				ReallocateDepthTarget(&m_DirectionalLightShadowFramebuffer, requiredShadowResolution);
 			}
 		}
 	}
@@ -138,7 +139,7 @@ namespace Arcane
 			glm::uvec2 requiredShadowResolution = GetShadowQualityResolution(m_ClosestSpotLightShadowCaster->ShadowResolution);
 			if (!m_SpotLightShadowFramebuffer || m_SpotLightShadowFramebuffer->GetWidth() != requiredShadowResolution.x || m_SpotLightShadowFramebuffer->GetHeight() != requiredShadowResolution.y)
 			{
-				ReallocateTarget(&m_SpotLightShadowFramebuffer, requiredShadowResolution);
+				ReallocateDepthTarget(&m_SpotLightShadowFramebuffer, requiredShadowResolution);
 			}
 		}
 	}
@@ -180,14 +181,14 @@ namespace Arcane
 			glm::uvec2 requiredShadowResolution = GetShadowQualityResolution(m_ClosestPointLightShadowCaster->ShadowResolution);
 			if (!m_PointLightShadowCubemap || m_PointLightShadowCubemap->GetFaceWidth() != requiredShadowResolution.x || m_PointLightShadowCubemap->GetFaceHeight() != requiredShadowResolution.y)
 			{
-				ReallocateCubemap(&m_PointLightShadowCubemap, requiredShadowResolution);
+				ReallocateDepthCubemap(&m_PointLightShadowCubemap, requiredShadowResolution);
 			}
 		}
 	}
 
-	void LightManager::ReallocateTarget(Framebuffer **framebuffer, glm::uvec2 newResolution)
+	void LightManager::ReallocateDepthTarget(Framebuffer **framebuffer, glm::uvec2 newResolution)
 	{
-		if (*framebuffer) // Can this ever be garbage data or nullptr? If it is just a nullptr this isn't needed. Ehh this function is temporary until this is improved anyways
+		if (*framebuffer) // TODO: Can this ever be garbage data or nullptr? If it is just a nullptr this isn't needed. Ehh this function is temporary until this is improved anyways
 		{
 			delete *framebuffer;
 		}
@@ -196,9 +197,9 @@ namespace Arcane
 		(*framebuffer)->AddDepthStencilTexture(NormalizedDepthOnly, true).CreateFramebuffer();
 	}
 
-	void LightManager::ReallocateCubemap(Cubemap** cubemap, glm::uvec2 newResolution)
+	void LightManager::ReallocateDepthCubemap(Cubemap** cubemap, glm::uvec2 newResolution)
 	{
-		if (*cubemap) // Can this ever be garbage data or nullptr? If it is just a nullptr this isn't needed. Ehh this function is temporary until this is improved anyways
+		if (*cubemap) // TODO: Can this ever be garbage data or nullptr? If it is just a nullptr this isn't needed. Ehh this function is temporary until this is improved anyways
 		{
 			delete *cubemap;
 		}

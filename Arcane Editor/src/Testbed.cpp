@@ -32,6 +32,7 @@ void Testbed::LoadTestbedGraphics()
 	Quad* quad = new Quad();
 	Model* quadModel = new Model(*quad);
 	quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png")));
+	Model* waterModel = new Model(*quad);
 
 	//Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae")); // TODO: Need an API to load textures and animation clips post async load, then I can use async for animated things
 	Model* animatedVampire = assetManager.LoadModel(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
@@ -146,6 +147,17 @@ void Testbed::LoadTestbedGraphics()
 		auto& poseAnimatorComponent = vampire.AddComponent<PoseAnimatorComponent>();
 		poseAnimatorComponent.PoseAnimator.SetAnimationClip(clip);
 	}
+
+	{
+		auto water = scene->CreateEntity("Water");
+		auto& transformComponent = water.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 25.0f, -14.0f, -50.0f };
+		transformComponent.Rotation = { glm::radians(-90.0f), 0.0f, 0.0f };
+		transformComponent.Scale = { 150.0f, 150.0f, 150.0f };
+		auto& waterComponent = water.AddComponent<WaterComponent>();
+		waterComponent.WaterDistortionTexture = assetManager.Load2DTextureAsync(std::string("res/water/dudv.png"));
+		waterComponent.WaterNormalMap = assetManager.Load2DTextureAsync(std::string("res/water/normals.png"));
+	}
 }
 
 void Testbed::LoadTestbedPhysics()
@@ -193,5 +205,18 @@ void Testbed::LoadTestbedAnimation()
 		lightComponent.IsStatic = true;
 		lightComponent.CastShadows = true;
 		lightComponent.ShadowResolution = ShadowQuality::ShadowQuality_Ultra;
+	}
+
+	{
+		auto water = scene->CreateEntity("Water");
+		auto& transformComponent = water.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 25.0f, -14.0f, -50.0f };
+		transformComponent.Rotation = { glm::radians(-90.0f), 0.0f, 0.0f };
+		transformComponent.Scale = { 150.0f, 150.0f, 150.0f };
+		auto& waterComponent = water.AddComponent<WaterComponent>();
+		waterComponent.WaterAlbedo = glm::vec3(1.0f, 0.929f, 0.416f);
+		waterComponent.AlbedoPower = 0.02f;
+		waterComponent.WaterDistortionTexture = assetManager.Load2DTextureAsync(std::string("res/water/dudv.png"));
+		waterComponent.WaterNormalMap = assetManager.Load2DTextureAsync(std::string("res/water/normals.png"));
 	}
 }
