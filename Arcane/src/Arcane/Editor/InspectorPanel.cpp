@@ -219,6 +219,9 @@ namespace Arcane
 							waterComponent.WaterReflectionResolution = static_cast<WaterReflectionRefractionQuality>(reflectionChoice);
 						}
 
+						ImGui::Checkbox("Reflection uses MSAA", &waterComponent.ReflectionMSAA);
+						ImGui::Checkbox("Refraction uses MSAA", &waterComponent.RefractionMSAA);
+
 						ImGui::Checkbox("Clear Water", &waterComponent.ClearWater);
 						ImGui::Checkbox("Enable Shine", &waterComponent.EnableShine);
 

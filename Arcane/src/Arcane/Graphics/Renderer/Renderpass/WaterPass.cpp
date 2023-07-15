@@ -81,13 +81,16 @@ namespace Arcane
 					LightingPassOutput output = lightingPass.ExecuteOpaqueLightingPass(inputShadowmapData, camera, false, false);
 					lightingPass.ExecuteTransparentLightingPass(inputShadowmapData, output.outputFramebuffer, camera, false, false);
 
-#ifdef WATER_REFLECTION_USE_MSAA
-					Framebuffer *reflectionResolveFramebuffer = waterManager->GetWaterReflectionResolveFramebuffer();
-					glBindFramebuffer(GL_READ_FRAMEBUFFER, reflectionFramebuffer->GetFramebuffer());
-					glBindFramebuffer(GL_DRAW_FRAMEBUFFER, reflectionResolveFramebuffer->GetFramebuffer());
-					glBlitFramebuffer(0, 0, reflectionFramebuffer->GetWidth(), reflectionFramebuffer->GetHeight(), 0, 0, reflectionResolveFramebuffer->GetWidth(), reflectionResolveFramebuffer->GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
-					reflectionFramebuffer = reflectionResolveFramebuffer; // Update reflection framebuffer to the resolved with no MSAA
-#endif
+					// Check if reflection uses MSAA and resolve it if so
+					if (closestWaterWithReflectionRefraction->ReflectionMSAA)
+					{
+						Framebuffer *reflectionResolveFramebuffer = waterManager->GetWaterReflectionResolveFramebuffer();
+						glBindFramebuffer(GL_READ_FRAMEBUFFER, reflectionFramebuffer->GetFramebuffer());
+						glBindFramebuffer(GL_DRAW_FRAMEBUFFER, reflectionResolveFramebuffer->GetFramebuffer());
+						glBlitFramebuffer(0, 0, reflectionFramebuffer->GetWidth(), reflectionFramebuffer->GetHeight(), 0, 0, reflectionResolveFramebuffer->GetWidth(), reflectionResolveFramebuffer->GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+						reflectionFramebuffer = reflectionResolveFramebuffer; // Update reflection framebuffer to the resolved with no MSAA
+					}
+
 					camera->SetPosition(camera->GetPosition() + glm::vec3(0.0f, distance, 0.0f));
 					camera->SetNearFarPlane(prevNearPlane, prevFarPlane);
 					camera->InvertPitch();
@@ -107,13 +110,16 @@ namespace Arcane
 					LightingPassOutput output = lightingPass.ExecuteOpaqueLightingPass(inputShadowmapData, camera, false, false);
 					lightingPass.ExecuteTransparentLightingPass(inputShadowmapData, output.outputFramebuffer, camera, false, false);
 
-#ifdef WATER_REFRACTION_USE_MSAA
-					Framebuffer *refractionResolveFramebuffer = waterManager->GetWaterRefractionResolveFramebuffer();
-					glBindFramebuffer(GL_READ_FRAMEBUFFER, refractionFramebuffer->GetFramebuffer());
-					glBindFramebuffer(GL_DRAW_FRAMEBUFFER, refractionResolveFramebuffer->GetFramebuffer());
-					glBlitFramebuffer(0, 0, refractionFramebuffer->GetWidth(), refractionFramebuffer->GetHeight(), 0, 0, refractionResolveFramebuffer->GetWidth(), refractionResolveFramebuffer->GetHeight(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-					refractionFramebuffer = refractionResolveFramebuffer; // Update refraction framebuffer to the resolved with no MSAA
-#endif
+					// Check if refraction uses MSAA and resolve it if so
+					if (closestWaterWithReflectionRefraction->RefractionMSAA)
+					{
+						Framebuffer *refractionResolveFramebuffer = waterManager->GetWaterRefractionResolveFramebuffer();
+						glBindFramebuffer(GL_READ_FRAMEBUFFER, refractionFramebuffer->GetFramebuffer());
+						glBindFramebuffer(GL_DRAW_FRAMEBUFFER, refractionResolveFramebuffer->GetFramebuffer());
+						glBlitFramebuffer(0, 0, refractionFramebuffer->GetWidth(), refractionFramebuffer->GetHeight(), 0, 0, refractionResolveFramebuffer->GetWidth(), refractionResolveFramebuffer->GetHeight(), GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+						refractionFramebuffer = refractionResolveFramebuffer; // Update refraction framebuffer to the resolved with no MSAA
+					}
+
 					camera->SetNearFarPlane(prevNearPlane, prevFarPlane);
 				}
 			}

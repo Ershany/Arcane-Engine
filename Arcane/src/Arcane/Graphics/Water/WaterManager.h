@@ -34,12 +34,8 @@ namespace Arcane
 		inline bool HasWaterWithRefractionReflection() const { return m_ReflectionFramebuffer != nullptr && m_RefractionFramebuffer != nullptr; }
 		Framebuffer* GetWaterRefractionFramebuffer() { return m_RefractionFramebuffer; }
 		Framebuffer* GetWaterReflectionFramebuffer() { return m_ReflectionFramebuffer; }
-#ifdef WATER_REFRACTION_USE_MSAA
-		Framebuffer* GetWaterRefractionResolveFramebuffer() { return m_ResolveRefractionFramebuffer; }
-#endif
-#ifdef WATER_REFLECTION_USE_MSAA
-		Framebuffer* GetWaterReflectionResolveFramebuffer() { return m_ResolveReflectionFramebuffer; }
-#endif
+		Framebuffer* GetWaterRefractionResolveFramebuffer() { return m_ResolveRefractionFramebuffer; } // MSAA resolve framebuffer for refraction
+		Framebuffer* GetWaterReflectionResolveFramebuffer() { return m_ResolveReflectionFramebuffer; } // MSAA resolve framebuffer for reflection
 		inline const WaterComponent* GetClosestWaterComponent() { return m_ClosestWaterComponent; }
 		glm::vec2 GetClosestWaterReflectionNearFarPlane();
 		glm::vec2 GetClosestWaterRefractionNearFarPlane();
@@ -55,9 +51,7 @@ namespace Arcane
 		WaterComponent *m_ClosestWaterComponent;
 		TransformComponent *m_ClosestWaterTransform;
 		Framebuffer *m_ReflectionFramebuffer, *m_RefractionFramebuffer;
-#ifdef WATER_REFLECTION_USE_MSAA
-		Framebuffer *m_ResolveReflectionFramebuffer, *m_ResolveRefractionFramebuffer;
-#endif
+		Framebuffer *m_ResolveReflectionFramebuffer, *m_ResolveRefractionFramebuffer; // Only used for MSAA
 	};
 }
 

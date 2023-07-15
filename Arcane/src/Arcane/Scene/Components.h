@@ -128,6 +128,8 @@ namespace Arcane
 		bool RefractionEnabled = true;
 		WaterReflectionRefractionQuality WaterReflectionResolution = WaterReflectionRefractionQuality::WaterReflectionRefractionQuality_High;
 
+		bool ReflectionMSAA = true;
+		bool RefractionMSAA = false;
 		bool ClearWater = false;
 		bool EnableShine = true;
 
