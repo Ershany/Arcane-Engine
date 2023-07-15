@@ -116,6 +116,26 @@ namespace Arcane
 							ImGui::EndTooltip();
 						}
 						ImGui::Text("Displacement");
+						if (meshMaterial.GetDisplacementMap())
+						{
+							ImGui::SliderFloat("Displacement Strength", &meshMaterial.GetDisplacementStrengthRef(), 0.0f, 1.0f, "%.2f");
+							int minSteps = meshMaterial.GetDisplacementMinStepsRef();
+							int maxSteps = meshMaterial.GetDisplacementMaxStepsRef();
+							bool minModified = ImGui::SliderInt("Displacement Min Steps", &minSteps, 1, 40);
+							bool maxModified = ImGui::SliderInt("Displacement Max Steps", &maxSteps, 1, 40);
+							if (minModified)
+							{
+								if (minSteps > maxSteps)
+									maxSteps = minSteps;
+							}
+							else if (maxModified)
+							{
+								if (maxSteps < minSteps)
+									minSteps = maxSteps;
+							}
+							meshMaterial.SetDisplacementMinSteps(minSteps);
+							meshMaterial.SetDisplacementMaxSteps(maxSteps);
+						}
 					}
 				}
 

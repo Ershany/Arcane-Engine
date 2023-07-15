@@ -28,6 +28,9 @@ namespace Arcane
 		inline void SetAlbedoColour(glm::vec4 &value) { m_AlbedoColour = value; }
 		inline void SetMetallicValue(float value) { m_MetallicValue = value; }
 		inline void SetRoughnessValue(float value) { m_RoughnessValue = value; }
+		inline void SetDisplacmentStrength(float strength) { m_ParallaxStrength = strength; }
+		inline void SetDisplacementMinSteps(int steps) { m_ParallaxMinSteps = steps; }
+		inline void SetDisplacementMaxSteps(int steps) { m_ParallaxMaxSteps = steps; }
 
 		inline Texture* GetAlbedoMap() { return m_AlbedoMap; }
 		inline Texture* GetNormalMap() { return m_NormalMap; }
@@ -39,8 +42,9 @@ namespace Arcane
 		inline glm::vec4& GetAlbedoColourRef() { return m_AlbedoColour; }
 		inline float& GetMetallicValueRef() { return m_MetallicValue; }
 		inline float& GetRoughnessValueRef() { return m_RoughnessValue; }
-
-		inline void SetDisplacmentStrength(float strength) { m_ParallaxStrength = strength; }
+		inline float& GetDisplacementStrengthRef() { return m_ParallaxStrength; }
+		inline int& GetDisplacementMinStepsRef() { return m_ParallaxMinSteps; }
+		inline int& GetDisplacementMaxStepsRef() { return m_ParallaxMaxSteps; }
 	private:
 		// Textures will be given precedence if provided over raw values
 		Texture *m_AlbedoMap, *m_NormalMap, *m_MetallicMap, *m_RoughnessMap, *m_AmbientOcclusionMap, *m_DisplacementMap;
@@ -49,7 +53,7 @@ namespace Arcane
 
 		// Parallax values
 		float m_ParallaxStrength;
-		int m_ParallaxMinSteps, m_ParallelMaxSteps; // Will need to increase when parallax strength increases
+		int m_ParallaxMinSteps, m_ParallaxMaxSteps; // Will need to increase when parallax strength increases
 	};
 }
 #endif

@@ -33,6 +33,7 @@ void Testbed::LoadTestbedGraphics()
 	Model* quadModel = new Model(*quad);
 	quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png")));
 	Model* waterModel = new Model(*quad);
+	Model* brickModel = new Model(*quad);
 
 	//Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae")); // TODO: Need an API to load textures and animation clips post async load, then I can use async for animated things
 	Model* animatedVampire = assetManager.LoadModel(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
@@ -157,6 +158,21 @@ void Testbed::LoadTestbedGraphics()
 		auto& waterComponent = water.AddComponent<WaterComponent>();
 		waterComponent.WaterDistortionTexture = assetManager.Load2DTextureAsync(std::string("res/water/dudv.png"));
 		waterComponent.WaterNormalMap = assetManager.Load2DTextureAsync(std::string("res/water/normals.png"));
+	}
+
+	{
+		auto bricks = scene->CreateEntity("Displaced Bricks");
+		auto& transformComponent = bricks.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 47.70f, -6.5f, 6.0f };
+		transformComponent.Rotation = { 0.0f, glm::radians(210.0f), 0.0f};
+		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
+		auto& meshComponent = bricks.AddComponent<MeshComponent>(brickModel);
+		meshComponent.IsStatic = true;
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2.jpg")));
+		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_normal.jpg")));
+		meshMaterial.SetDisplacementMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
+		meshMaterial.SetRoughnessValue(1.0f);
 	}
 }
 
