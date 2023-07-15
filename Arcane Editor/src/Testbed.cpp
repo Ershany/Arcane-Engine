@@ -206,4 +206,17 @@ void Testbed::LoadTestbedAnimation()
 		lightComponent.CastShadows = true;
 		lightComponent.ShadowResolution = ShadowQuality::ShadowQuality_Ultra;
 	}
+
+	{
+		auto water = scene->CreateEntity("Water");
+		auto& transformComponent = water.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 25.0f, -14.0f, -50.0f };
+		transformComponent.Rotation = { glm::radians(-90.0f), 0.0f, 0.0f };
+		transformComponent.Scale = { 150.0f, 150.0f, 150.0f };
+		auto& waterComponent = water.AddComponent<WaterComponent>();
+		waterComponent.WaterAlbedo = glm::vec3(1.0f, 0.929f, 0.416f);
+		waterComponent.AlbedoPower = 0.02f;
+		waterComponent.WaterDistortionTexture = assetManager.Load2DTextureAsync(std::string("res/water/dudv.png"));
+		waterComponent.WaterNormalMap = assetManager.Load2DTextureAsync(std::string("res/water/normals.png"));
+	}
 }
