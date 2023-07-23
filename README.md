@@ -25,14 +25,16 @@ Arcane Engine is a real-time game engine developed and maintained by [Tyrannical
 - Terrain Material Blending
 - Water + Wave Simulation
 - Post Processing (Film Grain, Chromatic Aberration, Vignette)
+- Entity Component System
 - Basic Animation Clip Player
 
 ## Engine Libraries
 - OpenGL 4.3+
 - GLFW Input + Window
-- Model Loading via ASSIMP
+- Model Loading via ASSIMP (with bone data)
 - ImGUI for UI
 - STB for Image Loading
+- EnTT for Component Storage and Management
 
 ## Development
 If you want to see what I am currently working on check out Arcane's roadmap:
@@ -49,6 +51,7 @@ If you want to see what I am currently working on check out Arcane's roadmap:
 1. Improved Continuous LOD Terrain w/ Editor Support
 1. Camera Component and a Editor/Scene camera seperation
 1. Being able to package a game executable that runs without the editor
+1. Virtual Filesystem for Game Assets
 
 ## Contributing
 1. [Fork it](https://github.com/Ershany/Arcane-Engine.git)
