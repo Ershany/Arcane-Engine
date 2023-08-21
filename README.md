@@ -60,9 +60,10 @@ If you want to see what I am currently working on check out Arcane's roadmap:
 1. Push to the branch (`git push origin new-feature-branch`)
 1. Create a new Pull Request
 
-## Textbook Sources
+## Sources
 - LearnOpenGL
 - Game Engine Architecture
 - Real-Time Rendering
 - GPU Gems
 - GPU Pro
+- Hazel Series (YouTube)
