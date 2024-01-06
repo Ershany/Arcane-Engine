@@ -7,7 +7,8 @@ Arcane Engine is a real-time game engine developed and maintained by [Tyrannical
 [Tech Reel 2019](https://www.youtube.com/watch?v=sc02q6MXvVo)
 
 ## Engine Features
-- Forward + Deferred Rendering
+- Forward + Deferred Rendering (3D API)
+- Debug Rendering API
 - Physically Based Rendering (Fresnel on Everything)
 - Cook Torrance Specular BRDF w/ Lambertian Diffuse
 - PBR Material System
