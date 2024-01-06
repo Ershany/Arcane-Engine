@@ -13,6 +13,7 @@
 #include <Arcane/ImGui/ImGuiLayer.h>
 #include <Arcane/RenderdocManager.h>
 #include <Arcane/Input/InputManager.h>
+#include <Arcane/Graphics/Renderer/DebugDraw3D.h>
 
 #include "glfw/glfw3native.h"
 
@@ -37,9 +38,9 @@ namespace Arcane
 		m_Window = new Window(this, specification);
 		m_Window->Init();
 		m_AssetManager = &Arcane::AssetManager::GetInstance(); // Need to initialize the asset manager early so we can load resources and have our worker threads instantiated
+		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
 		Renderer::Init(); // Must be loaded before textures get created since they query for the max anistropy from the renderer
 		Arcane::TextureLoader::InitializeDefaultTextures();
-		Arcane::ShaderLoader::SetShaderFilepath("../Arcane/src/Arcane/shaders/");
 		m_ActiveScene = new Scene(m_Window);
 		m_MasterRenderPass = new MasterRenderPass(m_ActiveScene);
 		m_InputManager = &InputManager::GetInstance();

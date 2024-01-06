@@ -14,13 +14,16 @@ namespace Arcane
 		m_FaceToCull = GL_BACK;
 		m_Multisample = false;
 		m_UsesClipPlane = false;
+		m_LineSmooth = false;
 		SetDepthTest(true);
 		SetFaceCull(true);
 		SetClipPlane(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		SetLineSmooth(true);
 		m_RedMask = GL_TRUE;
 		m_GreenMask = GL_TRUE;
 		m_BlueMask = GL_TRUE;
 		m_AlphaMask = GL_TRUE;
+		m_LineThickness = -1.0f;
 	}
 
 	GLCache::~GLCache() {
@@ -94,6 +97,18 @@ namespace Arcane
 		}
 	}
 
+	void GLCache::SetLineSmooth(bool choice)
+	{
+		if (m_LineSmooth != choice)
+		{
+			m_LineSmooth = choice;
+			if (m_LineSmooth)
+				glEnable(GL_LINE_SMOOTH);
+			else
+				glDisable(GL_LINE_SMOOTH);
+		}
+	}
+
 	void GLCache::SetDepthFunc(GLenum depthFunc) {
 		if (m_DepthFunc != depthFunc) {
 			m_DepthFunc = depthFunc;
@@ -158,6 +173,15 @@ namespace Arcane
 	void GLCache::SetClipPlane(glm::vec4 clipPlane)
 	{
 		m_ActiveClipPlane = clipPlane;
+	}
+
+	void GLCache::SetLineWidth(float lineThickness)
+	{
+		if (m_LineThickness != lineThickness)
+		{
+			m_LineThickness = lineThickness;
+			glLineWidth(m_LineThickness);
+		}
 	}
 
 	void GLCache::SetShader(Shader *shader) {

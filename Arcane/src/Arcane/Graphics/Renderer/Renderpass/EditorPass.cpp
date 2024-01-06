@@ -7,6 +7,7 @@
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Scene/Scene.h>
+#include <Arcane/Graphics/Renderer/DebugDraw3D.h>
 
 namespace Arcane
 {
@@ -31,7 +32,7 @@ namespace Arcane
 		EditorPassOutput output;
 		output.outFramebuffer = sceneFramebuffer;
 
-		// Entity highlighting
+		// Entity highlighting (should be done first since it might use debug rendering to highlight objects if no mesh exists to highlight)
 		if (m_FocusedEntity.IsValid() && m_FocusedEntity.HasComponent<MeshComponent>())
 		{
 			auto& meshComponent = m_FocusedEntity.GetComponent<MeshComponent>();
@@ -87,8 +88,28 @@ namespace Arcane
 
 			output.outFramebuffer = extraFramebuffer2; // Update the output framebuffer
 		}
+		else if (m_FocusedEntity.IsValid() && m_FocusedEntity.HasComponent<TransformComponent>())
+		{
+			auto& transformComponent = m_FocusedEntity.GetComponent<TransformComponent>();
 
-		// Debug Light Drawing
+			DebugDraw3D::QueueBox(transformComponent.Translation, transformComponent.Scale, m_OutlineColour);
+		}
+
+		// DebugDraw3D
+		{
+			glViewport(0, 0, output.outFramebuffer->GetWidth(), output.outFramebuffer->GetHeight());
+			output.outFramebuffer->Bind();
+
+			// Setup state
+			m_GLCache->SetDepthTest(false);
+			m_GLCache->SetStencilTest(false);
+			m_GLCache->SetBlend(false);
+			m_GLCache->SetMultisample(false);
+
+			DebugDraw3D::FlushBatch(camera);
+		}
+
+		// Debug Light Drawing (can clear depth so do this last)
 		{
 			glViewport(0, 0, output.outFramebuffer->GetWidth(), output.outFramebuffer->GetHeight());
 			output.outFramebuffer->Bind();

@@ -8,6 +8,7 @@
 #include <Arcane/Graphics/Mesh/Common/Quad.h>
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Animation/PoseAnimator.h>
+#include <Arcane/Graphics/Renderer/DebugDraw3D.h>
 
 namespace Arcane
 {
@@ -35,6 +36,8 @@ namespace Arcane
 
 		s_NdcPlane = new Quad();
 		s_NdcCube = new Cube();
+
+		DebugDraw3D::Init();
 	}
 
 	void Renderer::Shutdown()
@@ -47,6 +50,8 @@ namespace Arcane
 		m_CurrentDrawCallCount = 0;
 		m_CurrentMeshesDrawnCount = 0;
 		m_CurrentQuadsDrawnCount = 0;
+
+		DebugDraw3D::BeginBatch();
 	}
 
 	void Renderer::EndFrame()

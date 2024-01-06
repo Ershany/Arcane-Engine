@@ -23,6 +23,7 @@ namespace Arcane
 		void SetFaceCull(bool choice);
 		void SetMultisample(bool choice);
 		void SetUsesClipPlane(bool choice);
+		void SetLineSmooth(bool choice);
 
 		void SetDepthFunc(GLenum depthFunc);
 		void SetStencilFunc(GLenum testFunc, int stencilFragValue, unsigned int stencilBitmask = 0xFF);
@@ -32,6 +33,7 @@ namespace Arcane
 		void SetBlendFunc(GLenum src, GLenum dst);
 		void SetCullFace(GLenum faceToCull);
 		void SetClipPlane(glm::vec4 clipPlane);
+		void SetLineWidth(float lineThickness);
 
 		void SetShader(Shader *shader);
 		void SetShader(unsigned int shaderID);
@@ -46,6 +48,7 @@ namespace Arcane
 		bool m_Cull;
 		bool m_Multisample;
 		bool m_UsesClipPlane;
+		bool m_LineSmooth;
 
 		// Depth State
 		GLenum m_DepthFunc;
@@ -69,6 +72,9 @@ namespace Arcane
 
 		// Clip Plane State
 		glm::vec4 m_ActiveClipPlane;
+
+		// Line Thickness
+		float m_LineThickness;
 
 		// Active binds
 		unsigned int m_ActiveShaderID;
