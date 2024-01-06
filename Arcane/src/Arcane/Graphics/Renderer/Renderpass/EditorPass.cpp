@@ -32,7 +32,7 @@ namespace Arcane
 		EditorPassOutput output;
 		output.outFramebuffer = sceneFramebuffer;
 
-		// Entity highlighting
+		// Entity highlighting (should be done first since it might use debug rendering to highlight objects if no mesh exists to highlight)
 		if (m_FocusedEntity.IsValid() && m_FocusedEntity.HasComponent<MeshComponent>())
 		{
 			auto& meshComponent = m_FocusedEntity.GetComponent<MeshComponent>();
@@ -88,6 +88,12 @@ namespace Arcane
 
 			output.outFramebuffer = extraFramebuffer2; // Update the output framebuffer
 		}
+		else if (m_FocusedEntity.IsValid() && m_FocusedEntity.HasComponent<TransformComponent>())
+		{
+			auto& transformComponent = m_FocusedEntity.GetComponent<TransformComponent>();
+
+			DebugDraw3D::QueueBox(transformComponent.Translation, transformComponent.Scale, m_OutlineColour);
+		}
 
 		// DebugDraw3D
 		{
@@ -99,9 +105,6 @@ namespace Arcane
 			m_GLCache->SetStencilTest(false);
 			m_GLCache->SetBlend(false);
 			m_GLCache->SetMultisample(false);
-
-			DebugDraw3D::QueueLine(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-7.48f, -7.6f, -31.40f), glm::vec3(1.0f, 0.0f, 0.0f));
-			DebugDraw3D::QueueBox(glm::vec3(-86.9f, -5.0f, -28.2f), glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
 			DebugDraw3D::FlushBatch(camera);
 		}
