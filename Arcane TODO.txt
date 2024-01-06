@@ -1,5 +1,4 @@
 Nice To Have:
--Move Anistropic amount querying to the defs.h or something instead of querying the driver for every texture
 -Uniform buffer objects (to push shader data with one GPU call)
 
 Normal mapping:
@@ -8,10 +7,6 @@ Normal mapping:
 Skybox:
 -Should be HDR
 -Skybox should render an NDC cube from the modelRenderer (instead of storing it's own)
-
-Shadows:
--Look into moving shadowmap stuff into light manager
--Fix terrain shadows
 
 IBL:
 -IBL shadow resolution should be defined somewhere

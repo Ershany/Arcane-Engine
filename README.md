@@ -42,8 +42,9 @@ If you want to see what I am currently working on check out Arcane's roadmap:
 - [Engine Trello](https://trello.com/b/Giv16bRX/arcane-engine)
 
 ## Roadmap for Arcane's First Official Release (v0.1)
-1. 2D Batch Rendering w/ 2D Rendering API
-1. Debug Rendering API
+1. ~~Debug Rendering API~~
+1. 2D Batch Rendering w/ 2D Rendering API (separate from 3D API)
+1. Proper Signed Distance Field Text Rendering
 1. Physics w/ Rigid Bodies and Collider Shapes
 1. Add in Editor Support for Skybox Customization and support HDR
 1. Basic Sound Engine w/ Editor Support
