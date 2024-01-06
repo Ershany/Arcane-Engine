@@ -7,6 +7,7 @@
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Scene/Scene.h>
+#include <Arcane/Graphics/Renderer/DebugDraw3D.h>
 
 namespace Arcane
 {
@@ -88,7 +89,24 @@ namespace Arcane
 			output.outFramebuffer = extraFramebuffer2; // Update the output framebuffer
 		}
 
-		// Debug Light Drawing
+		// DebugDraw3D
+		{
+			glViewport(0, 0, output.outFramebuffer->GetWidth(), output.outFramebuffer->GetHeight());
+			output.outFramebuffer->Bind();
+
+			// Setup state
+			m_GLCache->SetDepthTest(false);
+			m_GLCache->SetStencilTest(false);
+			m_GLCache->SetBlend(false);
+			m_GLCache->SetMultisample(false);
+
+			DebugDraw3D::QueueLine(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-7.48f, -7.6f, -31.40f), glm::vec3(1.0f, 0.0f, 0.0f));
+			DebugDraw3D::QueueBox(glm::vec3(-86.9f, -5.0f, -28.2f), glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+			DebugDraw3D::FlushBatch(camera);
+		}
+
+		// Debug Light Drawing (can clear depth so do this last)
 		{
 			glViewport(0, 0, output.outFramebuffer->GetWidth(), output.outFramebuffer->GetHeight());
 			output.outFramebuffer->Bind();

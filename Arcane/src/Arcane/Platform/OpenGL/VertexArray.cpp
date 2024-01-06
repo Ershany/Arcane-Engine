@@ -20,13 +20,13 @@ namespace Arcane
 		glDeleteVertexArrays(1, &m_VertexArrayID);
 	}
 
-	void VertexArray::AddBuffer(Buffer *buffer, int index)
+	void VertexArray::AddBuffer(Buffer *buffer, int index, size_t stride /* = 0*/, size_t offset /*= 0*/)
 	{
 		Bind();
 
 		buffer->Bind();
 		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, buffer->GetComponentCount(), GL_FLOAT, GL_FALSE, 0, 0);
+		glVertexAttribPointer(index, buffer->GetComponentCount(), GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), (void*)offset);
 		buffer->Unbind();
 
 		Unbind();
