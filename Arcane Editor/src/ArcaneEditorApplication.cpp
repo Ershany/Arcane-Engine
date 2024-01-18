@@ -19,7 +19,7 @@ public:
 
 	virtual void OnInit() override
 	{
-		PushLayer(new Arcane::EditorLayer());
+		PushLayer(new Arcane::EditorLayer(ARC_DEV_ONLY("Editor Layer")));
 	}
 };
 

@@ -176,6 +176,11 @@ void Testbed::LoadTestbedGraphics()
 	}
 }
 
+void Testbed::LoadTestbedGraphics2D()
+{
+
+}
+
 void Testbed::LoadTestbedPhysics()
 {
 

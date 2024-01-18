@@ -74,6 +74,7 @@
     <ClCompile Include="src\Arcane\Platform\OpenGL\GPUTimerManager.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Water\WaterManager.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\DebugDraw3D.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderer2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="src\Arcane\Platform\OpenGL\GPUTimerManager.h" />
     <ClInclude Include="src\Arcane\Graphics\Water\WaterManager.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\DebugDraw3D.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

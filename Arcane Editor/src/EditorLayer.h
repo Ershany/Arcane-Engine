@@ -14,7 +14,7 @@ namespace Arcane
 	class EditorLayer : public Layer
 	{
 	public:
-		EditorLayer();
+		EditorLayer(const std::string &debugName = "Layer");
 		virtual ~EditorLayer();
 
 		virtual void OnAttach() override;

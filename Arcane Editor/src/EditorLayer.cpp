@@ -8,7 +8,7 @@
 extern bool g_ApplicationRunning;
 namespace Arcane
 {
-	EditorLayer::EditorLayer() : m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_EditorViewport(), m_ConsolePanel(), m_GraphicsSettings(Arcane::Application::GetInstance().GetMasterRenderPass()), 
+	EditorLayer::EditorLayer(const std::string &debugName /*= "Layer"*/) : Layer(debugName), m_EditorScene(Arcane::Application::GetInstance().GetScene()), m_EditorViewport(), m_ConsolePanel(), m_GraphicsSettings(Arcane::Application::GetInstance().GetMasterRenderPass()),
 		m_InspectorPanel(), m_ScenePanel(m_EditorScene, &m_InspectorPanel), m_ShowGraphicsSettings(false)
 	{}
 
@@ -19,8 +19,9 @@ namespace Arcane
 
 	void EditorLayer::OnAttach()
 	{
-		Testbed::LoadTestbedGraphics();
+		//Testbed::LoadTestbedGraphics();
 		//Testbed::LoadTestbedAnimation();
+		Testbed::LoadTestbedGraphics2D();
 
 #ifdef OLD_LOADING_METHOD
 		//Model *pbrGun = new Arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");
