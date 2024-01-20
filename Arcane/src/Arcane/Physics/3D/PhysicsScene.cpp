@@ -3,12 +3,14 @@
 #include "RigidbodyComponent.h"
 #include "PhysicsFactory.h"
 
+#define PHYSICS_STEP 0.016666
 namespace Arcane
 {
 	phScene* PhysicsScene::s_Scene;
 	phPhysics* PhysicsScene::s_Physics;
 
-	PhysicsScene::PhysicsScene() : m_Pvd(nullptr)
+	PhysicsScene::PhysicsScene() 
+		: m_Pvd(nullptr)
 	{
 		InitPhysx();
 	}
@@ -18,6 +20,7 @@ namespace Arcane
 		m_Foundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_Allocator, m_ErrorCallback);
 		ARC_ASSERT(m_Foundation, "PxCreateFoundation() failed");
 
+		// TODO: preprocessor def might be something to make our own
 #ifdef USE_PHYSX_DEBUGGER
 		// This is for debug profiling
 		m_Pvd = PxCreatePvd(*m_Foundation);
@@ -68,12 +71,12 @@ namespace Arcane
 
 	void PhysicsScene::UpdateSim(f32 dt)
 	{
-		float m_StepSize = 1.0f / 60.0f;
+		float stepSize = PHYSICS_STEP;
 		m_Accumulator += dt;
-		if (m_Accumulator < m_StepSize)
+		if (m_Accumulator < stepSize)
 			return;
 
-		m_Accumulator -= m_StepSize;
+		m_Accumulator -= stepSize;
 
 		s_Scene->simulate(dt);
 		s_Scene->fetchResults(true);

@@ -94,7 +94,7 @@ namespace Arcane
 	void EditorLayer::OnUpdate(float deltaTime)
 	{
 		phActorRigid* rb = manager->GetRigidbodyComponent(0)->GetRigidbody();
-		static_cast<phDynamicRb*>(rb)->addForce({ 1.f, 0.f, 0.f });
+		static_cast<phDynamicRb*>(rb)->addForce({ 6.f, 0.f, 0.f });
 
 		// transform sync
 		auto t = rb->getGlobalPose().p;

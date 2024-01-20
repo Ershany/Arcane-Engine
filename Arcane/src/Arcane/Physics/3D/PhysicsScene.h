@@ -16,6 +16,7 @@ namespace Arcane
 	private:
 		void InitPhysx();
 
+		// TODO: cleanup here
 		physx::PxDefaultAllocator m_Allocator;
 		physx::PxDefaultErrorCallback m_ErrorCallback; // Could be smthg we can hook into using our logger will need to implement  a PxErrorCallback::reportError()
 		physx::PxFoundation* m_Foundation;

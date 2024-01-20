@@ -18,7 +18,10 @@ namespace Arcane
 
 	void RigidbodyManager::Update(f32 dt)
 	{
-
+		// Physics scene should handle this for now
+		for (RigidbodyComponent* rb : m_Rbs)
+		{
+		}
 	}
 
 	void RigidbodyManager::AddRigidbodyComponent(RigidbodyComponent* rb)

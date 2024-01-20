@@ -33,8 +33,7 @@ namespace Arcane
 
 	phGeometry* PhysicsFactory::CreateSphereGeometry(f32 radius)
 	{
-		phSphereGeometry* sphere = new phSphereGeometry(radius);
-		return sphere;
+		return new phSphereGeometry(radius);
 	}
 
 	phGeometry* PhysicsFactory::CreateCapsuleGeometry(f32 radius, f32 halfHeight)
@@ -42,8 +41,7 @@ namespace Arcane
 		// Capsule are created with x-axis being the direction it is spawned in. We will need to rotate the by half PI along the z-axis to get it to the Y-axis
 		// Something like this: 
 		// PxTransform relativePose(PxQuat(PxHalfPi, PxVec(0,0,1)));
-		phCapsuleGeometry* capsule = new phCapsuleGeometry(radius, halfHeight);
-		return capsule;
+		return new phCapsuleGeometry(radius, halfHeight);
 	}
 
 	phGeometry* PhysicsFactory::CreateBoxGeometry(f32 hx, f32 hy, f32 hz)
@@ -51,8 +49,7 @@ namespace Arcane
 		// Boxes are created with x-axis being the direction it is spawned in. We will need to rotate the by half PI along the z-axis to get it to the Y-axis
 		// Something like this: 
 		// PxTransform relativePose(PxQuat(PxHalfPi, PxVec(0,0,1)));
-		phBoxGeometry* box = new phBoxGeometry(hx, hy, hz);
-		return box;
+		return new phBoxGeometry(hx, hy, hz);
 	}
 
 	phGeometry* PhysicsFactory::CreatePlaneGeometry()
@@ -61,12 +58,13 @@ namespace Arcane
 		// Something like this: 
 		// PxTransform relativePose(PxQuat(PxHalfPi, PxVec(0,0,1)));
 		// Everything about plane is based on the actor itself
-		phPlaneGeometry* plane = new phPlaneGeometry();
-		return plane;
+		return new phPlaneGeometry();
 	}
 
 	phConvexMesh* PhysicsFactory::CreateConvexGeometry()
 	{
+		ARC_ASSERT(false, "CreateConvexGeometry() has not been implemented yet.");
+
 		// TODO: This will need more work so will do this later
 		//phConvexMesh* convex;
 		return nullptr;

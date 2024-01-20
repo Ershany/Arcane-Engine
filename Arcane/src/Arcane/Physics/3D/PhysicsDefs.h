@@ -32,5 +32,4 @@ namespace Arcane
 
 	// 
 	typedef physx::PxPhysics phPhysics;
-
 }
