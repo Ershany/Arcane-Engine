@@ -318,6 +318,9 @@ namespace Arcane
 		Renderer::DrawNdcPlane();
 	}
 
+	// TODO: Use bilinear filter samples to reduce # of samples when down sampling
+	// TODO: Should be downsampling as well lol, we allocated the proper sized targets
+	// https://www.youtube.com/watch?v=ml-5OGZC7vE
 	Texture* PostProcessPass::Bloom(Texture *hdrSceneTexture)
 	{
 		m_GLCache->SetDepthTest(false);

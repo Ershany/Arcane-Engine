@@ -164,6 +164,8 @@
     <ClCompile Include="src\Arcane\Animation\Bone.cpp" />
     <ClCompile Include="src\Arcane\Animation\PoseAnimator.cpp" />
     <ClCompile Include="src\Arcane\Editor\RendererStatsDisplay.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Camera\CameraController.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\DebugDraw3D.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.cpp" />
@@ -183,7 +185,7 @@
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.cpp" />
     <ClCompile Include="src\Arcane\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Arcane\Input\JoystickInputData.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Camera\FPSCamera.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Camera\CubemapCamera.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Lights\LightBindings.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Lights\LightManager.cpp" />
@@ -269,6 +271,8 @@
     <ClInclude Include="src\Arcane\Animation\Bone.h" />
     <ClInclude Include="src\Arcane\Animation\PoseAnimator.h" />
     <ClInclude Include="src\Arcane\Editor\RendererStatsDisplay.h" />
+    <ClInclude Include="src\Arcane\Graphics\Camera\CameraController.h" />
+    <ClInclude Include="src\Arcane\Graphics\Camera\OrthographicCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\DebugDraw3D.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.h" />
@@ -298,7 +302,7 @@
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.h" />
     <ClInclude Include="src\Arcane\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Arcane\Input\JoystickInputData.h" />
-    <ClInclude Include="src\Arcane\Graphics\Camera\FPSCamera.h" />
+    <ClInclude Include="src\Arcane\Graphics\Camera\PerspectiveCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\CubemapCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\ICamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Lights\LightBindings.h" />

@@ -4,6 +4,7 @@
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Scene/Components.h>
 #include <Arcane/Platform/OpenGL/Framebuffer/Framebuffer.h>
+#include <Arcane/Graphics/Camera/ICamera.h>
 
 namespace Arcane
 {

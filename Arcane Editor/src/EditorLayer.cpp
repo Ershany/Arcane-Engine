@@ -19,9 +19,9 @@ namespace Arcane
 
 	void EditorLayer::OnAttach()
 	{
-		//Testbed::LoadTestbedGraphics();
+		Testbed::LoadTestbedGraphics();
 		//Testbed::LoadTestbedAnimation();
-		Testbed::LoadTestbedGraphics2D();
+		//Testbed::LoadTestbedGraphics2D();
 
 #ifdef OLD_LOADING_METHOD
 		//Model *pbrGun = new Arcane::Model("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX");

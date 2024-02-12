@@ -8,6 +8,7 @@
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Graphics/Renderer/DebugDraw3D.h>
+#include <Arcane/Graphics/Camera/ICamera.h>
 
 namespace Arcane
 {
