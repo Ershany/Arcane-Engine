@@ -15,13 +15,17 @@ namespace Arcane
 		const aiScene *scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
 		ARC_ASSERT(scene && scene->mRootNode, "Failed importing animationPath");
 
-		m_AssimpAnimation = scene->mAnimations[animationIndex];
-		m_ClipDuration = static_cast<float>(m_AssimpAnimation->mDuration);
-		m_TicksPerSecond = m_AssimpAnimation->mTicksPerSecond != 0 ? static_cast<float>(m_AssimpAnimation->mTicksPerSecond) : 1.0f;
+		auto assimpAnimation = scene->mAnimations[animationIndex];
+#if !ARC_FINAL
+		if (assimpAnimation->mName.length > 0)
+			m_AnimationName = std::string(assimpAnimation->mName.C_Str());
+#endif
+		m_ClipDuration = static_cast<float>(assimpAnimation->mDuration);
+		m_TicksPerSecond = assimpAnimation->mTicksPerSecond != 0 ? static_cast<float>(assimpAnimation->mTicksPerSecond) : 1.0f;
 
 		// Setup our root node bone and recursively build the others
 		ReadHierarchyData(m_RootNode, scene->mRootNode);
-		ReadMissingBones();
+		ReadMissingBones(assimpAnimation);
 	}
 
 	AnimationClip::~AnimationClip()
@@ -45,9 +49,9 @@ namespace Arcane
 		return &(*iter);
 	}
 
-	void AnimationClip::ReadMissingBones()
+	void AnimationClip::ReadMissingBones(aiAnimation *assimpAnimation)
 	{
-		int size = m_AssimpAnimation->mNumChannels;
+		int size = assimpAnimation->mNumChannels;
 
 		auto boneInfoMap = m_Model->GetBoneDataMap();
 		int &boneCount = m_Model->GetBoneCountRef();
@@ -55,7 +59,7 @@ namespace Arcane
 		// Sometimes we miss bones, so this function will find any other bones engaged in the animation and add them. Assimp struggles..
 		for (int i = 0; i < size; i++)
 		{
-			auto channel = m_AssimpAnimation->mChannels[i];
+			auto channel = assimpAnimation->mChannels[i];
 			std::string boneName = channel->mNodeName.data;
 
 			if (boneInfoMap->find(boneName) == boneInfoMap->end())
