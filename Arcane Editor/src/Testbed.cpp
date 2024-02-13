@@ -25,34 +25,24 @@ void Testbed::LoadTestbedGraphics()
 	AssetManager& assetManager = AssetManager::GetInstance();
 
 	// Load some assets for the scene at startup
-	Model* gunModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"),
-		[]
-		{
-			AssetManager& assetManager = AssetManager::GetInstance();
-			Model *gunModel = assetManager.FetchModelFromCache(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
-			auto& material = gunModel->GetMeshes()[0].GetMaterial();
-
-			material.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga")));
-			material.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga")));
-			material.SetRoughnessMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga")));
-			material.SetAmbientOcclusionMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga")));
-		});
-	Model* shieldModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"));
 	Cube* cube = new Cube();
-	Model* cubeModel = new Model(*cube);
 	Quad* quad = new Quad();
-	Model* quadModel = new Model(*quad);
-	quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png")));
-	Model* waterModel = new Model(*quad);
-	Model* brickModel = new Model(*quad);
-
-	//Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae")); // TODO: Need an API to load textures and animation clips post async load, then I can use async for animated things
-	Model* animatedVampire = assetManager.LoadModel(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
-	int animIndex = 0;
-	AnimationClip *clip = new AnimationClip(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"), animIndex, animatedVampire);
 
 	// Initialize some entities and components at startup
 	{
+		Model* gunModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"),
+			[](Model *loadedModel)
+			{
+				AssetManager& assetManager = AssetManager::GetInstance();
+				auto& material = loadedModel->GetMeshes()[0].GetMaterial();
+
+				material.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga")));
+				material.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga")));
+				material.SetRoughnessMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga")));
+				material.SetAmbientOcclusionMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga")));
+			}
+		);
+
 		auto gun = scene->CreateEntity("Cerberus Gun");
 		auto& transformComponent = gun.GetComponent<TransformComponent>();
 		transformComponent.Translation = { -32.60f, -9.28f, 48.48f };
@@ -63,6 +53,23 @@ void Testbed::LoadTestbedGraphics()
 	}
 
 	{
+		Model* shieldModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"),
+			[](Model *loadedModel)
+			{
+				AssetManager& assetManager = AssetManager::GetInstance();
+				auto& material = loadedModel->GetMeshes()[0].GetMaterial();
+
+				TextureSettings srgbTextureSettings;
+				srgbTextureSettings.IsSRGB = true;
+
+				material.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Albedo].tga"), &srgbTextureSettings));
+				material.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Normal].tga")));
+				material.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Metallic].tga")));
+				material.SetRoughnessMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Roughness].tga")));
+				material.SetAmbientOcclusionMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Occlusion].tga")));
+			}
+		);
+
 		auto shield = scene->CreateEntity("Hyrule Shield");
 		auto& transformComponent = shield.GetComponent<TransformComponent>();
 		transformComponent.Translation = { -7.4f, -7.6f, -31.4f };
@@ -72,6 +79,8 @@ void Testbed::LoadTestbedGraphics()
 	}
 
 	{
+		Model* cubeModel = new Model(*cube);
+
 		auto cube = scene->CreateEntity("Cube");
 		auto& transformComponent = cube.GetComponent<TransformComponent>();
 		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
@@ -81,6 +90,9 @@ void Testbed::LoadTestbedGraphics()
 	}
 
 	{
+		Model* quadModel = new Model(*quad);
+		quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png")));
+
 		auto window = scene->CreateEntity("Window");
 		auto& transformComponent = window.GetComponent<TransformComponent>();
 		transformComponent.Translation = { -32.60f, 10.0f, 48.48f };
@@ -148,16 +160,27 @@ void Testbed::LoadTestbedGraphics()
 		transformComponent.Translation = { -70.88f, -9.22f, -39.02f };
 		transformComponent.Rotation.y = glm::radians(90.0f);
 		transformComponent.Scale = { 0.05f, 0.05f, 0.05f };
+		auto& poseAnimatorComponent = vampire.AddComponent<PoseAnimatorComponent>();
+
+		Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"),
+			[&poseAnimatorComponent](Model *loadedModel)
+			{
+				int animIndex = 0;
+				AnimationClip *clip = new AnimationClip(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"), animIndex, loadedModel);
+				poseAnimatorComponent.PoseAnimator.SetAnimationClip(clip);
+
+				AssetManager& assetManager = AssetManager::GetInstance();
+				Material& meshMaterial = loadedModel->GetMeshes()[0].GetMaterial();
+				meshMaterial.SetRoughnessValue(1.0f);
+				meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_normal.png")));
+				meshMaterial.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_specular.png")));
+			}
+		);
+
 		auto& meshComponent = vampire.AddComponent<MeshComponent>(animatedVampire);
 		meshComponent.IsStatic = false;
 		meshComponent.IsTransparent = false;
 		meshComponent.ShouldBackfaceCull = false;
-		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
-		meshMaterial.SetRoughnessValue(1.0f);
-		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_normal.png")));
-		meshMaterial.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_specular.png")));
-		auto& poseAnimatorComponent = vampire.AddComponent<PoseAnimatorComponent>();
-		poseAnimatorComponent.PoseAnimator.SetAnimationClip(clip);
 	}
 
 	{
@@ -172,6 +195,8 @@ void Testbed::LoadTestbedGraphics()
 	}
 
 	{
+		Model* brickModel = new Model(*quad);
+
 		auto bricks = scene->CreateEntity("Displaced Bricks");
 		auto& transformComponent = bricks.GetComponent<TransformComponent>();
 		transformComponent.Translation = { 47.70f, -6.5f, 6.0f };

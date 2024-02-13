@@ -41,7 +41,7 @@ namespace Arcane
 		inline const AssimpBoneData* GetRootBone() const { return &m_RootNode; }
 		inline auto* GetBoneDataMap() { return m_Model->GetBoneDataMap(); }
 		inline const auto& GetGlobalInverseTransform() const { return m_Model->GetGlobalInverseTransform(); }
-		inline const char* GetAnimationName() const { return m_AssimpAnimation->mName.C_Str(); }
+		inline aiString& GetAnimationName() const { return m_AssimpAnimation->mName; }
 	private:
 		void ReadMissingBones();
 		void ReadHierarchyData(AssimpBoneData &dest, const aiNode *src);

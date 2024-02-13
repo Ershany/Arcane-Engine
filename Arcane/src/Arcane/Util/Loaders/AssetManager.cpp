@@ -49,7 +49,7 @@ namespace Arcane
 		return model;
 	}
 
-	Model* AssetManager::LoadModelAsync(const std::string &path, std::function<void()> callback)
+	Model* AssetManager::LoadModelAsync(const std::string &path, std::function<void(Model*)> callback)
 	{
 		// Check the cache
 		Model *modelCached = FetchModelFromCache(path);
@@ -118,7 +118,7 @@ namespace Arcane
 	}
 
 	// Function adds the texture to a queue to be loaded by the asset manager's workers threads
-	Texture* AssetManager::Load2DTextureAsync(const std::string &path, TextureSettings *settings, std::function<void()> callback)
+	Texture* AssetManager::Load2DTextureAsync(const std::string &path, TextureSettings *settings, std::function<void(Texture*)> callback)
 	{
 		// Check the cache
 		Texture *textureCached = FetchTextureFromCache(path);
@@ -267,7 +267,7 @@ namespace Arcane
 				TextureLoader::Generate2DTexture(loadJob.texturePath, loadJob.generationData);
 				--m_AssetsInFlight;
 				if (loadJob.callback)
-					loadJob.callback();
+					loadJob.callback(loadJob.generationData.texture);
 
 				if (--texturesPerFrame <= 0)
 					break;
@@ -310,7 +310,7 @@ namespace Arcane
 				loadJob.model->GenerateGpuData();
 				--m_AssetsInFlight;
 				if (loadJob.callback)
-					loadJob.callback();
+					loadJob.callback(loadJob.model);
 
 				if (--modelsPerFrame <= 0)
 					break;
