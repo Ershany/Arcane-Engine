@@ -19,18 +19,21 @@ namespace Arcane
 	{
 		std::string texturePath;
 		TextureGenerationData generationData;
+		std::function<void()> callback = nullptr;
 	};
 
 	struct CubemapLoadJob
 	{
 		std::string texturePath;
 		CubemapGenerationData generationData;
+		std::function<void()> callback = nullptr;
 	};
 
 	struct ModelLoadJob
 	{
 		std::string path;
 		Model *model;
+		std::function<void()> callback = nullptr;
 	};
 
 	class AssetManager : public Singleton
@@ -43,14 +46,16 @@ namespace Arcane
 		inline bool AssetsInFlight() { return m_AssetsInFlight > 0; }
 
 		Model* LoadModel(const std::string &path);
-		Model* LoadModelAsync(const std::string &path);
+		Model* LoadModelAsync(const std::string &path, std::function<void()> callback = nullptr);
+		Model* FetchModelFromCache(const std::string &path);
 
 		Texture* Load2DTexture(const std::string &path, TextureSettings *settings = nullptr);
-		Texture* Load2DTextureAsync(const std::string &path, TextureSettings *settings = nullptr);
+		Texture* Load2DTextureAsync(const std::string &path, TextureSettings *settings = nullptr, std::function<void()> callback = nullptr);
+		Texture* FetchTextureFromCache(const std::string &path);
 
 		// TODO: HDR loading
 		Cubemap* LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
-		Cubemap* LoadCubemapTextureAsync(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
+		Cubemap* LoadCubemapTextureAsync(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr, std::function<void()> callback = nullptr);
 
 		void Update(int texturesPerFrame, int cubemapFacesPerFrame, int modelsPerFrame);
 

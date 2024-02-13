@@ -25,7 +25,18 @@ void Testbed::LoadTestbedGraphics()
 	AssetManager& assetManager = AssetManager::GetInstance();
 
 	// Load some assets for the scene at startup
-	Model* gunModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
+	Model* gunModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"),
+		[]
+		{
+			AssetManager& assetManager = AssetManager::GetInstance();
+			Model *gunModel = assetManager.FetchModelFromCache(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
+			auto& material = gunModel->GetMeshes()[0].GetMaterial();
+
+			material.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga")));
+			material.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga")));
+			material.SetRoughnessMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga")));
+			material.SetAmbientOcclusionMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga")));
+		});
 	Model* shieldModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"));
 	Cube* cube = new Cube();
 	Model* cubeModel = new Model(*cube);
