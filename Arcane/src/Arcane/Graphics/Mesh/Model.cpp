@@ -231,7 +231,7 @@ namespace Arcane
 			newMesh.m_Material.SetDisplacementMap(LoadMaterialTexture(material, aiTextureType_DISPLACEMENT, true));
 		}
 
-		m_Meshes.push_back(newMesh);
+		m_Meshes.emplace_back(newMesh);
 	}
 
 	Texture* Model::LoadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB)

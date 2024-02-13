@@ -45,10 +45,10 @@
 #define CAMERA_SCROLL_SPEED 100.0f
 
 // Default Ortho Camera Settings
-#define DEFAULT_ORTHO_LEFT -100.0f
-#define DEFAULT_ORTHO_RIGHT 100.0f
-#define DEFAULT_ORTHO_BOTTOM -100.0f
-#define DEFAULT_ORTHO_TOP 100.0f
+#define DEFAULT_ORTHO_LEFT -20.0f
+#define DEFAULT_ORTHO_RIGHT 20.0f
+#define DEFAULT_ORTHO_BOTTOM -20.0f
+#define DEFAULT_ORTHO_TOP 20.0f
 
 // Shadowmap Default Options (Resolution controlled by the LightComponent, this will only be used if no light casters are found and a pass needs a fallback)
 // Probes do have their own shadow buffers so this should only be used as defaults for LightComponent
