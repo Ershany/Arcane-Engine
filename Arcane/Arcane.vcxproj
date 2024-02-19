@@ -372,9 +372,10 @@
     <None Include="src\Arcane\Shaders\Forward\PBR_Skinned_Model.glsl" />
     <None Include="src\Arcane\Shaders\Outline.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomBrightPass.glsl" />
-    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomGaussianBlur.glsl" />
+    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomDownsample.glsl" />
     <None Include="src\Arcane\Shaders\BRDF_Integration.glsl" />
     <None Include="src\Arcane\Shaders\ColourWrite.glsl" />
+    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomUpsample.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear_Skinned.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Skinned.glsl" />
@@ -386,7 +387,7 @@
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\Arcane\Shaders\Forward\PBR_Model.glsl" />
     <None Include="src\Arcane\Shaders\Forward\PBR_Terrain.glsl" />
-    <None Include="src\Arcane\Shaders\Post_Process\Bloom\Composite.glsl" />
+    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomComposite.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Chromatic_Aberration\ChromaticAberration.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Copy.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Film_Grain\FilmGrain.glsl" />

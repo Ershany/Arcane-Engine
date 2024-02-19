@@ -33,7 +33,6 @@ namespace Arcane
 
 		// Setup style
 		ImGui::StyleColorsDark();
-		//SetDarkThemeColors();
 		//ImGui::StyleColorsClassic();
 
 		// When a viewport is created need to check rounding and colour to make it look identical to our window

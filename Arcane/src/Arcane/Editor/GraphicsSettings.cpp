@@ -52,6 +52,16 @@ namespace Arcane
 				}
 				ImGui::NewLine();
 				ImGui::Separator();
+				if (ImGui::CollapsingHeader("Bloom Settings", ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					ImGui::PushID("Bloom Arcane Effect");
+					ImGui::Checkbox("Enabled", &postProcessPass->GetBloomEnabledRef());
+					ImGui::SliderFloat("Threshold", &postProcessPass->GetBloomThresholdRef(), 0.0f, 10.0f);
+					ImGui::SliderFloat("Strength", &postProcessPass->GetBloomStrengthRef(), 0.1f, 5.0f);
+					ImGui::PopID();
+				}
+				ImGui::NewLine();
+				ImGui::Separator();
 				if (ImGui::CollapsingHeader("FXAA", ImGuiTreeNodeFlags_DefaultOpen))
 				{
 					ImGui::PushID("FXAA Arcane Effect");

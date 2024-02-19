@@ -44,6 +44,11 @@ namespace Arcane
 		inline float& GetGammaCorrectionRef() { return m_GammaCorrection; }
 		inline float& GetExposureRef() { return m_Exposure; }
 
+		// Bloom bindings
+		inline bool& GetBloomEnabledRef() { return m_BloomEnabled; }
+		inline float& GetBloomThresholdRef() { return m_BloomThreshold; }
+		inline float& GetBloomStrengthRef() { return m_BloomStrength; }
+
 		// SSAO bindings
 		inline bool& GetSsaoEnabledRef() { return m_SsaoEnabled; }
 		inline float& GetSsaoSampleRadiusRef() { return m_SsaoSampleRadius; }
@@ -80,7 +85,7 @@ namespace Arcane
 		Shader *m_TonemapGammaCorrectShader;
 		Shader *m_FxaaShader;
 		Shader *m_SsaoShader, *m_SsaoBlurShader;
-		Shader *m_BloomBrightPassShader, *m_BloomGaussianBlurShader, *m_BloomComposite;
+		Shader *m_BloomBrightPassShader, *m_BloomDownsampleShader, *m_BloomUpsampleShader, *m_BloomCompositeShader;
 		Shader *m_VignetteShader;
 		Shader *m_ChromaticAberrationShader;
 		Shader *m_FilmGrainShader;
@@ -91,10 +96,13 @@ namespace Arcane
 		Framebuffer m_ResolveRenderTarget; // Only used if multi-sampling is enabled so it can be resolved
 
 		Framebuffer m_BrightPassRenderTarget;
-		Framebuffer m_BloomFullRenderTarget;
+		//Framebuffer m_BloomFullRenderTarget;
 		Framebuffer m_BloomHalfRenderTarget;
 		Framebuffer m_BloomQuarterRenderTarget;
 		Framebuffer m_BloomEightRenderTarget;
+		Framebuffer m_BloomSixteenRenderTarget;
+		Framebuffer m_BloomThirtyTwoRenderTarget;
+		Framebuffer m_BloomSixtyFourRenderTarget;
 
 		// Utility Framebuffers
 		Framebuffer m_FullRenderTarget;
@@ -105,7 +113,9 @@ namespace Arcane
 		// Post Processing Tweaks
 		float m_GammaCorrection = 2.2f;
 		float m_Exposure = 1.0f;
-		float m_BloomThreshold = 1.0f;
+		bool m_BloomEnabled = true;
+		float m_BloomThreshold = 3.0f;
+		float m_BloomStrength = 0.4f;
 		bool m_FxaaEnabled = true;
 		bool m_SsaoEnabled = true;
 		float m_SsaoSampleRadius = 2.0f;

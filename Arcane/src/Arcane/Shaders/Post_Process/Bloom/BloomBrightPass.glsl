@@ -21,12 +21,12 @@ in vec2 TexCoords;
 
 out vec4 FragColour;
 
-uniform sampler2D scene_capture;
+uniform sampler2D sceneCapture;
 
 uniform float threshold;
 
 void main() {
-	vec3 hdrColour = texture2D(scene_capture, TexCoords).rgb;
+	vec3 hdrColour = texture2D(sceneCapture, TexCoords).rgb;
 	
 	// Extract the bright areas
 	if (dot(hdrColour, vec3(0.2126, 0.7152, 0.0722)) > threshold) {
