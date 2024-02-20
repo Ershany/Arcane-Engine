@@ -136,6 +136,16 @@ namespace Arcane
 							meshMaterial.SetDisplacementMinSteps(minSteps);
 							meshMaterial.SetDisplacementMaxSteps(maxSteps);
 						}
+
+						ImGui::Image(meshMaterial.GetEmissionMap() ? (ImTextureID)meshMaterial.GetEmissionMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetBlackTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && meshMaterial.GetEmissionMap())
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)meshMaterial.GetEmissionMap()->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Emission"); ImGui::SameLine();
+						ImGui::SliderFloat("##Emission Intensity", &meshMaterial.GetEmissionIntensityRef(), 0.0f, 255.0f, "%.0f");
 					}
 				}
 

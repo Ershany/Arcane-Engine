@@ -69,10 +69,12 @@ struct Material {
 	sampler2D texture_roughness;
 	sampler2D texture_ao;
 	sampler2D texture_displacement;
+	sampler2D texture_emission;
 
 	vec4 albedoColour;
 	float metallicValue, roughnessValue; // Used if textures aren't provided
 
+	float emissionIntensity;
 	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture;
 };
 

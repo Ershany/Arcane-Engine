@@ -116,7 +116,7 @@ void main() {
 
 	gb_Albedo = vec4(albedo, 1.0);
 	gb_Normal = normal;
-	gb_MaterialInfo = vec4(metallic, roughness, ao, 1.0);
+	gb_MaterialInfo = vec4(metallic, roughness, ao, 0.0);
 }
 
 // Unpacks the normal from the texture and returns the normal in tangent space

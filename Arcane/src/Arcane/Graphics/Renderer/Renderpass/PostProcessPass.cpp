@@ -181,7 +181,6 @@ namespace Arcane
 		{
 			Texture *sceneWithBloom = Bloom(inputFramebuffer->GetColourTexture());
 			TonemapGammaCorrect(&m_TonemappedNonLinearTarget, sceneWithBloom);
-			//TonemapGammaCorrect(&m_TonemappedNonLinearTarget, inputFramebuffer->GetColourTexture());
 		}
 		else
 		{

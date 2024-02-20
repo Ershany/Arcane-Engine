@@ -66,11 +66,12 @@ struct Material {
 	sampler2D texture_roughness;
 	sampler2D texture_ao;
 	sampler2D texture_displacement;
+	sampler2D texture_emission;
 
-	// Used if textures aren't provided
 	vec4 albedoColour;
-	float metallicValue, roughnessValue;
+	float metallicValue, roughnessValue; // Used if textures aren't provided
 
+	float emissionIntensity;
 	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture;
 };
 
@@ -82,6 +83,7 @@ in vec3 ViewPosTangentSpace;
 uniform bool hasDisplacement;
 uniform vec2 minMaxDisplacementSteps;
 uniform float parallaxStrength;
+uniform bool hasEmission;
 uniform Material material;
 
 // Functions
@@ -96,19 +98,27 @@ void main() {
 		textureCoordinates = ParallaxMapping(TexCoords, viewDirTangentSpace);
 	}
 
-	// Sample textures
-	vec4 albedo = material.hasAlbedoTexture ? texture(material.texture_albedo, textureCoordinates).rgba * material.albedoColour : material.albedoColour;
+	// Sample textures and build up the GBuffer
+	// If we have emission, hijack the albedo and replace it with the emission colour. Then since we want HDR values and albedo RT is LDR, we can store the emission intensity in the alpha of the gb_MaterialInfo RT
+	vec4 albedo;
+	if (hasEmission) {
+		albedo = vec4(texture(material.texture_emission, textureCoordinates).rgb, 1.0);
+	}
+	else {
+		albedo = material.hasAlbedoTexture ? texture(material.texture_albedo, textureCoordinates).rgba * material.albedoColour : material.albedoColour;
+	}
 	vec3 normal = texture(material.texture_normal, textureCoordinates).rgb;
 	float metallic = material.hasMetallicTexture ? texture(material.texture_metallic, textureCoordinates).r : material.metallicValue;
 	float roughness = material.hasRoughnessTexture ? texture(material.texture_roughness, textureCoordinates).r : material.roughnessValue;
 	float ao = texture(material.texture_ao, textureCoordinates).r;
+	float emissionIntensity = material.emissionIntensity;
 
 	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
 	normal = normalize(TBN * UnpackNormal(normal));
 
 	gb_Albedo = albedo;
 	gb_Normal = normal;
-	gb_MaterialInfo = vec4(metallic, roughness, ao, 1.0);
+	gb_MaterialInfo = vec4(metallic, roughness, ao, emissionIntensity);
 }
 
 // Unpacks the normal from the texture and returns the normal in tangent space
