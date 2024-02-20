@@ -204,10 +204,33 @@ void Testbed::LoadTestbedGraphics()
 		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
 		auto& meshComponent = bricks.AddComponent<MeshComponent>(brickModel);
 		meshComponent.IsStatic = true;
+
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
+
 		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
-		meshMaterial.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2.jpg")));
+		meshMaterial.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2.jpg"), &srgbTextureSettings));
 		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_normal.jpg")));
 		meshMaterial.SetDisplacementMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
+		meshMaterial.SetRoughnessValue(1.0f);
+	}
+
+	{
+		Model* flatModel = new Model(*quad);
+
+		auto emissionWall = scene->CreateEntity("Emission Wall");
+		auto& transformComponent = emissionWall.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 47.70f, 6.5f, 6.0f };
+		transformComponent.Rotation = { 0.0f, glm::radians(210.0f), 0.0f };
+		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
+		auto& meshComponent = emissionWall.AddComponent<MeshComponent>(flatModel);
+		meshComponent.IsStatic = true;
+
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
+
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/circuitry-emission.png"), &srgbTextureSettings));
 		meshMaterial.SetRoughnessValue(1.0f);
 	}
 }

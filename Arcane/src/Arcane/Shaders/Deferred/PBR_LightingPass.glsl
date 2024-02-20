@@ -115,6 +115,14 @@ float CalculatePointLightShadow(vec3 lightToFrag);
 vec3 WorldPosFromDepth();
 
 void main() {
+	// If this is an emissive fragment then we don't care about lighting it
+	float emissiveIntensity = texture(materialInfoTexture, TexCoords).a;
+	if (emissiveIntensity > 0.0) {
+		vec4 sampledAlbedo = texture(albedoTexture, TexCoords).rgba;
+		color = sampledAlbedo;
+		return;
+	}
+
 	// Sample textures
 	vec4 sampledAlbedo = texture(albedoTexture, TexCoords).rgba;
 	vec3 albedo = sampledAlbedo.rgb;
