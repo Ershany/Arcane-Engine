@@ -57,6 +57,11 @@ namespace Arcane
 					ImGui::PushID("Bloom Arcane Effect");
 					ImGui::Checkbox("Enabled", &postProcessPass->GetBloomEnabledRef());
 					ImGui::SliderFloat("Threshold", &postProcessPass->GetBloomThresholdRef(), 0.0f, 10.0f);
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("This controls how bright an HDR pixel needs to be to receive bloom. Any pixel that has a luminance above the threshold will have a bloom effect.");
+					ImGui::SliderFloat("Soft Threshold", &postProcessPass->GetBloomSoftThresholdRef(), 0.0f, 1.0f);
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("This controls how hard of a cutoff between a pixel that has bloom and one that is just below the threshold. 0 = hard cutoff, 1 = soft cutoff.");
 					ImGui::SliderFloat("Strength", &postProcessPass->GetBloomStrengthRef(), 0.1f, 5.0f);
 					ImGui::PopID();
 				}

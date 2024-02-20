@@ -348,6 +348,7 @@ namespace Arcane
 		m_BrightPassRenderTarget.ClearAll();
 		m_GLCache->SetShader(m_BloomBrightPassShader);
 		m_BloomBrightPassShader->SetUniform("threshold", m_BloomThreshold);
+		m_BloomBrightPassShader->SetUniform("softThreshold", m_BloomSoftThreshold);
 		m_BloomBrightPassShader->SetUniform("sceneCapture", 0);
 		hdrSceneTexture->Bind(0);
 		Renderer::DrawNdcPlane();
