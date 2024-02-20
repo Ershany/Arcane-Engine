@@ -23,19 +23,17 @@ out vec4 FragColour;
 
 uniform sampler2D sceneCapture;
 
-uniform float threshold;
-uniform float softThreshold;
+uniform vec4 filterValues;
 
 void main() {
 	vec3 hdrColour = texture2D(sceneCapture, TexCoords).rgb;
 
 	// Extract the bright areas by calculating brightness and checking it against the threshold
 	float brightness = dot(hdrColour, vec3(0.2126, 0.7152, 0.0722));
-	float knee = threshold * softThreshold;
-	float soft = brightness - threshold + knee;
-	soft = clamp(soft, 0, 2 * knee);
-	soft = soft * soft / (4 * knee + 0.00001);
-	float contribution = max(soft, brightness - threshold);
+	float soft = brightness - filterValues.y;
+	soft = clamp(soft, 0, filterValues.z);
+	soft = soft * soft * filterValues.w;
+	float contribution = max(soft, brightness - filterValues.x);
 	contribution /= max(brightness, 0.00001);
 	FragColour = vec4(hdrColour * contribution, 1.0);
 }

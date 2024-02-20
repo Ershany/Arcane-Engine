@@ -347,8 +347,13 @@ namespace Arcane
 		m_BrightPassRenderTarget.Bind();
 		m_BrightPassRenderTarget.ClearAll();
 		m_GLCache->SetShader(m_BloomBrightPassShader);
-		m_BloomBrightPassShader->SetUniform("threshold", m_BloomThreshold);
-		m_BloomBrightPassShader->SetUniform("softThreshold", m_BloomSoftThreshold);
+		glm::vec4 filterValues;
+		float knee = m_BloomThreshold * m_BloomSoftThreshold;
+		filterValues.x = m_BloomThreshold;
+		filterValues.y = filterValues.x - knee;
+		filterValues.z = 2.0f * knee;
+		filterValues.w = 0.25f / (knee + 0.00001f);
+		m_BloomBrightPassShader->SetUniform("filterValues", filterValues);
 		m_BloomBrightPassShader->SetUniform("sceneCapture", 0);
 		hdrSceneTexture->Bind(0);
 		Renderer::DrawNdcPlane();

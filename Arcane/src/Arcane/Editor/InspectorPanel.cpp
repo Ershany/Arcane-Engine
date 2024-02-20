@@ -259,7 +259,7 @@ namespace Arcane
 						ImGui::SliderFloat("Wave Speed", &waterComponent.WaveSpeed, 0.0f, 2.0f, "%.3f");
 						ImGui::SliderFloat("Wave Strength", &waterComponent.WaveStrength, 0.0f, 0.2f, "%.2f");
 
-						ImGui::SliderFloat("Shine Damper", &waterComponent.ShineDamper, 0.0f, 1000.0f, "%.2f");
+						ImGui::SliderFloat("Shine Damper", &waterComponent.ShineDamper, 0.1f, 1000.0f, "%.2f");
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Used to reduce bright specular reflections from lights on the surface of the water.");
 						ImGui::SliderFloat("Normal Smoothing", &waterComponent.NormalSmoothing, 0.0f, 5.0f, "%.2f");
