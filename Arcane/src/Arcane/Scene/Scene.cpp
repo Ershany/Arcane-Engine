@@ -62,6 +62,9 @@ namespace Arcane
 
 	void Scene::OnUpdate(float deltaTime)
 	{
+		m_PhysicsScene.UpdateSim(deltaTime);
+		m_RbManager.Update(deltaTime); // Doesn't do anything rn
+
 		// Camera Update
 		m_SceneCamera.ProcessInput(deltaTime);
 

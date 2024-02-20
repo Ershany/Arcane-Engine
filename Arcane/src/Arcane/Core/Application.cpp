@@ -43,7 +43,6 @@ namespace Arcane
 		m_ActiveScene = new Scene(m_Window);
 		m_MasterRenderPass = new MasterRenderPass(m_ActiveScene);
 		m_InputManager = &InputManager::GetInstance();
-		m_PhysicsSim = new PhysicsScene();
 	}
 
 	Application::~Application()
@@ -131,10 +130,6 @@ namespace Arcane
 					m_MasterRenderPass->Render();
 				}
 				Renderer::EndFrame();
-
-
-				// Only update physics when maximized??
-				m_PhysicsSim->UpdateSim(deltaTime.GetDeltaTime());
 
 				// Render ImGui Layers On-top
 				if (m_Specification.EnableImGui)

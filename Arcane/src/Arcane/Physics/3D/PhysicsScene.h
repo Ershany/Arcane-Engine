@@ -1,5 +1,13 @@
 #pragma once
 
+#include "RbManager.h"
+
+#define PHYSICS_SCENE PhysicsScene::GetScene()
+
+// TODO: Not sure about this
+#define PHYSICS_INST PhysicsScene::GetPhysics() 
+
+
 namespace Arcane
 {
 	class PhysicsScene
@@ -16,7 +24,7 @@ namespace Arcane
 	private:
 		void InitPhysx();
 
-		// TODO: cleanup here
+		// TODO: cleanup here?
 		physx::PxDefaultAllocator m_Allocator;
 		physx::PxDefaultErrorCallback m_ErrorCallback; // Could be smthg we can hook into using our logger will need to implement  a PxErrorCallback::reportError()
 		physx::PxFoundation* m_Foundation;

@@ -70,7 +70,6 @@ namespace Arcane
 		Scene *m_ActiveScene;
 		MasterRenderPass *m_MasterRenderPass;
 		LayerStack m_LayerStack;
-		PhysicsScene* m_PhysicsSim;
 
 		bool m_Running = true;
 		bool m_Minimized = false;

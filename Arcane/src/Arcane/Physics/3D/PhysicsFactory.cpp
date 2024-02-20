@@ -1,10 +1,12 @@
 #include "arcpch.h"
+
 #include "PhysicsFactory.h"
 #include "PhysicsScene.h"
+#include <Arcane/Scene/Components.h>
 
 namespace Arcane
 {
-	phActorRigid* PhysicsFactory::CreateRigidbody(const TransformComponent& transform, phGeometry* geom, bool isDynamic)
+	phActorRigid* PhysicsFactory::CreatePhRb(const TransformComponent& transform, phGeometry* geom, bool isDynamic)
 	{
 		ARC_ASSERT(geom, "no geometry for rigidbody");
 		physx::PxTransform trans = physx::PxTransform(transform.Translation.x, transform.Translation.y, transform.Translation.z, physx::PxQuat(transform.Rotation.x, transform.Rotation.y, transform.Rotation.z, transform.Rotation.w));

@@ -1,16 +1,18 @@
 #pragma once
 
-#include <Arcane/Scene/Components.h>
+#include "PhysicsDefs.h"
+
 
 namespace Arcane
 {
+	struct TransformComponent;
 	class PhysicsScene;
 
 	class PhysicsFactory
 	{
 	public:
 
-		static phActorRigid* CreateRigidbody(const TransformComponent& trans, phGeometry* shape, bool isDynamic);
+		static phActorRigid* CreatePhRb(const TransformComponent& trans, phGeometry* shape, bool isDynamic);
 
 		static phGeometry* CreateSphereGeometry(f32 radius);
 		static phGeometry* CreateCapsuleGeometry(f32 radius, f32 halfHeight);

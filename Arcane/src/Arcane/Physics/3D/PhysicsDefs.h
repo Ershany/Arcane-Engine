@@ -32,4 +32,8 @@ namespace Arcane
 
 	// 
 	typedef physx::PxPhysics phPhysics;
+
+	typedef physx::PxVec3 phVec3;
+	typedef physx::PxRigidBodyFlags phRbFlags;
+	typedef physx::PxRigidBodyFlag::Enum phRbFlag;
 }

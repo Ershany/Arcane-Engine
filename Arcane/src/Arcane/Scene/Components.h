@@ -6,6 +6,8 @@
 #include <Arcane/Graphics/Lights/LightManager.h>
 #include <Arcane/Animation/AnimationClip.h>
 #include <Arcane/Animation/PoseAnimator.h>
+#include <Arcane/Physics/3D/RbBody.h>
+#include "Arcane/Physics/3D/PhysicsDefs.h"
 
 namespace Arcane
 {
@@ -111,5 +113,13 @@ namespace Arcane
 	struct PoseAnimatorComponent
 	{
 		PoseAnimator PoseAnimator;
+	};
+
+	struct RbComponent
+	{
+		RbComponent() = default;
+		RbComponent(const TransformComponent& trans, phGeometry* geom, bool isDynamic = true) : m_RbBody(trans, geom, isDynamic) {}
+
+		RbBody m_RbBody;
 	};
 }

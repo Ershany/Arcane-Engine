@@ -200,6 +200,39 @@ namespace Arcane
 						}
 					}
 				}
+
+				if (m_FocusedEntity.HasComponent<RbComponent>())
+				{
+					if (ImGui::CollapsingHeader("RigidBody Component", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						RbComponent& rbComponent = m_FocusedEntity.GetComponent<RbComponent>();
+						bool massModified;
+						bool kinematicModified;
+						bool isStaticModified;
+
+						massModified = DrawFloatControl("Mass", rbComponent.m_RbBody.GetMassRef());
+						kinematicModified = ImGui::Checkbox("IsKinematic", &rbComponent.m_RbBody.GetIsKinematicRef());
+						isStaticModified = ImGui::Checkbox("Static", &rbComponent.m_RbBody.GetIsStaticRef());
+
+						//
+						if (massModified)
+						{
+							rbComponent.m_RbBody.SetMass(rbComponent.m_RbBody.GetMassRef());
+							ARC_LOG_INFO("New mass value {0}", rbComponent.m_RbBody.GetMass());
+						}
+
+						if (kinematicModified)
+						{
+							rbComponent.m_RbBody.SetFlag(phRbFlag::eKINEMATIC, rbComponent.m_RbBody.GetIsKinematicRef());
+						}
+
+						// IsStatic
+						if (isStaticModified)
+						{
+							// Recreate with static or dynamic rbs
+						}
+					}
+				}
 			}
 		}
 		ImGui::End();

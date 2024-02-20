@@ -11,7 +11,6 @@
 #include <Arcane/Scene/Entity.h>
 #include <Arcane/Animation/AnimationClip.h>
 
-
 using namespace Arcane;
 
 void Testbed::LoadTestbedDefault()

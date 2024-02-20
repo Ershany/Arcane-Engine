@@ -1,9 +1,10 @@
 #include "arcpch.h"
+
 #include "PhysicsScene.h"
-#include "RigidbodyComponent.h"
 #include "PhysicsFactory.h"
 
 #define PHYSICS_STEP 0.016666
+
 namespace Arcane
 {
 	phScene* PhysicsScene::s_Scene;

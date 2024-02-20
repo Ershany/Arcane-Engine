@@ -4,6 +4,8 @@
 #include <Arcane/Graphics/Lights/LightManager.h>
 #include <Arcane/Graphics/IBL/ProbeManager.h>
 #include <Arcane/Terrain/Terrain.h>
+#include "Arcane/Physics/3D/PhysicsScene.h"
+#include "Arcane/Physics/3D/RbManager.h"
 
 #include "entt.hpp"
 
@@ -47,6 +49,8 @@ namespace Arcane
 		inline ProbeManager* GetProbeManager() { return &m_ProbeManager; }
 		inline FPSCamera* GetCamera() { return &m_SceneCamera; }
 		inline Skybox* GetSkybox() { return m_Skybox; }
+		inline RbManager& GetRigidBodyManager() { return m_RbManager; }
+
 	private:
 		void PreInit();
 	private:
@@ -65,5 +69,8 @@ namespace Arcane
 		Terrain m_Terrain;
 		LightManager m_LightManager;
 		ProbeManager m_ProbeManager;
+		PhysicsScene m_PhysicsScene;
+		RbManager m_RbManager;
+
 	};
 }
