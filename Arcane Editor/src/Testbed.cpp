@@ -222,7 +222,7 @@ void Testbed::LoadTestbedGraphics()
 	{
 		Model* flatModel = new Model(*quad);
 
-		auto emissionWall = scene->CreateEntity("Emission Wall");
+		auto emissionWall = scene->CreateEntity("Emission Lava");
 		auto& transformComponent = emissionWall.GetComponent<TransformComponent>();
 		transformComponent.Translation = { 47.70f, 6.5f, 6.0f };
 		transformComponent.Rotation = { 0.0f, glm::radians(210.0f), 0.0f };
@@ -273,8 +273,8 @@ void Testbed::LoadTestbedGraphics()
 		meshMaterial.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2.jpg"), &srgbTextureSettings));
 		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_normal.jpg")));
 		//meshMaterial.SetDisplacementMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
-		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
-		meshMaterial.SetEmissionIntensity(15.0f);
+		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_emiss.png"), &srgbTextureSettings));
+		meshMaterial.SetEmissionIntensity(5.0f);
 		meshMaterial.SetRoughnessValue(1.0f);
 	}
 }
