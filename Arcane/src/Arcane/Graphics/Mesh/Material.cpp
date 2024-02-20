@@ -14,6 +14,39 @@ namespace Arcane
 	{
 	}
 
+	void Material::SetAlbedoMap(Texture *texture)
+	{
+		if (texture == nullptr)
+			return;
+
+#ifdef ARC_DEV_BUILD
+		if (!texture->GetTextureSettings().IsSRGB)
+		{
+			ARC_LOG_ERROR("Albedo texture isn't set to sRGB space - it won't be properly linearized");
+		}
+#endif
+		m_AlbedoMap = texture;
+		m_AlbedoColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+	}
+
+	void Material::SetEmissionMap(Texture *texture)
+	{
+		if (texture == nullptr)
+		{
+			m_HasEmission = false;
+			return;
+		}
+
+#ifdef ARC_DEV_BUILD
+		if (!texture->GetTextureSettings().IsSRGB)
+		{
+			ARC_LOG_ERROR("Emission texture isn't set to sRGB space - it won't be properly linearized");
+		}
+#endif
+
+		m_HasEmission = true;
+		m_EmissionMap = texture;
+	}
 
 	void Material::BindMaterialInformation(Shader *shader) const
 	{
@@ -95,15 +128,25 @@ namespace Arcane
 		}
 
 		shader->SetUniform("material.texture_emission", currentTextureUnit);
-		if (m_EmissionMap && m_EmissionMap->IsGenerated())
+		if (m_HasEmission)
 		{
 			shader->SetUniform("hasEmission", true);
+			shader->SetUniform("material.emissionColour", m_EmissionColour);
 			shader->SetUniform("material.emissionIntensity", m_EmissionIntensity);
-			m_EmissionMap->Bind(currentTextureUnit++);
+			if (m_EmissionMap && m_EmissionMap->IsGenerated())
+			{
+				shader->SetUniform("material.hasEmissionTexture", true);
+				m_EmissionMap->Bind(currentTextureUnit++);
+			}
+			else
+			{
+				shader->SetUniform("material.hasEmissionTexture", false);
+			}
 		}
 		else
 		{
 			shader->SetUniform("hasEmission", false);
+			shader->SetUniform("material.hasEmissionTexture", false);
 			shader->SetUniform("material.emissionIntensity", 0.0f);
 		}
 	}

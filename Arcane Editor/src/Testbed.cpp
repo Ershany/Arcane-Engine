@@ -91,7 +91,11 @@ void Testbed::LoadTestbedGraphics()
 
 	{
 		Model* quadModel = new Model(*quad);
-		quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png")));
+
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
+
+		quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png"), &srgbTextureSettings));
 
 		auto window = scene->CreateEntity("Window");
 		auto& transformComponent = window.GetComponent<TransformComponent>();
@@ -231,6 +235,46 @@ void Testbed::LoadTestbedGraphics()
 
 		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
 		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/circuitry-emission.png"), &srgbTextureSettings));
+		meshMaterial.SetEmissionIntensity(45.0f);
+	}
+
+	{
+		Model* cubeModel = new Model(*cube);
+
+		auto cube = scene->CreateEntity("Emmissive Cube");
+		auto& transformComponent = cube.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 0.0f, 15.0f, 0.0f };
+		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
+		auto& meshComponent = cube.AddComponent<MeshComponent>(cubeModel);
+		meshComponent.IsStatic = true;
+		meshComponent.IsTransparent = false;
+
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetEmissionEnabled(true);
+		meshMaterial.SetEmissionColour(glm::vec3(1.0f, 0.0f, 0.0f));
+		meshMaterial.SetEmissionIntensity(15.0f);
+	}
+
+	{
+		Model* brickModel = new Model(*quad);
+
+		auto bricks = scene->CreateEntity("Emmissive Bricks");
+		auto& transformComponent = bricks.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 47.70f, 19.5f, 6.0f };
+		transformComponent.Rotation = { 0.0f, glm::radians(210.0f), 0.0f };
+		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
+		auto& meshComponent = bricks.AddComponent<MeshComponent>(brickModel);
+		meshComponent.IsStatic = true;
+
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
+
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2.jpg"), &srgbTextureSettings));
+		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_normal.jpg")));
+		//meshMaterial.SetDisplacementMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
+		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
+		meshMaterial.SetEmissionIntensity(15.0f);
 		meshMaterial.SetRoughnessValue(1.0f);
 	}
 }
@@ -247,6 +291,7 @@ void Testbed::LoadTestbedPhysics()
 
 void Testbed::LoadTestbedAnimation()
 {
+	// TODO: This testbed should use callback API for loading models async instead of blocking to load anims (look at gfx)
 	Scene* scene = Arcane::Application::GetInstance().GetScene();
 	AssetManager& assetManager = AssetManager::GetInstance();
 

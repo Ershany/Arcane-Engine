@@ -60,8 +60,9 @@ struct Material {
 	vec4 albedoColour;
 	float metallicValue, roughnessValue; // Used if textures aren't provided
 
+	vec3 emissionColour;
 	float emissionIntensity;
-	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture;
+	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture, hasEmissionTexture;
 };
 
 in mat3 TBN;
@@ -91,7 +92,7 @@ void main() {
 	// If we have emission, hijack the albedo and replace it with the emission colour. Then since we want HDR values and albedo RT is LDR, we can store the emission intensity in the alpha of the gb_MaterialInfo RT
 	vec4 albedo;
 	if (hasEmission) {
-		albedo = vec4(texture(material.texture_emission, textureCoordinates).rgb, 1.0);
+		albedo = material.hasEmissionTexture ? vec4(texture(material.texture_emission, textureCoordinates).rgb, 1.0) : vec4(material.emissionColour, 1.0);
 	}
 	else {
 		albedo = material.hasAlbedoTexture ? texture(material.texture_albedo, textureCoordinates).rgba * material.albedoColour : material.albedoColour;
@@ -100,7 +101,7 @@ void main() {
 	float metallic = material.hasMetallicTexture ? texture(material.texture_metallic, textureCoordinates).r : material.metallicValue;
 	float roughness = material.hasRoughnessTexture ? texture(material.texture_roughness, textureCoordinates).r : material.roughnessValue;
 	float ao = texture(material.texture_ao, textureCoordinates).r;
-	float emissionIntensity = material.emissionIntensity;
+	float emissionIntensity = material.emissionIntensity / 255.0; // Converting u8 [0, 255] -> float [0.0, 1.0]
 
 	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
 	normal = normalize(TBN * UnpackNormal(normal));

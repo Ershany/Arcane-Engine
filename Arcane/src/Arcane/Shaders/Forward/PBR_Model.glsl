@@ -63,8 +63,9 @@ struct Material {
 	vec4 albedoColour;
 	float metallicValue, roughnessValue; // Used if textures aren't provided
 
+	vec3 emissionColour;
 	float emissionIntensity;
-	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture;
+	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture, hasEmissionTexture;
 };
 
 struct DirLight {
