@@ -115,7 +115,7 @@ namespace Arcane
 		float m_Exposure = 1.0f;
 		bool m_BloomEnabled = true;
 		float m_BloomThreshold = 3.0f;
-		float m_BloomStrength = 0.1f;
+		float m_BloomStrength = 0.4f;
 		bool m_FxaaEnabled = true;
 		bool m_SsaoEnabled = true;
 		float m_SsaoSampleRadius = 2.0f;
