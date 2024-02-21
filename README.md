@@ -25,9 +25,11 @@ Arcane Engine is a real-time game engine developed and maintained by [Tyrannical
 - Skybox Support
 - Terrain Material Blending
 - Water + Wave Simulation
-- Post Processing (Film Grain, Chromatic Aberration, Vignette)
+- Post Processing (Bloom, Film Grain, Chromatic Aberration, Vignette)
 - Entity Component System
 - Basic Animation Clip Player
+- Emission Maps
+- Displacement Maps
 
 ## Engine Libraries
 - OpenGL 4.3+
