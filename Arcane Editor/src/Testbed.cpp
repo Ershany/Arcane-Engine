@@ -259,7 +259,6 @@ void Testbed::LoadTestbedGraphics()
 		meshComponent.IsTransparent = false;
 
 		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
-		meshMaterial.SetEmissionEnabled(true);
 		meshMaterial.SetEmissionColour(glm::vec3(1.0f, 0.0f, 0.0f));
 		meshMaterial.SetEmissionIntensity(15.0f);
 	}

@@ -144,8 +144,12 @@ namespace Arcane
 							ImGui::Image((ImTextureID)meshMaterial.GetEmissionMap()->GetTextureId(), ImVec2(400, 400));
 							ImGui::EndTooltip();
 						}
-						ImGui::Text("Emission"); ImGui::SameLine();
-						ImGui::SliderFloat("##Emission Intensity", &meshMaterial.GetEmissionIntensityRef(), 1.0f, 255.0f, "%.0f");
+						ImGui::Text("Emission");
+						if (meshMaterial.GetEmissionMap() || (meshMaterial.GetEmissionColourRef().r != 0.0f || meshMaterial.GetEmissionColourRef().g != 0.0f || meshMaterial.GetEmissionColourRef().b != 0.0f))
+						{
+							ImGui::SameLine();  ImGui::SliderFloat("##Emission Intensity", &meshMaterial.GetEmissionIntensityRef(), 1.0f, 255.0f, "%.0f");
+						}
+						ImGui::ColorEdit3("Emission Colour", (float*)&meshMaterial.GetEmissionColourRef(), ImGuiColorEditFlags_DisplayRGB);
 					}
 				}
 

@@ -33,7 +33,6 @@ namespace Arcane
 	{
 		if (texture == nullptr)
 		{
-			m_HasEmission = false;
 			return;
 		}
 
@@ -44,7 +43,6 @@ namespace Arcane
 		}
 #endif
 
-		m_HasEmission = true;
 		m_EmissionMap = texture;
 	}
 
@@ -128,20 +126,19 @@ namespace Arcane
 		}
 
 		shader->SetUniform("material.texture_emission", currentTextureUnit);
-		if (m_HasEmission)
+		if (m_EmissionMap && m_EmissionMap->IsGenerated())
+		{
+			shader->SetUniform("hasEmission", true);
+			shader->SetUniform("material.emissionIntensity", m_EmissionIntensity);
+			shader->SetUniform("material.hasEmissionTexture", true);
+			m_EmissionMap->Bind(currentTextureUnit++);
+		}
+		else if (m_EmissionColour.r != 0.0f || m_EmissionColour.g != 0.0f || m_EmissionColour.b != 0.0f)
 		{
 			shader->SetUniform("hasEmission", true);
 			shader->SetUniform("material.emissionColour", m_EmissionColour);
 			shader->SetUniform("material.emissionIntensity", m_EmissionIntensity);
-			if (m_EmissionMap && m_EmissionMap->IsGenerated())
-			{
-				shader->SetUniform("material.hasEmissionTexture", true);
-				m_EmissionMap->Bind(currentTextureUnit++);
-			}
-			else
-			{
-				shader->SetUniform("material.hasEmissionTexture", false);
-			}
+			shader->SetUniform("material.hasEmissionTexture", false);
 		}
 		else
 		{

@@ -28,7 +28,6 @@ namespace Arcane
 		inline void SetDisplacmentStrength(float strength) { m_ParallaxStrength = strength; }
 		inline void SetDisplacementMinSteps(int steps) { m_ParallaxMinSteps = steps; }
 		inline void SetDisplacementMaxSteps(int steps) { m_ParallaxMaxSteps = steps; }
-		inline void SetEmissionEnabled(bool choice) { m_HasEmission = choice; }
 		inline void SetEmissionIntensity(float intensity) { m_EmissionIntensity = intensity; }
 		inline void SetEmissionColour(glm::vec3 colour) { m_EmissionColour = colour; }
 
@@ -59,9 +58,8 @@ namespace Arcane
 		int m_ParallaxMinSteps, m_ParallaxMaxSteps; // Will need to increase when parallax strength increases
 
 		// Emission values
-		bool m_HasEmission = false;
-		float m_EmissionIntensity = 5.0f;
-		glm::vec3 m_EmissionColour = glm::vec3(1.0f, 1.0f, 1.0f);
+		float m_EmissionIntensity = 1.0f;
+		glm::vec3 m_EmissionColour = glm::vec3(0.0f, 0.0f, 0.0f);
 	};
 }
 #endif
