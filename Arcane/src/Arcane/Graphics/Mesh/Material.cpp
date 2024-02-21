@@ -7,13 +7,6 @@
 
 namespace Arcane
 {
-	Material::Material()
-		: m_AlbedoMap(nullptr), m_NormalMap(nullptr), m_MetallicMap(nullptr), m_RoughnessMap(nullptr), m_AmbientOcclusionMap(nullptr), m_DisplacementMap(nullptr), m_EmissionMap(nullptr),
-			m_AlbedoColour(0.894f, 0.023f, 0.992f, 1.0f), m_MetallicValue(0.0f), m_RoughnessValue(0.0f),
-			m_ParallaxStrength(0.07f), m_ParallaxMinSteps(PARALLAX_MIN_STEPS), m_ParallaxMaxSteps(PARALLAX_MAX_STEPS)
-	{
-	}
-
 	void Material::SetAlbedoMap(Texture *texture)
 	{
 		if (texture == nullptr)

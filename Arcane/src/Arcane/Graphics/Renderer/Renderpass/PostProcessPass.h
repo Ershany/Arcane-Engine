@@ -133,7 +133,7 @@ namespace Arcane
 		float m_SsaoSampleRadius = 2.0f;
 		float m_SsaoStrength = 3.0f;
 		bool m_VignetteEnabled = false;
-		Texture *m_VignetteTexture;
+		Texture *m_VignetteTexture = nullptr;
 		glm::vec3 m_VignetteColour = glm::vec3(0.0f, 0.0f, 0.0f);
 		float m_VignetteIntensity = 0.25f;
 		bool m_ChromaticAberrationEnabled = false;
