@@ -10,6 +10,8 @@
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Scene/Entity.h>
 #include <Arcane/Animation/AnimationClip.h>
+#include <Arcane/Graphics/Renderer/Renderpass/MasterRenderPass.h>
+#include <Arcane/Graphics/Renderer/Renderpass/PostProcessPass.h>
 
 
 using namespace Arcane;
@@ -23,6 +25,10 @@ void Testbed::LoadTestbedGraphics()
 {
 	Scene* scene = Arcane::Application::GetInstance().GetScene();
 	AssetManager& assetManager = AssetManager::GetInstance();
+
+	// Optional post fx resources
+	//Arcane::Application::GetInstance().GetMasterRenderPass()->GetPostProcessPass()->SetBloomDirtTexture(assetManager.Load2DTextureAsync(std::string("res/textures/bloom-dirt.png")));
+	//Arcane::Application::GetInstance().GetMasterRenderPass()->GetPostProcessPass()->SetVignetteTexture(assetManager.Load2DTextureAsync(std::string("res/textures/vignette_mask.jpg")));
 
 	// Load some assets for the scene at startup
 	Cube* cube = new Cube();

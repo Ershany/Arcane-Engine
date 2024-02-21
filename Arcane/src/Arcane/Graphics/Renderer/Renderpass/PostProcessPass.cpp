@@ -214,7 +214,14 @@ namespace Arcane
 			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
 			else framebufferToRenderTo = &m_FullRenderTarget;
 
-			Vignette(framebufferToRenderTo, inputFramebuffer->GetColourTexture());
+			if (m_VignetteTexture && m_VignetteTexture->IsGenerated())
+			{
+				Vignette(framebufferToRenderTo, inputFramebuffer->GetColourTexture(), m_VignetteTexture);
+			}
+			else
+			{
+				Vignette(framebufferToRenderTo, inputFramebuffer->GetColourTexture());
+			}
 			inputFramebuffer = framebufferToRenderTo;
 		}
 
@@ -460,8 +467,13 @@ namespace Arcane
 		m_BloomCompositeShader->SetUniform("bloomStrength", m_BloomStrength);
 		m_BloomCompositeShader->SetUniform("sceneTexture", 0);
 		m_BloomCompositeShader->SetUniform("bloomTexture", 1);
+		m_BloomCompositeShader->SetUniform("dirtMaskTexture", 2);
 		hdrSceneTexture->Bind(0);
 		m_BloomHalfRenderTarget.GetColourTexture()->Bind(1);
+		if (m_BloomDirtTexture && m_BloomDirtTexture->IsGenerated())
+			m_BloomDirtTexture->Bind(2);
+		else
+			AssetManager::GetBlackTexture()->Bind(2);
 		Renderer::DrawNdcPlane();
 
 		return m_FullRenderTarget.GetColourTexture();

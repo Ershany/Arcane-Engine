@@ -49,6 +49,7 @@ namespace Arcane
 		inline float& GetBloomThresholdRef() { return m_BloomThreshold; }
 		inline float& GetBloomSoftThresholdRef() { return m_BloomSoftThreshold; }
 		inline float& GetBloomStrengthRef() { return m_BloomStrength; }
+		inline Texture* GetBloomDirtTexture() { return m_BloomDirtTexture; }
 
 		// SSAO bindings
 		inline bool& GetSsaoEnabledRef() { return m_SsaoEnabled; }
@@ -80,6 +81,12 @@ namespace Arcane
 		inline Framebuffer* GetEighthRenderTarget() { return &m_EighthRenderTarget; }
 		inline Framebuffer* GetResolveRenderTarget() { return &m_ResolveRenderTarget; }
 		inline Framebuffer* GetTonemappedNonLinearTarget() { return &m_TonemappedNonLinearTarget; }
+
+		// Bloom settings
+		inline void SetBloomDirtTexture(Texture *texture) { m_BloomDirtTexture = texture; }
+
+		// Vignette settings
+		inline void SetVignetteTexture(Texture *texture) { m_VignetteTexture = texture; }
 	private:
 		inline float Lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:
@@ -96,8 +103,8 @@ namespace Arcane
 		Framebuffer m_TonemappedNonLinearTarget;
 		Framebuffer m_ResolveRenderTarget; // Only used if multi-sampling is enabled so it can be resolved
 
+		Texture *m_BloomDirtTexture = nullptr;
 		Framebuffer m_BrightPassRenderTarget;
-		//Framebuffer m_BloomFullRenderTarget;
 		Framebuffer m_BloomHalfRenderTarget;
 		Framebuffer m_BloomQuarterRenderTarget;
 		Framebuffer m_BloomEightRenderTarget;

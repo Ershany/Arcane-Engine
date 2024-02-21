@@ -63,6 +63,15 @@ namespace Arcane
 					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 						ImGui::SetTooltip("This controls how hard of a cutoff between a pixel that has bloom and one that is just below the threshold. 0 = hard cutoff, 1 = soft cutoff.");
 					ImGui::SliderFloat("Strength", &postProcessPass->GetBloomStrengthRef(), 0.1f, 5.0f);
+					Texture *dirtTexture = postProcessPass->GetBloomDirtTexture();
+					ImGui::Text("Bloom Dirty Lens Texture:");
+					ImGui::Image(dirtTexture ? (ImTextureID)dirtTexture->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetBlackTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+					if (ImGui::IsItemHovered() && dirtTexture)
+					{
+						ImGui::BeginTooltip();
+						ImGui::Image((ImTextureID)dirtTexture->GetTextureId(), ImVec2(400 * dirtTexture->GetWidth()/dirtTexture->GetHeight(), 400));
+						ImGui::EndTooltip();
+					}
 					ImGui::PopID();
 				}
 				ImGui::NewLine();
@@ -80,11 +89,11 @@ namespace Arcane
 					ImGui::PushID("Vignette Arcane Effect");
 					ImGui::Checkbox("Enabled", &postProcessPass->GetVignetteEnabledRef());
 					Texture *vignetteTexture = postProcessPass->GetVignetteTexture();
-					ImGui::Image(postProcessPass->GetVignetteTexture() ? (ImTextureID)vignetteTexture->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+					ImGui::Image(vignetteTexture ? (ImTextureID)vignetteTexture->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
 					if (ImGui::IsItemHovered() && vignetteTexture)
 					{
 						ImGui::BeginTooltip();
-						ImGui::Image((ImTextureID)vignetteTexture->GetTextureId(), ImVec2(400, 400));
+						ImGui::Image((ImTextureID)vignetteTexture->GetTextureId(), ImVec2(400 * vignetteTexture->GetWidth() / vignetteTexture->GetHeight(), 400));
 						ImGui::EndTooltip();
 					}
 					ImGui::ColorEdit3("Vignette Colour", (float*)&postProcessPass->GetVignetteColourRef(), ImGuiColorEditFlags_DisplayRGB);
