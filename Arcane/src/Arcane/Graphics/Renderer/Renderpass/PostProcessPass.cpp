@@ -465,6 +465,7 @@ namespace Arcane
 		glViewport(0, 0, m_FullRenderTarget.GetWidth(), m_FullRenderTarget.GetHeight());
 		m_FullRenderTarget.Bind();
 		m_BloomCompositeShader->SetUniform("bloomStrength", m_BloomStrength);
+		m_BloomCompositeShader->SetUniform("dirtMaskIntensity", m_BloomDirtMaskIntensity);
 		m_BloomCompositeShader->SetUniform("sceneTexture", 0);
 		m_BloomCompositeShader->SetUniform("bloomTexture", 1);
 		m_BloomCompositeShader->SetUniform("dirtMaskTexture", 2);

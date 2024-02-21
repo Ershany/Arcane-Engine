@@ -50,6 +50,7 @@ namespace Arcane
 		inline float& GetBloomSoftThresholdRef() { return m_BloomSoftThreshold; }
 		inline float& GetBloomStrengthRef() { return m_BloomStrength; }
 		inline Texture* GetBloomDirtTexture() { return m_BloomDirtTexture; }
+		inline float& GetBloomDirtMaskIntensityRef() { return m_BloomDirtMaskIntensity; }
 
 		// SSAO bindings
 		inline bool& GetSsaoEnabledRef() { return m_SsaoEnabled; }
@@ -84,6 +85,7 @@ namespace Arcane
 
 		// Bloom settings
 		inline void SetBloomDirtTexture(Texture *texture) { m_BloomDirtTexture = texture; }
+		inline void SetBloomDirtMaskIntensity(float intensity) { m_BloomDirtMaskIntensity = intensity; }
 
 		// Vignette settings
 		inline void SetVignetteTexture(Texture *texture) { m_VignetteTexture = texture; }
@@ -125,6 +127,7 @@ namespace Arcane
 		float m_BloomThreshold = 3.0f;
 		float m_BloomSoftThreshold = 0.5f; // [0, 1] 0 = hard cutoff, 1 = soft cutoff between bloom vs no bloom
 		float m_BloomStrength = 0.4f;
+		float m_BloomDirtMaskIntensity = 5.0f;
 		bool m_FxaaEnabled = true;
 		bool m_SsaoEnabled = true;
 		float m_SsaoSampleRadius = 2.0f;

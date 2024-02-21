@@ -72,6 +72,7 @@ namespace Arcane
 						ImGui::Image((ImTextureID)dirtTexture->GetTextureId(), ImVec2(400 * dirtTexture->GetWidth()/dirtTexture->GetHeight(), 400));
 						ImGui::EndTooltip();
 					}
+					ImGui::SliderFloat("Dirt Intensity", &postProcessPass->GetBloomDirtMaskIntensityRef(), 0.0f, 100.0f);
 					ImGui::PopID();
 				}
 				ImGui::NewLine();

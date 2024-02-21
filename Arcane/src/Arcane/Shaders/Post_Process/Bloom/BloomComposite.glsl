@@ -26,11 +26,11 @@ uniform sampler2D bloomTexture;
 uniform sampler2D dirtMaskTexture;
 
 uniform float bloomStrength = 0.04f;
-uniform float dirtMaskIntensity = 20.0f;
+uniform float dirtMaskIntensity = 5.0f;
 
 void main() {
 	vec3 hdrScene = texture2D(sceneTexture, TexCoords).rgb;
 	vec3 hdrBloom = texture2D(bloomTexture, TexCoords).rgb;
 	vec3 dirt = texture2D(dirtMaskTexture, TexCoords).rgb;
-	FragColour = vec4(hdrScene + (hdrBloom * bloomStrength) + (dirt * hdrBloom), 1.0); // Additive blend
+	FragColour = vec4(hdrScene + (hdrBloom * bloomStrength) + (dirt * hdrBloom * dirtMaskIntensity), 1.0); // Additive blend
 }
