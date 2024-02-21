@@ -59,30 +59,6 @@ vec3 DownsampleBox13Tap(sampler2D tex, vec2 uv, vec2 texelSize)
 	downsampleResult += (B + F + H + L) * 0.0625;
 	downsampleResult += (D + E + I + J) * 0.125;
 
-	/*
-	vec3 A = texture(tex, uv + texelSize * vec2(-1.0, -1.0)).rgb;
-	vec3 B = texture(tex, uv + texelSize * vec2( 0.0, -1.0)).rgb;
-	vec3 C = texture(tex, uv + texelSize * vec2( 1.0, -1.0)).rgb;
-	vec3 D = texture(tex, uv + texelSize * vec2(-0.5, -0.5)).rgb;
-	vec3 E = texture(tex, uv + texelSize * vec2( 0.5, -0.5)).rgb;
-	vec3 F = texture(tex, uv + texelSize * vec2(-1.0,  0.0)).rgb;
-	vec3 G = texture(tex, uv                               ).rgb;
-	vec3 H = texture(tex, uv + texelSize * vec2( 1.0,  0.0)).rgb;
-	vec3 I = texture(tex, uv + texelSize * vec2(-0.5,  0.5)).rgb;
-	vec3 J = texture(tex, uv + texelSize * vec2( 0.5,  0.5)).rgb;
-	vec3 K = texture(tex, uv + texelSize * vec2(-1.0,  1.0)).rgb;
-	vec3 L = texture(tex, uv + texelSize * vec2( 0.0,  1.0)).rgb;
-	vec3 M = texture(tex, uv + texelSize * vec2( 1.0,  1.0)).rgb;
-
-	vec2 divisionWeights = (1.0 / 4.0) * vec2(0.5, 0.125); // 2 weights, 0.5 for middle 4, and 0.125 for the other 4 outside squares. Multiply weight by 1.0/4.0 to average the 4 samples per tap
-
-	vec3 downsampleResult = (D + E + I + J) * divisionWeights.x;
-	downsampleResult += (A + B + F + G) * divisionWeights.y;
-	downsampleResult += (B + C + G + H) * divisionWeights.y;
-	downsampleResult += (F + G + K + L) * divisionWeights.y;
-	downsampleResult += (G + H + L + M) * divisionWeights.y;
-	*/
-
 	return downsampleResult;
 }
 
