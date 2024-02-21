@@ -112,12 +112,12 @@ namespace Arcane
 			AssetManager::GetInstance().GetDefaultAOTexture()->Bind(currentTextureUnit++);
 		}
 
-		shader->SetUniform("material.texture_displacement", currentTextureUnit);
 		if (m_DisplacementMap && m_DisplacementMap->IsGenerated())
 		{
 			shader->SetUniform("hasDisplacement", true);
 			shader->SetUniform("minMaxDisplacementSteps", glm::vec2(m_ParallaxMinSteps, m_ParallaxMaxSteps));
 			shader->SetUniform("parallaxStrength", m_ParallaxStrength);
+			shader->SetUniform("material.texture_displacement", currentTextureUnit);
 			m_DisplacementMap->Bind(currentTextureUnit++);
 		}
 		else
@@ -125,12 +125,12 @@ namespace Arcane
 			shader->SetUniform("hasDisplacement", false);
 		}
 
-		shader->SetUniform("material.texture_emission", currentTextureUnit);
 		if (m_EmissionMap && m_EmissionMap->IsGenerated())
 		{
 			shader->SetUniform("hasEmission", true);
 			shader->SetUniform("material.emissionIntensity", m_EmissionIntensity);
 			shader->SetUniform("material.hasEmissionTexture", true);
+			shader->SetUniform("material.texture_emission", currentTextureUnit);
 			m_EmissionMap->Bind(currentTextureUnit++);
 		}
 		else if (m_EmissionColour.r != 0.0f || m_EmissionColour.g != 0.0f || m_EmissionColour.b != 0.0f)
