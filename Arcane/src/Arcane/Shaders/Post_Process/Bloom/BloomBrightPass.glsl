@@ -29,6 +29,7 @@ void main() {
 	vec3 hdrColour = texture2D(sceneCapture, TexCoords).rgb;
 
 	// Extract the bright areas by calculating brightness and checking it against the threshold
+	// The soft threshold is from this source: https://catlikecoding.com/unity/tutorials/advanced-rendering/bloom/
 	float brightness = dot(hdrColour, vec3(0.2126, 0.7152, 0.0722));
 	float soft = brightness - filterValues.y;
 	soft = clamp(soft, 0, filterValues.z);

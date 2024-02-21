@@ -89,19 +89,31 @@ void main() {
 	}
 
 	// Sample textures and build up the GBuffer
+	vec4 albedo = material.hasAlbedoTexture ? texture(material.texture_albedo, textureCoordinates).rgba * material.albedoColour : material.albedoColour;
+
 	// If we have emission, hijack the albedo and replace it with the emission colour. Then since we want HDR values and albedo RT is LDR, we can store the emission intensity in the alpha of the gb_MaterialInfo RT
-	vec4 albedo;
+	bool overwriteAlbedoWithEmission = false;
 	if (hasEmission) {
-		albedo = material.hasEmissionTexture ? vec4(texture(material.texture_emission, textureCoordinates).rgb, 1.0) : vec4(material.emissionColour, 1.0);
+		if (material.hasEmissionTexture) {
+			vec3 emissiveSample = texture(material.texture_emission, textureCoordinates).rgb;
+
+			// Check emission map sample, if it is black (ie. no emission) then we just skip emission for this fragment, otherwise hijack the albedo RT
+			if (!all(equal(emissiveSample, vec3(0.0)))) {
+				albedo = vec4(emissiveSample, 1.0);
+				overwriteAlbedoWithEmission = true;
+			}
+		}
+		else {
+			albedo = vec4(material.emissionColour, 1.0);
+			overwriteAlbedoWithEmission = true;
+		}
 	}
-	else {
-		albedo = material.hasAlbedoTexture ? texture(material.texture_albedo, textureCoordinates).rgba * material.albedoColour : material.albedoColour;
-	}
+
 	vec3 normal = texture(material.texture_normal, textureCoordinates).rgb;
 	float metallic = material.hasMetallicTexture ? texture(material.texture_metallic, textureCoordinates).r : material.metallicValue;
 	float roughness = material.hasRoughnessTexture ? texture(material.texture_roughness, textureCoordinates).r : material.roughnessValue;
 	float ao = texture(material.texture_ao, textureCoordinates).r;
-	float emissionIntensity = material.emissionIntensity / 255.0; // Converting u8 [0, 255] -> float [0.0, 1.0]
+	float emissionIntensity = overwriteAlbedoWithEmission ? material.emissionIntensity / 255.0 : 0.0; // Converting u8 [0, 255] -> float [0.0, 1.0]
 
 	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
 	normal = normalize(TBN * UnpackNormal(normal));

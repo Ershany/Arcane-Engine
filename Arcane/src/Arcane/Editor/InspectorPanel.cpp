@@ -145,7 +145,7 @@ namespace Arcane
 							ImGui::EndTooltip();
 						}
 						ImGui::Text("Emission"); ImGui::SameLine();
-						ImGui::SliderFloat("##Emission Intensity", &meshMaterial.GetEmissionIntensityRef(), 0.0f, 255.0f, "%.0f");
+						ImGui::SliderFloat("##Emission Intensity", &meshMaterial.GetEmissionIntensityRef(), 1.0f, 255.0f, "%.0f");
 					}
 				}
 

@@ -234,8 +234,11 @@ void Testbed::LoadTestbedGraphics()
 		srgbTextureSettings.IsSRGB = true;
 
 		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetAlbedoMap(assetManager.GetBlackTexture());
 		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/circuitry-emission.png"), &srgbTextureSettings));
 		meshMaterial.SetEmissionIntensity(45.0f);
+		meshMaterial.SetMetallicValue(1.0f);
+		meshMaterial.SetRoughnessValue(1.0f);
 	}
 
 	{
@@ -272,7 +275,7 @@ void Testbed::LoadTestbedGraphics()
 		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
 		meshMaterial.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2.jpg"), &srgbTextureSettings));
 		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_normal.jpg")));
-		//meshMaterial.SetDisplacementMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
+		meshMaterial.SetDisplacementMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
 		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_emiss.png"), &srgbTextureSettings));
 		meshMaterial.SetEmissionIntensity(5.0f);
 		meshMaterial.SetRoughnessValue(1.0f);
