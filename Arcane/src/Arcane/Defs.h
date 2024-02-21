@@ -37,6 +37,9 @@
 #define DEFAULT_NEAR_PLANE 0.3f
 #define DEFAULT_FAR_PLANE 5000.0f
 
+// Camera
+#define USE_PERSPECTIVE_PROJ 1 // 0 = ortho, 1 = perspective	Only needed until we have proper editor camera controls
+
 // Camera Controller Values
 #define CAMERA_SPEED 5.0f
 #define CAMERA_ROTATION_SENSITIVITY_MOUSE 50.0f

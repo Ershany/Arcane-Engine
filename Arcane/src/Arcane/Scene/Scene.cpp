@@ -17,8 +17,11 @@ namespace Arcane
 	Scene::Scene(Window *window)
 		: m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_LightManager(this), m_ProbeManager(m_SceneProbeBlendSetting), m_WaterManager(this)
 	{
+#if USE_PERSPECTIVE_PROJ
 		m_SceneCamera = new PerspectiveCamera();
-		//m_SceneCamera = new OrthographicCamera();
+#else
+		m_SceneCamera = new OrthographicCamera();
+#endif
 		m_GLCache = GLCache::GetInstance();
 
 		PreInit();
