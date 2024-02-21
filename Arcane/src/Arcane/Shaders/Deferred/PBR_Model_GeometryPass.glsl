@@ -55,12 +55,14 @@ struct Material {
 	sampler2D texture_roughness;
 	sampler2D texture_ao;
 	sampler2D texture_displacement;
+	sampler2D texture_emission;
 
-	// Used if textures aren't provided
 	vec4 albedoColour;
-	float metallicValue, roughnessValue;
+	float metallicValue, roughnessValue; // Used if textures aren't provided
 
-	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture;
+	vec3 emissionColour;
+	float emissionIntensity;
+	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture, hasEmissionTexture;
 };
 
 in mat3 TBN;
@@ -71,6 +73,7 @@ in vec3 ViewPosTangentSpace;
 uniform bool hasDisplacement;
 uniform vec2 minMaxDisplacementSteps;
 uniform float parallaxStrength;
+uniform bool hasEmission;
 uniform Material material;
 
 // Functions
@@ -85,19 +88,39 @@ void main() {
 		textureCoordinates = ParallaxMapping(TexCoords, viewDirTangentSpace);
 	}
 
-	// Sample textures
+	// Sample textures and build up the GBuffer
 	vec4 albedo = material.hasAlbedoTexture ? texture(material.texture_albedo, textureCoordinates).rgba * material.albedoColour : material.albedoColour;
+
+	// If we have emission, hijack the albedo and replace it with the emission colour. Then since we want HDR values and albedo RT is LDR, we can store the emission intensity in the alpha of the gb_MaterialInfo RT
+	bool overwriteAlbedoWithEmission = false;
+	if (hasEmission) {
+		if (material.hasEmissionTexture) {
+			vec3 emissiveSample = texture(material.texture_emission, textureCoordinates).rgb;
+
+			// Check emission map sample, if it is black (ie. no emission) then we just skip emission for this fragment, otherwise hijack the albedo RT
+			if (!all(equal(emissiveSample, vec3(0.0)))) {
+				albedo = vec4(emissiveSample, 1.0);
+				overwriteAlbedoWithEmission = true;
+			}
+		}
+		else {
+			albedo = vec4(material.emissionColour, 1.0);
+			overwriteAlbedoWithEmission = true;
+		}
+	}
+
 	vec3 normal = texture(material.texture_normal, textureCoordinates).rgb;
 	float metallic = material.hasMetallicTexture ? texture(material.texture_metallic, textureCoordinates).r : material.metallicValue;
 	float roughness = material.hasRoughnessTexture ? texture(material.texture_roughness, textureCoordinates).r : material.roughnessValue;
 	float ao = texture(material.texture_ao, textureCoordinates).r;
+	float emissionIntensity = overwriteAlbedoWithEmission ? material.emissionIntensity / 255.0 : 0.0; // Converting u8 [0, 255] -> float [0.0, 1.0]
 
 	// Normal mapping code. Opted out of tangent space normal mapping since I would have to convert all of my lights to tangent space
 	normal = normalize(TBN * UnpackNormal(normal));
 
 	gb_Albedo = albedo;
 	gb_Normal = normal;
-	gb_MaterialInfo = vec4(metallic, roughness, ao, 1.0);
+	gb_MaterialInfo = vec4(metallic, roughness, ao, emissionIntensity);
 }
 
 // Unpacks the normal from the texture and returns the normal in tangent space

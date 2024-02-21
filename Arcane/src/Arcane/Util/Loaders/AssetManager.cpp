@@ -35,11 +35,9 @@ namespace Arcane
 	Model* AssetManager::LoadModel(const std::string &path)
 	{
 		// Check the cache
-		auto iter = m_ModelCache.find(path);
-		if (iter != m_ModelCache.end())
-		{
-			return iter->second;
-		}
+		Model *modelCached = FetchModelFromCache(path);
+		if (modelCached)
+			return modelCached;
 
 		Model *model = new Model();
 
@@ -51,20 +49,20 @@ namespace Arcane
 		return model;
 	}
 
-	Model* AssetManager::LoadModelAsync(const std::string &path)
+	Model* AssetManager::LoadModelAsync(const std::string &path, std::function<void(Model*)> callback)
 	{
 		// Check the cache
-		auto iter = m_ModelCache.find(path);
-		if (iter != m_ModelCache.end())
-		{
-			return iter->second;
-		}
+		Model *modelCached = FetchModelFromCache(path);
+		if (modelCached)
+			return modelCached;
 
 		Model *model = new Model();
 
 		ModelLoadJob job;
 		job.path = path;
 		job.model = model;
+		if (callback)
+			job.callback = callback;
 		m_ModelCache.insert(std::pair<std::string, Model*>(path, model));
 		
 		++m_AssetsInFlight;
@@ -73,15 +71,24 @@ namespace Arcane
 		return model;
 	}
 
+	Model* AssetManager::FetchModelFromCache(const std::string &path)
+	{
+		auto iter = m_ModelCache.find(path);
+		if (iter != m_ModelCache.end())
+		{
+			return iter->second;
+		}
+		
+		return nullptr;
+	}
+
 	// Function force loads a texture on the main thread and blocks until it is generated
 	Texture* AssetManager::Load2DTexture(const std::string &path, TextureSettings *settings)
 	{
 		// Check the cache
-		auto iter = m_TextureCache.find(path);
-		if (iter != m_TextureCache.end())
-		{
-			return iter->second;
-		}
+		Texture *textureCached = FetchTextureFromCache(path);
+		if (textureCached)
+			return textureCached;
 
 		Texture *texture;
 		if (settings != nullptr)
@@ -111,14 +118,12 @@ namespace Arcane
 	}
 
 	// Function adds the texture to a queue to be loaded by the asset manager's workers threads
-	Texture* AssetManager::Load2DTextureAsync(const std::string &path, TextureSettings *settings)
+	Texture* AssetManager::Load2DTextureAsync(const std::string &path, TextureSettings *settings, std::function<void(Texture*)> callback)
 	{
 		// Check the cache
-		auto iter = m_TextureCache.find(path);
-		if (iter != m_TextureCache.end())
-		{
-			return iter->second;
-		}
+		Texture *textureCached = FetchTextureFromCache(path);
+		if (textureCached)
+			return textureCached;
 
 		Texture *texture;
 		if (settings != nullptr)
@@ -134,12 +139,25 @@ namespace Arcane
 		TextureLoadJob job;
 		job.texturePath = path;
 		job.generationData.texture = texture;
+		if (callback)
+			job.callback = callback;
 		m_TextureCache.insert(std::pair<std::string, Texture*>(path, texture));
 
 		++m_AssetsInFlight;
 		m_LoadingTexturesQueue.Push(job);
 
 		return texture;
+	}
+
+	Texture* AssetManager::FetchTextureFromCache(const std::string &path)
+	{
+		auto iter = m_TextureCache.find(path);
+		if (iter != m_TextureCache.end())
+		{
+			return iter->second;
+		}
+
+		return nullptr;
 	}
 
 	Cubemap* AssetManager::LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings)
@@ -167,7 +185,7 @@ namespace Arcane
 		return cubemap;
 	}
 
-	Cubemap* AssetManager::LoadCubemapTextureAsync(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings)
+	Cubemap* AssetManager::LoadCubemapTextureAsync(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings, std::function<void()> callback)
 	{
 		Cubemap *cubemap = new Cubemap();
 		if (settings != nullptr)
@@ -180,6 +198,8 @@ namespace Arcane
 			job.texturePath = faces[i];
 			job.generationData.face = (GL_TEXTURE_CUBE_MAP_POSITIVE_X + i);
 			job.generationData.cubemap = cubemap;
+			if (callback)
+				job.callback = callback;
 
 			++m_AssetsInFlight;
 			m_LoadingCubemapQueue.Push(job);
@@ -246,6 +266,8 @@ namespace Arcane
 
 				TextureLoader::Generate2DTexture(loadJob.texturePath, loadJob.generationData);
 				--m_AssetsInFlight;
+				if (loadJob.callback)
+					loadJob.callback(loadJob.generationData.texture);
 
 				if (--texturesPerFrame <= 0)
 					break;
@@ -265,6 +287,8 @@ namespace Arcane
 
 				TextureLoader::GenerateCubemapTexture(loadJob.texturePath, loadJob.generationData);
 				--m_AssetsInFlight;
+				if (loadJob.callback)
+					loadJob.callback();
 
 				if (--cubemapFacesPerFrame <= 0)
 					break;
@@ -285,6 +309,8 @@ namespace Arcane
 
 				loadJob.model->GenerateGpuData();
 				--m_AssetsInFlight;
+				if (loadJob.callback)
+					loadJob.callback(loadJob.model);
 
 				if (--modelsPerFrame <= 0)
 					break;

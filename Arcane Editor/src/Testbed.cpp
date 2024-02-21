@@ -10,6 +10,8 @@
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Scene/Entity.h>
 #include <Arcane/Animation/AnimationClip.h>
+#include <Arcane/Graphics/Renderer/Renderpass/MasterRenderPass.h>
+#include <Arcane/Graphics/Renderer/Renderpass/PostProcessPass.h>
 
 
 using namespace Arcane;
@@ -24,24 +26,29 @@ void Testbed::LoadTestbedGraphics()
 	Scene* scene = Arcane::Application::GetInstance().GetScene();
 	AssetManager& assetManager = AssetManager::GetInstance();
 
-	// Load some assets for the scene at startup
-	Model* gunModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"));
-	Model* shieldModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"));
-	Cube* cube = new Cube();
-	Model* cubeModel = new Model(*cube);
-	Quad* quad = new Quad();
-	Model* quadModel = new Model(*quad);
-	quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png")));
-	Model* waterModel = new Model(*quad);
-	Model* brickModel = new Model(*quad);
+	// Optional post fx resources
+	//Arcane::Application::GetInstance().GetMasterRenderPass()->GetPostProcessPass()->SetBloomDirtTexture(assetManager.Load2DTextureAsync(std::string("res/textures/bloom-dirt.png")));
+	//Arcane::Application::GetInstance().GetMasterRenderPass()->GetPostProcessPass()->SetVignetteTexture(assetManager.Load2DTextureAsync(std::string("res/textures/vignette_mask.jpg")));
 
-	//Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae")); // TODO: Need an API to load textures and animation clips post async load, then I can use async for animated things
-	Model* animatedVampire = assetManager.LoadModel(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"));
-	int animIndex = 0;
-	AnimationClip *clip = new AnimationClip(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"), animIndex, animatedVampire);
+	// Load some assets for the scene at startup
+	Cube* cube = new Cube();
+	Quad* quad = new Quad();
 
 	// Initialize some entities and components at startup
 	{
+		Model* gunModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Cerberus_Gun/Cerberus_LP.FBX"),
+			[](Model *loadedModel)
+			{
+				AssetManager& assetManager = AssetManager::GetInstance();
+				auto& material = loadedModel->GetMeshes()[0].GetMaterial();
+
+				material.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_N.tga")));
+				material.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_M.tga")));
+				material.SetRoughnessMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_R.tga")));
+				material.SetAmbientOcclusionMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Cerberus_Gun/Textures/Cerberus_AO.tga")));
+			}
+		);
+
 		auto gun = scene->CreateEntity("Cerberus Gun");
 		auto& transformComponent = gun.GetComponent<TransformComponent>();
 		transformComponent.Translation = { -32.60f, -9.28f, 48.48f };
@@ -52,6 +59,23 @@ void Testbed::LoadTestbedGraphics()
 	}
 
 	{
+		Model* shieldModel = assetManager.LoadModelAsync(std::string("res/3D_Models/Hyrule_Shield/HShield.obj"),
+			[](Model *loadedModel)
+			{
+				AssetManager& assetManager = AssetManager::GetInstance();
+				auto& material = loadedModel->GetMeshes()[0].GetMaterial();
+
+				TextureSettings srgbTextureSettings;
+				srgbTextureSettings.IsSRGB = true;
+
+				material.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Albedo].tga"), &srgbTextureSettings));
+				material.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Normal].tga")));
+				material.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Metallic].tga")));
+				material.SetRoughnessMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Roughness].tga")));
+				material.SetAmbientOcclusionMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Hyrule_Shield/HShield_[Occlusion].tga")));
+			}
+		);
+
 		auto shield = scene->CreateEntity("Hyrule Shield");
 		auto& transformComponent = shield.GetComponent<TransformComponent>();
 		transformComponent.Translation = { -7.4f, -7.6f, -31.4f };
@@ -61,6 +85,8 @@ void Testbed::LoadTestbedGraphics()
 	}
 
 	{
+		Model* cubeModel = new Model(*cube);
+
 		auto cube = scene->CreateEntity("Cube");
 		auto& transformComponent = cube.GetComponent<TransformComponent>();
 		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
@@ -70,6 +96,13 @@ void Testbed::LoadTestbedGraphics()
 	}
 
 	{
+		Model* quadModel = new Model(*quad);
+
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
+
+		quadModel->GetMeshes()[0].GetMaterial().SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/window.png"), &srgbTextureSettings));
+
 		auto window = scene->CreateEntity("Window");
 		auto& transformComponent = window.GetComponent<TransformComponent>();
 		transformComponent.Translation = { -32.60f, 10.0f, 48.48f };
@@ -137,16 +170,27 @@ void Testbed::LoadTestbedGraphics()
 		transformComponent.Translation = { -70.88f, -9.22f, -39.02f };
 		transformComponent.Rotation.y = glm::radians(90.0f);
 		transformComponent.Scale = { 0.05f, 0.05f, 0.05f };
+		auto& poseAnimatorComponent = vampire.AddComponent<PoseAnimatorComponent>();
+
+		Model* animatedVampire = assetManager.LoadModelAsync(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"),
+			[&poseAnimatorComponent](Model *loadedModel)
+			{
+				int animIndex = 0;
+				AnimationClip *clip = new AnimationClip(std::string("res/3D_Models/Vampire/Dancing_Vampire.dae"), animIndex, loadedModel);
+				poseAnimatorComponent.PoseAnimator.SetAnimationClip(clip);
+
+				AssetManager& assetManager = AssetManager::GetInstance();
+				Material& meshMaterial = loadedModel->GetMeshes()[0].GetMaterial();
+				meshMaterial.SetRoughnessValue(1.0f);
+				meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_normal.png")));
+				meshMaterial.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_specular.png")));
+			}
+		);
+
 		auto& meshComponent = vampire.AddComponent<MeshComponent>(animatedVampire);
 		meshComponent.IsStatic = false;
 		meshComponent.IsTransparent = false;
 		meshComponent.ShouldBackfaceCull = false;
-		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
-		meshMaterial.SetRoughnessValue(1.0f);
-		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_normal.png")));
-		meshMaterial.SetMetallicMap(assetManager.Load2DTextureAsync(std::string("res/3D_Models/Vampire/textures/Vampire_specular.png")));
-		auto& poseAnimatorComponent = vampire.AddComponent<PoseAnimatorComponent>();
-		poseAnimatorComponent.PoseAnimator.SetAnimationClip(clip);
 	}
 
 	{
@@ -161,6 +205,8 @@ void Testbed::LoadTestbedGraphics()
 	}
 
 	{
+		Model* brickModel = new Model(*quad);
+
 		auto bricks = scene->CreateEntity("Displaced Bricks");
 		auto& transformComponent = bricks.GetComponent<TransformComponent>();
 		transformComponent.Translation = { 47.70f, -6.5f, 6.0f };
@@ -168,12 +214,82 @@ void Testbed::LoadTestbedGraphics()
 		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
 		auto& meshComponent = bricks.AddComponent<MeshComponent>(brickModel);
 		meshComponent.IsStatic = true;
+
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
+
 		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
-		meshMaterial.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2.jpg")));
+		meshMaterial.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2.jpg"), &srgbTextureSettings));
 		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_normal.jpg")));
 		meshMaterial.SetDisplacementMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
 		meshMaterial.SetRoughnessValue(1.0f);
 	}
+
+	{
+		Model* flatModel = new Model(*quad);
+
+		auto emissionWall = scene->CreateEntity("Emission Lava");
+		auto& transformComponent = emissionWall.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 47.70f, 6.5f, 6.0f };
+		transformComponent.Rotation = { 0.0f, glm::radians(210.0f), 0.0f };
+		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
+		auto& meshComponent = emissionWall.AddComponent<MeshComponent>(flatModel);
+		meshComponent.IsStatic = true;
+
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
+
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetAlbedoMap(assetManager.GetBlackSRGBTexture());
+		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/circuitry-emission.png"), &srgbTextureSettings));
+		meshMaterial.SetEmissionIntensity(45.0f);
+		meshMaterial.SetMetallicValue(1.0f);
+		meshMaterial.SetRoughnessValue(1.0f);
+	}
+
+	{
+		Model* cubeModel = new Model(*cube);
+
+		auto cube = scene->CreateEntity("Emmissive Cube");
+		auto& transformComponent = cube.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 0.0f, 15.0f, 0.0f };
+		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
+		auto& meshComponent = cube.AddComponent<MeshComponent>(cubeModel);
+		meshComponent.IsStatic = true;
+		meshComponent.IsTransparent = false;
+
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetEmissionColour(glm::vec3(1.0f, 0.0f, 0.0f));
+		meshMaterial.SetEmissionIntensity(15.0f);
+	}
+
+	{
+		Model* brickModel = new Model(*quad);
+
+		auto bricks = scene->CreateEntity("Emmissive Bricks");
+		auto& transformComponent = bricks.GetComponent<TransformComponent>();
+		transformComponent.Translation = { 47.70f, 19.5f, 6.0f };
+		transformComponent.Rotation = { 0.0f, glm::radians(210.0f), 0.0f };
+		transformComponent.Scale = { 5.0f, 5.0f, 5.0f };
+		auto& meshComponent = bricks.AddComponent<MeshComponent>(brickModel);
+		meshComponent.IsStatic = true;
+
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
+
+		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
+		meshMaterial.SetAlbedoMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2.jpg"), &srgbTextureSettings));
+		meshMaterial.SetNormalMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_normal.jpg")));
+		meshMaterial.SetDisplacementMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_disp.jpg")));
+		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/bricks2_emiss.png"), &srgbTextureSettings));
+		meshMaterial.SetEmissionIntensity(5.0f);
+		meshMaterial.SetRoughnessValue(1.0f);
+	}
+}
+
+void Testbed::LoadTestbedGraphics2D()
+{
+
 }
 
 void Testbed::LoadTestbedPhysics()
@@ -183,6 +299,7 @@ void Testbed::LoadTestbedPhysics()
 
 void Testbed::LoadTestbedAnimation()
 {
+	// TODO: This testbed should use callback API for loading models async instead of blocking to load anims (look at gfx)
 	Scene* scene = Arcane::Application::GetInstance().GetScene();
 	AssetManager& assetManager = AssetManager::GetInstance();
 

@@ -164,7 +164,10 @@
     <ClCompile Include="src\Arcane\Animation\Bone.cpp" />
     <ClCompile Include="src\Arcane\Animation\PoseAnimator.cpp" />
     <ClCompile Include="src\Arcane\Editor\RendererStatsDisplay.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Camera\CameraController.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\DebugDraw3D.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Water\WaterManager.cpp" />
     <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
@@ -182,7 +185,7 @@
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.cpp" />
     <ClCompile Include="src\Arcane\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Arcane\Input\JoystickInputData.cpp" />
-    <ClCompile Include="src\Arcane\Graphics\Camera\FPSCamera.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Camera\CubemapCamera.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Lights\LightBindings.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Lights\LightManager.cpp" />
@@ -268,7 +271,10 @@
     <ClInclude Include="src\Arcane\Animation\Bone.h" />
     <ClInclude Include="src\Arcane\Animation\PoseAnimator.h" />
     <ClInclude Include="src\Arcane\Editor\RendererStatsDisplay.h" />
+    <ClInclude Include="src\Arcane\Graphics\Camera\CameraController.h" />
+    <ClInclude Include="src\Arcane\Graphics\Camera\OrthographicCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\DebugDraw3D.h" />
+    <ClInclude Include="src\Arcane\Graphics\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.h" />
     <ClInclude Include="src\Arcane\Graphics\Water\WaterManager.h" />
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
@@ -296,7 +302,7 @@
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\WaterPass.h" />
     <ClInclude Include="src\Arcane\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Arcane\Input\JoystickInputData.h" />
-    <ClInclude Include="src\Arcane\Graphics\Camera\FPSCamera.h" />
+    <ClInclude Include="src\Arcane\Graphics\Camera\PerspectiveCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\CubemapCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\ICamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Lights\LightBindings.h" />
@@ -366,9 +372,10 @@
     <None Include="src\Arcane\Shaders\Forward\PBR_Skinned_Model.glsl" />
     <None Include="src\Arcane\Shaders\Outline.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomBrightPass.glsl" />
-    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomGaussianBlur.glsl" />
+    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomDownsample.glsl" />
     <None Include="src\Arcane\Shaders\BRDF_Integration.glsl" />
     <None Include="src\Arcane\Shaders\ColourWrite.glsl" />
+    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomUpsample.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear_Skinned.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Skinned.glsl" />
@@ -380,7 +387,7 @@
     <None Include="src\shaders\directionalLight.frag" />
     <None Include="src\Arcane\Shaders\Forward\PBR_Model.glsl" />
     <None Include="src\Arcane\Shaders\Forward\PBR_Terrain.glsl" />
-    <None Include="src\Arcane\Shaders\Post_Process\Bloom\Composite.glsl" />
+    <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomComposite.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Chromatic_Aberration\ChromaticAberration.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Copy.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Film_Grain\FilmGrain.glsl" />

@@ -20,9 +20,9 @@ namespace Arcane
 	private:
 		void Init();
 	private:
-		// 0 RGBA8  ->       albedo.r     albedo.g        albedo.b     albedo's alpha
+		// 0 RGBA8  ->       albedo.r     albedo.g        albedo.b             albedo's alpha       (can replaced with emission colour for emissive fragments)
 		// 1 RGB32F ->       normal.x     normal.y        normal.z
-		// 2 RGBA8  ->       metallic     roughness       ambientOcclusion
+		// 2 RGBA8  ->       metallic     roughness       ambientOcclusion     emissionIntensity
 		std::array<Texture, 3> m_GBufferRenderTargets;
 	};
 }

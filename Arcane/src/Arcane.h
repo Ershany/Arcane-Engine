@@ -11,7 +11,8 @@
 
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Graphics/Renderer/RenderPass/MasterRenderPass.h>
-#include <Arcane/Graphics/Camera/FPSCamera.h>
+#include <Arcane/Graphics/Camera/PerspectiveCamera.h>
+#include <Arcane/Graphics/Camera/OrthographicCamera.h>
 #include <Arcane/Graphics/Camera/CubemapCamera.h>
 #include <Arcane/Graphics/IBL/ProbeManager.h>
 #include <Arcane/Graphics/Lights/LightManager.h>

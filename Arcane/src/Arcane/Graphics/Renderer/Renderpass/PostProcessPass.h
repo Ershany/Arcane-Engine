@@ -44,6 +44,14 @@ namespace Arcane
 		inline float& GetGammaCorrectionRef() { return m_GammaCorrection; }
 		inline float& GetExposureRef() { return m_Exposure; }
 
+		// Bloom bindings
+		inline bool& GetBloomEnabledRef() { return m_BloomEnabled; }
+		inline float& GetBloomThresholdRef() { return m_BloomThreshold; }
+		inline float& GetBloomSoftThresholdRef() { return m_BloomSoftThreshold; }
+		inline float& GetBloomStrengthRef() { return m_BloomStrength; }
+		inline Texture* GetBloomDirtTexture() { return m_BloomDirtTexture; }
+		inline float& GetBloomDirtMaskIntensityRef() { return m_BloomDirtMaskIntensity; }
+
 		// SSAO bindings
 		inline bool& GetSsaoEnabledRef() { return m_SsaoEnabled; }
 		inline float& GetSsaoSampleRadiusRef() { return m_SsaoSampleRadius; }
@@ -74,13 +82,20 @@ namespace Arcane
 		inline Framebuffer* GetEighthRenderTarget() { return &m_EighthRenderTarget; }
 		inline Framebuffer* GetResolveRenderTarget() { return &m_ResolveRenderTarget; }
 		inline Framebuffer* GetTonemappedNonLinearTarget() { return &m_TonemappedNonLinearTarget; }
+
+		// Bloom settings
+		inline void SetBloomDirtTexture(Texture *texture) { m_BloomDirtTexture = texture; }
+		inline void SetBloomDirtMaskIntensity(float intensity) { m_BloomDirtMaskIntensity = intensity; }
+
+		// Vignette settings
+		inline void SetVignetteTexture(Texture *texture) { m_VignetteTexture = texture; }
 	private:
 		inline float Lerp(float a, float b, float amount) { return a + amount * (b - a); }
 	private:
 		Shader *m_TonemapGammaCorrectShader;
 		Shader *m_FxaaShader;
 		Shader *m_SsaoShader, *m_SsaoBlurShader;
-		Shader *m_BloomBrightPassShader, *m_BloomGaussianBlurShader, *m_BloomComposite;
+		Shader *m_BloomBrightPassShader, *m_BloomDownsampleShader, *m_BloomUpsampleShader, *m_BloomCompositeShader;
 		Shader *m_VignetteShader;
 		Shader *m_ChromaticAberrationShader;
 		Shader *m_FilmGrainShader;
@@ -90,11 +105,14 @@ namespace Arcane
 		Framebuffer m_TonemappedNonLinearTarget;
 		Framebuffer m_ResolveRenderTarget; // Only used if multi-sampling is enabled so it can be resolved
 
+		Texture *m_BloomDirtTexture = nullptr;
 		Framebuffer m_BrightPassRenderTarget;
-		Framebuffer m_BloomFullRenderTarget;
 		Framebuffer m_BloomHalfRenderTarget;
 		Framebuffer m_BloomQuarterRenderTarget;
 		Framebuffer m_BloomEightRenderTarget;
+		Framebuffer m_BloomSixteenRenderTarget;
+		Framebuffer m_BloomThirtyTwoRenderTarget;
+		Framebuffer m_BloomSixtyFourRenderTarget;
 
 		// Utility Framebuffers
 		Framebuffer m_FullRenderTarget;
@@ -105,13 +123,17 @@ namespace Arcane
 		// Post Processing Tweaks
 		float m_GammaCorrection = 2.2f;
 		float m_Exposure = 1.0f;
-		float m_BloomThreshold = 1.0f;
+		bool m_BloomEnabled = true;
+		float m_BloomThreshold = 3.0f;
+		float m_BloomSoftThreshold = 0.5f; // [0, 1] 0 = hard cutoff, 1 = soft cutoff between bloom vs no bloom
+		float m_BloomStrength = 0.4f;
+		float m_BloomDirtMaskIntensity = 5.0f;
 		bool m_FxaaEnabled = true;
 		bool m_SsaoEnabled = true;
 		float m_SsaoSampleRadius = 2.0f;
 		float m_SsaoStrength = 3.0f;
 		bool m_VignetteEnabled = false;
-		Texture *m_VignetteTexture;
+		Texture *m_VignetteTexture = nullptr;
 		glm::vec3 m_VignetteColour = glm::vec3(0.0f, 0.0f, 0.0f);
 		float m_VignetteIntensity = 0.25f;
 		bool m_ChromaticAberrationEnabled = false;

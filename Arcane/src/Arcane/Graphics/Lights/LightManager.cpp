@@ -6,6 +6,7 @@
 #include <Arcane/Graphics/Texture/Cubemap.h>
 #include <Arcane/Scene/Components.h>
 #include <Arcane/Scene/Scene.h>
+#include <Arcane/Graphics/Camera/ICamera.h>
 
 namespace Arcane
 {

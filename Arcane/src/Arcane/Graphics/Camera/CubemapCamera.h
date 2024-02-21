@@ -6,6 +6,11 @@
 #include <Arcane/Graphics/Camera/ICamera.h>
 #endif
 
+/*
+	Used for generating cubemaps (shadowmaps, probes etc).
+	Can turn to each face, render, repeat
+*/
+
 namespace Arcane
 {
 	class CubemapCamera : public ICamera {

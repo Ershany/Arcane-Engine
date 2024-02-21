@@ -15,18 +15,22 @@ namespace Arcane
 {
 	PostProcessPass::PostProcessPass(Scene *scene) : RenderPass(scene), m_SsaoRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false), m_SsaoBlurRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false),
 		m_TonemappedNonLinearTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_ResolveRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_BrightPassRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false),
-		m_BloomFullRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_BloomHalfRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false), m_BloomQuarterRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.25f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.25f), false), m_BloomEightRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.125f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.125f), false),
-		m_FullRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_HalfRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.5f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.5f), false), m_QuarterRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.25f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.25f), false), m_EighthRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * 0.125f), (unsigned int)(Window::GetRenderResolutionHeight() * 0.125f), false),
-		m_VignetteTexture(nullptr), m_SsaoNoiseTexture(), m_EffectsTimer()
+		m_BloomHalfRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * (1.0f / 2.0f)), (unsigned int)(Window::GetRenderResolutionHeight() * (1.0f / 2.0f)), false), m_BloomQuarterRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * (1.0f / 4.0f)), (unsigned int)(Window::GetRenderResolutionHeight() * (1.0f / 4.0f)), false), m_BloomEightRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * (1.0f / 8.0f)), (unsigned int)(Window::GetRenderResolutionHeight() * (1.0f / 8.0f)), false),
+		m_BloomSixteenRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * (1.0f / 16.0f)), (unsigned int)(Window::GetRenderResolutionHeight() * (1.0f / 16.0f)), false), m_BloomThirtyTwoRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * (1.0f / 32.0f)), (unsigned int)(Window::GetRenderResolutionHeight() * (1.0f / 32.0f)), false), m_BloomSixtyFourRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * (1.0f / 64.0f)), (unsigned int)(Window::GetRenderResolutionHeight() * (1.0f / 64.0f)), false),
+		m_FullRenderTarget(Window::GetRenderResolutionWidth(), Window::GetRenderResolutionHeight(), false), m_HalfRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * (1.0f / 2.0f)), (unsigned int)(Window::GetRenderResolutionHeight() * (1.0f / 2.0f)), false), m_QuarterRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * (1.0f / 4.0f)), (unsigned int)(Window::GetRenderResolutionHeight() * (1.0f / 4.0f)), false), m_EighthRenderTarget((unsigned int)(Window::GetRenderResolutionWidth() * (1.0f / 8.0f)), (unsigned int)(Window::GetRenderResolutionHeight() * (1.0f / 8.0f)), false),
+		m_SsaoNoiseTexture(), m_EffectsTimer()
 	{
+		ARC_ASSERT(m_BloomSixtyFourRenderTarget.GetWidth() >= 1 && m_BloomSixtyFourRenderTarget.GetHeight() >= 1, "Render resolution is too low for bloom");
+
 		// Shader setup
 		m_TonemapGammaCorrectShader = ShaderLoader::LoadShader("TonemapGammaCorrect.glsl");
 		m_FxaaShader = ShaderLoader::LoadShader("post_process/fxaa/FXAA.glsl");
 		m_SsaoShader = ShaderLoader::LoadShader("post_process/ssao/SSAO.glsl");
 		m_SsaoBlurShader = ShaderLoader::LoadShader("post_process/ssao/SSAO_Blur.glsl");
 		m_BloomBrightPassShader = ShaderLoader::LoadShader("post_process/bloom/BloomBrightPass.glsl");
-		m_BloomGaussianBlurShader = ShaderLoader::LoadShader("post_process/bloom/BloomGaussianBlur.glsl");
-		m_BloomComposite = ShaderLoader::LoadShader("post_process/bloom/Composite.glsl");
+		m_BloomDownsampleShader = ShaderLoader::LoadShader("post_process/bloom/BloomDownsample.glsl");
+		m_BloomUpsampleShader = ShaderLoader::LoadShader("post_process/bloom/BloomUpsample.glsl");
+		m_BloomCompositeShader = ShaderLoader::LoadShader("post_process/bloom/BloomComposite.glsl");
 		m_VignetteShader = ShaderLoader::LoadShader("post_process/vignette/vignette.glsl");
 		m_ChromaticAberrationShader = ShaderLoader::LoadShader("post_process/chromatic_aberration/ChromaticAberration.glsl");
 		m_FilmGrainShader = ShaderLoader::LoadShader("post_process/film_grain/FilmGrain.glsl");
@@ -43,10 +47,13 @@ namespace Arcane
 		m_EighthRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
 
 		m_BrightPassRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
-		m_BloomFullRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
+		//m_BloomFullRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
 		m_BloomHalfRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
 		m_BloomQuarterRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
 		m_BloomEightRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
+		m_BloomSixteenRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
+		m_BloomThirtyTwoRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
+		m_BloomSixtyFourRenderTarget.AddColorTexture(FloatingPoint16).CreateFramebuffer();
 
 		// SSAO Hemisphere Sample Generation (tangent space)
 		std::uniform_real_distribution<float> randomFloats(0.0f, 1.0f);
@@ -169,13 +176,20 @@ namespace Arcane
 		if (Application::GetInstance().GetWireframe())
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		//Texture *sceneWithBloom = Bloom(target->getColourTexture());
-		//TonemapGammaCorrect(&m_TonemappedNonLinearTarget, sceneWithBloom);
-
-		// Convert our scene from HDR (linear) -> SDR (sRGB)
-		TonemapGammaCorrect(&m_TonemappedNonLinearTarget, inputFramebuffer->GetColourTexture());
+		// Apply bloom if enabled, then Convert our scene from HDR (linear) -> SDR (sRGB) regardless if we apply bloom or not
+		if (m_BloomEnabled)
+		{
+			Texture *sceneWithBloom = Bloom(inputFramebuffer->GetColourTexture());
+			TonemapGammaCorrect(&m_TonemappedNonLinearTarget, sceneWithBloom);
+		}
+		else
+		{
+			TonemapGammaCorrect(&m_TonemappedNonLinearTarget, inputFramebuffer->GetColourTexture());
+		}
+		
 		inputFramebuffer = &m_TonemappedNonLinearTarget;
 
+		// Now apply various post processing effects after we are in SDR
 		Framebuffer *framebufferToRenderTo = nullptr;
 		if (m_ChromaticAberrationEnabled)
 		{
@@ -200,7 +214,14 @@ namespace Arcane
 			if (framebufferToRenderTo == &m_FullRenderTarget) framebufferToRenderTo = &m_TonemappedNonLinearTarget;
 			else framebufferToRenderTo = &m_FullRenderTarget;
 
-			Vignette(framebufferToRenderTo, inputFramebuffer->GetColourTexture());
+			if (m_VignetteTexture && m_VignetteTexture->IsGenerated())
+			{
+				Vignette(framebufferToRenderTo, inputFramebuffer->GetColourTexture(), m_VignetteTexture);
+			}
+			else
+			{
+				Vignette(framebufferToRenderTo, inputFramebuffer->GetColourTexture());
+			}
 			inputFramebuffer = framebufferToRenderTo;
 		}
 
@@ -318,6 +339,8 @@ namespace Arcane
 		Renderer::DrawNdcPlane();
 	}
 
+	// https://www.youtube.com/watch?v=ml-5OGZC7vE
+	// Great summary of the advanced warfare bloom talk and what Arcane's implementation is based on
 	Texture* PostProcessPass::Bloom(Texture *hdrSceneTexture)
 	{
 		m_GLCache->SetDepthTest(false);
@@ -331,40 +354,127 @@ namespace Arcane
 		m_BrightPassRenderTarget.Bind();
 		m_BrightPassRenderTarget.ClearAll();
 		m_GLCache->SetShader(m_BloomBrightPassShader);
-		m_BloomBrightPassShader->SetUniform("threshold", m_BloomThreshold);
-		m_BloomBrightPassShader->SetUniform("scene_capture", 0);
+		glm::vec4 filterValues;
+		float knee = m_BloomThreshold * m_BloomSoftThreshold;
+		filterValues.x = m_BloomThreshold;
+		filterValues.y = filterValues.x - knee;
+		filterValues.z = 2.0f * knee;
+		filterValues.w = 0.25f / (knee + 0.00001f);
+		m_BloomBrightPassShader->SetUniform("filterValues", filterValues);
+		m_BloomBrightPassShader->SetUniform("sceneCapture", 0);
 		hdrSceneTexture->Bind(0);
 		Renderer::DrawNdcPlane();
 
-		// Bloom Gaussian Blur Pass
-		// As the render target gets smaller, we can increase the separable (two-pass) Gaussian kernel size
-		m_GLCache->SetShader(m_BloomGaussianBlurShader);
-		glViewport(0, 0, m_FullRenderTarget.GetWidth(), m_FullRenderTarget.GetHeight());
-		m_FullRenderTarget.Bind();
-		m_FullRenderTarget.ClearAll();
-		m_BloomGaussianBlurShader->SetUniform("isVerticalBlur", true);
-		m_BloomGaussianBlurShader->SetUniform("read_offset", glm::vec2(1.0f / (float)m_FullRenderTarget.GetWidth(), 1.0f / (float)m_FullRenderTarget.GetHeight()));
-		m_BloomGaussianBlurShader->SetUniform("bloom_texture", 0);
+		// Downsampling the parts of the scene that are above the luminance threshold using a 13 tap bilinear filter (Kawase downsample style)
+		m_GLCache->SetShader(m_BloomDownsampleShader);
+		glViewport(0, 0, m_BloomHalfRenderTarget.GetWidth(), m_BloomHalfRenderTarget.GetHeight());
+		m_BloomHalfRenderTarget.Bind();
+		m_BloomHalfRenderTarget.ClearAll();
+		m_BloomDownsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomHalfRenderTarget.GetWidth(), 1.0f / m_BloomHalfRenderTarget.GetHeight()));
+		m_BloomDownsampleShader->SetUniform("textureToDownsample", 0);
 		m_BrightPassRenderTarget.GetColourTexture()->Bind(0);
 		Renderer::DrawNdcPlane();
 
-		m_BloomFullRenderTarget.Bind();
-		m_BloomFullRenderTarget.ClearAll();
-		m_BloomGaussianBlurShader->SetUniform("isVerticalBlur", false);
-		m_BloomGaussianBlurShader->SetUniform("read_offset", glm::vec2(1.0f / (float)m_BloomFullRenderTarget.GetWidth(), 1.0f / (float)m_BloomFullRenderTarget.GetHeight()));
-		m_BloomGaussianBlurShader->SetUniform("bloom_texture", 0);
-		m_FullRenderTarget.GetColourTexture()->Bind(0);
+		glViewport(0, 0, m_BloomQuarterRenderTarget.GetWidth(), m_BloomQuarterRenderTarget.GetHeight());
+		m_BloomQuarterRenderTarget.Bind();
+		m_BloomQuarterRenderTarget.ClearAll();
+		m_BloomDownsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomQuarterRenderTarget.GetWidth(), 1.0f / m_BloomQuarterRenderTarget.GetHeight()));
+		m_BloomDownsampleShader->SetUniform("textureToDownsample", 0);
+		m_BloomHalfRenderTarget.GetColourTexture()->Bind(0);
+		Renderer::DrawNdcPlane();
+
+		glViewport(0, 0, m_BloomEightRenderTarget.GetWidth(), m_BloomEightRenderTarget.GetHeight());
+		m_BloomEightRenderTarget.Bind();
+		m_BloomEightRenderTarget.ClearAll();
+		m_BloomDownsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomEightRenderTarget.GetWidth(), 1.0f / m_BloomEightRenderTarget.GetHeight()));
+		m_BloomDownsampleShader->SetUniform("textureToDownsample", 0);
+		m_BloomQuarterRenderTarget.GetColourTexture()->Bind(0);
+		Renderer::DrawNdcPlane();
+
+		glViewport(0, 0, m_BloomSixteenRenderTarget.GetWidth(), m_BloomSixteenRenderTarget.GetHeight());
+		m_BloomSixteenRenderTarget.Bind();
+		m_BloomSixteenRenderTarget.ClearAll();
+		m_BloomDownsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomSixteenRenderTarget.GetWidth(), 1.0f / m_BloomSixteenRenderTarget.GetHeight()));
+		m_BloomDownsampleShader->SetUniform("textureToDownsample", 0);
+		m_BloomEightRenderTarget.GetColourTexture()->Bind(0);
+		Renderer::DrawNdcPlane();
+
+		glViewport(0, 0, m_BloomThirtyTwoRenderTarget.GetWidth(), m_BloomThirtyTwoRenderTarget.GetHeight());
+		m_BloomThirtyTwoRenderTarget.Bind();
+		m_BloomThirtyTwoRenderTarget.ClearAll();
+		m_BloomDownsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomThirtyTwoRenderTarget.GetWidth(), 1.0f / m_BloomThirtyTwoRenderTarget.GetHeight()));
+		m_BloomDownsampleShader->SetUniform("textureToDownsample", 0);
+		m_BloomSixteenRenderTarget.GetColourTexture()->Bind(0);
+		Renderer::DrawNdcPlane();
+
+		glViewport(0, 0, m_BloomSixtyFourRenderTarget.GetWidth(), m_BloomSixtyFourRenderTarget.GetHeight());
+		m_BloomSixtyFourRenderTarget.Bind();
+		m_BloomSixtyFourRenderTarget.ClearAll();
+		m_BloomDownsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomSixtyFourRenderTarget.GetWidth(), 1.0f / m_BloomSixtyFourRenderTarget.GetHeight()));
+		m_BloomDownsampleShader->SetUniform("textureToDownsample", 0);
+		m_BloomThirtyTwoRenderTarget.GetColourTexture()->Bind(0);
+		Renderer::DrawNdcPlane();
+
+		// Upsampling using a 9 tap tent bilinear filter to get back to high res
+		m_GLCache->SetShader(m_BloomUpsampleShader);
+		m_GLCache->SetBlend(true);
+		m_GLCache->SetBlendFunc(GL_ONE, GL_ONE);
+		glViewport(0, 0, m_BloomThirtyTwoRenderTarget.GetWidth(), m_BloomThirtyTwoRenderTarget.GetHeight());
+		m_BloomThirtyTwoRenderTarget.Bind();
+		m_BloomUpsampleShader->SetUniform("sampleScale", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		m_BloomUpsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomThirtyTwoRenderTarget.GetWidth(), 1.0f / m_BloomThirtyTwoRenderTarget.GetHeight()));
+		m_BloomUpsampleShader->SetUniform("textureToUpsample", 0);
+		m_BloomSixtyFourRenderTarget.GetColourTexture()->Bind(0);
+		Renderer::DrawNdcPlane();
+
+		glViewport(0, 0, m_BloomSixteenRenderTarget.GetWidth(), m_BloomSixteenRenderTarget.GetHeight());
+		m_BloomSixteenRenderTarget.Bind();
+		m_BloomUpsampleShader->SetUniform("sampleScale", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		m_BloomUpsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomSixteenRenderTarget.GetWidth(), 1.0f / m_BloomSixteenRenderTarget.GetHeight()));
+		m_BloomUpsampleShader->SetUniform("textureToUpsample", 0);
+		m_BloomThirtyTwoRenderTarget.GetColourTexture()->Bind();
+		Renderer::DrawNdcPlane();
+
+		glViewport(0, 0, m_BloomEightRenderTarget.GetWidth(), m_BloomEightRenderTarget.GetHeight());
+		m_BloomEightRenderTarget.Bind();
+		m_BloomUpsampleShader->SetUniform("sampleScale", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		m_BloomUpsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomEightRenderTarget.GetWidth(), 1.0f / m_BloomEightRenderTarget.GetHeight()));
+		m_BloomUpsampleShader->SetUniform("textureToUpsample", 0);
+		m_BloomSixteenRenderTarget.GetColourTexture()->Bind();
+		Renderer::DrawNdcPlane();
+
+		glViewport(0, 0, m_BloomQuarterRenderTarget.GetWidth(), m_BloomQuarterRenderTarget.GetHeight());
+		m_BloomQuarterRenderTarget.Bind();
+		m_BloomUpsampleShader->SetUniform("sampleScale", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		m_BloomUpsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomQuarterRenderTarget.GetWidth(), 1.0f / m_BloomQuarterRenderTarget.GetHeight()));
+		m_BloomUpsampleShader->SetUniform("textureToUpsample", 0);
+		m_BloomEightRenderTarget.GetColourTexture()->Bind();
+		Renderer::DrawNdcPlane();
+
+		glViewport(0, 0, m_BloomHalfRenderTarget.GetWidth(), m_BloomHalfRenderTarget.GetHeight());
+		m_BloomHalfRenderTarget.Bind();
+		m_BloomUpsampleShader->SetUniform("sampleScale", glm::vec4(1.0, 1.0, 1.0, 1.0));
+		m_BloomUpsampleShader->SetUniform("texelSize", glm::vec2(1.0f / m_BloomHalfRenderTarget.GetWidth(), 1.0f / m_BloomHalfRenderTarget.GetHeight()));
+		m_BloomUpsampleShader->SetUniform("textureToUpsample", 0);
+		m_BloomQuarterRenderTarget.GetColourTexture()->Bind();
 		Renderer::DrawNdcPlane();
 
 		// Combine our bloom texture with the scene
-		m_GLCache->SetShader(m_BloomComposite);
+		m_GLCache->SetBlend(false);
+		m_GLCache->SetShader(m_BloomCompositeShader);
 		glViewport(0, 0, m_FullRenderTarget.GetWidth(), m_FullRenderTarget.GetHeight());
 		m_FullRenderTarget.Bind();
-		m_BloomComposite->SetUniform("strength", 1.0f);
-		m_BloomComposite->SetUniform("scene_texture", 0);
-		m_BloomComposite->SetUniform("bloom_texture", 1);
+		m_BloomCompositeShader->SetUniform("bloomStrength", m_BloomStrength);
+		m_BloomCompositeShader->SetUniform("dirtMaskIntensity", m_BloomDirtMaskIntensity);
+		m_BloomCompositeShader->SetUniform("sceneTexture", 0);
+		m_BloomCompositeShader->SetUniform("bloomTexture", 1);
+		m_BloomCompositeShader->SetUniform("dirtMaskTexture", 2);
 		hdrSceneTexture->Bind(0);
-		m_BloomFullRenderTarget.GetColourTexture()->Bind(1);
+		m_BloomHalfRenderTarget.GetColourTexture()->Bind(1);
+		if (m_BloomDirtTexture && m_BloomDirtTexture->IsGenerated())
+			m_BloomDirtTexture->Bind(2);
+		else
+			AssetManager::GetBlackTexture()->Bind(2);
 		Renderer::DrawNdcPlane();
 
 		return m_FullRenderTarget.GetColourTexture();

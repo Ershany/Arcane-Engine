@@ -52,6 +52,31 @@ namespace Arcane
 				}
 				ImGui::NewLine();
 				ImGui::Separator();
+				if (ImGui::CollapsingHeader("Bloom Settings", ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					ImGui::PushID("Bloom Arcane Effect");
+					ImGui::Checkbox("Enabled", &postProcessPass->GetBloomEnabledRef());
+					ImGui::SliderFloat("Threshold", &postProcessPass->GetBloomThresholdRef(), 0.0f, 10.0f);
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("This controls how bright an HDR pixel needs to be to receive bloom. Any pixel that has a luminance above the threshold will have a bloom effect.");
+					ImGui::SliderFloat("Soft Threshold", &postProcessPass->GetBloomSoftThresholdRef(), 0.0f, 1.0f);
+					if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+						ImGui::SetTooltip("This controls how hard of a cutoff between a pixel that has bloom and one that is just below the threshold. 0 = hard cutoff, 1 = soft cutoff.");
+					ImGui::SliderFloat("Strength", &postProcessPass->GetBloomStrengthRef(), 0.1f, 5.0f);
+					Texture *dirtTexture = postProcessPass->GetBloomDirtTexture();
+					ImGui::Text("Bloom Dirty Lens Texture:");
+					ImGui::Image(dirtTexture ? (ImTextureID)dirtTexture->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetBlackTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+					if (ImGui::IsItemHovered() && dirtTexture)
+					{
+						ImGui::BeginTooltip();
+						ImGui::Image((ImTextureID)dirtTexture->GetTextureId(), ImVec2(400 * dirtTexture->GetWidth()/dirtTexture->GetHeight(), 400));
+						ImGui::EndTooltip();
+					}
+					ImGui::SliderFloat("Dirt Intensity", &postProcessPass->GetBloomDirtMaskIntensityRef(), 0.0f, 100.0f);
+					ImGui::PopID();
+				}
+				ImGui::NewLine();
+				ImGui::Separator();
 				if (ImGui::CollapsingHeader("FXAA", ImGuiTreeNodeFlags_DefaultOpen))
 				{
 					ImGui::PushID("FXAA Arcane Effect");
@@ -65,11 +90,11 @@ namespace Arcane
 					ImGui::PushID("Vignette Arcane Effect");
 					ImGui::Checkbox("Enabled", &postProcessPass->GetVignetteEnabledRef());
 					Texture *vignetteTexture = postProcessPass->GetVignetteTexture();
-					ImGui::Image(postProcessPass->GetVignetteTexture() ? (ImTextureID)vignetteTexture->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
+					ImGui::Image(vignetteTexture ? (ImTextureID)vignetteTexture->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetWhiteTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1));
 					if (ImGui::IsItemHovered() && vignetteTexture)
 					{
 						ImGui::BeginTooltip();
-						ImGui::Image((ImTextureID)vignetteTexture->GetTextureId(), ImVec2(400, 400));
+						ImGui::Image((ImTextureID)vignetteTexture->GetTextureId(), ImVec2(400 * vignetteTexture->GetWidth() / vignetteTexture->GetHeight(), 400));
 						ImGui::EndTooltip();
 					}
 					ImGui::ColorEdit3("Vignette Colour", (float*)&postProcessPass->GetVignetteColourRef(), ImGuiColorEditFlags_DisplayRGB);

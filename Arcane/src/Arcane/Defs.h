@@ -37,6 +37,22 @@
 #define DEFAULT_NEAR_PLANE 0.3f
 #define DEFAULT_FAR_PLANE 5000.0f
 
+// Camera
+#define USE_PERSPECTIVE_PROJ 1 // 0 = ortho, 1 = perspective	Only needed until we have proper editor camera controls
+
+// Camera Controller Values
+#define CAMERA_SPEED 5.0f
+#define CAMERA_ROTATION_SENSITIVITY_MOUSE 50.0f
+#define CAMERA_ROTATION_SENSITIVITY_CONTROLLER 200.0f
+#define CAMERA_MAX_FOV 80.0f
+#define CAMERA_SCROLL_SPEED 100.0f
+
+// Default Ortho Camera Settings
+#define DEFAULT_ORTHO_LEFT -20.0f
+#define DEFAULT_ORTHO_RIGHT 20.0f
+#define DEFAULT_ORTHO_BOTTOM -20.0f
+#define DEFAULT_ORTHO_TOP 20.0f
+
 // Shadowmap Default Options (Resolution controlled by the LightComponent, this will only be used if no light casters are found and a pass needs a fallback)
 // Probes do have their own shadow buffers so this should only be used as defaults for LightComponent
 #define SHADOWMAP_RESOLUTION_X_DEFAULT 2048

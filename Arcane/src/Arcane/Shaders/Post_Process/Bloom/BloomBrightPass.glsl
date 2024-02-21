@@ -21,18 +21,20 @@ in vec2 TexCoords;
 
 out vec4 FragColour;
 
-uniform sampler2D scene_capture;
+uniform sampler2D sceneCapture;
 
-uniform float threshold;
+uniform vec4 filterValues;
 
 void main() {
-	vec3 hdrColour = texture2D(scene_capture, TexCoords).rgb;
-	
-	// Extract the bright areas
-	if (dot(hdrColour, vec3(0.2126, 0.7152, 0.0722)) > threshold) {
-		FragColour = vec4(hdrColour, 1.0);
-	}
-	else {
-		FragColour = vec4(0.0, 0.0, 0.0, 1.0);
-	}
+	vec3 hdrColour = texture2D(sceneCapture, TexCoords).rgb;
+
+	// Extract the bright areas by calculating brightness and checking it against the threshold
+	// The soft threshold is from this source: https://catlikecoding.com/unity/tutorials/advanced-rendering/bloom/
+	float brightness = dot(hdrColour, vec3(0.2126, 0.7152, 0.0722));
+	float soft = brightness - filterValues.y;
+	soft = clamp(soft, 0, filterValues.z);
+	soft = soft * soft * filterValues.w;
+	float contribution = max(soft, brightness - filterValues.x);
+	contribution /= max(brightness, 0.00001);
+	FragColour = vec4(hdrColour * contribution, 1.0);
 }

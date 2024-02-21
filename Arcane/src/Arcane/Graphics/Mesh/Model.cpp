@@ -228,10 +228,10 @@ namespace Arcane
 			newMesh.m_Material.SetAlbedoMap(LoadMaterialTexture(material, aiTextureType_DIFFUSE, true));
 			newMesh.m_Material.SetNormalMap(LoadMaterialTexture(material, aiTextureType_NORMALS, false));
 			newMesh.m_Material.SetAmbientOcclusionMap(LoadMaterialTexture(material, aiTextureType_AMBIENT, false));
-			newMesh.m_Material.SetDisplacementMap(LoadMaterialTexture(material, aiTextureType_DISPLACEMENT, true));
+			newMesh.m_Material.SetDisplacementMap(LoadMaterialTexture(material, aiTextureType_DISPLACEMENT, false));
 		}
 
-		m_Meshes.push_back(newMesh);
+		m_Meshes.emplace_back(newMesh);
 	}
 
 	Texture* Model::LoadMaterialTexture(aiMaterial *mat, aiTextureType type, bool isSRGB)

@@ -41,9 +41,11 @@ namespace Arcane
 		inline const AssimpBoneData* GetRootBone() const { return &m_RootNode; }
 		inline auto* GetBoneDataMap() { return m_Model->GetBoneDataMap(); }
 		inline const auto& GetGlobalInverseTransform() const { return m_Model->GetGlobalInverseTransform(); }
-		inline const char* GetAnimationName() const { return m_AssimpAnimation->mName.C_Str(); }
+#if !ARC_FINAL
+		std::string GetAnimationName() { return m_AnimationName; }
+#endif
 	private:
-		void ReadMissingBones();
+		void ReadMissingBones(aiAnimation *assimpAnimation);
 		void ReadHierarchyData(AssimpBoneData &dest, const aiNode *src);
 	private:
 		float m_ClipDuration;
@@ -51,8 +53,10 @@ namespace Arcane
 		std::vector<Bone> m_Bones;
 		AssimpBoneData m_RootNode;
 
+#if !ARC_FINAL
+		std::string m_AnimationName;
+#endif
 		Model *m_Model;
-		aiAnimation *m_AssimpAnimation;
 	};
 }
 #endif

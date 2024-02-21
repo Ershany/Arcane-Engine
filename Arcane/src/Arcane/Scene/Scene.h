@@ -2,10 +2,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#ifndef FPSCAMERA_H
-#include <Arcane/Graphics/Camera/FPSCamera.h>
-#endif
-
 #ifndef LIGHTMANAGER_H
 #include <Arcane/Graphics/Lights/LightManager.h>
 #endif
@@ -36,6 +32,7 @@ namespace Arcane
 	class Window;
 	class Skybox;
 	class GLCache;
+	class CameraController;
 
 	enum class ModelFilterType
 	{
@@ -65,14 +62,13 @@ namespace Arcane
 		void OnUpdate(float deltaTime);
 
 		void AddModelsToRenderer(ModelFilterType filter);
-		void AddSkinnedModelsToRenderer(ModelFilterType filter);
 
 		inline Terrain* GetTerrain() { return &m_Terrain; }
 		inline LightManager* GetLightManager() { return &m_LightManager; }
 		inline WaterManager* GetWaterManager() { return &m_WaterManager; }
 		inline ProbeManager* GetProbeManager() { return &m_ProbeManager; }
-		inline FPSCamera* GetCamera() { return &m_SceneCamera; }
 		inline Skybox* GetSkybox() { return m_Skybox; }
+		ICamera* GetCamera();
 	private:
 		void PreInit();
 	private:
@@ -86,7 +82,7 @@ namespace Arcane
 		ProbeBlendSetting m_SceneProbeBlendSetting = PROBES_SIMPLE;
 
 		// Scene Specific Data
-		FPSCamera m_SceneCamera;
+		CameraController *m_SceneCamera;
 		Skybox *m_Skybox;
 		Terrain m_Terrain;
 		LightManager m_LightManager;

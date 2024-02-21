@@ -19,18 +19,21 @@ namespace Arcane
 	{
 		std::string texturePath;
 		TextureGenerationData generationData;
+		std::function<void(Texture*)> callback = nullptr;
 	};
 
 	struct CubemapLoadJob
 	{
 		std::string texturePath;
 		CubemapGenerationData generationData;
+		std::function<void()> callback = nullptr;
 	};
 
 	struct ModelLoadJob
 	{
 		std::string path;
 		Model *model;
+		std::function<void(Model*)> callback = nullptr;
 	};
 
 	class AssetManager : public Singleton
@@ -43,19 +46,21 @@ namespace Arcane
 		inline bool AssetsInFlight() { return m_AssetsInFlight > 0; }
 
 		Model* LoadModel(const std::string &path);
-		Model* LoadModelAsync(const std::string &path);
+		Model* LoadModelAsync(const std::string &path, std::function<void(Model*)> callback = nullptr);
 
 		Texture* Load2DTexture(const std::string &path, TextureSettings *settings = nullptr);
-		Texture* Load2DTextureAsync(const std::string &path, TextureSettings *settings = nullptr);
+		Texture* Load2DTextureAsync(const std::string &path, TextureSettings *settings = nullptr, std::function<void(Texture*)> callback = nullptr);
 
 		// TODO: HDR loading
 		Cubemap* LoadCubemapTexture(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
-		Cubemap* LoadCubemapTextureAsync(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr);
+		Cubemap* LoadCubemapTextureAsync(const std::string &right, const std::string &left, const std::string &top, const std::string &bottom, const std::string &back, const std::string &front, CubemapSettings *settings = nullptr, std::function<void()> callback = nullptr);
 
 		void Update(int texturesPerFrame, int cubemapFacesPerFrame, int modelsPerFrame);
 
 		inline static Texture* GetWhiteTexture() { return TextureLoader::s_WhiteTexture; }
 		inline static Texture* GetBlackTexture() { return TextureLoader::s_BlackTexture; }
+		inline static Texture* GetWhiteSRGBTexture() { return TextureLoader::s_WhiteTextureSRGB; }
+		inline static Texture* GetBlackSRGBTexture() { return TextureLoader::s_BlackTextureSRGB; }
 		inline static Texture* GetDefaultNormalTexture() { return TextureLoader::s_DefaultNormal; }
 		inline static Texture* GetDefaultAOTexture() { return TextureLoader::s_WhiteTexture; }
 		inline static Texture* GetFullMetallicTexture() { return TextureLoader::s_WhiteTexture; }
@@ -66,6 +71,9 @@ namespace Arcane
 	private:
 		// Used to load resources asynchronously on a threadpool
 		void LoaderThread();
+
+		Model* FetchModelFromCache(const std::string &path);
+		Texture* FetchTextureFromCache(const std::string &path);
 
 		std::vector<std::thread> m_WorkerThreads;
 		std::atomic<bool> m_LoadingThreadsActive;

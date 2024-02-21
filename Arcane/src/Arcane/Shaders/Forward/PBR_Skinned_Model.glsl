@@ -69,11 +69,14 @@ struct Material {
 	sampler2D texture_roughness;
 	sampler2D texture_ao;
 	sampler2D texture_displacement;
+	sampler2D texture_emission;
 
 	vec4 albedoColour;
 	float metallicValue, roughnessValue; // Used if textures aren't provided
 
-	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture;
+	vec3 emissionColour;
+	float emissionIntensity;
+	bool hasAlbedoTexture, hasMetallicTexture, hasRoughnessTexture, hasEmissionTexture;
 };
 
 struct DirLight {
@@ -152,6 +155,7 @@ uniform ShadowDataPointLight pointLightShadowData;
 uniform bool hasDisplacement;
 uniform vec2 minMaxDisplacementSteps;
 uniform float parallaxStrength;
+uniform bool hasEmission;
 uniform Material material;
 uniform vec3 viewPos;
 
@@ -179,6 +183,13 @@ void main() {
 	if (hasDisplacement) {
 		vec3 viewDirTangentSpace = normalize(ViewPosTangentSpace - FragPosTangentSpace);
 		textureCoordinates = ParallaxMapping(TexCoords, viewDirTangentSpace);
+	}
+
+	// If this is an emissive fragment then we don't care about lighting it
+	vec3 emission = hasEmission ? (material.hasEmissionTexture ? texture(material.texture_emission, textureCoordinates).rgb : material.emissionColour) : vec3(0.0);
+	if (material.emissionIntensity > 0.0) {
+		color = vec4(emission * material.emissionIntensity, 1.0);
+		return;
 	}
 
 	// Sample textures

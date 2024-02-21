@@ -8,12 +8,20 @@
 #include <Arcane/Graphics/Renderer/Renderer.h>
 #include <Arcane/Scene/Entity.h>
 #include <Arcane/Scene/Components.h>
+#include <Arcane/Graphics/Camera/CameraController.h>
+#include <Arcane/Graphics/Camera/PerspectiveCamera.h>
+#include <Arcane/Graphics/Camera/OrthographicCamera.h>
 
 namespace Arcane
 {
 	Scene::Scene(Window *window)
-		: m_SceneCamera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -90.0f, 0.0f), m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_LightManager(this), m_ProbeManager(m_SceneProbeBlendSetting), m_WaterManager(this)
+		: m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_LightManager(this), m_ProbeManager(m_SceneProbeBlendSetting), m_WaterManager(this)
 	{
+#if USE_PERSPECTIVE_PROJ
+		m_SceneCamera = new PerspectiveCamera();
+#else
+		m_SceneCamera = new OrthographicCamera();
+#endif
 		m_GLCache = GLCache::GetInstance();
 
 		PreInit();
@@ -60,7 +68,7 @@ namespace Arcane
 	void Scene::OnUpdate(float deltaTime)
 	{
 		// Camera Update
-		m_SceneCamera.ProcessInput(deltaTime);
+		m_SceneCamera->ProcessInput(deltaTime);
 
 		// Update Lights
 		m_LightManager.Update();
@@ -129,5 +137,10 @@ namespace Arcane
 				break;
 			}
 		}
+	}
+
+	ICamera* Scene::GetCamera()
+	{
+		return m_SceneCamera;
 	}
 }

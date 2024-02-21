@@ -136,6 +136,20 @@ namespace Arcane
 							meshMaterial.SetDisplacementMinSteps(minSteps);
 							meshMaterial.SetDisplacementMaxSteps(maxSteps);
 						}
+
+						ImGui::Image(meshMaterial.GetEmissionMap() ? (ImTextureID)meshMaterial.GetEmissionMap()->GetTextureId() : (ImTextureID)AssetManager::GetInstance().GetBlackTexture()->GetTextureId(), ImVec2(50, 50), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 1), ImVec4(1, 1, 1, 1)); ImGui::SameLine();
+						if (ImGui::IsItemHovered() && meshMaterial.GetEmissionMap())
+						{
+							ImGui::BeginTooltip();
+							ImGui::Image((ImTextureID)meshMaterial.GetEmissionMap()->GetTextureId(), ImVec2(400, 400));
+							ImGui::EndTooltip();
+						}
+						ImGui::Text("Emission");
+						if (meshMaterial.GetEmissionMap() || (meshMaterial.GetEmissionColourRef().r != 0.0f || meshMaterial.GetEmissionColourRef().g != 0.0f || meshMaterial.GetEmissionColourRef().b != 0.0f))
+						{
+							ImGui::SameLine();  ImGui::SliderFloat("##Emission Intensity", &meshMaterial.GetEmissionIntensityRef(), 1.0f, 255.0f, "%.0f");
+						}
+						ImGui::ColorEdit3("Emission Colour", (float*)&meshMaterial.GetEmissionColourRef(), ImGuiColorEditFlags_DisplayRGB);
 					}
 				}
 
@@ -249,7 +263,7 @@ namespace Arcane
 						ImGui::SliderFloat("Wave Speed", &waterComponent.WaveSpeed, 0.0f, 2.0f, "%.3f");
 						ImGui::SliderFloat("Wave Strength", &waterComponent.WaveStrength, 0.0f, 0.2f, "%.2f");
 
-						ImGui::SliderFloat("Shine Damper", &waterComponent.ShineDamper, 0.0f, 1000.0f, "%.2f");
+						ImGui::SliderFloat("Shine Damper", &waterComponent.ShineDamper, 0.1f, 1000.0f, "%.2f");
 						if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
 							ImGui::SetTooltip("Used to reduce bright specular reflections from lights on the surface of the water.");
 						ImGui::SliderFloat("Normal Smoothing", &waterComponent.NormalSmoothing, 0.0f, 5.0f, "%.2f");
@@ -327,10 +341,12 @@ namespace Arcane
 						auto &animatorComponent = m_FocusedEntity.GetComponent<PoseAnimatorComponent>();
 						
 						AnimationClip *clip = animatorComponent.PoseAnimator.GetCurrentAnimationClip();
-						if (clip && clip->GetAnimationName())
+#if !ARC_FINAL
+						if (clip && !clip->GetAnimationName().empty())
 						{
 							ImGui::Text("Animation Name: %s", clip->GetAnimationName());
 						}
+#endif
 					}
 				}
 			}
