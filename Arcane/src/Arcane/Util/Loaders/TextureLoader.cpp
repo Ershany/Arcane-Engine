@@ -10,6 +10,7 @@ namespace Arcane
 	// Static declarations
 	Texture *TextureLoader::s_DefaultNormal; Texture *TextureLoader::s_DefaultWaterDistortion;
 	Texture *TextureLoader::s_WhiteTexture; Texture *TextureLoader::s_BlackTexture;
+	Texture *TextureLoader::s_WhiteTextureSRGB; Texture *TextureLoader::s_BlackTextureSRGB;
 
 	void TextureLoader::Load2DTextureData(const std::string &path, TextureGenerationData &inOutData)
 	{
@@ -71,9 +72,18 @@ namespace Arcane
 		settings.TextureMagnificationFilterMode = GL_NEAREST;
 
 		AssetManager &assetManager = AssetManager::GetInstance();
+
 		s_DefaultNormal = assetManager.Load2DTexture(std::string("res/textures/default/defaultNormal.png"), &settings);
 		s_DefaultWaterDistortion = assetManager.Load2DTexture(std::string("res/textures/default/defaultWaterDistortion.png"), &settings);
 		s_WhiteTexture = assetManager.Load2DTexture(std::string("res/textures/default/white.png"), &settings);
 		s_BlackTexture = assetManager.Load2DTexture(std::string("res/textures/default/black.png"), &settings);
+
+		TextureSettings srgbSettings;
+		srgbSettings.TextureAnisotropyLevel = 1.0f;
+		srgbSettings.TextureMinificationFilterMode = GL_NEAREST;
+		srgbSettings.TextureMagnificationFilterMode = GL_NEAREST;
+		srgbSettings.IsSRGB = true;
+		s_WhiteTextureSRGB = assetManager.Load2DTexture(std::string("res/textures/default/white-srgb.png"), &srgbSettings);
+		s_BlackTextureSRGB = assetManager.Load2DTexture(std::string("res/textures/default/black-srgb.png"), &srgbSettings);
 	}
 }

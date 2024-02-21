@@ -240,7 +240,7 @@ void Testbed::LoadTestbedGraphics()
 		srgbTextureSettings.IsSRGB = true;
 
 		Material& meshMaterial = meshComponent.AssetModel->GetMeshes()[0].GetMaterial();
-		meshMaterial.SetAlbedoMap(assetManager.GetBlackTexture());
+		meshMaterial.SetAlbedoMap(assetManager.GetBlackSRGBTexture());
 		meshMaterial.SetEmissionMap(assetManager.Load2DTextureAsync(std::string("res/textures/circuitry-emission.png"), &srgbTextureSettings));
 		meshMaterial.SetEmissionIntensity(45.0f);
 		meshMaterial.SetMetallicValue(1.0f);

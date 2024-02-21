@@ -42,6 +42,7 @@ namespace Arcane
 		// Default Textures
 		static Texture *s_DefaultNormal, *s_DefaultWaterDistortion;
 		static Texture *s_WhiteTexture, *s_BlackTexture;
+		static Texture *s_WhiteTextureSRGB, *s_BlackTextureSRGB;
 	};
 }
 #endif

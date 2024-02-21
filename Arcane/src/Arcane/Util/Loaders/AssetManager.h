@@ -59,6 +59,8 @@ namespace Arcane
 
 		inline static Texture* GetWhiteTexture() { return TextureLoader::s_WhiteTexture; }
 		inline static Texture* GetBlackTexture() { return TextureLoader::s_BlackTexture; }
+		inline static Texture* GetWhiteSRGBTexture() { return TextureLoader::s_WhiteTextureSRGB; }
+		inline static Texture* GetBlackSRGBTexture() { return TextureLoader::s_BlackTextureSRGB; }
 		inline static Texture* GetDefaultNormalTexture() { return TextureLoader::s_DefaultNormal; }
 		inline static Texture* GetDefaultAOTexture() { return TextureLoader::s_WhiteTexture; }
 		inline static Texture* GetFullMetallicTexture() { return TextureLoader::s_WhiteTexture; }
