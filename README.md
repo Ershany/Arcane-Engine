@@ -49,7 +49,7 @@ If you want to see what I am currently working on check out Arcane's roadmap:
 1. 2D Batch Rendering w/ 2D Rendering API (separate from 3D API)
 1. Proper Signed Distance Field Text Rendering
 1. Physics w/ Rigid Bodies and Collider Shapes
-1. Add in Editor Support for Skybox Customization and support HDR
+1. ~~Add in Editor Support for Skybox Customization and support HDR~~
 1. Basic Sound Engine w/ Editor Support
 1. Animation Blending w/ Editor Support
 1. Improved Continuous LOD Terrain w/ Editor Support
