@@ -27,7 +27,9 @@ out vec4 FragColour;
 in vec3 SampleDirection;
 
 uniform samplerCube skyboxCubemap;
+uniform vec3 tintColour = vec3(1.0, 1.0, 1.0);
+uniform float lightIntensity = 1.0;
 
 void main() {
-	FragColour = texture(skyboxCubemap, SampleDirection);
+	FragColour = vec4(texture(skyboxCubemap, SampleDirection).rgb * tintColour * lightIntensity, 1.0);
 }

@@ -5,6 +5,7 @@
 #include <Arcane/Core/Application.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
+#include <Arcane/Graphics/Skybox.h>
 
 namespace Arcane
 {
@@ -22,6 +23,7 @@ namespace Arcane
 			return;
 		}
 
+		Scene* scene = Arcane::Application::GetInstance().GetScene();
 		PostProcessPass* postProcessPass = m_MasterRenderPass->GetPostProcessPass();
 
 		ImGuiTabBarFlags tabBarFlags = ImGuiTabBarFlags_None;
@@ -124,6 +126,14 @@ namespace Arcane
 			}
 			if (ImGui::BeginTabItem("Environment"))
 			{
+				if (ImGui::CollapsingHeader("Skybox", ImGuiTreeNodeFlags_DefaultOpen))
+				{
+					ImGui::PushID("Skybox Settings");
+					ImGui::ColorEdit3("Tint Colour", (float*)&scene->GetSkybox()->GetTintColourRef(), ImGuiColorEditFlags_DisplayRGB);
+					ImGui::SliderFloat("Light Intensity", &scene->GetSkybox()->GetLightIntensityRef(), 0.0f, 100.0f);
+					ImGui::PopID();
+				}
+
 				ImGui::EndTabItem();
 			}
 			if (ImGui::BeginTabItem("Global Illumination"))
