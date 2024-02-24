@@ -46,6 +46,7 @@ namespace Arcane
 		Framebuffer *shadowFramebuffer;
 
 		// Directional Light Shadow Setup
+		ARC_PUSH_RENDER_TAG("Directional Shadows");
 		if (m_CustomDirectionalLightShadowFramebuffer)
 		{
 			shadowFramebuffer = m_CustomDirectionalLightShadowFramebuffer;
@@ -110,8 +111,10 @@ namespace Arcane
 			passOutput.directionalShadowmapBias = lightManager->GetDirectionalLightShadowCasterBias();
 			passOutput.directionalShadowmapFramebuffer = shadowFramebuffer;
 		}
+		ARC_POP_RENDER_TAG();
 
 		// Spot Light Shadow Setup
+		ARC_PUSH_RENDER_TAG("Spotlight Shadows");
 		if (m_CustomSpotLightShadowFramebuffer)
 		{
 			shadowFramebuffer = m_CustomSpotLightShadowFramebuffer;
@@ -177,8 +180,10 @@ namespace Arcane
 			passOutput.spotLightShadowmapBias = lightManager->GetSpotLightShadowCasterBias();
 			passOutput.spotLightShadowmapFramebuffer = shadowFramebuffer;
 		}
+		ARC_POP_RENDER_TAG();
 
 		// Point Light Shadow Setup
+		ARC_PUSH_RENDER_TAG("Pointlight Shadows");
 		Cubemap *pointLightShadowCubemap = nullptr;
 		if (m_CustomPointLightShadowCubemap)
 		{
@@ -261,6 +266,7 @@ namespace Arcane
 			passOutput.pointLightFarPlane = nearFarPlane.y;
 		}
 		passOutput.pointLightShadowCubemap = pointLightShadowCubemap; // Has to be bound even if it isn't used, thanks to OpenGL Driver
+		ARC_POP_RENDER_TAG();
 
 		return passOutput;
 	}

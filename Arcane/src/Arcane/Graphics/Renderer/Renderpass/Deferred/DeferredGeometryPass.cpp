@@ -63,11 +63,16 @@ namespace Arcane
 		// Render opaque objects (use stencil to denote models for the deferred lighting pass)
 		m_GLCache->SetStencilWriteMask(0xFF);
 		m_GLCache->SetStencilFunc(GL_ALWAYS, StencilValue::ModelStencilValue, 0xFF);
+		ARC_PUSH_RENDER_TAG("Skinned Models");
 		Renderer::FlushOpaqueSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_SkinnedModelShader);
+		ARC_POP_RENDER_TAG();
+		ARC_PUSH_RENDER_TAG("Non-Skinned Models");
 		Renderer::FlushOpaqueNonSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_ModelShader);
+		ARC_POP_RENDER_TAG();
 		m_GLCache->SetStencilWriteMask(0x00);
 
 		// Setup terrain information
+		ARC_PUSH_RENDER_TAG("Terrain");
 		m_GLCache->SetShader(m_TerrainShader);
 		m_TerrainShader->SetUniform("view", camera->GetViewMatrix());
 		m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
@@ -77,6 +82,7 @@ namespace Arcane
 		m_GLCache->SetStencilFunc(GL_ALWAYS, StencilValue::TerrainStencilValue, 0xFF);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
 		m_GLCache->SetStencilWriteMask(0x00);
+		ARC_POP_RENDER_TAG();
 
 		// Reset state
 		m_GLCache->SetStencilTest(false);

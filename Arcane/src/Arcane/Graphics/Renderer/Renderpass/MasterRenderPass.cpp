@@ -61,6 +61,7 @@ namespace Arcane
 	void MasterRenderPass::Render() {
 #if FORWARD_RENDER
 		/* Forward Rendering */
+		ARC_PUSH_RENDER_TAG("Shadow Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_ShadowPassTimer);
 #endif
@@ -68,7 +69,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_ShadowPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Forward Opaque Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_ForwardOpaquePassTimer);
 #endif
@@ -76,7 +79,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_ForwardOpaquePassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Water Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_WaterPassTimer);
 #endif
@@ -84,7 +89,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_WaterPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Forward Transparent Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_ForwardTransparentPassTimer);
 #endif
@@ -92,7 +99,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_ForwardTransparentPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Post Process Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_PostProcessPassTimer);
 #endif
@@ -100,7 +109,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_PostProcessPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Editor Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_EditorPassTimer);
 #endif
@@ -109,10 +120,12 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_EditorPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
 
 #else
 		/* Deferred Rendering */
+		ARC_PUSH_RENDER_TAG("Shadow Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_ShadowPassTimer);
 #endif
@@ -120,7 +133,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_ShadowPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Deferred Geometry Pass (Opaque)");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_DeferredGeometryPassTimer);
 #endif
@@ -128,7 +143,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_DeferredGeometryPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Pre-Lighting Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_SSAOPassTimer);
 #endif
@@ -136,7 +153,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_SSAOPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Deferred Lighting Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_DeferredLightingPassTimer);
 #endif
@@ -144,7 +163,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_DeferredLightingPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Water Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_WaterPassTimer);
 #endif
@@ -152,7 +173,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_WaterPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Post GBuffer Forward Pass (Transparent)");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_PostGBufferForwardPassTimer);
 #endif
@@ -160,7 +183,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_PostGBufferForwardPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Post Process Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_PostProcessPassTimer);
 #endif
@@ -168,7 +193,9 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_PostProcessPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
+		ARC_PUSH_RENDER_TAG("Editor Pass");
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::BeginQuery(m_EditorPassTimer);
 #endif
@@ -177,6 +204,7 @@ namespace Arcane
 #ifdef ARC_DEV_BUILD
 		GPUTimerManager::EndQuery(m_EditorPassTimer);
 #endif
+		ARC_POP_RENDER_TAG();
 
 #endif
 
