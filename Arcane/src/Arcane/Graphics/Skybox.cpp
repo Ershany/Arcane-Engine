@@ -7,6 +7,7 @@
 #include <Arcane/Graphics/Camera/ICamera.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
+#include <Arcane/Graphics/Renderer/Renderer.h>
 
 namespace Arcane
 {
@@ -46,8 +47,8 @@ namespace Arcane
 		m_GLCache->SetFaceCull(true);
 		m_GLCache->SetCullFace(GL_FRONT);
 		m_GLCache->SetDepthFunc(GL_LEQUAL);
-		
-		cube.Draw();
+
+		Renderer::DrawNdcCube();
 
 		m_GLCache->SetCullFace(GL_BACK);
 		m_GLCache->SetDepthFunc(GL_LESS);
