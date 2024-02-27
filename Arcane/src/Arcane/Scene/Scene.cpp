@@ -15,7 +15,7 @@
 namespace Arcane
 {
 	Scene::Scene(Window *window)
-		: m_Terrain(glm::vec3(-256.0f, -40.0f, -256.0f)), m_LightManager(this), m_ProbeManager(m_SceneProbeBlendSetting), m_WaterManager(this)
+		: m_LightManager(this), m_ProbeManager(m_SceneProbeBlendSetting), m_WaterManager(this), m_Terrain(nullptr)
 	{
 #if USE_PERSPECTIVE_PROJ
 		m_SceneCamera = new PerspectiveCamera();
@@ -38,6 +38,10 @@ namespace Arcane
 		auto fullOwningGroup1 = m_Registry.group<TransformComponent, MeshComponent>();
 		auto partialOwningGroup1 = m_Registry.group<LightComponent>(entt::get<TransformComponent>);
 		auto partialOwningGroup2 = m_Registry.group<TransformComponent, MeshComponent>(entt::get<PoseAnimatorComponent>);
+
+		// Temp terrain things
+		m_Terrain = new Terrain();
+		m_Terrain->SetPosition(glm::vec3(-256.0f, -40.0f, -256.0f));
 
 		// Skybox init needs to happen before probes are generated
 		std::vector<std::string> skyboxFilePaths;

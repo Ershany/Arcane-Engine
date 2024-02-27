@@ -63,7 +63,6 @@ namespace Arcane
 		if (lightManager->HasDirectionalLightShadowCaster())
 		{
 			// Setup
-			Terrain *terrain = m_ActiveScene->GetTerrain();
 			glm::vec2 nearFarPlane = lightManager->GetDirectionalLightShadowCasterNearFarPlane();
 
 			// View + Projection setup
@@ -104,7 +103,11 @@ namespace Arcane
 			}
 
 			// Render terrain
-			terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
+			Terrain *terrain = m_ActiveScene->GetTerrain();
+			if (terrain)
+			{
+				terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
+			}
 
 			// Update output
 			passOutput.directionalLightViewProjMatrix = directionalLightViewProjMatrix;
@@ -131,7 +134,6 @@ namespace Arcane
 		if (lightManager->HasSpotLightShadowCaster())
 		{
 			// Setup
-			Terrain *terrain = m_ActiveScene->GetTerrain();
 			glm::vec2 nearFarPlane = lightManager->GetSpotLightShadowCasterNearFarPlane();
 
 			// View + Projection setup
@@ -173,7 +175,11 @@ namespace Arcane
 			}
 
 			// Render terrain
-			terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
+			Terrain *terrain = m_ActiveScene->GetTerrain();
+			if (terrain)
+			{
+				terrain->Draw(m_ShadowmapShader, RenderPassType::NoMaterialRequired);
+			}
 
 			// Update output
 			passOutput.spotLightViewProjMatrix = spotLightViewProjMatrix;
@@ -200,7 +206,6 @@ namespace Arcane
 		if (lightManager->HasPointlightShadowCaster())
 		{
 			// Setup
-			Terrain* terrain = m_ActiveScene->GetTerrain();
 			glm::vec2 nearFarPlane = lightManager->GetPointLightShadowCasterNearFarPlane();
 
 			// Camera Setup
@@ -255,7 +260,11 @@ namespace Arcane
 				}
 
 				// Render terrain
-				terrain->Draw(m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);
+				Terrain* terrain = m_ActiveScene->GetTerrain();
+				if (terrain)
+				{
+					terrain->Draw(m_ShadowmapLinearShader, RenderPassType::NoMaterialRequired);
+				}
 			}
 			// Reset state
 			m_EmptyFramebuffer.SetDepthAttachment(DepthStencilAttachmentFormat::NormalizedDepthOnly, 0, GL_TEXTURE_CUBE_MAP_POSITIVE_X);

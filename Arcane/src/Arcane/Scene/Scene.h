@@ -63,7 +63,7 @@ namespace Arcane
 
 		void AddModelsToRenderer(ModelFilterType filter);
 
-		inline Terrain* GetTerrain() { return &m_Terrain; }
+		inline Terrain* GetTerrain() { return m_Terrain; }
 		inline LightManager* GetLightManager() { return &m_LightManager; }
 		inline WaterManager* GetWaterManager() { return &m_WaterManager; }
 		inline ProbeManager* GetProbeManager() { return &m_ProbeManager; }
@@ -84,7 +84,7 @@ namespace Arcane
 		// Scene Specific Data
 		CameraController *m_SceneCamera;
 		Skybox *m_Skybox;
-		Terrain m_Terrain;
+		Terrain *m_Terrain;
 		LightManager m_LightManager;
 		ProbeManager m_ProbeManager;
 		WaterManager m_WaterManager;

@@ -8,11 +8,11 @@
 
 namespace Arcane
 {
-	Terrain::Terrain(glm::vec3 &worldPosition) : m_Position(worldPosition)
+	Terrain::Terrain() : m_Position(0.0f, 0.0f, 0.0f)
 	{
 		m_GLCache = GLCache::GetInstance();
 
-		m_ModelMatrix = glm::translate(m_ModelMatrix, worldPosition);
+		m_ModelMatrix = glm::translate(glm::mat4(1.0f), m_Position);
 
 		// Height map
 		int mapWidth, mapHeight;
