@@ -14,10 +14,62 @@ namespace Arcane
 
 		m_ModelMatrix = glm::translate(glm::mat4(1.0f), m_Position);
 
+		// Textures
+		AssetManager &assetManager = AssetManager::GetInstance();
+
+		TextureSettings srgbTextureSettings;
+		srgbTextureSettings.IsSRGB = true;
+		
+		m_Textures[0] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassAlbedo.tga"), &srgbTextureSettings);
+		m_Textures[1] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtAlbedo.tga"), &srgbTextureSettings);
+		m_Textures[2] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesAlbedo.tga"), &srgbTextureSettings);
+		m_Textures[3] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockAlbedo.tga"), &srgbTextureSettings);
+
+		m_Textures[4] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassNormal.tga"));
+		m_Textures[5] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtNormal.tga"));
+		m_Textures[6] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesNormal.tga"));
+		m_Textures[7] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockNormal.tga"));
+
+		// We do not want these texture treated as one channel so store it as RGB
+		TextureSettings textureSettings;
+		textureSettings.TextureFormat = GL_RGB;
+
+		m_Textures[8] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassRoughness.tga"), &textureSettings);
+		m_Textures[9] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtRoughness.tga"), &textureSettings);
+		m_Textures[10] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesRoughness.tga"), &textureSettings);
+		m_Textures[11] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockRoughness.tga"), &textureSettings);
+
+		m_Textures[12] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassMetallic.tga"), &textureSettings);
+		m_Textures[13] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtMetallic.tga"), &textureSettings);
+		m_Textures[14] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesMetallic.tga"), &textureSettings);
+		m_Textures[15] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockMetallic.tga"), &textureSettings);
+
+		m_Textures[16] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassAO.tga"), &textureSettings);
+		m_Textures[17] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtAO.tga"), &textureSettings);
+		m_Textures[18] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesAO.tga"), &textureSettings);
+		m_Textures[19] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockAO.tga"), &textureSettings);
+
+		m_Textures[20] = assetManager.Load2DTextureAsync(std::string("res/terrain/blendMap.tga"), &textureSettings);
+	}
+
+	Terrain::~Terrain() {
+		delete m_Mesh;
+	}
+
+	void Terrain::LoadTerrainFromTexture(std::string &texturePath)
+	{
+		if (IsLoaded())
+		{
+			ARC_LOG_INFO("Unloading the old terrain in order to load a new terrain");
+			delete m_Mesh;
+		}
+		ARC_LOG_INFO("Loading the terrain from texture path: {0}", texturePath);
+
 		// Height map
 		int mapWidth, mapHeight;
-		unsigned char *heightMapImage = stbi_load("res/terrain/heightMap.png", &mapWidth, &mapHeight, 0, 1);
-		if (mapWidth != mapHeight) {
+		unsigned char *heightMapImage = stbi_load(texturePath.c_str(), &mapWidth, &mapHeight, 0, 1);
+		if (mapWidth != mapHeight)
+		{
 			ARC_LOG_FATAL("Can't use a heightmap with a different width and height for the terrain");
 			return;
 		}
@@ -44,8 +96,10 @@ namespace Arcane
 		indices.reserve((m_SideVertexCount - 1) * (m_SideVertexCount - 1) * 6);
 
 		// Vertex generation
-		for (unsigned int z = 0; z < m_SideVertexCount; z++) {
-			for (unsigned int x = 0; x < m_SideVertexCount; x++) {
+		for (unsigned int z = 0; z < m_SideVertexCount; z++)
+		{
+			for (unsigned int x = 0; x < m_SideVertexCount; x++)
+			{
 				glm::vec2 positionXZ(x * m_SpaceBetweenVertices, z * m_SpaceBetweenVertices);
 
 				positions.push_back(glm::vec3(positionXZ.x, SampleHeightfieldBilinear(positionXZ.x, positionXZ.y, heightMapImage), positionXZ.y));
@@ -56,8 +110,10 @@ namespace Arcane
 		stbi_image_free(heightMapImage);
 
 		// Indices generation (ccw winding order for consistency which will allow back face culling)
-		for (unsigned int height = 0; height < m_SideVertexCount - 1; height++) {
-			for (unsigned int width = 0; width < m_SideVertexCount - 1; width++) {
+		for (unsigned int height = 0; height < m_SideVertexCount - 1; height++)
+		{
+			for (unsigned int width = 0; width < m_SideVertexCount - 1; width++)
+			{
 				unsigned int indexTL = width + (height * m_SideVertexCount);
 				unsigned int indexTR = 1 + width + (height * m_SideVertexCount);
 				unsigned int indexBL = m_SideVertexCount + width + (height * m_SideVertexCount);
@@ -67,7 +123,7 @@ namespace Arcane
 				indices.push_back(indexTL);
 				indices.push_back(indexBR);
 				indices.push_back(indexTR);
-				
+
 				// Triangle 2
 				indices.push_back(indexTL);
 				indices.push_back(indexBL);
@@ -110,7 +166,8 @@ namespace Arcane
 		}
 
 		// Gram-Schmidt Process for fixing up the tangent vector and calculating the bitangent
-		for (unsigned int i = 0; i < tangents.size(); i++) {
+		for (unsigned int i = 0; i < tangents.size(); i++)
+		{
 			const glm::vec3 &normal = normals[i];
 			glm::vec3 tangent = glm::normalize(tangents[i]);
 
@@ -121,50 +178,21 @@ namespace Arcane
 			bitangents[i] = bitangent;
 		}
 
-		// Textures
-		AssetManager &assetManager = AssetManager::GetInstance();
-
-		TextureSettings srgbTextureSettings;
-		srgbTextureSettings.IsSRGB = true;
-		
-		m_Textures[0] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassAlbedo.tga"), &srgbTextureSettings);
-		m_Textures[1] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtAlbedo.tga"), &srgbTextureSettings);
-		m_Textures[2] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesAlbedo.tga"), &srgbTextureSettings);
-		m_Textures[3] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockAlbedo.tga"), &srgbTextureSettings);
-
-		m_Textures[4] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassNormal.tga"));
-		m_Textures[5] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtNormal.tga"));
-		m_Textures[6] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesNormal.tga"));
-		m_Textures[7] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockNormal.tga"));
-
-		// We do not want these texture treated as one channel so store it as RGB
-		TextureSettings textureSettings;
-		textureSettings.TextureFormat = GL_RGB;
-
-		m_Textures[8] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassRoughness.tga"), &textureSettings);
-		m_Textures[9] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtRoughness.tga"), &textureSettings);
-		m_Textures[10] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesRoughness.tga"), &textureSettings);
-		m_Textures[11] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockRoughness.tga"), &textureSettings);
-
-		m_Textures[12] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassMetallic.tga"), &textureSettings);
-		m_Textures[13] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtMetallic.tga"), &textureSettings);
-		m_Textures[14] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesMetallic.tga"), &textureSettings);
-		m_Textures[15] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockMetallic.tga"), &textureSettings);
-
-		m_Textures[16] = assetManager.Load2DTextureAsync(std::string("res/terrain/grass/grassAO.tga"), &textureSettings);
-		m_Textures[17] = assetManager.Load2DTextureAsync(std::string("res/terrain/dirt/dirtAO.tga"), &textureSettings);
-		m_Textures[18] = assetManager.Load2DTextureAsync(std::string("res/terrain/branches/branchesAO.tga"), &textureSettings);
-		m_Textures[19] = assetManager.Load2DTextureAsync(std::string("res/terrain/rock/rockAO.tga"), &textureSettings);
-
-		m_Textures[20] = assetManager.Load2DTextureAsync(std::string("res/terrain/blendMap.tga"), &textureSettings);
-
 		m_Mesh = new Mesh(std::move(positions), std::move(uvs), std::move(normals), std::move(tangents), std::move(bitangents), std::move(indices));
 		m_Mesh->LoadData(true);
 		m_Mesh->GenerateGpuData();
 	}
 
-	Terrain::~Terrain() {
-		delete m_Mesh;
+	void Terrain::LoadTerrainFromFile(std::string &filePath)
+	{
+		if (IsLoaded())
+		{
+			ARC_LOG_INFO("Unloading the old terrain in order to load a new terrain");
+			delete m_Mesh;
+		}
+		ARC_LOG_INFO("Loading the terrain from file path: {0}", filePath);
+
+
 	}
 
 	void Terrain::Draw(Shader *shader, RenderPassType pass) const {

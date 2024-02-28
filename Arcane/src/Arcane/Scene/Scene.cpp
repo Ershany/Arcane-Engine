@@ -41,6 +41,7 @@ namespace Arcane
 
 		// Temp terrain things
 		m_Terrain = new Terrain();
+		m_Terrain->LoadTerrainFromTexture(std::string("res/terrain/heightMap.png"));
 		m_Terrain->SetPosition(glm::vec3(-256.0f, -40.0f, -256.0f));
 
 		// Skybox init needs to happen before probes are generated

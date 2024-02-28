@@ -18,10 +18,14 @@ namespace Arcane
 		Terrain();
 		~Terrain();
 
+		void LoadTerrainFromTexture(std::string &texturePath);
+		void LoadTerrainFromFile(std::string &filePath);
+
 		void Draw(Shader *shader, RenderPassType pass) const;
 
 		inline void SetPosition(glm::vec3 &pos) { m_Position = pos; m_ModelMatrix = glm::translate(glm::mat4(1.0f), pos); }
 		inline const glm::vec3& GetPosition() const { return m_Position; }
+		inline bool IsLoaded() { return m_Mesh != nullptr; }
 	private:
 		glm::vec3 CalculateNormal(float worldPosX, float worldPosZ, unsigned char *heightMapData);
 
@@ -44,7 +48,7 @@ namespace Arcane
 
 		glm::mat4 m_ModelMatrix;
 		glm::vec3 m_Position;
-		Mesh *m_Mesh;
+		Mesh *m_Mesh = nullptr;
 		std::array<Texture*, 21> m_Textures; // Represents all the textures supported by the terrain's texure splatting (rgba and the default value)
 	};
 }
