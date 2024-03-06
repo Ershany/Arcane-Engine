@@ -18,8 +18,8 @@ namespace Arcane
 		Terrain();
 		~Terrain();
 
-		void LoadTerrainFromTexture(std::string &texturePath);
-		void LoadTerrainFromFile(std::string &filePath);
+		void LoadTerrainFromTexture(const char *texturePath);
+		void LoadTerrainFromFile(const char *filePath);
 
 		void Draw(Shader *shader, RenderPassType pass) const;
 

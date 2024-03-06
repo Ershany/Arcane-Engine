@@ -176,6 +176,7 @@
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\OrthographicCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\CameraController.h" />
+    <ClInclude Include="src\Arcane\Util\Array2D.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />

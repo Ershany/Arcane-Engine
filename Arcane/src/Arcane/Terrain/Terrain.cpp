@@ -5,6 +5,7 @@
 #include <Arcane/Graphics/Renderer/GLCache.h>
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Util/Loaders/AssetManager.h>
+#include <Arcane/Util/FileUtils.h>
 
 namespace Arcane
 {
@@ -56,7 +57,7 @@ namespace Arcane
 		delete m_Mesh;
 	}
 
-	void Terrain::LoadTerrainFromTexture(std::string &texturePath)
+	void Terrain::LoadTerrainFromTexture(const char *texturePath)
 	{
 		if (IsLoaded())
 		{
@@ -67,7 +68,7 @@ namespace Arcane
 
 		// Height map
 		int mapWidth, mapHeight;
-		unsigned char *heightMapImage = stbi_load(texturePath.c_str(), &mapWidth, &mapHeight, 0, 1);
+		unsigned char *heightMapImage = stbi_load(texturePath, &mapWidth, &mapHeight, 0, 1);
 		if (mapWidth != mapHeight)
 		{
 			ARC_LOG_FATAL("Can't use a heightmap with a different width and height for the terrain");
@@ -183,7 +184,7 @@ namespace Arcane
 		m_Mesh->GenerateGpuData();
 	}
 
-	void Terrain::LoadTerrainFromFile(std::string &filePath)
+	void Terrain::LoadTerrainFromFile(const char *filePath)
 	{
 		if (IsLoaded())
 		{
@@ -192,7 +193,13 @@ namespace Arcane
 		}
 		ARC_LOG_INFO("Loading the terrain from file path: {0}", filePath);
 
-
+		int fileSize = 0;
+		unsigned char *fileContents = (unsigned char*)FileUtils::ReadBinaryFile(filePath, fileSize);
+		if (fileSize % sizeof(float) != 0)
+		{
+			ARC_LOG_FATAL("Error reading data for the terrain");
+		}
+		
 	}
 
 	void Terrain::Draw(Shader *shader, RenderPassType pass) const {

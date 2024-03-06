@@ -329,6 +329,7 @@
     <ClInclude Include="src\Arcane\Scene\Components.h" />
     <ClInclude Include="src\Arcane\Scene\Entity.h" />
     <ClInclude Include="src\Arcane\Platform\OpenGL\GPUTimerManager.h" />
+    <ClInclude Include="src\Arcane\Util\Array2D.h" />
     <ClInclude Include="src\Arcane\Util\Loaders\AssetManager.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_glfw.h" />
     <ClInclude Include="src\Arcane\Vendor\Imgui\examples\imgui_impl_opengl3.h" />
