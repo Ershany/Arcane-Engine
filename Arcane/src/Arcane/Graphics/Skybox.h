@@ -2,10 +2,6 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
-#ifndef CUBE_H
-#include <Arcane/Graphics/Mesh/Common/Cube.h>
-#endif
-
 namespace Arcane
 {
 	class Shader;
@@ -28,7 +24,6 @@ namespace Arcane
 		Shader *m_SkyboxShader;
 		GLCache *m_GLCache;
 		
-		Cube cube;
 		Cubemap *m_SkyboxCubemap;
 
 		// Settings to tune skybox look
