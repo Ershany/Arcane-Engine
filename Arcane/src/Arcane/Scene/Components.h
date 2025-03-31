@@ -158,6 +158,16 @@ namespace Arcane
 	{
 		Arcane::ICamera *camera;
 	};
+
+	struct TerrainComponent
+	{
+
+	};
+
+	struct CloudComponent
+	{
+
+	};
 }
 #endif
 

@@ -184,6 +184,8 @@ namespace Arcane
 		// Render skybox
 		skybox->Draw(camera);
 
+		// Render clouds
+
 		// Lighting setup
 		auto lightBindFunction = &LightManager::BindLightingUniforms;
 		if (renderOnlyStatic)
