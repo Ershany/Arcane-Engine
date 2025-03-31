@@ -62,150 +62,91 @@ namespace Arcane
 #if FORWARD_RENDER
 		/* Forward Rendering */
 		ARC_PUSH_RENDER_TAG("Shadow Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_ShadowPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_ShadowPassTimer);
 		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.GenerateShadowmaps(m_ActiveScene->GetCamera(), false);
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_ShadowPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_ShadowPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Forward Opaque Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_ForwardOpaquePassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_ForwardOpaquePassTimer);
 		LightingPassOutput lightingOutput = m_ForwardLightingPass.ExecuteOpaqueLightingPass(shadowmapOutput, m_ActiveScene->GetCamera(), false, true);
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_ForwardOpaquePassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_ForwardOpaquePassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Water Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_WaterPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_WaterPassTimer);
 		WaterPassOutput waterOutput = m_WaterPass.ExecuteWaterPass(shadowmapOutput, lightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_WaterPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_WaterPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Forward Transparent Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_ForwardTransparentPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_ForwardTransparentPassTimer);
 		LightingPassOutput postTransparencyOutput = m_ForwardLightingPass.ExecuteTransparentLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_ForwardTransparentPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_ForwardTransparentPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Post Process Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_PostProcessPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_PostProcessPassTimer);
 		PostProcessPassOutput postProcessOutput = m_PostProcessPass.ExecutePostProcessPass(postTransparencyOutput.outputFramebuffer);
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_PostProcessPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_PostProcessPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Editor Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_EditorPassTimer);
-#endif
-		Framebuffer *extraFramebuffer = postProcessOutput.outFramebuffer == m_PostProcessPass.GetFullRenderTarget() ? m_PostProcessPass.GetTonemappedNonLinearTarget() : m_PostProcessPass.GetFullRenderTarget();
+		ARC_GPU_TIMER_BEGIN(m_EditorPassTimer);
+		Framebuffer* extraFramebuffer = postProcessOutput.outFramebuffer == m_PostProcessPass.GetFullRenderTarget() ? m_PostProcessPass.GetTonemappedNonLinearTarget() : m_PostProcessPass.GetFullRenderTarget();
 		EditorPassOutput editorOutput = m_EditorPass.ExecuteEditorPass(postProcessOutput.outFramebuffer, m_PostProcessPass.GetResolveRenderTarget(), extraFramebuffer, m_ActiveScene->GetCamera());
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_EditorPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_EditorPassTimer);
 		ARC_POP_RENDER_TAG();
-
-
 #else
 		/* Deferred Rendering */
 		ARC_PUSH_RENDER_TAG("Shadow Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_ShadowPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_ShadowPassTimer);
 		ShadowmapPassOutput shadowmapOutput = m_ShadowmapPass.GenerateShadowmaps(m_ActiveScene->GetCamera(), false);
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_ShadowPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_ShadowPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Deferred Geometry Pass (Opaque)");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_DeferredGeometryPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_DeferredGeometryPassTimer);
 		GeometryPassOutput geometryOutput = m_DeferredGeometryPass.ExecuteGeometryPass(m_ActiveScene->GetCamera(), false);
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_DeferredGeometryPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_DeferredGeometryPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Pre-Lighting Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_SSAOPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_SSAOPassTimer);
 		PreLightingPassOutput preLightingOutput = m_PostProcessPass.ExecutePreLightingPass(geometryOutput.outputGBuffer, m_ActiveScene->GetCamera());
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_SSAOPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_SSAOPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Deferred Lighting Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_DeferredLightingPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_DeferredLightingPassTimer);
 		LightingPassOutput deferredLightingOutput = m_DeferredLightingPass.ExecuteLightingPass(shadowmapOutput, geometryOutput.outputGBuffer, preLightingOutput, m_ActiveScene->GetCamera(), true);
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_DeferredLightingPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_DeferredLightingPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Water Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_WaterPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_WaterPassTimer);
 		WaterPassOutput waterOutput = m_WaterPass.ExecuteWaterPass(shadowmapOutput, deferredLightingOutput.outputFramebuffer, m_ActiveScene->GetCamera());
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_WaterPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_WaterPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Post GBuffer Forward Pass (Transparent)");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_PostGBufferForwardPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_PostGBufferForwardPassTimer);
 		LightingPassOutput postGBufferForward = m_ForwardLightingPass.ExecuteTransparentLightingPass(shadowmapOutput, waterOutput.outputFramebuffer, m_ActiveScene->GetCamera(), false, true);
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_PostGBufferForwardPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_PostGBufferForwardPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Post Process Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_PostProcessPassTimer);
-#endif
+		ARC_GPU_TIMER_BEGIN(m_PostProcessPassTimer);
 		PostProcessPassOutput postProcessOutput = m_PostProcessPass.ExecutePostProcessPass(postGBufferForward.outputFramebuffer);
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_PostProcessPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_PostProcessPassTimer);
 		ARC_POP_RENDER_TAG();
 
 		ARC_PUSH_RENDER_TAG("Editor Pass");
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::BeginQuery(m_EditorPassTimer);
-#endif
-		Framebuffer *extraFramebuffer = postProcessOutput.outFramebuffer == m_PostProcessPass.GetFullRenderTarget() ? m_PostProcessPass.GetTonemappedNonLinearTarget() : m_PostProcessPass.GetFullRenderTarget();
+		ARC_GPU_TIMER_BEGIN(m_EditorPassTimer);
+		Framebuffer* extraFramebuffer = postProcessOutput.outFramebuffer == m_PostProcessPass.GetFullRenderTarget() ? m_PostProcessPass.GetTonemappedNonLinearTarget() : m_PostProcessPass.GetFullRenderTarget();
 		EditorPassOutput editorOutput = m_EditorPass.ExecuteEditorPass(postProcessOutput.outFramebuffer, m_PostProcessPass.GetResolveRenderTarget(), extraFramebuffer, m_ActiveScene->GetCamera());
-#ifdef ARC_DEV_BUILD
-		GPUTimerManager::EndQuery(m_EditorPassTimer);
-#endif
+		ARC_GPU_TIMER_END(m_EditorPassTimer);
 		ARC_POP_RENDER_TAG();
-
 #endif
 
 		// Finally render the scene to the window's swapchain

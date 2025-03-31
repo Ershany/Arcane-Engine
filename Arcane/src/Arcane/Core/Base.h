@@ -14,21 +14,29 @@
 #define ARC_BIND_EVENT_FN(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype>(args)>(args)...); }
 
 #if defined(ARC_DEBUG) || defined(ARC_RELEASE)
-#define ARC_DEV_BUILD
+	#define ARC_DEV_BUILD
 #endif
 
 #if defined(USE_RENDERDOC) && defined(ARC_DEV_BUILD)
-#define ARC_PUSH_RENDER_TAG(name) glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, name);
-#define ARC_POP_RENDER_TAG() glPopDebugGroup();
+	#define ARC_PUSH_RENDER_TAG(name) glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, name);
+	#define ARC_POP_RENDER_TAG() glPopDebugGroup();
 #else
-#define ARC_PUSH_RENDER_TAG(name)
-#define ARC_POP_RENDER_TAG()
+	#define ARC_PUSH_RENDER_TAG(name)
+	#define ARC_POP_RENDER_TAG()
 #endif
 
 #ifdef ARC_DEV_BUILD
-#define ARC_DEV_ONLY(...) __VA_ARGS__
+	#define ARC_GPU_TIMER_BEGIN(timer) GPUTimerManager::BeginQuery(timer)
+	#define ARC_GPU_TIMER_END(timer) GPUTimerManager::EndQuery(timer)
 #else
-#define ARC_DEV_ONLY(...)
+	#define ARC_GPU_TIMER_BEGIN(timer) (void)0
+	#define ARC_GPU_TIMER_END(timer) (void)0
+#endif
+
+#ifdef ARC_DEV_BUILD
+	#define ARC_DEV_ONLY(...) __VA_ARGS__
+#else
+	#define ARC_DEV_ONLY(...)
 #endif
 
 typedef uint8_t u8;
