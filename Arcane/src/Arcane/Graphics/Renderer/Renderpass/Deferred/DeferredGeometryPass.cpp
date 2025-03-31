@@ -47,9 +47,6 @@ namespace Arcane
 		m_GLCache->SetStencilWriteMask(0x00);
 		m_GLCache->SetStencilTest(true);
 
-		// Setup
-		Terrain *terrain = m_ActiveScene->GetTerrain();
-
 		// Setup model renderer for opaque objects only
 		if (renderOnlyStatic)
 		{
@@ -71,18 +68,22 @@ namespace Arcane
 		ARC_POP_RENDER_TAG();
 		m_GLCache->SetStencilWriteMask(0x00);
 
-		// Setup terrain information
-		ARC_PUSH_RENDER_TAG("Terrain");
-		m_GLCache->SetShader(m_TerrainShader);
-		m_TerrainShader->SetUniform("view", camera->GetViewMatrix());
-		m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
+		Terrain* terrain = m_ActiveScene->GetTerrain();
+		if (terrain)
+		{
+			// Setup terrain information
+			ARC_PUSH_RENDER_TAG("Terrain");
+			m_GLCache->SetShader(m_TerrainShader);
+			m_TerrainShader->SetUniform("view", camera->GetViewMatrix());
+			m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
 
-		// Render the terrain (use stencil to denote the terrain for the deferred lighting pass)
-		m_GLCache->SetStencilWriteMask(0xFF);
-		m_GLCache->SetStencilFunc(GL_ALWAYS, StencilValue::TerrainStencilValue, 0xFF);
-		terrain->Draw(m_TerrainShader, MaterialRequired);
-		m_GLCache->SetStencilWriteMask(0x00);
-		ARC_POP_RENDER_TAG();
+			// Render the terrain (use stencil to denote the terrain for the deferred lighting pass)
+			m_GLCache->SetStencilWriteMask(0xFF);
+			m_GLCache->SetStencilFunc(GL_ALWAYS, StencilValue::TerrainStencilValue, 0xFF);
+			terrain->Draw(m_TerrainShader, MaterialRequired);
+			m_GLCache->SetStencilWriteMask(0x00);
+			ARC_POP_RENDER_TAG();
+		}
 
 		// Reset state
 		m_GLCache->SetStencilTest(false);

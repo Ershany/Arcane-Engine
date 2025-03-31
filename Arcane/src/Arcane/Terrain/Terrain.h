@@ -15,11 +15,12 @@ namespace Arcane
 	class Terrain
 	{
 	public:
-		Terrain(glm::vec3 &worldPosition);
+		Terrain();
 		~Terrain();
 
 		void Draw(Shader *shader, RenderPassType pass) const;
 
+		inline void SetPosition(glm::vec3& pos) { m_Position = pos; m_ModelMatrix = glm::translate(glm::mat4(1.0f), pos); }
 		inline const glm::vec3& GetPosition() const { return m_Position; }
 	private:
 		glm::vec3 CalculateNormal(float worldPosX, float worldPosZ, unsigned char *heightMapData);

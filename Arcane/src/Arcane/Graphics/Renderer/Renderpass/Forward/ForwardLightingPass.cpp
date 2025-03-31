@@ -54,7 +54,6 @@ namespace Arcane
 		}
 
 		// Setup
-		Terrain *terrain = m_ActiveScene->GetTerrain();
 		LightManager *lightManager = m_ActiveScene->GetLightManager();
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
@@ -64,24 +63,28 @@ namespace Arcane
 			lightBindFunction = &LightManager::BindStaticLightingUniforms;
 
 		// Render terrain
-		ARC_PUSH_RENDER_TAG("Terrain");
-		m_GLCache->SetShader(m_TerrainShader);
-		if (m_GLCache->GetUsesClipPlane())
+		Terrain* terrain = m_ActiveScene->GetTerrain();
+		if (terrain)
 		{
-			m_TerrainShader->SetUniform("usesClipPlane", true);
-			m_TerrainShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
+			ARC_PUSH_RENDER_TAG("Terrain");
+			m_GLCache->SetShader(m_TerrainShader);
+			if (m_GLCache->GetUsesClipPlane())
+			{
+				m_TerrainShader->SetUniform("usesClipPlane", true);
+				m_TerrainShader->SetUniform("clipPlane", m_GLCache->GetActiveClipPlane());
+			}
+			else
+			{
+				m_TerrainShader->SetUniform("usesClipPlane", false);
+			}
+			(lightManager->*lightBindFunction) (m_TerrainShader);
+			m_TerrainShader->SetUniform("viewPos", camera->GetPosition());
+			m_TerrainShader->SetUniform("view", camera->GetViewMatrix());
+			m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
+			BindShadowmap(m_TerrainShader, inputShadowmapData);
+			terrain->Draw(m_TerrainShader, MaterialRequired);
+			ARC_POP_RENDER_TAG();
 		}
-		else
-		{
-			m_TerrainShader->SetUniform("usesClipPlane", false);
-		}
-		(lightManager->*lightBindFunction) (m_TerrainShader);
-		m_TerrainShader->SetUniform("viewPos", camera->GetPosition());
-		m_TerrainShader->SetUniform("view", camera->GetViewMatrix());
-		m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
-		BindShadowmap(m_TerrainShader, inputShadowmapData);
-		terrain->Draw(m_TerrainShader, MaterialRequired);
-		ARC_POP_RENDER_TAG();
 
 		// Render opaque objects since we are in the opaque pass
 		// Add meshes to the renderer
