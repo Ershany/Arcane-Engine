@@ -65,6 +65,7 @@ namespace Arcane
 				refractionFramebuffer = waterManager->GetWaterRefractionFramebuffer();
 
 				// Generate Reflection framebuffer and render to it
+				ARC_PUSH_RENDER_TAG("Reflection");
 				if (closestWaterWithReflectionRefraction->ReflectionEnabled)
 				{
 					glm::vec2 reflectionNearFarPlane = waterManager->GetClosestWaterReflectionNearFarPlane();
@@ -95,8 +96,10 @@ namespace Arcane
 					camera->SetNearFarPlane(prevNearPlane, prevFarPlane);
 					camera->InvertPitch();
 				}
+				ARC_POP_RENDER_TAG();
 
 				// Generate Refraction framebuffer and render to it
+				ARC_PUSH_RENDER_TAG("Refraction");
 				if (closestWaterWithReflectionRefraction->RefractionEnabled)
 				{
 					glm::vec2 refractionNearFarPlane = waterManager->GetClosestWaterRefractionNearFarPlane();
@@ -122,12 +125,14 @@ namespace Arcane
 
 					camera->SetNearFarPlane(prevNearPlane, prevFarPlane);
 				}
+				ARC_POP_RENDER_TAG();
 			}
 
 			// Reset State
 			m_GLCache->SetUsesClipPlane(false);
 
 			// Finally render the water geometry and shade it
+			ARC_PUSH_RENDER_TAG("Water");
 			m_GLCache->SetShader(m_WaterShader);
 			inputFramebuffer->Bind();
 			glViewport(0, 0, inputFramebuffer->GetWidth(), inputFramebuffer->GetHeight());
@@ -201,6 +206,7 @@ namespace Arcane
 				AssetManager::GetInstance().GetDefaultNormalTexture()->Bind(3);
 
 			m_WaterPlane.Draw();
+			ARC_POP_RENDER_TAG();
 		}
 
 		passOutput.outputFramebuffer = inputFramebuffer;

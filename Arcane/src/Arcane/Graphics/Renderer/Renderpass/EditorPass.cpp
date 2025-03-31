@@ -34,6 +34,7 @@ namespace Arcane
 		output.outFramebuffer = sceneFramebuffer;
 
 		// Entity highlighting (should be done first since it might use debug rendering to highlight objects if no mesh exists to highlight)
+		ARC_PUSH_RENDER_TAG("Entity Highlighting");
 		if (m_FocusedEntity.IsValid() && m_FocusedEntity.HasComponent<MeshComponent>())
 		{
 			auto& meshComponent = m_FocusedEntity.GetComponent<MeshComponent>();
@@ -95,8 +96,10 @@ namespace Arcane
 
 			DebugDraw3D::QueueBox(transformComponent.Translation, transformComponent.Scale, m_OutlineColour);
 		}
+		ARC_POP_RENDER_TAG();
 
 		// DebugDraw3D
+		ARC_PUSH_RENDER_TAG("Debug 3D Draw");
 		{
 			glViewport(0, 0, output.outFramebuffer->GetWidth(), output.outFramebuffer->GetHeight());
 			output.outFramebuffer->Bind();
@@ -109,8 +112,10 @@ namespace Arcane
 
 			DebugDraw3D::FlushBatch(camera);
 		}
+		ARC_POP_RENDER_TAG();
 
 		// Debug Light Drawing (can clear depth so do this last)
+		ARC_PUSH_RENDER_TAG("Light Sprites");
 		{
 			glViewport(0, 0, output.outFramebuffer->GetWidth(), output.outFramebuffer->GetHeight());
 			output.outFramebuffer->Bind();
@@ -153,6 +158,7 @@ namespace Arcane
 			// Reset State
 			m_GLCache->SetDepthTest(true);
 		}
+		ARC_POP_RENDER_TAG();
 
 
 		return output;

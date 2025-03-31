@@ -17,6 +17,14 @@
 #define ARC_DEV_BUILD
 #endif
 
+#if defined(USE_RENDERDOC) && defined(ARC_DEV_BUILD)
+#define ARC_PUSH_RENDER_TAG(name) glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, name);
+#define ARC_POP_RENDER_TAG() glPopDebugGroup();
+#else
+#define ARC_PUSH_RENDER_TAG(name)
+#define ARC_POP_RENDER_TAG()
+#endif
+
 #ifdef ARC_DEV_BUILD
 #define ARC_DEV_ONLY(...) __VA_ARGS__
 #else

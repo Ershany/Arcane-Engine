@@ -104,6 +104,7 @@ namespace Arcane
 		}
 
 		// Generate the AO factors for the scene
+		ARC_PUSH_RENDER_TAG("SSAO");
 		glViewport(0, 0, m_SsaoRenderTarget.GetWidth(), m_SsaoRenderTarget.GetHeight());
 		m_SsaoRenderTarget.Bind();
 		m_GLCache->SetDepthTest(false);
@@ -147,6 +148,7 @@ namespace Arcane
 
 		// Render our NDC quad to blur our SSAO texture
 		Renderer::DrawNdcPlane();
+		ARC_POP_RENDER_TAG();
 		
 		// Reset unusual state
 		m_GLCache->SetDepthTest(true);
@@ -241,6 +243,7 @@ namespace Arcane
 
 	void PostProcessPass::TonemapGammaCorrect(Framebuffer *target, Texture *hdrTexture)
 	{
+		ARC_PUSH_RENDER_TAG("Tonemap & Gamma Correct");
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_TonemapGammaCorrectShader);
 		m_GLCache->SetDepthTest(false);
@@ -256,10 +259,12 @@ namespace Arcane
 		hdrTexture->Bind(0);
 
 		Renderer::DrawNdcPlane();
+		ARC_POP_RENDER_TAG();
 	}
 
 	void PostProcessPass::Fxaa(Framebuffer *target, Texture *texture)
 	{
+		ARC_PUSH_RENDER_TAG("FXAA");
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_FxaaShader);
 		m_GLCache->SetDepthTest(false);
@@ -274,10 +279,12 @@ namespace Arcane
 		texture->Bind(0);
 
 		Renderer::DrawNdcPlane();
+		ARC_POP_RENDER_TAG();
 	}
 
 	void PostProcessPass::Vignette(Framebuffer *target, Texture *texture, Texture *optionalVignetteMask)
 	{
+		ARC_PUSH_RENDER_TAG("Vignette");
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_VignetteShader);
 		m_GLCache->SetDepthTest(false);
@@ -299,10 +306,12 @@ namespace Arcane
 		}
 
 		Renderer::DrawNdcPlane();
+		ARC_POP_RENDER_TAG();
 	}
 
 	void PostProcessPass::ChromaticAberration(Framebuffer *target, Texture *texture)
 	{
+		ARC_PUSH_RENDER_TAG("Chromatic Aberration");
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_ChromaticAberrationShader);
 		m_GLCache->SetDepthTest(false);
@@ -318,10 +327,12 @@ namespace Arcane
 		texture->Bind(0);
 
 		Renderer::DrawNdcPlane();
+		ARC_POP_RENDER_TAG();
 	}
 
 	void PostProcessPass::FilmGrain(Framebuffer *target, Texture *texture)
 	{
+		ARC_PUSH_RENDER_TAG("Film Grain");
 		glViewport(0, 0, target->GetWidth(), target->GetHeight());
 		m_GLCache->SetShader(m_FilmGrainShader);
 		m_GLCache->SetDepthTest(false);
@@ -337,12 +348,14 @@ namespace Arcane
 		texture->Bind(0);
 
 		Renderer::DrawNdcPlane();
+		ARC_POP_RENDER_TAG();
 	}
 
 	// https://www.youtube.com/watch?v=ml-5OGZC7vE
 	// Great summary of the advanced warfare bloom talk and what Arcane's implementation is based on
 	Texture* PostProcessPass::Bloom(Texture *hdrSceneTexture)
 	{
+		ARC_PUSH_RENDER_TAG("Bloom");
 		m_GLCache->SetDepthTest(false);
 		m_GLCache->SetBlend(false);
 		m_GLCache->SetFaceCull(true);
@@ -476,6 +489,7 @@ namespace Arcane
 		else
 			AssetManager::GetBlackTexture()->Bind(2);
 		Renderer::DrawNdcPlane();
+		ARC_POP_RENDER_TAG();
 
 		return m_FullRenderTarget.GetColourTexture();
 	}

@@ -88,11 +88,14 @@ namespace Arcane
 		probeManager->BindProbes(cameraPosition, m_LightingShader); // TODO: Should use camera component
 
 		// Perform lighting on the terrain (turn IBL off)
+		ARC_PUSH_RENDER_TAG("Terrain");
 		m_LightingShader->SetUniform("computeIBL", 0);
 		m_GLCache->SetStencilFunc(GL_EQUAL, StencilValue::TerrainStencilValue, 0xFF);
 		Renderer::DrawNdcPlane();
+		ARC_POP_RENDER_TAG();
 
 		// Perform lighting on the models in the scene
+		ARC_PUSH_RENDER_TAG("Opaque Models");
 		if (useIBL)
 		{
 			m_LightingShader->SetUniform("computeIBL", 1);
@@ -103,6 +106,7 @@ namespace Arcane
 		}
 		m_GLCache->SetStencilFunc(GL_EQUAL, StencilValue::ModelStencilValue, 0xFF);
 		Renderer::DrawNdcPlane();
+		ARC_POP_RENDER_TAG();
 
 
 		// Reset state

@@ -64,6 +64,7 @@ namespace Arcane
 			lightBindFunction = &LightManager::BindStaticLightingUniforms;
 
 		// Render terrain
+		ARC_PUSH_RENDER_TAG("Terrain");
 		m_GLCache->SetShader(m_TerrainShader);
 		if (m_GLCache->GetUsesClipPlane())
 		{
@@ -80,6 +81,7 @@ namespace Arcane
 		m_TerrainShader->SetUniform("projection", camera->GetProjectionMatrix());
 		BindShadowmap(m_TerrainShader, inputShadowmapData);
 		terrain->Draw(m_TerrainShader, MaterialRequired);
+		ARC_POP_RENDER_TAG();
 
 		// Render opaque objects since we are in the opaque pass
 		// Add meshes to the renderer
@@ -93,6 +95,7 @@ namespace Arcane
 		}
 
 		// Bind data to skinned shader and render skinned models
+		ARC_PUSH_RENDER_TAG("Skinned Models");
 		{
 			m_GLCache->SetShader(m_SkinnedModelShader);
 			if (m_GLCache->GetUsesClipPlane())
@@ -123,8 +126,10 @@ namespace Arcane
 
 			Renderer::FlushOpaqueSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_SkinnedModelShader);
 		}
+		ARC_POP_RENDER_TAG();
 
 		// Bind data to non-skinned shader and render non-skinned models
+		ARC_PUSH_RENDER_TAG("Non-Skinned Models");
 		{
 			m_GLCache->SetShader(m_ModelShader);
 			if (m_GLCache->GetUsesClipPlane())
@@ -155,6 +160,7 @@ namespace Arcane
 
 			Renderer::FlushOpaqueNonSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_ModelShader);
 		}
+		ARC_POP_RENDER_TAG();
 
 		// Render pass output
 		LightingPassOutput passOutput;
@@ -182,7 +188,9 @@ namespace Arcane
 		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
 
 		// Render skybox
+		ARC_PUSH_RENDER_TAG("Sky");
 		skybox->Draw(camera);
+		ARC_POP_RENDER_TAG();
 
 		// Lighting setup
 		auto lightBindFunction = &LightManager::BindLightingUniforms;
@@ -201,6 +209,7 @@ namespace Arcane
 		}
 
 		// Bind data to skinned shader and render skinned models
+		ARC_PUSH_RENDER_TAG("Skinned Models");
 		{
 			m_GLCache->SetShader(m_SkinnedModelShader);
 			if (m_GLCache->GetUsesClipPlane())
@@ -231,8 +240,10 @@ namespace Arcane
 
 			Renderer::FlushTransparentSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_SkinnedModelShader);
 		}
+		ARC_POP_RENDER_TAG();
 
 		// Bind data to non-skinned shader and render non-skinned models
+		ARC_PUSH_RENDER_TAG("Non-Skinned Models");
 		{
 			m_GLCache->SetShader(m_ModelShader);
 			if (m_GLCache->GetUsesClipPlane())
@@ -263,6 +274,7 @@ namespace Arcane
 
 			Renderer::FlushTransparentNonSkinnedMeshes(camera, RenderPassType::MaterialRequired, m_ModelShader);
 		}
+		ARC_POP_RENDER_TAG();
 
 		// Render pass output
 		LightingPassOutput passOutput;
