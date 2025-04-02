@@ -371,14 +371,20 @@ namespace Arcane
 
 							// Build the custom params for the noise gen algorithm
 							NoiseTextureParams params;
+							params.NoiseAlgorithm = volumetricCloudComponent.NoiseAlgorithm;
 							volumetricCloudComponent.GeneratedNoiseTexture3D = VolumetricClouds::Generate3DNoiseTexture(params);
 						}
 
 						if (volumetricCloudComponent.GeneratedNoiseTexture3D)
 						{
+							bool minModified = ImGui::SliderInt(" - Slice", &sliceToVisualize, 0, volumetricCloudComponent.GeneratedNoiseTexture3D->GetDepth() - 1);
 							Visualize3DTextureSlice(volumetricCloudComponent.GeneratedNoiseTexture3D, sliceToVisualize, shouldForceLoad);
-							bool minModified = ImGui::SliderInt("Slice to Visualize", &sliceToVisualize, 0, volumetricCloudComponent.GeneratedNoiseTexture3D->GetDepth() - 1);
 						}
+
+						const char* algorithmChoices[] = { "Worley", "Perlin" };
+						int algorithmChoice = static_cast<int>(volumetricCloudComponent.NoiseAlgorithm);
+						ImGui::Combo("Noise Algorithm", &algorithmChoice, algorithmChoices, IM_ARRAYSIZE(algorithmChoices)); ImGui::SameLine();
+						volumetricCloudComponent.NoiseAlgorithm = static_cast<CloudNoiseAlgorithm>(algorithmChoice);
 					}
 				}
 			}
@@ -476,7 +482,7 @@ namespace Arcane
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
-		ImGui::Text("Slice %d / %d", (sliceIndex + 1), depth);
+		ImGui::Text("Slice %d / %d", sliceIndex, depth - 1);
 		ImGui::Image((void*)(intptr_t)sliceTexture, ImVec2(256, 256));
 	}
 }

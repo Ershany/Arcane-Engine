@@ -6,9 +6,16 @@ namespace Arcane
 {
 	class Texture3D;
 
+	enum class CloudNoiseAlgorithm : int
+	{
+		CloudNoiseAlgorithm_Worley,
+		CloudNoiseAlgorithm_Perlin,
+		CloudNoiseAlgorithmSize
+	};
+
 	struct NoiseTextureParams
 	{
-
+		CloudNoiseAlgorithm NoiseAlgorithm = CloudNoiseAlgorithm::CloudNoiseAlgorithm_Worley;
 	};
 
 	class VolumetricClouds

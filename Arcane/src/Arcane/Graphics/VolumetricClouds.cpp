@@ -16,7 +16,14 @@ namespace Arcane
 		std::vector<unsigned char> textureData(width * height * depth * 3); // 3 bytes per pixel (RGB)
 		for (size_t i = 0; i < textureData.size(); i++)
 		{
-			textureData[i] = static_cast<unsigned char>(rand() % 256);
+			if (params.NoiseAlgorithm == CloudNoiseAlgorithm::CloudNoiseAlgorithm_Worley)
+			{
+				textureData[i] = static_cast<unsigned char>(1.0f);
+			}
+			else if (params.NoiseAlgorithm == CloudNoiseAlgorithm::CloudNoiseAlgorithm_Perlin)
+			{
+				textureData[i] = static_cast<unsigned char>(rand() % 256);
+			}
 		}
 
 		Texture3DSettings textureSettings;

@@ -26,6 +26,10 @@
 #include <Arcane/Graphics/Texture/Texture3D.h>
 #endif
 
+#ifndef VOLUMETRICCLOUDS_H
+#include <Arcane/Graphics/VolumetricClouds.h>
+#endif
+
 namespace Arcane
 {
 	class ICamera;
@@ -166,6 +170,7 @@ namespace Arcane
 	struct VolumetricCloudComponent
 	{
 		Texture3D* GeneratedNoiseTexture3D = nullptr;
+		CloudNoiseAlgorithm NoiseAlgorithm = CloudNoiseAlgorithm::CloudNoiseAlgorithm_Worley;
 	};
 }
 #endif

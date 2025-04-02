@@ -12,6 +12,7 @@
 #include <Arcane/Animation/AnimationClip.h>
 #include <Arcane/Graphics/Renderer/Renderpass/MasterRenderPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/PostProcessPass.h>
+#include <Arcane/Graphics/VolumetricClouds.h>
 
 
 using namespace Arcane;
@@ -207,6 +208,7 @@ void Testbed::LoadTestbedGraphics()
 	{
 		auto clouds = scene->CreateEntity("Clouds");
 		auto& volumetricCloudComponent = clouds.AddComponent<VolumetricCloudComponent>();
+		volumetricCloudComponent.NoiseAlgorithm = CloudNoiseAlgorithm::CloudNoiseAlgorithm_Worley;
 	}
 
 	{
