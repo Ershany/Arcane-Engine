@@ -476,7 +476,7 @@ namespace Arcane
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
-		ImGui::Text("Slice %d / %d", sliceIndex, depth);
+		ImGui::Text("Slice %d / %d", (sliceIndex + 1), depth);
 		ImGui::Image((void*)(intptr_t)sliceTexture, ImVec2(256, 256));
 	}
 }
