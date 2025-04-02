@@ -24,15 +24,18 @@ namespace Arcane
 		Unbind();
 	}
 
-	Texture::~Texture() {
+	Texture::~Texture()
+	{
 		glDeleteTextures(1, &m_TextureId);
 	}
 
-	void Texture::ApplyTextureSettings() {
+	void Texture::ApplyTextureSettings()
+	{
 		// Texture wrapping
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_TextureSettings.TextureWrapSMode);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_TextureSettings.TextureWrapTMode);
-		if (m_TextureSettings.HasBorder) {
+		if (m_TextureSettings.HasBorder)
+		{
 			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(m_TextureSettings.BorderColour));
 		}
 
@@ -41,27 +44,31 @@ namespace Arcane
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_TextureSettings.TextureMagnificationFilterMode);
 
 		// Mipmapping
-		if (m_TextureSettings.HasMips) {
+		if (m_TextureSettings.HasMips)
+		{
 			glGenerateMipmap(GL_TEXTURE_2D);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, m_TextureSettings.MipBias);
 		}
 
-		// Anisotropic filtering (Check with renderer to see the max amount allowed
+		// Anisotropic filtering (Check with renderer to see the max amount allowed)
 		float anistropyAmount = glm::min<float>(m_TextureSettings.TextureAnisotropyLevel, Renderer::GetRendererData().MaxAnisotropy);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
 	}
 
-	void Texture::Generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, GLenum pixelDataType, const void *data) {
+	void Texture::Generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, GLenum pixelDataType, const void *data)
+	{
 		m_TextureTarget = GL_TEXTURE_2D;
 		m_Width = width;
 		m_Height = height;
 
 		// If GL_NONE is specified, set the texture format to the data format
-		if (m_TextureSettings.TextureFormat == GL_NONE) {
+		if (m_TextureSettings.TextureFormat == GL_NONE)
+		{
 			m_TextureSettings.TextureFormat = dataFormat;
 		}
 		// Check if the texture is SRGB, if so change the texture format
-		if (m_TextureSettings.IsSRGB) {
+		if (m_TextureSettings.IsSRGB)
+		{
 			switch (dataFormat) {
 			case GL_RGB: m_TextureSettings.TextureFormat = GL_SRGB; break;
 			case GL_RGBA: m_TextureSettings.TextureFormat = GL_SRGB_ALPHA; break;
@@ -77,8 +84,9 @@ namespace Arcane
 		Unbind();
 	}
 
-	void Texture::Generate2DMultisampleTexture(unsigned int width, unsigned int height) {
-		// Multisampled textures do not support mips or filtering/wrapping options
+	void Texture::Generate2DMultisampleTexture(unsigned int width, unsigned int height)
+	{
+		// Note: Multisampled textures do not support mips or filtering/wrapping options - so no reason to call ApplyTextureSettings()
 		m_TextureTarget = GL_TEXTURE_2D_MULTISAMPLE;
 		m_Width = width;
 		m_Height = height;
@@ -89,9 +97,11 @@ namespace Arcane
 		Unbind();
 	}
 
-	void Texture::GenerateMips() {
+	void Texture::GenerateMips()
+	{
 		m_TextureSettings.HasMips = true;
-		if (IsGenerated()) {
+		if (IsGenerated())
+		{
 			Bind();
 			glGenerateMipmap(m_TextureTarget);
 		}
@@ -110,97 +120,114 @@ namespace Arcane
 
 
 
-	void Texture::SetTextureWrapS(GLenum textureWrapMode) {
+	void Texture::SetTextureWrapS(GLenum textureWrapMode)
+	{
 		if (m_TextureSettings.TextureWrapSMode == textureWrapMode)
 			return;
 
 		m_TextureSettings.TextureWrapSMode = textureWrapMode;
-		if (IsGenerated()) {
+		if (IsGenerated())
+		{
 			glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_S, m_TextureSettings.TextureWrapSMode);
 		}
 	}
 
-	void Texture::SetTextureWrapT(GLenum textureWrapMode) {
+	void Texture::SetTextureWrapT(GLenum textureWrapMode)
+	{
 		if (m_TextureSettings.TextureWrapTMode == textureWrapMode)
 			return;
 
 		m_TextureSettings.TextureWrapTMode = textureWrapMode;
-		if (IsGenerated()) {
+		if (IsGenerated())
+		{
 			glTexParameteri(m_TextureTarget, GL_TEXTURE_WRAP_T, m_TextureSettings.TextureWrapTMode);
 		}
 	}
 
-	void Texture::SetHasBorder(bool hasBorder) {
+	void Texture::SetHasBorder(bool hasBorder)
+	{
 		if (m_TextureSettings.HasBorder == hasBorder)
 			return;
 
 		m_TextureSettings.HasBorder = hasBorder;
-		if (IsGenerated()) {
+		if (IsGenerated())
+		{
 			glTexParameterfv(m_TextureTarget, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(m_TextureSettings.BorderColour));
 		}
 	}
 
-	void Texture::SetBorderColour(glm::vec4 &borderColour) {
+	void Texture::SetBorderColour(glm::vec4 &borderColour)
+	{
 		if (m_TextureSettings.BorderColour == borderColour || m_TextureSettings.HasBorder == false)
 			return;
 
 		m_TextureSettings.BorderColour = borderColour;
-		if (IsGenerated()) {
+		if (IsGenerated())
+		{
 			glTexParameterfv(m_TextureTarget, GL_TEXTURE_BORDER_COLOR, glm::value_ptr(m_TextureSettings.BorderColour));
 		}
 	}
 
-	void Texture::SetTextureMinFilter(GLenum textureFilterMode) {
+	void Texture::SetTextureMinFilter(GLenum textureFilterMode)
+	{
 		if (m_TextureSettings.TextureMinificationFilterMode == textureFilterMode)
 			return;
 
 		m_TextureSettings.TextureMinificationFilterMode = textureFilterMode;
-		if (IsGenerated()) {
+		if (IsGenerated())
+		{
 			glTexParameteri(m_TextureTarget, GL_TEXTURE_MIN_FILTER, m_TextureSettings.TextureMinificationFilterMode);
 		}
 	}
 
-	void Texture::SetTextureMagFilter(GLenum textureFilterMode) {
+	void Texture::SetTextureMagFilter(GLenum textureFilterMode)
+	{
 		ARC_ASSERT(textureFilterMode <= GL_LINEAR, "Texture's magnification filter exceeded bilinear filtering which won't result in any visual improvements and will just cost more");
 
 		if (m_TextureSettings.TextureMagnificationFilterMode == textureFilterMode)
 			return;
 
 		m_TextureSettings.TextureMagnificationFilterMode = textureFilterMode;
-		if (IsGenerated()) {
+		if (IsGenerated())
+		{
 			glTexParameteri(m_TextureTarget, GL_TEXTURE_MAG_FILTER, m_TextureSettings.TextureMagnificationFilterMode);
 		}
 	}
 
-	void Texture::SetAnisotropicFilteringMode(float textureAnisotropyLevel) {
+	void Texture::SetAnisotropicFilteringMode(float textureAnisotropyLevel)
+	{
 		if (m_TextureSettings.TextureAnisotropyLevel == textureAnisotropyLevel)
 			return;
 
 		m_TextureSettings.TextureAnisotropyLevel = textureAnisotropyLevel;
-		if (IsGenerated()) {
-			float maxAnisotropy;
-			glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &maxAnisotropy);
-			float anistropyAmount = glm::min<float>(maxAnisotropy, m_TextureSettings.TextureAnisotropyLevel);
+		if (IsGenerated())
+		{
+			// Check with renderer to see the max amount allowed
+			float anistropyAmount = glm::min<float>(m_TextureSettings.TextureAnisotropyLevel, Renderer::GetRendererData().MaxAnisotropy);
 			glTexParameterf(m_TextureTarget, GL_TEXTURE_MAX_ANISOTROPY_EXT, anistropyAmount);
 		}
 	}
 
-	void Texture::SetMipBias(int mipBias) {
+	void Texture::SetMipBias(int mipBias)
+	{
 		if (m_TextureSettings.MipBias == mipBias)
 			return;
 
 		m_TextureSettings.MipBias = mipBias;
-		if (IsGenerated()) {
+		if (IsGenerated())
+		{
 			glTexParameteri(m_TextureTarget, GL_TEXTURE_LOD_BIAS, m_TextureSettings.MipBias);
 		}
 	}
 
-	void Texture::SetHasMips(bool hasMips) {
+	void Texture::SetHasMips(bool hasMips)
+	{
 		if (m_TextureSettings.HasMips == hasMips)
 			return;
 
 		m_TextureSettings.HasMips = hasMips;
-		if (IsGenerated() && hasMips == true) {
+		if (IsGenerated() && hasMips == true)
+		{
 			glGenerateMipmap(m_TextureTarget);
 		}
 	}

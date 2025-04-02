@@ -78,6 +78,7 @@
     <ClCompile Include="src\Arcane\Graphics\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Camera\CameraController.cpp" />
     <ClCompile Include="src\Arcane\Graphics\VolumetricClouds.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Texture\Texture3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="src\Arcane\Graphics\Camera\OrthographicCamera.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\CameraController.h" />
     <ClInclude Include="src\Arcane\Graphics\VolumetricClouds.h" />
+    <ClInclude Include="src\Arcane\Graphics\Texture\Texture3D.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\awesomeface.png" />
