@@ -57,6 +57,8 @@ namespace Arcane
 
 	void Texture::Generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, GLenum pixelDataType, const void *data)
 	{
+		ARC_ASSERT(!IsGenerated(), "Trying to generate a Texture, when it's already been generated - GPU memory leak will occur");
+
 		m_TextureTarget = GL_TEXTURE_2D;
 		m_Width = width;
 		m_Height = height;
@@ -86,6 +88,8 @@ namespace Arcane
 
 	void Texture::Generate2DMultisampleTexture(unsigned int width, unsigned int height)
 	{
+		ARC_ASSERT(!IsGenerated(), "Trying to generate a Texture with multi-sampling, when it's already been generated - GPU memory leak will occur");
+
 		// Note: Multisampled textures do not support mips or filtering/wrapping options - so no reason to call ApplyTextureSettings()
 		m_TextureTarget = GL_TEXTURE_2D_MULTISAMPLE;
 		m_Width = width;

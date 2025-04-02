@@ -18,9 +18,11 @@ namespace Arcane
 		inline void SetFocusedEntity(Entity entity) { m_FocusedEntity = entity; }
 		inline Entity GetFocusedEntity() { return m_FocusedEntity; }
 	private:
+		// TODO: These functions should be abstracted for all imgui UI somewhere
 		bool DrawVec2Control(const std::string &label, glm::vec2 &values, float speed = 0.1f, float min = 0.0f, float max = 0.0f, const char *displayDigits = "%.2f", float columnWidth = 100.0f);
 		bool DrawVec3Control(const std::string &label, glm::vec3 &values, float speed = 0.1f, float min = 0.0f, float max = 0.0f, const char *displayDigits = "%.2f", float columnWidth = 100.0f);
 		bool DrawFloatControl(const std::string &label, float &value, float speed = 0.1f, float min = 0.0f, float max = 0.0f, const char *displayDigits = "%.2f", float columnWidth = 200.0f);
+		void Visualize3DTextureSlice(Texture3D* texture3D, int sliceIndex, bool forceRegen = false);
 	private:
 		Entity m_FocusedEntity;
 	};

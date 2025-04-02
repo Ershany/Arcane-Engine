@@ -4,6 +4,8 @@
 
 namespace Arcane
 {
+	class Texture3D;
+
 	struct NoiseTextureParams
 	{
 
@@ -13,9 +15,7 @@ namespace Arcane
 	{
 	public:
 		// Function for the editor to use to pre-generate a 3D noise texture that can be used for the volumetric cloud effect at runtime
-		static void Generate3DNoiseTexture(NoiseTextureParams& params);
-	public:
-		static Texture3D* s_Worley3D;
+		static Texture3D* Generate3DNoiseTexture(NoiseTextureParams& params);
 	private:
 
 	};

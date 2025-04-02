@@ -6,6 +6,8 @@
 #include <Arcane/Util/Loaders/AssetManager.h>
 #include <Arcane/Vendor/Imgui/imgui.h>
 #include <Arcane/Animation/AnimationClip.h>
+#include <Arcane/Graphics/Texture/Texture3D.h>
+#include <Arcane/Graphics/VolumetricClouds.h>
 
 namespace Arcane
 {
@@ -349,6 +351,36 @@ namespace Arcane
 #endif
 					}
 				}
+
+				if (m_FocusedEntity.HasComponent<VolumetricCloudComponent>())
+				{
+					static int sliceToVisualize = 0;
+					if (ImGui::CollapsingHeader("Volumetric Clouds", ImGuiTreeNodeFlags_DefaultOpen))
+					{
+						auto& volumetricCloudComponent = m_FocusedEntity.GetComponent<VolumetricCloudComponent>();
+
+						bool shouldForceLoad = false;
+						if (ImGui::Button("Generate Noise Texture"))
+						{
+							if (volumetricCloudComponent.GeneratedNoiseTexture3D)
+							{
+								// Delete the old Texture3D and we will generate a new one. This will re-use the ID so we need to force-load when visualizing the texture slice
+								delete volumetricCloudComponent.GeneratedNoiseTexture3D;
+								shouldForceLoad = true;
+							}
+
+							// Build the custom params for the noise gen algorithm
+							NoiseTextureParams params;
+							volumetricCloudComponent.GeneratedNoiseTexture3D = VolumetricClouds::Generate3DNoiseTexture(params);
+						}
+
+						if (volumetricCloudComponent.GeneratedNoiseTexture3D)
+						{
+							Visualize3DTextureSlice(volumetricCloudComponent.GeneratedNoiseTexture3D, sliceToVisualize, shouldForceLoad);
+							bool minModified = ImGui::SliderInt("Slice to Visualize", &sliceToVisualize, 0, volumetricCloudComponent.GeneratedNoiseTexture3D->GetDepth() - 1);
+						}
+					}
+				}
 			}
 		}
 		ImGui::End();
@@ -403,5 +435,48 @@ namespace Arcane
 		ImGui::PopID();
 
 		return modified;
+	}
+
+	// Note: This function is only good if ImGui is only displaying one 3D texture a frame, if you are displaying multiple we will need to abstract this functionality properly
+	// instead of uploading data constantly from VRAM -> CPU and back to GPU via a 2D Texture
+	// TODO: Also would be nice to use Texture class instead of just storing indices of OpenGL objects
+	void InspectorPanel::Visualize3DTextureSlice(Texture3D* texture3D, int sliceIndex, bool forceRegen /* = false*/)
+	{
+		if (texture3D == nullptr)
+			return;
+
+		static GLuint sliceTexture = 0;
+		static int lastSliceIndex = -1;
+		static int lastTextureID = -1;
+		if (sliceTexture == 0) glGenTextures(1, &sliceTexture);
+
+		int width = texture3D->GetWidth();
+		int height = texture3D->GetHeight();
+		int depth = texture3D->GetDepth();
+		sliceIndex = glm::clamp(sliceIndex, 0, depth - 1);
+
+		if (sliceIndex != lastSliceIndex || lastTextureID != texture3D->GetTextureId() || forceRegen)
+		{
+			lastSliceIndex = sliceIndex;
+			lastTextureID = texture3D->GetTextureId();
+
+			// Grab the slice from VRAM -> CPU
+			texture3D->Bind(0);
+			std::vector<unsigned char> sliceData(width * height * 3);
+			glGetTextureSubImage(texture3D->GetTextureId(), 0, 0, 0, sliceIndex, width, height, 1, GL_RGB, GL_UNSIGNED_BYTE, sliceData.size(), sliceData.data());
+
+			// Upload the slice to our slice texture for display
+			glBindTexture(GL_TEXTURE_2D, sliceTexture);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, sliceData.data());
+
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+
+		ImGui::Text("Slice %d / %d", sliceIndex, depth);
+		ImGui::Image((void*)(intptr_t)sliceTexture, ImVec2(256, 256));
 	}
 }

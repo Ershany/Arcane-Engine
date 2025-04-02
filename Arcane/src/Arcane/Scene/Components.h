@@ -22,6 +22,10 @@
 #include <Arcane/Graphics/Texture/Texture.h>
 #endif
 
+#ifndef TEXTURE3D_H
+#include <Arcane/Graphics/Texture/Texture3D.h>
+#endif
+
 namespace Arcane
 {
 	class ICamera;
@@ -159,9 +163,9 @@ namespace Arcane
 		Arcane::ICamera *camera;
 	};
 
-	struct CloudComponent
+	struct VolumetricCloudComponent
 	{
-
+		Texture3D* GeneratedNoiseTexture3D = nullptr;
 	};
 }
 #endif

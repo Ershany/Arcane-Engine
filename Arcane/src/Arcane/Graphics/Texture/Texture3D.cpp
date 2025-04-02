@@ -52,6 +52,8 @@ namespace Arcane
 
 	void Texture3D::Generate3DTexture(unsigned int width, unsigned int height, unsigned int depth, GLenum dataFormat, GLenum pixelDataType, const void* data)
 	{
+		ARC_ASSERT(!IsGenerated(), "Trying to generate a Texture3D, when it's already been generated - GPU memory leak will occur");
+
 		m_Texture3DTarget = GL_TEXTURE_3D;
 		m_Width = width;
 		m_Height = height;

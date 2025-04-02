@@ -205,6 +205,11 @@ void Testbed::LoadTestbedGraphics()
 	}
 
 	{
+		auto clouds = scene->CreateEntity("Clouds");
+		auto& volumetricCloudComponent = clouds.AddComponent<VolumetricCloudComponent>();
+	}
+
+	{
 		Model* brickModel = new Model(*quad);
 
 		auto bricks = scene->CreateEntity("Displaced Bricks");
