@@ -171,6 +171,12 @@ namespace Arcane
 	{
 		Texture3D* GeneratedNoiseTexture3D = nullptr;
 		NoiseTextureParams NoiseGenParams;
+
+		// Cloud rendering parameters
+		float CloudCoverage   = 0.45f;                              // [0,1] fraction of sky covered by clouds
+		float CloudDensity    = 40.0f;                              // extinction coefficient
+		float CloudAbsorption = 0.9f;                               // [0,1] absorption vs scattering ratio
+		glm::vec3 CloudAlbedo = glm::vec3(0.95f, 0.97f, 1.0f);    // slight blue-white tint
 	};
 }
 #endif

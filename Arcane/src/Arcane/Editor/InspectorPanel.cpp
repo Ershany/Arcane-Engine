@@ -394,6 +394,13 @@ namespace Arcane
 						ImGui::Combo("NoiseGen Quality", &qualityChoice, qualityItems, IM_ARRAYSIZE(qualityItems)); ImGui::SameLine();
 						ImGui::Text("- %u x %u x %u", resolution.x, resolution.y, resolution.z);
 						volumetricCloudComponent.NoiseGenParams.Quality = static_cast<VolumetricNoiseGenQuality>(qualityChoice);
+
+						ImGui::Separator();
+
+						ImGui::SliderFloat("Cloud Coverage", &volumetricCloudComponent.CloudCoverage, 0.0f, 1.0f, "%.3f");
+						ImGui::SliderFloat("Cloud Density", &volumetricCloudComponent.CloudDensity, 0.0f, 300.0f, "%.2f");
+						ImGui::SliderFloat("Cloud Absorption", &volumetricCloudComponent.CloudAbsorption, 0.0f, 1.0f, "%.3f");
+						DrawVec3Control("Cloud Albedo", volumetricCloudComponent.CloudAlbedo, 0.1f, 0.0f, 1.0f);
 					}
 				}
 			}

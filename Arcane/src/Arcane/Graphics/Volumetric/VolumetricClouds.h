@@ -11,6 +11,7 @@ namespace Arcane
 	class ICamera;
 	class Texture3D;
 	class GLCache;
+	class LightManager;
 	class Shader;
 	struct VolumetricCloudComponent;
 
@@ -36,7 +37,7 @@ namespace Arcane
 	public:
 		VolumetricClouds();
 
-		void DrawClouds(const ICamera* camera, const VolumetricCloudComponent* volumetricComponent, const TransformComponent* transformComponent);
+		void DrawClouds(const ICamera* camera, const VolumetricCloudComponent* volumetricComponent, const TransformComponent* transformComponent, LightManager* lightManager);
 
 		// Static Function for the editor to use to pre-generate a 3D noise texture that can be used for the volumetric cloud effect at runtime
 		static Texture3D* Generate3DNoiseTexture(NoiseTextureParams& params);

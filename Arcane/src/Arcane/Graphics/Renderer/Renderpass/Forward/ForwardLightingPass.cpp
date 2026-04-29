@@ -201,7 +201,7 @@ namespace Arcane
 
 		// Render clouds
 		ARC_PUSH_RENDER_TAG("Volumetric Clouds");
-		clouds->DrawClouds(camera, volumetricManager->GetClosestVolumetricCloudComponent(), volumetricManager->GetClosestVolumetricCloudTransform());
+		clouds->DrawClouds(camera, volumetricManager->GetClosestVolumetricCloudComponent(), volumetricManager->GetClosestVolumetricCloudTransform(), lightManager);
 		ARC_POP_RENDER_TAG();
 
 		// Lighting setup
