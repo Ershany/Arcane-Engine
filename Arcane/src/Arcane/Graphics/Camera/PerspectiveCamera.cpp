@@ -12,7 +12,7 @@ namespace Arcane
 
 	}
 
-	glm::mat4 PerspectiveCamera::GetProjectionMatrix()
+	glm::mat4 PerspectiveCamera::GetProjectionMatrix() const
 	{
 		return glm::perspective(glm::radians(m_CurrentFOV), (float)Window::GetRenderResolutionWidth() / (float)Window::GetRenderResolutionHeight(), m_NearPlane, m_FarPlane);
 	}

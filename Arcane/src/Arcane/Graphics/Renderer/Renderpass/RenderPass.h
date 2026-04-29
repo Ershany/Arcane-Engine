@@ -7,7 +7,8 @@ namespace Arcane
 	class GLCache;
 	class Scene;
 
-	class RenderPass {
+	class RenderPass
+	{
 	public:
 		RenderPass(Scene *scene);
 		virtual ~RenderPass();

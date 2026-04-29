@@ -249,5 +249,6 @@
     <None Include="src\Arcane\Shaders\DebugLine.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomDownsample.glsl" />
     <None Include="src\Arcane\Shaders\Post_Process\Bloom\BloomUpsample.glsl" />
+    <None Include="src\Arcane\Shaders\Volumetric\Clouds.glsl" />
   </ItemGroup>
 </Project>

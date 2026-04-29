@@ -207,6 +207,9 @@ void Testbed::LoadTestbedGraphics()
 
 	{
 		auto clouds = scene->CreateEntity("Clouds");
+		auto& transformComponent = clouds.GetComponent<TransformComponent>();
+		transformComponent.Scale = { 50.0f, 50.0f, 50.0f };
+		transformComponent.Translation = { 0.0f, 50.0f, 0.0f };
 		auto& volumetricCloudComponent = clouds.AddComponent<VolumetricCloudComponent>();
 		volumetricCloudComponent.NoiseGenParams.NoiseAlgorithm = CloudNoiseAlgorithm::CloudNoiseAlgorithm_Worley;
 	}

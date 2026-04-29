@@ -37,6 +37,7 @@ namespace Arcane
 	class Skybox;
 	class GLCache;
 	class CameraController;
+	class VolumetricClouds;
 
 	enum class ModelFilterType
 	{
@@ -72,7 +73,9 @@ namespace Arcane
 		inline LightManager* GetLightManager() { return &m_LightManager; }
 		inline WaterManager* GetWaterManager() { return &m_WaterManager; }
 		inline ProbeManager* GetProbeManager() { return &m_ProbeManager; }
+		inline VolumetricManager* GetVolumetricManager() { return &m_VolumetricManager; }
 		inline Skybox* GetSkybox() { return m_Skybox; }
+		inline VolumetricClouds* GetVolumetricClouds() { return m_VolumetricClouds; }
 		ICamera* GetCamera();
 	private:
 		void PreInit();
@@ -90,6 +93,7 @@ namespace Arcane
 		CameraController *m_SceneCamera;
 		Skybox *m_Skybox;
 		Terrain *m_Terrain;
+		VolumetricClouds* m_VolumetricClouds;
 		LightManager m_LightManager;
 		ProbeManager m_ProbeManager;
 		WaterManager m_WaterManager;

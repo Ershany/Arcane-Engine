@@ -44,12 +44,12 @@ namespace Arcane
 		}
 	}
 
-	glm::mat4 CubemapCamera::GetViewMatrix()
+	glm::mat4 CubemapCamera::GetViewMatrix() const
 	{
 		return glm::lookAt(m_Position, m_Position + m_Front, m_Up);
 	}
 	
-	glm::mat4 CubemapCamera::GetProjectionMatrix()
+	glm::mat4 CubemapCamera::GetProjectionMatrix() const
 	{
 		return glm::perspective(glm::radians(90.0f), 1.0f, m_NearPlane, m_FarPlane);
 	}

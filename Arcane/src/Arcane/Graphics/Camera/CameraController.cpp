@@ -16,7 +16,7 @@ namespace Arcane
 		UpdateCameraVectors();
 	}
 
-	glm::mat4 CameraController::GetViewMatrix()
+	glm::mat4 CameraController::GetViewMatrix() const
 	{
 		return glm::lookAt(m_Position, m_Position + m_Front, m_Up);
 	}

@@ -6,7 +6,8 @@
 
 namespace Arcane
 {
-	RenderPass::RenderPass(Scene *scene) : m_ActiveScene(scene) {
+	RenderPass::RenderPass(Scene *scene) : m_ActiveScene(scene)
+	{
 		m_GLCache = GLCache::GetInstance();
 	}
 

@@ -26,6 +26,9 @@ namespace Arcane
 		void Init();
 		void Update();
 
+		TransformComponent* GetClosestVolumetricCloudTransform() { return m_ClosestVolumetricCloudTransform; }
+		VolumetricCloudComponent* GetClosestVolumetricCloudComponent() { return m_ClosestVolumetricCloudComponent; }
+
 		static glm::uvec3 GetVolumetricNoiseGenQualityResolution(VolumetricNoiseGenQuality quality);
 	private:
 		void FindClosestVolumetricCloud();

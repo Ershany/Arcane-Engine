@@ -9,19 +9,20 @@
 #include <Arcane/Graphics/Shader.h>
 #include <Arcane/Scene/Components.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
+#include <Arcane/Graphics/Camera/ICamera.h>
 
 namespace Arcane
 {
 	VolumetricClouds::VolumetricClouds()
 	{
-		m_VolumetricCloudShader = ShaderLoader::LoadShader("Skybox.glsl");
+		m_VolumetricCloudShader = ShaderLoader::LoadShader("Volumetric/Clouds.glsl");
 
 		m_GLCache = GLCache::GetInstance();
 	}
 
-	void VolumetricClouds::DrawClouds(const VolumetricCloudComponent* volumetricComponent)
+	void VolumetricClouds::DrawClouds(const ICamera* camera, const VolumetricCloudComponent* volumetricComponent, const TransformComponent* transformComponent)
 	{
-		if (volumetricComponent->GeneratedNoiseTexture3D == nullptr)
+		if (volumetricComponent == nullptr || transformComponent == nullptr || volumetricComponent->GeneratedNoiseTexture3D == nullptr)
 		{
 			return;
 		}
@@ -30,15 +31,24 @@ namespace Arcane
 
 		volumetricComponent->GeneratedNoiseTexture3D->Bind(0);
 		m_VolumetricCloudShader->SetUniform("noiseTexture3D", 0);
+		m_VolumetricCloudShader->SetUniform("model", transformComponent->GetTransform());
+		m_VolumetricCloudShader->SetUniform("view", camera->GetViewMatrix());
+		m_VolumetricCloudShader->SetUniform("projection", camera->GetProjectionMatrix());
+		m_VolumetricCloudShader->SetUniform("cameraPosition", camera->GetPosition());
+		m_VolumetricCloudShader->SetUniform("inverseModel", glm::inverse(camera->GetProjectionMatrix()));
+		m_VolumetricCloudShader->SetUniform("scale", transformComponent->Scale);
 
-		//m_SkyboxShader->SetUniform("view", camera->GetViewMatrix());
-		//m_SkyboxShader->SetUniform("projection", camera->GetProjectionMatrix());
-
-		m_GLCache->SetDepthTest(false);
+		m_GLCache->SetDepthTest(true);
 		m_GLCache->SetFaceCull(true);
 		m_GLCache->SetCullFace(GL_BACK);
+		m_GLCache->SetBlend(true);
 
-		Renderer::DrawNdcPlane();
+
+		// Note: Could do fullscreen or draw a 3D AABB representing the transform. The AABB is better for more localized volumetric effects
+		//Renderer::DrawNdcPlane();
+		Renderer::DrawNdcCube();
+
+		m_GLCache->SetBlend(false);
 
 		volumetricComponent->GeneratedNoiseTexture3D->Unbind();
 	}
@@ -127,7 +137,7 @@ namespace Arcane
 						float worleyNoise = worley.GetNoise(x * scale.x, y * scale.y, z * scale.z);
 						worleyNoise = (worleyNoise + 1.0f) * 0.5f;
 						worleyNoise = 1.0f - worleyNoise;
-						worleyNoise = std::pow(worleyNoise, 4.0f);
+						worleyNoise = std::pow(worleyNoise, 8.0f);
 
 						float perlinNoise = static_cast<float>(perlin.octave3D_01(x * scale.x, y * scale.y, z * scale.z, params.Octaves));
 						float erosionStrength = 2.2f;

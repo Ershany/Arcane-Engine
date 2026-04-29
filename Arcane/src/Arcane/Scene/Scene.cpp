@@ -11,6 +11,7 @@
 #include <Arcane/Graphics/Camera/CameraController.h>
 #include <Arcane/Graphics/Camera/PerspectiveCamera.h>
 #include <Arcane/Graphics/Camera/OrthographicCamera.h>
+#include <Arcane/Graphics/Volumetric/VolumetricClouds.h>
 
 namespace Arcane
 {
@@ -29,7 +30,7 @@ namespace Arcane
 
 	Scene::~Scene()
 	{
-
+		// TODO: Delete memory in preparation for loading new scenes :)
 	}
 
 	void Scene::PreInit()
@@ -55,6 +56,8 @@ namespace Arcane
 		skyboxFilePaths.push_back("res/skybox/back.png");
 		skyboxFilePaths.push_back("res/skybox/front.png");
 		m_Skybox = new Skybox(skyboxFilePaths);
+
+		m_VolumetricClouds = new VolumetricClouds();
 	}
 
 	void Scene::Init()
