@@ -121,21 +121,18 @@ void main()
     vec3 rayDir = normalize(LocalPos - cameraLocalPos);
 
     // Ray-box intersection: tStart is ray entry into the cloud box, tEnd is exit
-    vec2 tBox   = rayBoxIntersect(cameraLocalPos, rayDir);
+    vec2 tBox    = rayBoxIntersect(cameraLocalPos, rayDir);
     float tStart = max(tBox.x, 0.0);
     float tEnd   = tBox.y;
 
     if (tEnd <= tStart) discard;
 
-    // Adaptive step size fills the traversal range evenly
     float stepSize = (tEnd - tStart) / float(MAX_STEPS);
 
-    float transmittance = 1.0;
-    vec3  scatteredLight = vec3(0.0);
-
-    // cosTheta > 0 when looking toward sun -> forward scattering (silver lining)
-    float cosTheta = dot(rayDir, sunDirLocal);
-    float phase    = cloudPhase(cosTheta);
+    // Accumulate density-weighted sun transmittance for cloud lighting
+    float sunLightAccum    = 0.0;
+    float densityWeightSum = 0.0;
+    float viewTransmittance = 1.0;
 
     vec3 currPos = cameraLocalPos + rayDir * (tStart + stepSize * 0.5);
 
@@ -146,22 +143,32 @@ void main()
         if (density > 0.001)
         {
             float lightT = lightMarch(currPos);
-
-            // In-scatter: energy arriving at this sample from the sun
-            scatteredLight += cloudAlbedo * sunColor * phase * lightT
-                              * density * stepSize * transmittance;
-
-            // Absorb light along the view ray (Beer-Lambert)
-            transmittance *= exp(-density * stepSize * cloudDensity * cloudAbsorption);
-
-            if (transmittance < 0.01) break;
+            float weight  = density * stepSize * viewTransmittance;
+            sunLightAccum    += lightT * weight;
+            densityWeightSum += weight;
+            viewTransmittance *= exp(-density * stepSize * cloudDensity * cloudAbsorption);
+            if (viewTransmittance < 0.01) break;
         }
 
         currPos += rayDir * stepSize;
     }
 
-    float alpha = clamp(1.0 - transmittance, 0.0, 1.0);
+    float alpha = clamp(1.0 - viewTransmittance, 0.0, 1.0);
     if (alpha < 0.002) discard;
 
-    FragColour = vec4(scatteredLight, alpha);
+    // Average fraction of sunlight reaching visible cloud particles [0=shadowed, 1=fully lit]
+    float avgSunT = densityWeightSum > 0.001 ? clamp(sunLightAccum / densityWeightSum, 0.0, 1.0) : 0.0;
+
+    // Phase function adds a brightness boost only in the forward-scattering cone (silver lining).
+    // The raw HG output is multiplied by a small constant so the boost only fires near cosTheta=1.
+    float cosTheta   = dot(rayDir, sunDirLocal);
+    float phaseBoost = clamp(cloudPhase(cosTheta) * 3.0 - 0.1, 0.0, 0.5);
+    float litAmount  = clamp(avgSunT + phaseBoost, 0.0, 1.0);
+
+    // cloudAlbedo directly controls cloud color; sun lighting shifts between shadow and lit tone
+    vec3 shadowTint = cloudAlbedo * vec3(0.5, 0.6, 0.85) * 0.3;  // sky-blue ambient in deep shadow
+    vec3 litTint    = cloudAlbedo * sunColor;
+    vec3 cloudColor = mix(shadowTint, litTint, litAmount);
+
+    FragColour = vec4(cloudColor, alpha);
 }
