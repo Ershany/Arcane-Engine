@@ -13,6 +13,7 @@ Arcane Engine is a real-time game engine developed and maintained by [Tyrannical
 - Cook Torrance Specular BRDF w/ Lambertian Diffuse
 - PBR Material System
 - Parallax Occlusion Mapping
+- Volumetric Cloud Rendering
 - Light Probes (IBL)
 - Reflection Probes (IBL)
 - Linear Lighting (w/ Gamma Correction)
