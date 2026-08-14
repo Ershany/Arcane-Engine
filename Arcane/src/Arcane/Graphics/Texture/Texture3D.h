@@ -1,10 +1,10 @@
 #pragma once
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#ifndef TEXTURE3D_H
+#define TEXTURE3D_H
 
 namespace Arcane
 {
-	struct TextureSettings
+	struct Texture3DSettings
 	{
 		// Texture format
 		GLenum TextureFormat = GL_NONE; // If set to GL_NONE, the data format will be used
@@ -17,40 +17,40 @@ namespace Arcane
 		// Texture wrapping options
 		GLenum TextureWrapSMode = GL_REPEAT;
 		GLenum TextureWrapTMode = GL_REPEAT;
+		GLenum TextureWrapRMode = GL_REPEAT;
 		bool HasBorder = false;
 		glm::vec4 BorderColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f); // Only works when wrap mode set to GL_CLAMP_TO_BORDER
 
 		// Texture filtering options
 		GLenum TextureMinificationFilterMode = GL_LINEAR_MIPMAP_LINEAR; // Filtering mode when the texture moves further away and multiple texels map to one pixel (trilinear for best quality)
 		GLenum TextureMagnificationFilterMode = GL_LINEAR; // Filtering mode when the texture gets closer and multiple pixels map to a single texel (Never needs to be more than bilinear because that is as accurate as it gets in this sitation)
-		float TextureAnisotropyLevel = ANISOTROPIC_FILTERING_LEVEL; // Specified independent of texture min and mag filtering, should be a power of 2 (1.0 means the usual isotropic texture filtering is used which means anisotropic filtering isn't used)
 
 		// Mip options
 		bool HasMips = true;
 		int MipBias = 0; // positive means blurrier texture selected, negative means sharper texture which can show texture aliasing
 	};
 
-	class Texture
+	class Texture3D
 	{
 	public:
-		Texture();
-		Texture(TextureSettings &settings);
-		Texture(const Texture &texture); // Copies another texture and its settings
-		~Texture();
+		Texture3D();
+		Texture3D(Texture3DSettings& settings);
+		Texture3D(const Texture3D& texture); // Copies another texture and its settings
+		~Texture3D();
 
 		// Generation functions
-		void Generate2DTexture(unsigned int width, unsigned int height, GLenum dataFormat, GLenum pixelDataType = GL_UNSIGNED_BYTE, const void *data = nullptr);
-		void Generate2DMultisampleTexture(unsigned int width, unsigned int height);
-		void GenerateMips(); // Will attempt to generate mipmaps, only works if the texture has already been generated
+		void Generate3DTexture(unsigned int width, unsigned int height, unsigned int depth, GLenum dataFormat, GLenum pixelDataType = GL_UNSIGNED_BYTE, const void* data = nullptr);
+		void GenerateMips(); // Generates mipmaps if the texture has already been created
 
 		void Bind(int unit = 0) const;
 		void Unbind() const;
 
-		// Texture Tuning Functions (Works for pre-generation and post-generation). For post generation you need to bind the texture before calling
+		// Texture Tuning Functions (Works pre- and post-generation; for post, texture must be bound first)
 		void SetTextureWrapS(GLenum textureWrapMode);
 		void SetTextureWrapT(GLenum textureWrapMode);
+		void SetTextureWrapR(GLenum textureWrapMode);
 		void SetHasBorder(bool hasBorder);
-		void SetBorderColour(glm::vec4 &borderColour);
+		void SetBorderColour(glm::vec4& borderColour);
 		void SetTextureMinFilter(GLenum textureFilterMode);
 		void SetTextureMagFilter(GLenum textureFilterMode);
 		void SetAnisotropicFilteringMode(float textureAnisotropyLevel);
@@ -58,25 +58,27 @@ namespace Arcane
 		void SetHasMips(bool hasMips);
 
 		// Pre-generation controls only
-		inline void SetTextureSettings(TextureSettings settings) { m_TextureSettings = settings; }
-		inline void SetTextureFormat(GLenum format) { m_TextureSettings.TextureFormat = format; }
+		inline void SetTextureSettings(Texture3DSettings settings) { m_Texture3DSettings = settings; }
+		inline void SetTextureFormat(GLenum format) { m_Texture3DSettings.TextureFormat = format; }
 
 		// Don't use this to bind the texture and use it. Call the Bind() function instead
-		inline unsigned int GetTextureId() const { return m_TextureId; }
-		inline unsigned int GetTextureTarget() const { return m_TextureTarget; }
-		inline bool IsGenerated() const { return m_TextureId != 0; }
+		inline unsigned int GetTextureId() const { return m_Texture3DId; }
+		inline unsigned int GetTextureTarget() const { return m_Texture3DTarget; }
+		inline bool IsGenerated() const { return m_Texture3DId != 0; }
 		inline unsigned int GetWidth() const { return m_Width; }
 		inline unsigned int GetHeight() const { return m_Height; }
-		inline const TextureSettings& GetTextureSettings() const { return m_TextureSettings; }
+		inline unsigned int GetDepth() const { return m_Depth; }
+		inline const Texture3DSettings& GetTextureSettings() const { return m_Texture3DSettings; }
 	private:
 		void ApplyTextureSettings();
 	private:
-		unsigned int m_TextureId;
-		GLenum m_TextureTarget;
+		unsigned int m_Texture3DId;
+		GLenum m_Texture3DTarget;
 
-		unsigned int m_Width, m_Height;
+		unsigned int m_Width, m_Height, m_Depth;
 
-		TextureSettings m_TextureSettings;
+		Texture3DSettings m_Texture3DSettings;
 	};
 }
+
 #endif

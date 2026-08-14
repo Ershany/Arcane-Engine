@@ -23,7 +23,7 @@ namespace Arcane
 	public:
 		CameraController(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f, float pitch = 0.0f, float nearPlane = DEFAULT_NEAR_PLANE, float farPlane = DEFAULT_FAR_PLANE);
 
-		virtual glm::mat4 GetViewMatrix() override;
+		virtual glm::mat4 GetViewMatrix() const override;
 
 		void ProcessInput(float deltaTime);
 		virtual void ProcessCameraScroll(float yOffset) = 0;

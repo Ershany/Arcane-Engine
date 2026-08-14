@@ -12,6 +12,7 @@
 #include <Arcane/Animation/AnimationClip.h>
 #include <Arcane/Graphics/Renderer/Renderpass/MasterRenderPass.h>
 #include <Arcane/Graphics/Renderer/Renderpass/PostProcessPass.h>
+#include <Arcane/Graphics/Volumetric/VolumetricClouds.h>
 
 
 using namespace Arcane;
@@ -202,6 +203,15 @@ void Testbed::LoadTestbedGraphics()
 		auto& waterComponent = water.AddComponent<WaterComponent>();
 		waterComponent.WaterDistortionTexture = assetManager.Load2DTextureAsync(std::string("res/water/dudv.png"));
 		waterComponent.WaterNormalMap = assetManager.Load2DTextureAsync(std::string("res/water/normals.png"));
+	}
+
+	{
+		auto clouds = scene->CreateEntity("Clouds");
+		auto& transformComponent = clouds.GetComponent<TransformComponent>();
+		transformComponent.Scale = { 50.0f, 50.0f, 50.0f };
+		transformComponent.Translation = { 0.0f, 50.0f, 0.0f };
+		auto& volumetricCloudComponent = clouds.AddComponent<VolumetricCloudComponent>();
+		volumetricCloudComponent.NoiseGenParams.NoiseAlgorithm = CloudNoiseAlgorithm::CloudNoiseAlgorithm_Worley;
 	}
 
 	{

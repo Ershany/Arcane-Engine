@@ -22,5 +22,5 @@ out vec4 FragColour;
 uniform vec3 colour;
 
 void main() {
-	FragColour = glm::vec4(colour, 1.0f);
+	FragColour = vec4(colour, 1.0f);
 }

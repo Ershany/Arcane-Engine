@@ -9,8 +9,8 @@ namespace Arcane
 		ICamera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), float nearPlane = DEFAULT_NEAR_PLANE, float farPlane = DEFAULT_FAR_PLANE) : m_Position(position), m_NearPlane(nearPlane), m_FarPlane(farPlane) {}
 		virtual ~ICamera() {}
 
-		virtual glm::mat4 GetViewMatrix() = 0;
-		virtual glm::mat4 GetProjectionMatrix() = 0;
+		virtual glm::mat4 GetViewMatrix() const = 0;
+		virtual glm::mat4 GetProjectionMatrix() const = 0;
 
 		virtual const glm::vec3& GetPosition() const { return m_Position; }
 		virtual const float GetNearPlane() const { return m_NearPlane; }

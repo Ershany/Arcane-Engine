@@ -12,7 +12,7 @@ namespace Arcane
 
 	}
 
-	glm::mat4 OrthographicCamera::GetProjectionMatrix()
+	glm::mat4 OrthographicCamera::GetProjectionMatrix() const
 	{
 		return glm::ortho((m_Left - m_Zoom) * m_AspectRatio, (m_Right + m_Zoom) * m_AspectRatio, m_Bottom - m_Zoom, m_Top + m_Zoom, m_NearPlane, m_FarPlane);
 	}

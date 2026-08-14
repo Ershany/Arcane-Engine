@@ -20,8 +20,8 @@ namespace Arcane
 
 		void SwitchCameraToFace(int cubeFaceIndex);
 
-		virtual glm::mat4 GetViewMatrix() override;
-		virtual glm::mat4 GetProjectionMatrix() override;
+		virtual glm::mat4 GetViewMatrix() const override;
+		virtual glm::mat4 GetProjectionMatrix() const override;
 		inline virtual const glm::vec3& GetFront() const override { return m_Front; }
 		inline virtual const glm::vec3& GetUp() const override { return m_Up; }
 		inline virtual void InvertPitch() override {}

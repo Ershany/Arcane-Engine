@@ -31,7 +31,7 @@ namespace Arcane
 		FindClosestWater();
 	}
 
-	// TODO: Should use camera component's position
+	// TODO: Should use camera component's position (not the editor camera, after they are separated)
 	void WaterManager::FindClosestWater()
 	{
 		// Reset our pointers since it is possible no water exists anymore
@@ -41,7 +41,6 @@ namespace Arcane
 		auto group = m_Scene->m_Registry.view<TransformComponent, WaterComponent>();
 		for (auto entity : group)
 		{
-			// Water must have a mesh, otherwise nothing to render water on
 			auto&[transformComponent, waterComponent] = group.get<TransformComponent, WaterComponent>(entity);
 
 			float currentDistance2 = glm::distance2(m_Scene->GetCamera()->GetPosition(), transformComponent.Translation);

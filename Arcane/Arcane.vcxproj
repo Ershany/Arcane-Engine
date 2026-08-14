@@ -169,6 +169,9 @@
     <ClCompile Include="src\Arcane\Graphics\Renderer\DebugDraw3D.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderer2D.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Texture\Texture3D.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Volumetric\VolumetricClouds.cpp" />
+    <ClCompile Include="src\Arcane\Graphics\Volumetric\VolumetricManager.cpp" />
     <ClCompile Include="src\Arcane\Graphics\Water\WaterManager.cpp" />
     <ClCompile Include="src\Arcane\RenderdocManager.cpp" />
     <ClCompile Include="src\Arcane\Core\Application.cpp" />
@@ -273,9 +276,14 @@
     <ClInclude Include="src\Arcane\Editor\RendererStatsDisplay.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\CameraController.h" />
     <ClInclude Include="src\Arcane\Graphics\Camera\OrthographicCamera.h" />
+    <ClInclude Include="src\Arcane\Graphics\Noise\FastNoiseLite.h" />
+    <ClInclude Include="src\Arcane\Graphics\Noise\PerlinNoise.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\DebugDraw3D.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderer2D.h" />
     <ClInclude Include="src\Arcane\Graphics\Renderer\Renderpass\EditorPass.h" />
+    <ClInclude Include="src\Arcane\Graphics\Texture\Texture3D.h" />
+    <ClInclude Include="src\Arcane\Graphics\Volumetric\VolumetricClouds.h" />
+    <ClInclude Include="src\Arcane\Graphics\Volumetric\VolumetricManager.h" />
     <ClInclude Include="src\Arcane\Graphics\Water\WaterManager.h" />
     <ClInclude Include="src\Arcane\RenderdocManager.h" />
     <ClInclude Include="src\Arcane.h" />
@@ -379,6 +387,7 @@
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Linear_Skinned.glsl" />
     <None Include="src\Arcane\Shaders\Shadowmap_Generation_Skinned.glsl" />
+    <None Include="src\Arcane\Shaders\Volumetric\Clouds.glsl" />
     <None Include="src\shaders\compute\frame_luminance.comp" />
     <None Include="src\Arcane\Shaders\Compute\Scene_Luminance.glsl" />
     <None Include="src\Arcane\Shaders\Deferred\PBR_LightingPass.glsl" />

@@ -11,6 +11,8 @@
 #include <Arcane/Scene/Scene.h>
 #include <Arcane/Util/Loaders/ShaderLoader.h>
 #include <Arcane/Platform/OpenGL/Framebuffer/Framebuffer.h>
+#include <Arcane/Graphics/Volumetric/VolumetricClouds.h>
+#include <Arcane/Graphics/Volumetric/VolumetricManager.h>
 
 namespace Arcane
 {
@@ -186,13 +188,20 @@ namespace Arcane
 		m_GLCache->SetDepthTest(true);
 
 		// Setup
-		LightManager *lightManager = m_ActiveScene->GetLightManager();
-		Skybox *skybox = m_ActiveScene->GetSkybox();
-		ProbeManager *probeManager = m_ActiveScene->GetProbeManager();
+		LightManager* lightManager = m_ActiveScene->GetLightManager();
+		Skybox* skybox = m_ActiveScene->GetSkybox();
+		ProbeManager* probeManager = m_ActiveScene->GetProbeManager();
+		VolumetricManager* volumetricManager = m_ActiveScene->GetVolumetricManager();
+		VolumetricClouds* clouds = m_ActiveScene->GetVolumetricClouds();
 
 		// Render skybox
 		ARC_PUSH_RENDER_TAG("Sky");
 		skybox->Draw(camera);
+		ARC_POP_RENDER_TAG();
+
+		// Render clouds
+		ARC_PUSH_RENDER_TAG("Volumetric Clouds");
+		clouds->DrawClouds(camera, volumetricManager->GetClosestVolumetricCloudComponent(), volumetricManager->GetClosestVolumetricCloudTransform(), lightManager);
 		ARC_POP_RENDER_TAG();
 
 		// Lighting setup
